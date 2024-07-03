@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quickstart &mdash; DGL 2.4 documentation</title>
+  <title>Quickstart &mdash; DGL 2.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
@@ -23,7 +23,7 @@
   
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=9caaf7ed"></script>
+        <script src="../../_static/documentation_options.js?v=c3c8ae58"></script>
         <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -51,7 +51,7 @@
             DGL
           </a>
               <div class="version">
-                2.4
+                2.3.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -1445,19 +1445,19 @@ tensor([[0., 0., 0., 0.],
         [0., 0., 1., 2.],
         [0., 0., 0., 3.]])
 X1:
-tensor([[ 0.1243, -0.1927, -0.0130, -0.8050, -0.3171],
-        [-0.4640, -0.2396,  1.6771, -0.7616, -0.3175],
-        [-0.5457, -0.5886, -0.6801,  0.9870, -0.3302]])
+tensor([[-0.4415,  0.1726, -1.0213,  1.7520,  0.0106],
+        [-0.8636, -0.9975, -0.8134,  0.0475,  0.2103],
+        [ 0.8691, -0.9949,  1.7111,  0.9952,  0.3224]])
 X2:
-tensor([[-1.0775,  0.8597,  0.5328, -0.2897],
-        [-0.9933,  0.1147, -1.5623,  0.8077],
-        [ 1.0438,  0.5805, -0.6827, -2.5676],
-        [ 1.9219,  0.7320, -0.2477, -1.2312],
-        [ 1.8221, -0.2008,  0.1179, -0.8589]])
+tensor([[ 1.1339,  0.7371,  0.4241, -0.9840],
+        [-0.6918,  0.9584, -0.1047, -1.0469],
+        [ 1.4169, -0.5162, -0.6643, -1.1680],
+        [ 1.5392, -1.1753,  0.1913, -1.1778],
+        [-0.1042, -0.7363, -1.0661,  1.0974]])
 dglsp.sddmm(A, X1, X2):
 tensor([[ 0.0000,  0.0000,  0.0000,  0.0000],
-        [ 0.0000,  0.0000, -0.8666, -6.3095],
-        [ 0.0000,  0.0000,  0.0000,  1.4920]])
+        [ 0.0000,  0.0000,  0.0635,  6.0377],
+        [ 0.0000,  0.0000,  0.0000, -7.8914]])
 </pre></div></div>
 </div>
 <p>This operator also supports batched sampled-dense-dense matrix multiplication. For a <span class="math notranslate nohighlight">\(L \times N\)</span> sparse matrix A with non-zero vector values of length <span class="math notranslate nohighlight">\(𝐾\)</span>, a <span class="math notranslate nohighlight">\(L \times M \times K\)</span> dense matrix X1 and a <span class="math notranslate nohighlight">\(M \times N \times K\)</span> dense matrix X2, <code class="docutils literal notranslate"><span class="pre">sddmm(A,</span> <span class="pre">X1,</span> <span class="pre">X2)</span></code> will be a <span class="math notranslate nohighlight">\(L \times N \times K\)</span> sparse matrix.</p>
@@ -1506,63 +1506,63 @@ tensor([[[0., 0.],
          [0., 0.],
          [3., 3.]]])
 X1:
-tensor([[[ 0.6481, -1.0157],
-         [ 0.3048,  0.0373],
-         [ 0.5914,  1.0993],
-         [-1.1350,  0.3918],
-         [ 1.1703,  0.0892]],
+tensor([[[ 0.9781, -2.1575],
+         [-0.6094,  1.2403],
+         [-1.0213, -0.8746],
+         [ 0.7061,  0.5437],
+         [-0.0940, -0.2620]],
 
-        [[ 1.1587,  0.6698],
-         [ 0.1449,  0.2524],
-         [ 0.9417,  0.2380],
-         [ 2.7911, -0.1064],
-         [-0.8196,  0.4363]],
+        [[-1.9052,  0.0946],
+         [-0.0762,  0.8476],
+         [-0.2013,  0.8246],
+         [-0.4973,  0.9855],
+         [ 0.2113, -0.8297]],
 
-        [[ 1.5475,  1.4784],
-         [ 0.3072,  2.5861],
-         [-0.7243, -0.2665],
-         [ 0.2701, -0.4411],
-         [ 0.1382,  0.4228]]])
+        [[-0.3972, -0.8763],
+         [ 1.5897,  0.3163],
+         [ 1.9126, -0.5919],
+         [ 0.1058, -0.4336],
+         [-1.4108,  0.8239]]])
 X2:
-tensor([[[ 1.7541, -0.2148],
-         [-2.1926,  1.4757],
-         [-0.1390,  0.6236],
-         [ 0.9889, -0.1963]],
+tensor([[[-1.6492, -0.3923],
+         [ 0.4896, -0.3302],
+         [-1.2651,  0.2912],
+         [ 2.8214,  0.4391]],
 
-        [[-0.2306, -0.8966],
-         [ 0.4754, -1.4410],
-         [-0.0810,  0.5001],
-         [ 0.3620, -1.0956]],
+        [[-2.6589, -0.9469],
+         [-0.4432, -0.5756],
+         [ 0.5980,  0.6378],
+         [ 0.1092, -1.1056]],
 
-        [[ 0.3982, -0.4546],
-         [ 2.1000, -0.0722],
-         [ 0.8060, -1.3085],
-         [ 0.5977, -0.2148]],
+        [[ 1.2044, -0.7901],
+         [ 0.2749, -0.0689],
+         [ 0.5644,  2.8819],
+         [ 1.0644, -0.4816]],
 
-        [[ 1.6976, -0.6395],
-         [ 0.1182, -0.9638],
-         [ 0.5466, -1.6042],
-         [-0.0671,  0.0892]],
+        [[-0.2180,  0.0259],
+         [ 0.1286, -0.9527],
+         [ 0.0211,  0.3971],
+         [-0.0999, -0.3619]],
 
-        [[ 0.8389,  1.5538],
-         [-0.1479, -1.7469],
-         [ 0.7406, -0.4911],
-         [-0.0054,  2.2109]]])
+        [[ 0.1018, -2.0383],
+         [-0.9880, -0.1679],
+         [-1.1742, -0.8725],
+         [ 0.2223,  2.2674]]])
 dglsp.sddmm(A, X1, X2):
-tensor([[[ 0.0000,  0.0000],
-         [ 0.0000,  0.0000],
-         [ 0.0000,  0.0000],
-         [ 0.0000,  0.0000]],
+tensor([[[  0.0000,   0.0000],
+         [  0.0000,   0.0000],
+         [  0.0000,   0.0000],
+         [  0.0000,   0.0000]],
 
-        [[ 0.0000,  0.0000],
-         [ 0.0000,  0.0000],
-         [ 1.5047,  0.1890],
-         [ 3.1566,  0.9919]],
+        [[  0.0000,   0.0000],
+         [  0.0000,   0.0000],
+         [  1.9925,   4.0600],
+         [-11.0024,  -7.0613]],
 
-        [[ 0.0000,  0.0000],
-         [ 0.0000,  0.0000],
-         [ 0.0000,  0.0000],
-         [ 3.5692, -6.5127]]])
+        [[  0.0000,   0.0000],
+         [  0.0000,   0.0000],
+         [  0.0000,   0.0000],
+         [  2.2938,   4.7266]]])
 </pre></div></div>
 </div>
 </section>
@@ -1594,13 +1594,13 @@ tensor([[[ 0.0000,  0.0000],
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-tensor([[ 0.0000,  0.4265,  0.0000],
-        [-1.8705,  0.0000,  0.2432],
-        [ 0.2092,  0.0000,  0.0000]])
+tensor([[0.0000, 0.6501, 0.0000],
+        [0.4235, 0.0000, 0.9427],
+        [0.9851, 0.0000, 0.0000]])
 Apply tanh.
-tensor([[ 0.0000,  0.4024,  0.0000],
-        [-0.9536,  0.0000,  0.2386],
-        [ 0.2062,  0.0000,  0.0000]])
+tensor([[0.0000, 0.5718, 0.0000],
+        [0.3998, 0.0000, 0.7365],
+        [0.7552, 0.0000, 0.0000]])
 </pre></div></div>
 </div>
 <p><strong>Non-sparse-preserving functions</strong> such as <code class="docutils literal notranslate"><span class="pre">exp()</span></code>, <code class="docutils literal notranslate"><span class="pre">cos()</span></code>, etc. You can first convert the sparse matrix to dense before applying the functions.</p>
@@ -1625,13 +1625,13 @@ tensor([[ 0.0000,  0.4024,  0.0000],
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-tensor([[ 0.0000,  2.1944,  0.0000],
-        [-0.4551,  0.0000, -0.2537],
-        [-0.3482,  0.0000,  0.0000]])
+tensor([[ 0.0000,  1.1150,  0.0000],
+        [-1.8713,  0.0000,  0.6230],
+        [ 2.1336,  0.0000,  0.0000]])
 Apply exp.
-tensor([[1.0000, 8.9742, 1.0000],
-        [0.6344, 1.0000, 0.7759],
-        [0.7060, 1.0000, 1.0000]])
+tensor([[1.0000, 3.0497, 1.0000],
+        [0.1539, 1.0000, 1.8645],
+        [8.4449, 1.0000, 1.0000]])
 </pre></div></div>
 </div>
 </section>
