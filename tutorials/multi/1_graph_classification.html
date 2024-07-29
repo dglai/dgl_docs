@@ -4,12 +4,12 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Single Machine Multi-GPU Minibatch Graph Classification &mdash; DGL 2.3.0 documentation</title>
+  <title>Single Machine Multi-GPU Minibatch Graph Classification &mdash; DGL 2.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -23,7 +23,7 @@
   
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=c3c8ae58"></script>
+        <script src="../../_static/documentation_options.js?v=9caaf7ed"></script>
         <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -51,7 +51,7 @@
             DGL
           </a>
               <div class="version">
-                2.3.0
+                2.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -163,7 +163,7 @@ labels = labels.to(device)
 <p>Intuitively, we can distribute the workload along the dimension of data. This allows multiple GPUs to perform the forward and backward computation of multiple gradient descents in parallel. To distribute a dataset across multiple GPUs, we need to partition it into multiple mutually exclusive subsets of a similar size, one per GPU. We need to repeat the random partition every epoch to guarantee randomness. We can use :func:<code class="docutils literal notranslate"><span class="pre">~dgl.dataloading.pytorch.GraphDataLoader</span></code>, which wraps some PyTorch
 APIs and does the job for graph classification in data loading.</p>
 <p>Once all GPUs have finished the backward computation for its minibatch, we need to synchronize the model parameter update across them. Specifically, this involves collecting gradients from all GPUs, averaging them and updating the model parameters on each GPU. We can wrap a PyTorch model with :func:<code class="docutils literal notranslate"><span class="pre">~torch.nn.parallel.DistributedDataParallel</span></code> so that the model parameter update will invoke gradient synchronization first under the hood.</p>
-<p><img alt="56343488877040c684c6ddb915a3dda8" class="no-scaled-link" src="https://data.dgl.ai/tutorial/mgpu_gc.png" style="width: 450px;" /></p>
+<p><img alt="7816ea810ab34319aa96ffe236456820" class="no-scaled-link" src="https://data.dgl.ai/tutorial/mgpu_gc.png" style="width: 450px;" /></p>
 <p>That’s the core behind this tutorial. We will explore it more in detail with a complete example below.</p>
 <div class="admonition note">
 <div class="admonition-title fa fa-exclamation-circle"><h4></div><p>Note</p>

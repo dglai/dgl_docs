@@ -4,12 +4,12 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FusedCSCSamplingGraph &mdash; DGL 2.3.0 documentation</title>
+  <title>FusedCSCSamplingGraph &mdash; DGL 2.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -22,7 +22,7 @@
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=c3c8ae58"></script>
+        <script src="../_static/documentation_options.js?v=9caaf7ed"></script>
         <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -48,7 +48,7 @@
             DGL
           </a>
               <div class="version">
-                2.3.0
+                2.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -543,6 +543,93 @@ equalling the total number of edges.</p></li>
 <span class="go">)}</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dgl.graphbolt.FusedCSCSamplingGraph.temporal_sample_layer_neighbors">
+<span class="sig-name descname"><span class="pre">temporal_sample_layer_neighbors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_nodes_timestamp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fanouts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_nodes_pre_time_window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probs_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_timestamp_attr_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_timestamp_attr_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed2_contribution</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ScriptObject</span></span></span><a class="reference internal" href="../_modules/dgl/graphbolt/impl/fused_csc_sampling_graph.html#FusedCSCSamplingGraph.temporal_sample_layer_neighbors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.graphbolt.FusedCSCSamplingGraph.temporal_sample_layer_neighbors" title="Link to this definition"></a></dt>
+<dd><p>Temporally Sample neighboring edges of the given nodes and return the induced
+subgraph via layer-neighbor sampling from the NeurIPS 2023 paper
+<a class="reference external" href="https://proceedings.neurips.cc/paper_files/paper/2023/file/51f9036d5e7ae822da8f6d4adda1fb39-Paper-Conference.pdf">Layer-Neighbor Sampling – Defusing Neighborhood Explosion in GNNs</a></p>
+<p>If <cite>node_timestamp_attr_name</cite> or <cite>edge_timestamp_attr_name</cite> is given,
+the sampled neighbor or edge of an input node must have a timestamp
+that is smaller than that of the input node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nodes</strong> (<em>torch.Tensor</em>) – IDs of the given seed nodes.</p></li>
+<li><p><strong>input_nodes_timestamp</strong> (<em>torch.Tensor</em>) – Timestamps of the given seed nodes.</p></li>
+<li><p><strong>fanouts</strong> (<em>torch.Tensor</em>) – <p>The number of edges to be sampled for each node with or without
+considering edge types.</p>
+<blockquote>
+<div><ul>
+<li><p>When the length is 1, it indicates that the fanout applies to
+all neighbors of the node as a collective, regardless of the
+edge type.</p></li>
+<li><p>Otherwise, the length should equal to the number of edge
+types, and each fanout value corresponds to a specific edge
+type of the nodes.</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt>The value of each fanout should be &gt;= 0 or = -1.</dt><dd><ul>
+<li><p>When the value is -1, all neighbors (with non-zero probability,
+if weighted) will be sampled once regardless of replacement. It
+is equivalent to selecting all neighbors with non-zero
+probability when the fanout is &gt;= the number of neighbors (and
+replace is set to false).</p></li>
+<li><p>When the value is a non-negative integer, it serves as a
+minimum threshold for selecting neighbors.</p></li>
+</ul>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>replace</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Boolean indicating whether the sample is preformed with or
+without replacement. If True, a value can be selected multiple
+times. Otherwise, each value can be selected only once.</p></li>
+<li><p><strong>input_nodes_pre_time_window</strong> (<em>torch.Tensor</em>) – The time window of the nodes represents a period of time before
+<cite>input_nodes_timestamp</cite>. If provided, only neighbors and related
+edges whose timestamps fall within <cite>[input_nodes_timestamp -
+input_nodes_pre_time_window, input_nodes_timestamp]</cite> will be
+filtered.</p></li>
+<li><p><strong>probs_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – An optional string specifying the name of an edge attribute. This
+attribute tensor should contain (unnormalized) probabilities
+corresponding to each neighboring edge of a node. It must be a 1D
+floating-point or boolean tensor, with the number of elements
+equalling the total number of edges.</p></li>
+<li><p><strong>node_timestamp_attr_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – An optional string specifying the name of an node attribute.</p></li>
+<li><p><strong>edge_timestamp_attr_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – An optional string specifying the name of an edge attribute.</p></li>
+<li><p><strong>random_seed</strong> (<em>torch.Tensor</em><em>, </em><em>optional</em>) – <p>An int64 tensor with one or two elements.</p>
+<p>The passed random_seed makes it so that for any seed node <code class="docutils literal notranslate"><span class="pre">s</span></code> and
+its neighbor <code class="docutils literal notranslate"><span class="pre">t</span></code>, the rolled random variate <code class="docutils literal notranslate"><span class="pre">r_t</span></code> is the same
+for any call to this function with the same random seed. When
+sampling as part of the same batch, one would want identical seeds
+so that LABOR can globally sample. One example is that for
+heterogenous graphs, there is a single random seed passed for each
+edge type. This will sample much fewer nodes compared to having
+unique random seeds for each edge type. If one called this function
+individually for each edge type for a heterogenous graph with
+different random seeds, then it would run LABOR locally for each
+edge type, resulting into a larger number of nodes being sampled.</p>
+<p>If this function is called without a <code class="docutils literal notranslate"><span class="pre">random_seed</span></code>, we get the
+random seed by getting a random number from GraphBolt. Use this
+argument with identical random_seed if multiple calls to this
+function are used to sample as part of a single batch.</p>
+<p>If given two numbers, then the <code class="docutils literal notranslate"><span class="pre">seed2_contribution</span></code> argument
+determines the interpolation between the two random seeds.</p>
+</p></li>
+<li><p><strong>seed2_contribution</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – A float value between [0, 1) that determines the contribution of the
+second random seed, <code class="docutils literal notranslate"><span class="pre">random_seed[-1]</span></code>, to generate the random
+variates.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The sampled subgraph.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="dgl.graphbolt.SampledSubgraphImpl.html#dgl.graphbolt.SampledSubgraphImpl" title="dgl.graphbolt.SampledSubgraphImpl">SampledSubgraphImpl</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">

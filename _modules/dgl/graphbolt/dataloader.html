@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dgl.graphbolt.dataloader &mdash; DGL 2.3.0 documentation</title>
+  <title>dgl.graphbolt.dataloader &mdash; DGL 2.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -21,7 +21,7 @@
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=c3c8ae58"></script>
+        <script src="../../../_static/documentation_options.js?v=9caaf7ed"></script>
         <script src="../../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -45,7 +45,7 @@
             DGL
           </a>
               <div class="version">
-                2.3.0
+                2.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -141,8 +141,8 @@
 <span class="kn">import</span> <span class="nn">torchdata.dataloader2.graph</span> <span class="k">as</span> <span class="nn">dp_utils</span>
 <span class="kn">import</span> <span class="nn">torchdata.datapipes</span> <span class="k">as</span> <span class="nn">dp</span>
 
-<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">CopyTo</span>
-<span class="kn">from</span> <span class="nn">.feature_fetcher</span> <span class="kn">import</span> <span class="n">FeatureFetcher</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">CopyTo</span><span class="p">,</span> <span class="n">get_host_to_device_uva_stream</span>
+<span class="kn">from</span> <span class="nn">.feature_fetcher</span> <span class="kn">import</span> <span class="n">FeatureFetcher</span><span class="p">,</span> <span class="n">FeatureFetcherStartMarker</span>
 <span class="kn">from</span> <span class="nn">.impl.gpu_graph_cache</span> <span class="kn">import</span> <span class="n">GPUGraphCache</span>
 <span class="kn">from</span> <span class="nn">.impl.neighbor_sampler</span> <span class="kn">import</span> <span class="n">SamplePerLayer</span>
 
@@ -199,6 +199,10 @@
     <span class="k">return</span> <span class="n">datapipe_graph</span>
 
 
+<span class="k">def</span> <span class="nf">_set_worker_id</span><span class="p">(</span><span class="n">worked_id</span><span class="p">):</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">graphbolt</span><span class="o">.</span><span class="n">set_worker_id</span><span class="p">(</span><span class="n">worked_id</span><span class="p">)</span>
+
+
 <span class="k">class</span> <span class="nc">MultiprocessingWrapper</span><span class="p">(</span><span class="n">dp</span><span class="o">.</span><span class="n">iter</span><span class="o">.</span><span class="n">IterDataPipe</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Wraps a datapipe with multiprocessing.</span>
 
@@ -222,18 +226,11 @@
             <span class="n">batch_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">num_workers</span><span class="o">=</span><span class="n">num_workers</span><span class="p">,</span>
             <span class="n">persistent_workers</span><span class="o">=</span><span class="p">(</span><span class="n">num_workers</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="n">persistent_workers</span><span class="p">,</span>
+            <span class="n">worker_init_fn</span><span class="o">=</span><span class="n">_set_worker_id</span> <span class="k">if</span> <span class="n">num_workers</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataloader</span>
-
-
-<span class="c1"># There needs to be a single instance of the uva_stream, if it is created</span>
-<span class="c1"># multiple times, it leads to multiple CUDA memory pools and memory leaks.</span>
-<span class="k">def</span> <span class="nf">_get_uva_stream</span><span class="p">():</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">_get_uva_stream</span><span class="p">,</span> <span class="s2">&quot;stream&quot;</span><span class="p">):</span>
-        <span class="n">_get_uva_stream</span><span class="o">.</span><span class="n">stream</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">Stream</span><span class="p">(</span><span class="n">priority</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">_get_uva_stream</span><span class="o">.</span><span class="n">stream</span>
 
 
 <div class="viewcode-block" id="DataLoader">
@@ -260,10 +257,6 @@
 <span class="sd">        If True, the data loader will not shut down the worker processes after a</span>
 <span class="sd">        dataset has been consumed once. This allows to maintain the workers</span>
 <span class="sd">        instances alive.</span>
-<span class="sd">    overlap_feature_fetch : bool, optional</span>
-<span class="sd">        If True, the data loader will overlap the UVA feature fetcher operations</span>
-<span class="sd">        with the rest of operations by using an alternative CUDA stream. Default</span>
-<span class="sd">        is True.</span>
 <span class="sd">    overlap_graph_fetch : bool, optional</span>
 <span class="sd">        If True, the data loader will overlap the UVA graph fetching operations</span>
 <span class="sd">        with the rest of operations by using an alternative CUDA stream. Default</span>
@@ -288,7 +281,6 @@
         <span class="n">datapipe</span><span class="p">,</span>
         <span class="n">num_workers</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
         <span class="n">persistent_workers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">overlap_feature_fetch</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">overlap_graph_fetch</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">num_gpu_cached_edges</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
         <span class="n">gpu_cache_threshold</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
@@ -322,31 +314,22 @@
         <span class="c1"># (2) Cut datapipe at FeatureFetcher and wrap.</span>
         <span class="n">datapipe_graph</span> <span class="o">=</span> <span class="n">_find_and_wrap_parent</span><span class="p">(</span>
             <span class="n">datapipe_graph</span><span class="p">,</span>
-            <span class="n">FeatureFetcher</span><span class="p">,</span>
+            <span class="n">FeatureFetcherStartMarker</span><span class="p">,</span>
             <span class="n">MultiprocessingWrapper</span><span class="p">,</span>
             <span class="n">num_workers</span><span class="o">=</span><span class="n">num_workers</span><span class="p">,</span>
             <span class="n">persistent_workers</span><span class="o">=</span><span class="n">persistent_workers</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="c1"># (3) Overlap UVA feature fetching by buffering and using an alternative</span>
-        <span class="c1"># stream.</span>
-        <span class="k">if</span> <span class="p">(</span>
-            <span class="n">overlap_feature_fetch</span>
-            <span class="ow">and</span> <span class="n">num_workers</span> <span class="o">==</span> <span class="mi">0</span>
-            <span class="ow">and</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span>
-        <span class="p">):</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">graphbolt</span><span class="o">.</span><span class="n">set_max_uva_threads</span><span class="p">(</span><span class="n">max_uva_threads</span><span class="p">)</span>
+        <span class="c1"># (3) Limit the number of UVA threads used if the feature_fetcher has</span>
+        <span class="c1"># overlapping optimization enabled.</span>
+        <span class="k">if</span> <span class="n">num_workers</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
             <span class="n">feature_fetchers</span> <span class="o">=</span> <span class="n">dp_utils</span><span class="o">.</span><span class="n">find_dps</span><span class="p">(</span>
                 <span class="n">datapipe_graph</span><span class="p">,</span>
                 <span class="n">FeatureFetcher</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="k">for</span> <span class="n">feature_fetcher</span> <span class="ow">in</span> <span class="n">feature_fetchers</span><span class="p">:</span>
-                <span class="n">feature_fetcher</span><span class="o">.</span><span class="n">stream</span> <span class="o">=</span> <span class="n">_get_uva_stream</span><span class="p">()</span>
-                <span class="n">datapipe_graph</span> <span class="o">=</span> <span class="n">dp_utils</span><span class="o">.</span><span class="n">replace_dp</span><span class="p">(</span>
-                    <span class="n">datapipe_graph</span><span class="p">,</span>
-                    <span class="n">feature_fetcher</span><span class="p">,</span>
-                    <span class="n">feature_fetcher</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">wait</span><span class="p">(),</span>
-                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">feature_fetcher</span><span class="o">.</span><span class="n">max_num_stages</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># Overlap enabled.</span>
+                    <span class="n">torch</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">graphbolt</span><span class="o">.</span><span class="n">set_max_uva_threads</span><span class="p">(</span><span class="n">max_uva_threads</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="p">(</span>
             <span class="n">overlap_graph_fetch</span>
@@ -361,7 +344,7 @@
             <span class="n">executor</span> <span class="o">=</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
             <span class="n">gpu_graph_cache</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">for</span> <span class="n">sampler</span> <span class="ow">in</span> <span class="n">samplers</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">gpu_graph_cache</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">num_gpu_cached_edges</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">gpu_graph_cache</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">gpu_graph_cache</span> <span class="o">=</span> <span class="n">construct_gpu_graph_cache</span><span class="p">(</span>
                         <span class="n">sampler</span><span class="p">,</span> <span class="n">num_gpu_cached_edges</span><span class="p">,</span> <span class="n">gpu_cache_threshold</span>
                     <span class="p">)</span>
@@ -370,20 +353,29 @@
                     <span class="n">sampler</span><span class="p">,</span>
                     <span class="n">sampler</span><span class="o">.</span><span class="n">fetch_and_sample</span><span class="p">(</span>
                         <span class="n">gpu_graph_cache</span><span class="p">,</span>
-                        <span class="n">_get_uva_stream</span><span class="p">(),</span>
+                        <span class="n">get_host_to_device_uva_stream</span><span class="p">(),</span>
                         <span class="n">executor</span><span class="p">,</span>
                         <span class="mi">1</span><span class="p">,</span>
                     <span class="p">),</span>
                 <span class="p">)</span>
 
-        <span class="c1"># (4) Cut datapipe at CopyTo and wrap with prefetcher. This enables the</span>
-        <span class="c1"># data pipeline up to the CopyTo operation to run in a separate thread.</span>
-        <span class="n">datapipe_graph</span> <span class="o">=</span> <span class="n">_find_and_wrap_parent</span><span class="p">(</span>
-            <span class="n">datapipe_graph</span><span class="p">,</span>
-            <span class="n">CopyTo</span><span class="p">,</span>
-            <span class="n">dp</span><span class="o">.</span><span class="n">iter</span><span class="o">.</span><span class="n">Prefetcher</span><span class="p">,</span>
-            <span class="n">buffer_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="c1"># (4) Cut datapipe at CopyTo and wrap with pinning and prefetching</span>
+        <span class="c1"># before it. This enables enables non_blocking copies to the device.</span>
+        <span class="c1"># Prefetching enables the data pipeline up to the CopyTo to run in a</span>
+        <span class="c1"># separate thread.</span>
+        <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
+            <span class="n">copiers</span> <span class="o">=</span> <span class="n">dp_utils</span><span class="o">.</span><span class="n">find_dps</span><span class="p">(</span><span class="n">datapipe_graph</span><span class="p">,</span> <span class="n">CopyTo</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">copier</span> <span class="ow">in</span> <span class="n">copiers</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">copier</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;cuda&quot;</span><span class="p">:</span>
+                    <span class="n">datapipe_graph</span> <span class="o">=</span> <span class="n">dp_utils</span><span class="o">.</span><span class="n">replace_dp</span><span class="p">(</span>
+                        <span class="n">datapipe_graph</span><span class="p">,</span>
+                        <span class="n">copier</span><span class="p">,</span>
+                        <span class="n">copier</span><span class="o">.</span><span class="n">datapipe</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span>
+                            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">pin_memory</span><span class="p">()</span>
+                        <span class="p">)</span><span class="o">.</span><span class="n">prefetch</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+                        <span class="c1"># After the data gets pinned, we can copy non_blocking.</span>
+                        <span class="o">.</span><span class="n">copy_to</span><span class="p">(</span><span class="n">copier</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">non_blocking</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                    <span class="p">)</span>
 
         <span class="c1"># The stages after feature fetching is still done in the main process.</span>
         <span class="c1"># So we set num_workers to 0 here.</span>

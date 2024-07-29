@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dgl.graphbolt.impl.fused_csc_sampling_graph &mdash; DGL 2.3.0 documentation</title>
+  <title>dgl.graphbolt.impl.fused_csc_sampling_graph &mdash; DGL 2.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -21,7 +21,7 @@
   
         <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../../_static/documentation_options.js?v=c3c8ae58"></script>
+        <script src="../../../../_static/documentation_options.js?v=9caaf7ed"></script>
         <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -45,7 +45,7 @@
             DGL
           </a>
               <div class="version">
-                2.3.0
+                2.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
@@ -140,12 +140,8 @@
 
 <span class="kn">import</span> <span class="nn">torch</span>
 
-<span class="kn">from</span> <span class="nn">dgl.utils</span> <span class="kn">import</span> <span class="n">recursive_apply</span>
-
-<span class="kn">from</span> <span class="nn">...base</span> <span class="kn">import</span> <span class="n">EID</span><span class="p">,</span> <span class="n">ETYPE</span><span class="p">,</span> <span class="n">NID</span><span class="p">,</span> <span class="n">NTYPE</span>
-<span class="kn">from</span> <span class="nn">...convert</span> <span class="kn">import</span> <span class="n">to_homogeneous</span>
-<span class="kn">from</span> <span class="nn">...heterograph</span> <span class="kn">import</span> <span class="n">DGLGraph</span>
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">etype_str_to_tuple</span><span class="p">,</span> <span class="n">etype_tuple_to_str</span><span class="p">,</span> <span class="n">ORIGINAL_EDGE_ID</span>
+<span class="kn">from</span> <span class="nn">..internal_utils</span> <span class="kn">import</span> <span class="n">gb_warning</span><span class="p">,</span> <span class="n">is_wsl</span><span class="p">,</span> <span class="n">recursive_apply</span>
 <span class="kn">from</span> <span class="nn">..sampling_graph</span> <span class="kn">import</span> <span class="n">SamplingGraph</span>
 <span class="kn">from</span> <span class="nn">.sampled_subgraph_impl</span> <span class="kn">import</span> <span class="n">CSCFormatBase</span><span class="p">,</span> <span class="n">SampledSubgraphImpl</span>
 
@@ -733,7 +729,8 @@
             <span class="n">etype_offsets</span> <span class="o">=</span> <span class="n">etype_offsets</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 
         <span class="n">has_original_eids</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">edge_attributes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="n">original_edge_ids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_attributes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
             <span class="ow">and</span> <span class="n">ORIGINAL_EDGE_ID</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_attributes</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">has_original_eids</span><span class="p">:</span>
@@ -779,7 +776,7 @@
                         <span class="n">sub_indptr</span><span class="p">[</span><span class="n">etype</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span>
                             <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">device</span><span class="o">=</span><span class="n">indptr</span><span class="o">.</span><span class="n">device</span><span class="p">),</span> <span class="n">cum_edges</span><span class="p">)</span>
                         <span class="p">)</span>
-                        <span class="k">if</span> <span class="n">has_original_eids</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">original_edge_ids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                             <span class="n">original_hetero_edge_ids</span><span class="p">[</span><span class="n">etype</span><span class="p">]</span> <span class="o">=</span> <span class="n">original_edge_ids</span><span class="p">[</span>
                                 <span class="n">eids</span>
                             <span class="p">]</span>
@@ -803,14 +800,14 @@
                     <span class="n">sub_indices</span><span class="p">[</span><span class="n">etype</span><span class="p">]</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span>
                         <span class="n">etype_offsets</span><span class="p">[</span><span class="n">etype_id</span><span class="p">]</span> <span class="p">:</span> <span class="n">etype_offsets</span><span class="p">[</span><span class="n">etype_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
                     <span class="p">]</span>
-                    <span class="k">if</span> <span class="n">has_original_eids</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">original_edge_ids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                         <span class="n">original_hetero_edge_ids</span><span class="p">[</span><span class="n">etype</span><span class="p">]</span> <span class="o">=</span> <span class="n">original_edge_ids</span><span class="p">[</span>
                             <span class="n">etype_offsets</span><span class="p">[</span><span class="n">etype_id</span><span class="p">]</span> <span class="p">:</span> <span class="n">etype_offsets</span><span class="p">[</span>
                                 <span class="n">etype_id</span> <span class="o">+</span> <span class="mi">1</span>
                             <span class="p">]</span>
                         <span class="p">]</span>
 
-            <span class="k">if</span> <span class="n">has_original_eids</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">original_edge_ids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">original_edge_ids</span> <span class="o">=</span> <span class="n">original_hetero_edge_ids</span>
             <span class="n">sampled_csc</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="n">etype</span><span class="p">:</span> <span class="n">CSCFormatBase</span><span class="p">(</span>
@@ -902,11 +899,6 @@
 <span class="sd">                    indices=tensor([2]),</span>
 <span class="sd">        )}</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">return_eids</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">edge_attributes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="ow">and</span> <span class="n">ORIGINAL_EDGE_ID</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_attributes</span>
-        <span class="p">)</span>
-
         <span class="n">seed_offsets</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">seeds</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="n">seeds</span><span class="p">,</span> <span class="n">seed_offsets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_to_homogeneous_nodes</span><span class="p">(</span><span class="n">seeds</span><span class="p">)</span>
@@ -919,7 +911,7 @@
             <span class="n">fanouts</span><span class="p">,</span>
             <span class="n">replace</span><span class="o">=</span><span class="n">replace</span><span class="p">,</span>
             <span class="n">probs_or_mask</span><span class="o">=</span><span class="n">probs_or_mask</span><span class="p">,</span>
-            <span class="n">return_eids</span><span class="o">=</span><span class="n">return_eids</span><span class="p">,</span>
+            <span class="n">return_eids</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_to_sampled_subgraph</span><span class="p">(</span>
             <span class="n">C_sampled_subgraph</span><span class="p">,</span> <span class="n">seed_offsets</span>
@@ -1151,11 +1143,6 @@
                     <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">seed2_contribution</span> <span class="o">&lt;=</span> <span class="mi">1</span>
                 <span class="p">),</span> <span class="s2">&quot;seed2_contribution should be in [0, 1].&quot;</span>
 
-        <span class="n">has_original_eids</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">edge_attributes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="ow">and</span> <span class="n">ORIGINAL_EDGE_ID</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_attributes</span>
-        <span class="p">)</span>
-
         <span class="n">seed_offsets</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">seeds</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="n">seeds</span><span class="p">,</span> <span class="n">seed_offsets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_to_homogeneous_nodes</span><span class="p">(</span><span class="n">seeds</span><span class="p">)</span>
@@ -1168,8 +1155,8 @@
             <span class="n">seed_offsets</span><span class="p">,</span>
             <span class="n">fanouts</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
             <span class="n">replace</span><span class="p">,</span>
-            <span class="kc">True</span><span class="p">,</span>
-            <span class="n">has_original_eids</span><span class="p">,</span>
+            <span class="kc">True</span><span class="p">,</span>  <span class="c1"># is_labor</span>
+            <span class="kc">True</span><span class="p">,</span>  <span class="c1"># return_eids</span>
             <span class="n">probs_or_mask</span><span class="p">,</span>
             <span class="n">random_seed</span><span class="p">,</span>
             <span class="n">seed2_contribution</span><span class="p">,</span>
@@ -1262,21 +1249,149 @@
         <span class="c1"># Ensure nodes is 1-D tensor.</span>
         <span class="n">probs_or_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_attributes</span><span class="p">[</span><span class="n">probs_name</span><span class="p">]</span> <span class="k">if</span> <span class="n">probs_name</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_sampler_arguments</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">fanouts</span><span class="p">,</span> <span class="n">probs_or_mask</span><span class="p">)</span>
-        <span class="n">has_original_eids</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">edge_attributes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="ow">and</span> <span class="n">ORIGINAL_EDGE_ID</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_attributes</span>
-        <span class="p">)</span>
         <span class="n">C_sampled_subgraph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c_csc_graph</span><span class="o">.</span><span class="n">temporal_sample_neighbors</span><span class="p">(</span>
             <span class="n">nodes</span><span class="p">,</span>
             <span class="n">input_nodes_timestamp</span><span class="p">,</span>
             <span class="n">fanouts</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
             <span class="n">replace</span><span class="p">,</span>
-            <span class="kc">False</span><span class="p">,</span>
-            <span class="n">has_original_eids</span><span class="p">,</span>
+            <span class="kc">False</span><span class="p">,</span>  <span class="c1"># is_labor</span>
+            <span class="kc">True</span><span class="p">,</span>  <span class="c1"># return_eids</span>
             <span class="n">input_nodes_pre_time_window</span><span class="p">,</span>
             <span class="n">probs_or_mask</span><span class="p">,</span>
             <span class="n">node_timestamp_attr_name</span><span class="p">,</span>
             <span class="n">edge_timestamp_attr_name</span><span class="p">,</span>
+            <span class="kc">None</span><span class="p">,</span>  <span class="c1"># random_seed, labor parameter</span>
+            <span class="mi">0</span><span class="p">,</span>  <span class="c1"># seed2_contribution, labor_parameter</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_to_sampled_subgraph</span><span class="p">(</span><span class="n">C_sampled_subgraph</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="FusedCSCSamplingGraph.temporal_sample_layer_neighbors">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.FusedCSCSamplingGraph.html#dgl.graphbolt.FusedCSCSamplingGraph.temporal_sample_layer_neighbors">[docs]</a>
+    <span class="k">def</span> <span class="nf">temporal_sample_layer_neighbors</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">nodes</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]],</span>
+        <span class="n">input_nodes_timestamp</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]],</span>
+        <span class="n">fanouts</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">replace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">input_nodes_pre_time_window</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+            <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]]</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">probs_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">node_timestamp_attr_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">edge_timestamp_attr_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">random_seed</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">seed2_contribution</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">ScriptObject</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Temporally Sample neighboring edges of the given nodes and return the induced</span>
+<span class="sd">        subgraph via layer-neighbor sampling from the NeurIPS 2023 paper</span>
+<span class="sd">        `Layer-Neighbor Sampling -- Defusing Neighborhood Explosion in GNNs</span>
+<span class="sd">        &lt;https://proceedings.neurips.cc/paper_files/paper/2023/file/51f9036d5e7ae822da8f6d4adda1fb39-Paper-Conference.pdf&gt;`__</span>
+
+<span class="sd">        If `node_timestamp_attr_name` or `edge_timestamp_attr_name` is given,</span>
+<span class="sd">        the sampled neighbor or edge of an input node must have a timestamp</span>
+<span class="sd">        that is smaller than that of the input node.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        nodes: torch.Tensor</span>
+<span class="sd">            IDs of the given seed nodes.</span>
+<span class="sd">        input_nodes_timestamp: torch.Tensor</span>
+<span class="sd">            Timestamps of the given seed nodes.</span>
+<span class="sd">        fanouts: torch.Tensor</span>
+<span class="sd">            The number of edges to be sampled for each node with or without</span>
+<span class="sd">            considering edge types.</span>
+<span class="sd">              - When the length is 1, it indicates that the fanout applies to</span>
+<span class="sd">                all neighbors of the node as a collective, regardless of the</span>
+<span class="sd">                edge type.</span>
+<span class="sd">              - Otherwise, the length should equal to the number of edge</span>
+<span class="sd">                types, and each fanout value corresponds to a specific edge</span>
+<span class="sd">                type of the nodes.</span>
+<span class="sd">            The value of each fanout should be &gt;= 0 or = -1.</span>
+<span class="sd">              - When the value is -1, all neighbors (with non-zero probability,</span>
+<span class="sd">                if weighted) will be sampled once regardless of replacement. It</span>
+<span class="sd">                is equivalent to selecting all neighbors with non-zero</span>
+<span class="sd">                probability when the fanout is &gt;= the number of neighbors (and</span>
+<span class="sd">                replace is set to false).</span>
+<span class="sd">              - When the value is a non-negative integer, it serves as a</span>
+<span class="sd">                minimum threshold for selecting neighbors.</span>
+<span class="sd">        replace: bool</span>
+<span class="sd">            Boolean indicating whether the sample is preformed with or</span>
+<span class="sd">            without replacement. If True, a value can be selected multiple</span>
+<span class="sd">            times. Otherwise, each value can be selected only once.</span>
+<span class="sd">        input_nodes_pre_time_window: torch.Tensor</span>
+<span class="sd">            The time window of the nodes represents a period of time before</span>
+<span class="sd">            `input_nodes_timestamp`. If provided, only neighbors and related</span>
+<span class="sd">            edges whose timestamps fall within `[input_nodes_timestamp -</span>
+<span class="sd">            input_nodes_pre_time_window, input_nodes_timestamp]` will be</span>
+<span class="sd">            filtered.</span>
+<span class="sd">        probs_name: str, optional</span>
+<span class="sd">            An optional string specifying the name of an edge attribute. This</span>
+<span class="sd">            attribute tensor should contain (unnormalized) probabilities</span>
+<span class="sd">            corresponding to each neighboring edge of a node. It must be a 1D</span>
+<span class="sd">            floating-point or boolean tensor, with the number of elements</span>
+<span class="sd">            equalling the total number of edges.</span>
+<span class="sd">        node_timestamp_attr_name: str, optional</span>
+<span class="sd">            An optional string specifying the name of an node attribute.</span>
+<span class="sd">        edge_timestamp_attr_name: str, optional</span>
+<span class="sd">            An optional string specifying the name of an edge attribute.</span>
+<span class="sd">        random_seed: torch.Tensor, optional</span>
+<span class="sd">            An int64 tensor with one or two elements.</span>
+
+<span class="sd">            The passed random_seed makes it so that for any seed node ``s`` and</span>
+<span class="sd">            its neighbor ``t``, the rolled random variate ``r_t`` is the same</span>
+<span class="sd">            for any call to this function with the same random seed. When</span>
+<span class="sd">            sampling as part of the same batch, one would want identical seeds</span>
+<span class="sd">            so that LABOR can globally sample. One example is that for</span>
+<span class="sd">            heterogenous graphs, there is a single random seed passed for each</span>
+<span class="sd">            edge type. This will sample much fewer nodes compared to having</span>
+<span class="sd">            unique random seeds for each edge type. If one called this function</span>
+<span class="sd">            individually for each edge type for a heterogenous graph with</span>
+<span class="sd">            different random seeds, then it would run LABOR locally for each</span>
+<span class="sd">            edge type, resulting into a larger number of nodes being sampled.</span>
+
+<span class="sd">            If this function is called without a ``random_seed``, we get the</span>
+<span class="sd">            random seed by getting a random number from GraphBolt. Use this</span>
+<span class="sd">            argument with identical random_seed if multiple calls to this</span>
+<span class="sd">            function are used to sample as part of a single batch.</span>
+
+<span class="sd">            If given two numbers, then the ``seed2_contribution`` argument</span>
+<span class="sd">            determines the interpolation between the two random seeds.</span>
+<span class="sd">        seed2_contribution: float, optional</span>
+<span class="sd">            A float value between [0, 1) that determines the contribution of the</span>
+<span class="sd">            second random seed, ``random_seed[-1]``, to generate the random</span>
+<span class="sd">            variates.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        SampledSubgraphImpl</span>
+<span class="sd">            The sampled subgraph.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="p">(</span>
+                <span class="n">nodes</span><span class="p">,</span>
+                <span class="n">input_nodes_timestamp</span><span class="p">,</span>
+                <span class="n">input_nodes_pre_time_window</span><span class="p">,</span>
+            <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_to_homogeneous_nodes</span><span class="p">(</span>
+                <span class="n">nodes</span><span class="p">,</span> <span class="n">input_nodes_timestamp</span><span class="p">,</span> <span class="n">input_nodes_pre_time_window</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Ensure nodes is 1-D tensor.</span>
+        <span class="n">probs_or_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_attributes</span><span class="p">[</span><span class="n">probs_name</span><span class="p">]</span> <span class="k">if</span> <span class="n">probs_name</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_sampler_arguments</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">fanouts</span><span class="p">,</span> <span class="n">probs_or_mask</span><span class="p">)</span>
+        <span class="n">C_sampled_subgraph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c_csc_graph</span><span class="o">.</span><span class="n">temporal_sample_neighbors</span><span class="p">(</span>
+            <span class="n">nodes</span><span class="p">,</span>
+            <span class="n">input_nodes_timestamp</span><span class="p">,</span>
+            <span class="n">fanouts</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+            <span class="n">replace</span><span class="p">,</span>
+            <span class="kc">True</span><span class="p">,</span>  <span class="c1"># is_labor</span>
+            <span class="kc">True</span><span class="p">,</span>  <span class="c1"># return_eids</span>
+            <span class="n">input_nodes_pre_time_window</span><span class="p">,</span>
+            <span class="n">probs_or_mask</span><span class="p">,</span>
+            <span class="n">node_timestamp_attr_name</span><span class="p">,</span>
+            <span class="n">edge_timestamp_attr_name</span><span class="p">,</span>
+            <span class="n">random_seed</span><span class="p">,</span>
+            <span class="n">seed2_contribution</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_to_sampled_subgraph</span><span class="p">(</span><span class="n">C_sampled_subgraph</span><span class="p">)</span></div>
 
@@ -1409,6 +1524,12 @@
     <span class="k">def</span> <span class="nf">pin_memory_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Copy `FusedCSCSamplingGraph` to the pinned memory in-place. Returns</span>
 <span class="sd">        the same object modified in-place.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">is_wsl</span><span class="p">():</span>
+            <span class="n">gb_warning</span><span class="p">(</span>
+                <span class="s2">&quot;In place pinning is not supported on WSL. &quot;</span>
+                <span class="s2">&quot;Returning the out of place pinned `FusedCSCSamplingGraph`.&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;pinned&quot;</span><span class="p">)</span>
         <span class="c1"># torch.Tensor.pin_memory() is not an inplace operation. To make it</span>
         <span class="c1"># truly in-place, we need to use cudaHostRegister. Then, we need to use</span>
         <span class="c1"># cudaHostUnregister to unpin the tensor in the destructor.</span>
@@ -1585,11 +1706,15 @@
 <div class="viewcode-block" id="from_dglgraph">
 <a class="viewcode-back" href="../../../../generated/dgl.graphbolt.from_dglgraph.html#dgl.graphbolt.from_dglgraph">[docs]</a>
 <span class="k">def</span> <span class="nf">from_dglgraph</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">DGLGraph</span><span class="p">,</span>
+    <span class="n">DGLGraphInstance</span><span class="p">,</span>
     <span class="n">is_homogeneous</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">include_original_edge_id</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FusedCSCSamplingGraph</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a DGLGraph to FusedCSCSamplingGraph.&quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">dgl.base</span> <span class="kn">import</span> <span class="n">EID</span><span class="p">,</span> <span class="n">ETYPE</span><span class="p">,</span> <span class="n">NID</span><span class="p">,</span> <span class="n">NTYPE</span>
+    <span class="kn">from</span> <span class="nn">dgl.convert</span> <span class="kn">import</span> <span class="n">to_homogeneous</span>
+
+    <span class="n">g</span> <span class="o">=</span> <span class="n">DGLGraphInstance</span>
 
     <span class="n">homo_g</span><span class="p">,</span> <span class="n">ntype_count</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">to_homogeneous</span><span class="p">(</span>
         <span class="n">g</span><span class="p">,</span> <span class="n">ndata</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">,</span> <span class="n">edata</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">edata</span><span class="p">,</span> <span class="n">return_count</span><span class="o">=</span><span class="kc">True</span>

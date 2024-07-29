@@ -4,12 +4,12 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TorchBasedFeature &mdash; DGL 2.3.0 documentation</title>
+  <title>TorchBasedFeature &mdash; DGL 2.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -22,7 +22,7 @@
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=c3c8ae58"></script>
+        <script src="../_static/documentation_options.js?v=9caaf7ed"></script>
         <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -48,7 +48,7 @@
             DGL
           </a>
               <div class="version">
-                2.3.0
+                2.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -198,9 +198,8 @@ Note that the dimension of the tensor should be greater than 1.</p>
 <span class="go">torch.Size([5])</span>
 </pre></div>
 </div>
-<ol class="arabic simple" start="2">
-<li><p>The feature is on disk.</p></li>
-</ol>
+<p>2. The feature is on disk. Note that you can use gb.numpy_save_aligned as a
+replacement for np.save to potentially get increased performance.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;/tmp/arr.npy&quot;</span><span class="p">,</span> <span class="n">arr</span><span class="p">)</span>
@@ -268,6 +267,56 @@ of the feature are read. If None, the entire feature is returned.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>torch.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dgl.graphbolt.TorchBasedFeature.read_async">
+<span class="sig-name descname"><span class="pre">read_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dgl/graphbolt/impl/torch_based_feature_store.html#TorchBasedFeature.read_async"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.graphbolt.TorchBasedFeature.read_async" title="Link to this definition"></a></dt>
+<dd><p>Read the feature by index asynchronously.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ids</strong> (<em>torch.Tensor</em>) – The index of the feature. Only the specified indices of the
+feature are read.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>A generator object.</em> – The returned generator object returns a future on
+<cite>read_async_num_stages(ids.device)`th invocation. The return result
+can be accessed by calling `.wait()</cite>. on the returned future object.
+It is undefined behavior to call <cite>.wait()</cite> more than once.</p></li>
+<li><p><em>Example Usage</em></p></li>
+<li><p><em>——–</em></p></li>
+<li><p><em>&gt;&gt;&gt; import dgl.graphbolt as gb</em></p></li>
+<li><p><em>&gt;&gt;&gt; feature = gb.Feature(…)</em></p></li>
+<li><p><em>&gt;&gt;&gt; ids = torch.tensor([0, 2])</em></p></li>
+<li><p><em>&gt;&gt;&gt; for stage, future in enumerate(feature.read_async(ids))</em></p></li>
+<li><p><em>…     pass</em></p></li>
+<li><p><em>&gt;&gt;&gt; assert stage + 1 == feature.read_async_num_stages(ids.device)</em></p></li>
+<li><p><em>&gt;&gt;&gt; result = future.wait()  # result contains the read values.</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dgl.graphbolt.TorchBasedFeature.read_async_num_stages">
+<span class="sig-name descname"><span class="pre">read_async_num_stages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids_device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">device</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dgl/graphbolt/impl/torch_based_feature_store.html#TorchBasedFeature.read_async_num_stages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.graphbolt.TorchBasedFeature.read_async_num_stages" title="Link to this definition"></a></dt>
+<dd><p>The number of stages of the read_async operation. See read_async
+function for directions on its use. This function is required to return
+the number of yield operations when read_async is used with a tensor
+residing on ids_device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ids_device</strong> (<em>torch.device</em>) – The device of the ids parameter passed into read_async.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The number of stages of the read_async operation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
 </dd>
 </dl>
 </dd></dl>

@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dgl.graphbolt.feature_fetcher &mdash; DGL 2.3.0 documentation</title>
+  <title>dgl.graphbolt.feature_fetcher &mdash; DGL 2.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -21,7 +21,7 @@
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=c3c8ae58"></script>
+        <script src="../../../_static/documentation_options.js?v=9caaf7ed"></script>
         <script src="../../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -45,7 +45,7 @@
             DGL
           </a>
               <div class="version">
-                2.3.0
+                2.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -133,6 +133,7 @@
   <h1>Source code for dgl.graphbolt.feature_fetcher</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Feature fetchers&quot;&quot;&quot;</span>
 
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
 
 <span class="kn">import</span> <span class="nn">torch</span>
@@ -146,7 +147,34 @@
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;FeatureFetcher&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FeatureFetcherStartMarker&quot;</span><span class="p">,</span>
 <span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">get_feature_key_list</span><span class="p">(</span><span class="n">feature_keys</span><span class="p">,</span> <span class="n">domain</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Processes node_feature_keys and extracts their feature keys to a list.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">feature_keys</span><span class="p">,</span> <span class="n">Dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">type_name</span><span class="p">,</span> <span class="n">feature_name</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">type_name</span><span class="p">,</span> <span class="n">feature_names</span> <span class="ow">in</span> <span class="n">feature_keys</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">feature_name</span> <span class="ow">in</span> <span class="n">feature_names</span>
+        <span class="p">]</span>
+    <span class="k">elif</span> <span class="n">feature_keys</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">domain</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">feature_name</span><span class="p">)</span> <span class="k">for</span> <span class="n">feature_name</span> <span class="ow">in</span> <span class="n">feature_keys</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+
+<span class="nd">@functional_datapipe</span><span class="p">(</span><span class="s2">&quot;mark_feature_fetcher_start&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">FeatureFetcherStartMarker</span><span class="p">(</span><span class="n">MiniBatchTransformer</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Used to mark the start of a FeatureFetcher and is a no-op. All the</span>
+<span class="sd">    datapipes created during a FeatureFetcher instantiation are guarenteed to be</span>
+<span class="sd">    contained between FeatureFetcherStartMarker and FeatureFetcher instances in</span>
+<span class="sd">    the datapipe graph.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datapipe</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">datapipe</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_identity</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="FeatureFetcher">
@@ -176,6 +204,10 @@
 <span class="sd">        - If `edge_features` is a dictionary: The keys are edge types,</span>
 <span class="sd">        following the format &#39;str:str:str&#39;, and the values are lists of</span>
 <span class="sd">        feature names.</span>
+<span class="sd">    overlap_fetch : bool, optional</span>
+<span class="sd">        If True, the feature fetcher will overlap the UVA feature fetcher</span>
+<span class="sd">        operations with the rest of operations by using an alternative CUDA</span>
+<span class="sd">        stream or utilizing asynchronous operations. Default is True.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -184,14 +216,71 @@
         <span class="n">feature_store</span><span class="p">,</span>
         <span class="n">node_feature_keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">edge_feature_keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">overlap_fetch</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">datapipe</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read</span><span class="p">)</span>
+        <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">mark_feature_fetcher_start</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feature_store</span> <span class="o">=</span> <span class="n">feature_store</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">node_feature_keys</span> <span class="o">=</span> <span class="n">node_feature_keys</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">edge_feature_keys</span> <span class="o">=</span> <span class="n">edge_feature_keys</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stream</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">max_val</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">overlap_fetch</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">feature_key_list</span> <span class="ow">in</span> <span class="p">[</span>
+                <span class="n">get_feature_key_list</span><span class="p">(</span><span class="n">node_feature_keys</span><span class="p">,</span> <span class="s2">&quot;node&quot;</span><span class="p">),</span>
+                <span class="n">get_feature_key_list</span><span class="p">(</span><span class="n">edge_feature_keys</span><span class="p">,</span> <span class="s2">&quot;edge&quot;</span><span class="p">),</span>
+            <span class="p">]:</span>
+                <span class="k">for</span> <span class="n">feature_key</span> <span class="ow">in</span> <span class="n">feature_key_list</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">feature_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">feature_store</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="k">for</span> <span class="n">device_str</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;cpu&quot;</span><span class="p">,</span> <span class="s2">&quot;cuda&quot;</span><span class="p">]:</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">max_val</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+                                <span class="n">feature_store</span><span class="p">[</span>
+                                    <span class="n">feature_key</span>
+                                <span class="p">]</span><span class="o">.</span><span class="n">read_async_num_stages</span><span class="p">(</span>
+                                    <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="n">device_str</span><span class="p">)</span>
+                                <span class="p">),</span>
+                                <span class="n">max_val</span><span class="p">,</span>
+                            <span class="p">)</span>
+                        <span class="k">except</span> <span class="ne">AssertionError</span><span class="p">:</span>
+                            <span class="k">pass</span>
+        <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_read</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_val</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span>
+                <span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_execute_stage</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">datapipe</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_identity</span> <span class="k">if</span> <span class="n">max_val</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_final_stage</span>
+        <span class="p">)</span>
+        <span class="c1"># A positive value indicates that the overlap optimization is enabled.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_num_stages</span> <span class="o">=</span> <span class="n">max_val</span>
 
-    <span class="k">def</span> <span class="nf">_read_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">stream</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_execute_stage</span><span class="p">(</span><span class="n">current_stage</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="n">all_features</span> <span class="o">=</span> <span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">node_features</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">edge_features</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">num_layers</span><span class="p">())</span>
+        <span class="p">]</span>
+        <span class="k">for</span> <span class="n">features</span> <span class="ow">in</span> <span class="n">all_features</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
+                <span class="n">handle</span><span class="p">,</span> <span class="n">stage</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="k">assert</span> <span class="n">current_stage</span> <span class="o">&gt;=</span> <span class="n">stage</span>
+                <span class="k">if</span> <span class="n">current_stage</span> <span class="o">==</span> <span class="n">stage</span><span class="p">:</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+                    <span class="n">features</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">handle</span> <span class="k">if</span> <span class="n">stage</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">value</span><span class="p">,</span> <span class="n">stage</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">data</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_final_stage</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+        <span class="n">all_features</span> <span class="o">=</span> <span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">node_features</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">edge_features</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">num_layers</span><span class="p">())</span>
+        <span class="p">]</span>
+        <span class="k">for</span> <span class="n">features</span> <span class="ow">in</span> <span class="n">all_features</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
+                <span class="n">value</span><span class="p">,</span> <span class="n">stage</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="k">assert</span> <span class="n">stage</span> <span class="o">==</span> <span class="mi">0</span>
+                <span class="n">features</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">data</span>
+
+    <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fill in the node/edge features field in data.</span>
 
@@ -216,47 +305,51 @@
         <span class="c1"># Read Node features.</span>
         <span class="n">input_nodes</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">node_ids</span><span class="p">()</span>
 
-        <span class="k">def</span> <span class="nf">record_stream</span><span class="p">(</span><span class="n">tensor</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">stream</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">tensor</span><span class="o">.</span><span class="n">is_cuda</span><span class="p">:</span>
-                <span class="n">tensor</span><span class="o">.</span><span class="n">record_stream</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">tensor</span>
+        <span class="k">def</span> <span class="nf">read_helper</span><span class="p">(</span><span class="n">feature_key</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_num_stages</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">feature</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature_store</span><span class="p">[</span><span class="n">feature_key</span><span class="p">]</span>
+                <span class="n">num_stages</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">read_async_num_stages</span><span class="p">(</span><span class="n">index</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">num_stages</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">read_async</span><span class="p">(</span><span class="n">index</span><span class="p">),</span> <span class="n">num_stages</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>  <span class="c1"># Asynchronicity is not needed, compute in _final_stage.</span>
+
+                    <span class="k">class</span> <span class="nc">_Waiter</span><span class="p">:</span>
+                        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">feature</span> <span class="o">=</span> <span class="n">feature</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">index</span>
+
+                        <span class="k">def</span> <span class="nf">wait</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">                            </span><span class="sd">&quot;&quot;&quot;Returns the stored value when invoked.&quot;&quot;&quot;</span>
+                            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+                            <span class="c1"># Ensure there is no memory leak.</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">feature</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="kc">None</span>
+                            <span class="k">return</span> <span class="n">result</span>
+
+                    <span class="k">return</span> <span class="p">(</span><span class="n">_Waiter</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">index</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">domain</span><span class="p">,</span> <span class="n">type_name</span><span class="p">,</span> <span class="n">feature_name</span> <span class="o">=</span> <span class="n">feature_key</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature_store</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
+                    <span class="n">domain</span><span class="p">,</span> <span class="n">type_name</span><span class="p">,</span> <span class="n">feature_name</span><span class="p">,</span> <span class="n">index</span>
+                <span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_feature_keys</span> <span class="ow">and</span> <span class="n">input_nodes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">is_heterogeneous</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">type_name</span><span class="p">,</span> <span class="n">nodes</span> <span class="ow">in</span> <span class="n">input_nodes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                     <span class="k">if</span> <span class="n">type_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_feature_keys</span> <span class="ow">or</span> <span class="n">nodes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                         <span class="k">continue</span>
-                    <span class="k">if</span> <span class="n">nodes</span><span class="o">.</span><span class="n">is_cuda</span><span class="p">:</span>
-                        <span class="n">nodes</span><span class="o">.</span><span class="n">record_stream</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">current_stream</span><span class="p">())</span>
                     <span class="k">for</span> <span class="n">feature_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_feature_keys</span><span class="p">[</span><span class="n">type_name</span><span class="p">]:</span>
-                        <span class="n">node_features</span><span class="p">[</span>
-                            <span class="p">(</span><span class="n">type_name</span><span class="p">,</span> <span class="n">feature_name</span><span class="p">)</span>
-                        <span class="p">]</span> <span class="o">=</span> <span class="n">record_stream</span><span class="p">(</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">feature_store</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
-                                <span class="s2">&quot;node&quot;</span><span class="p">,</span>
-                                <span class="n">type_name</span><span class="p">,</span>
-                                <span class="n">feature_name</span><span class="p">,</span>
-                                <span class="n">nodes</span><span class="p">,</span>
-                            <span class="p">)</span>
+                        <span class="n">node_features</span><span class="p">[(</span><span class="n">type_name</span><span class="p">,</span> <span class="n">feature_name</span><span class="p">)]</span> <span class="o">=</span> <span class="n">read_helper</span><span class="p">(</span>
+                            <span class="p">(</span><span class="s2">&quot;node&quot;</span><span class="p">,</span> <span class="n">type_name</span><span class="p">,</span> <span class="n">feature_name</span><span class="p">),</span> <span class="n">nodes</span>
                         <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">input_nodes</span><span class="o">.</span><span class="n">is_cuda</span><span class="p">:</span>
-                    <span class="n">input_nodes</span><span class="o">.</span><span class="n">record_stream</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">current_stream</span><span class="p">())</span>
                 <span class="k">for</span> <span class="n">feature_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_feature_keys</span><span class="p">:</span>
-                    <span class="n">node_features</span><span class="p">[</span><span class="n">feature_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">record_stream</span><span class="p">(</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">feature_store</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
-                            <span class="s2">&quot;node&quot;</span><span class="p">,</span>
-                            <span class="kc">None</span><span class="p">,</span>
-                            <span class="n">feature_name</span><span class="p">,</span>
-                            <span class="n">input_nodes</span><span class="p">,</span>
-                        <span class="p">)</span>
+                    <span class="n">node_features</span><span class="p">[</span><span class="n">feature_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">read_helper</span><span class="p">(</span>
+                        <span class="p">(</span><span class="s2">&quot;node&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">feature_name</span><span class="p">),</span> <span class="n">input_nodes</span>
                     <span class="p">)</span>
         <span class="c1"># Read Edge features.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_feature_keys</span> <span class="ow">and</span> <span class="n">num_layers</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_layers</span><span class="p">):</span>
                 <span class="n">original_edge_ids</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">edge_ids</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">original_edge_ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="k">continue</span>
                 <span class="k">if</span> <span class="n">is_heterogeneous</span><span class="p">:</span>
                     <span class="c1"># Convert edge type to string.</span>
                     <span class="n">original_edge_ids</span> <span class="o">=</span> <span class="p">{</span>
@@ -273,44 +366,20 @@
                             <span class="ow">or</span> <span class="n">edges</span> <span class="ow">is</span> <span class="kc">None</span>
                         <span class="p">):</span>
                             <span class="k">continue</span>
-                        <span class="k">if</span> <span class="n">edges</span><span class="o">.</span><span class="n">is_cuda</span><span class="p">:</span>
-                            <span class="n">edges</span><span class="o">.</span><span class="n">record_stream</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">current_stream</span><span class="p">())</span>
                         <span class="k">for</span> <span class="n">feature_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_feature_keys</span><span class="p">[</span><span class="n">type_name</span><span class="p">]:</span>
                             <span class="n">edge_features</span><span class="p">[</span><span class="n">i</span><span class="p">][</span>
                                 <span class="p">(</span><span class="n">type_name</span><span class="p">,</span> <span class="n">feature_name</span><span class="p">)</span>
-                            <span class="p">]</span> <span class="o">=</span> <span class="n">record_stream</span><span class="p">(</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">feature_store</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
-                                    <span class="s2">&quot;edge&quot;</span><span class="p">,</span> <span class="n">type_name</span><span class="p">,</span> <span class="n">feature_name</span><span class="p">,</span> <span class="n">edges</span>
-                                <span class="p">)</span>
+                            <span class="p">]</span> <span class="o">=</span> <span class="n">read_helper</span><span class="p">(</span>
+                                <span class="p">(</span><span class="s2">&quot;edge&quot;</span><span class="p">,</span> <span class="n">type_name</span><span class="p">,</span> <span class="n">feature_name</span><span class="p">),</span> <span class="n">edges</span>
                             <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">original_edge_ids</span><span class="o">.</span><span class="n">is_cuda</span><span class="p">:</span>
-                        <span class="n">original_edge_ids</span><span class="o">.</span><span class="n">record_stream</span><span class="p">(</span>
-                            <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">current_stream</span><span class="p">()</span>
-                        <span class="p">)</span>
                     <span class="k">for</span> <span class="n">feature_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_feature_keys</span><span class="p">:</span>
-                        <span class="n">edge_features</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">feature_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">record_stream</span><span class="p">(</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">feature_store</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
-                                <span class="s2">&quot;edge&quot;</span><span class="p">,</span>
-                                <span class="kc">None</span><span class="p">,</span>
-                                <span class="n">feature_name</span><span class="p">,</span>
-                                <span class="n">original_edge_ids</span><span class="p">,</span>
-                            <span class="p">)</span>
+                        <span class="n">edge_features</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">feature_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">read_helper</span><span class="p">(</span>
+                            <span class="p">(</span><span class="s2">&quot;edge&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">feature_name</span><span class="p">),</span> <span class="n">original_edge_ids</span>
                         <span class="p">)</span>
         <span class="n">data</span><span class="o">.</span><span class="n">set_node_features</span><span class="p">(</span><span class="n">node_features</span><span class="p">)</span>
         <span class="n">data</span><span class="o">.</span><span class="n">set_edge_features</span><span class="p">(</span><span class="n">edge_features</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">data</span>
-
-    <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="n">current_stream</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">current_stream</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">current_stream</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">wait_stream</span><span class="p">(</span><span class="n">current_stream</span><span class="p">)</span>
-        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="p">):</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">current_stream</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">data</span><span class="o">.</span><span class="n">wait</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">current_stream</span><span class="p">()</span><span class="o">.</span><span class="n">record_event</span><span class="p">()</span><span class="o">.</span><span class="n">wait</span>
-            <span class="k">return</span> <span class="n">data</span></div>
+        <span class="k">return</span> <span class="n">data</span></div>
 
 </pre></div>
 

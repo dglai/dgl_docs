@@ -4,12 +4,12 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Training a GNN for Graph Classification &mdash; DGL 2.3.0 documentation</title>
+  <title>Training a GNN for Graph Classification &mdash; DGL 2.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -23,7 +23,7 @@
   
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=c3c8ae58"></script>
+        <script src="../../_static/documentation_options.js?v=9caaf7ed"></script>
         <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -51,7 +51,7 @@
             DGL
           </a>
               <div class="version">
-                2.3.0
+                2.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -260,9 +260,9 @@ Number of graph categories: 2
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[Graph(num_nodes=158, num_edges=756,
+[Graph(num_nodes=122, num_edges=630,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), tensor([0, 0, 0, 0, 0])]
+      edata_schemes={}), tensor([1, 1, 0, 0, 0])]
 </pre></div></div>
 </div>
 <p>As each element in <code class="docutils literal notranslate"><span class="pre">dataset</span></code> has a graph and a label, the <code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code> will return two objects for each iteration. The first element is the batched graph, and the second element is simply a label vector representing the category of each graph in the mini-batch. Next, we’ll talked about the batched graph.</p>
@@ -297,18 +297,18 @@ nodes and edges of each graph element.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Number of nodes for each graph element in the batch: tensor([11, 23, 18, 63, 43])
-Number of edges for each graph element in the batch: tensor([ 49, 107,  80, 297, 223])
+Number of nodes for each graph element in the batch: tensor([13, 23, 48, 22, 16])
+Number of edges for each graph element in the batch: tensor([ 73, 115, 270, 100,  72])
 The original graphs in the minibatch:
-[Graph(num_nodes=11, num_edges=49,
+[Graph(num_nodes=13, num_edges=73,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), Graph(num_nodes=23, num_edges=107,
+      edata_schemes={}), Graph(num_nodes=23, num_edges=115,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), Graph(num_nodes=18, num_edges=80,
+      edata_schemes={}), Graph(num_nodes=48, num_edges=270,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), Graph(num_nodes=63, num_edges=297,
+      edata_schemes={}), Graph(num_nodes=22, num_edges=100,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), Graph(num_nodes=43, num_edges=223,
+      edata_schemes={}), Graph(num_nodes=16, num_edges=72,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
       edata_schemes={})]
 </pre></div></div>
@@ -379,7 +379,7 @@ The original graphs in the minibatch:
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Test accuracy: 0.17488789237668162
+Test accuracy: 0.2242152466367713
 </pre></div></div>
 </div>
 </section>

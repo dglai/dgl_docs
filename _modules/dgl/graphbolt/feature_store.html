@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dgl.graphbolt.feature_store &mdash; DGL 2.3.0 documentation</title>
+  <title>dgl.graphbolt.feature_store &mdash; DGL 2.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -21,7 +21,7 @@
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=c3c8ae58"></script>
+        <script src="../../../_static/documentation_options.js?v=9caaf7ed"></script>
         <script src="../../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -45,7 +45,7 @@
             DGL
           </a>
               <div class="version">
-                2.3.0
+                2.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -133,9 +133,21 @@
   <h1>Source code for dgl.graphbolt.feature_store</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Feature store for GraphBolt.&quot;&quot;&quot;</span>
 
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">NamedTuple</span>
+
 <span class="kn">import</span> <span class="nn">torch</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Feature&quot;</span><span class="p">,</span> <span class="s2">&quot;FeatureStore&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Feature&quot;</span><span class="p">,</span> <span class="s2">&quot;FeatureStore&quot;</span><span class="p">,</span> <span class="s2">&quot;FeatureKey&quot;</span><span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">FeatureKey</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A named tuple class to represent feature keys in FeatureStore classes.</span>
+<span class="sd">    The fields are domain, type and name all of which take string values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">int</span>
 
 
 <div class="viewcode-block" id="Feature">
@@ -160,6 +172,57 @@
 <span class="sd">        -------</span>
 <span class="sd">        torch.Tensor</span>
 <span class="sd">            The read feature.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="Feature.read_async">
+<a class="viewcode-back" href="../../../generated/dgl.graphbolt.Feature.html#dgl.graphbolt.Feature.read_async">[docs]</a>
+    <span class="k">def</span> <span class="nf">read_async</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the feature by index asynchronously.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ids : torch.Tensor</span>
+<span class="sd">            The index of the feature. Only the specified indices of the</span>
+<span class="sd">            feature are read.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        A generator object.</span>
+<span class="sd">            The returned generator object returns a future on</span>
+<span class="sd">            `read_async_num_stages(ids.device)`th invocation. The return result</span>
+<span class="sd">            can be accessed by calling `.wait()`. on the returned future object.</span>
+<span class="sd">            It is undefined behavior to call `.wait()` more than once.</span>
+
+<span class="sd">        Example Usage</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; import dgl.graphbolt as gb</span>
+<span class="sd">        &gt;&gt;&gt; feature = gb.Feature(...)</span>
+<span class="sd">        &gt;&gt;&gt; ids = torch.tensor([0, 2])</span>
+<span class="sd">        &gt;&gt;&gt; for stage, future in enumerate(feature.read_async(ids)):</span>
+<span class="sd">        ...     pass</span>
+<span class="sd">        &gt;&gt;&gt; assert stage + 1 == feature.read_async_num_stages(ids.device)</span>
+<span class="sd">        &gt;&gt;&gt; result = future.wait()  # result contains the read values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="Feature.read_async_num_stages">
+<a class="viewcode-back" href="../../../generated/dgl.graphbolt.Feature.html#dgl.graphbolt.Feature.read_async_num_stages">[docs]</a>
+    <span class="k">def</span> <span class="nf">read_async_num_stages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids_device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The number of stages of the read_async operation. See read_async</span>
+<span class="sd">        function for directions on its use. This function is required to return</span>
+<span class="sd">        the number of yield operations when read_async is used with a tensor</span>
+<span class="sd">        residing on ids_device.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ids_device : torch.device</span>
+<span class="sd">            The device of the ids parameter passed into read_async.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">            The number of stages of the read_async operation.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
@@ -219,6 +282,23 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>
 
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature_key</span><span class="p">:</span> <span class="n">FeatureKey</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Feature</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Access the underlying `Feature` with its (domain, type, name) as</span>
+<span class="sd">        the feature_key.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature_key</span><span class="p">:</span> <span class="n">FeatureKey</span><span class="p">,</span> <span class="n">feature</span><span class="p">:</span> <span class="n">Feature</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the underlying `Feature` with its (domain, type, name) as</span>
+<span class="sd">        the feature_key and feature as the value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature_key</span><span class="p">:</span> <span class="n">FeatureKey</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks whether the provided (domain, type, name) as the feature_key</span>
+<span class="sd">        is container in the FeatureStore.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
 <div class="viewcode-block" id="FeatureStore.read">
 <a class="viewcode-back" href="../../../generated/dgl.graphbolt.FeatureStore.html#dgl.graphbolt.FeatureStore.read">[docs]</a>
     <span class="k">def</span> <span class="nf">read</span><span class="p">(</span>
@@ -247,7 +327,7 @@
 <span class="sd">        torch.Tensor</span>
 <span class="sd">            The read feature.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">((</span><span class="n">domain</span><span class="p">,</span> <span class="n">type_name</span><span class="p">,</span> <span class="n">feature_name</span><span class="p">))</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="FeatureStore.size">
@@ -273,7 +353,7 @@
 <span class="sd">        torch.Size</span>
 <span class="sd">            The size of the specified feature in the feature store.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">((</span><span class="n">domain</span><span class="p">,</span> <span class="n">type_name</span><span class="p">,</span> <span class="n">feature_name</span><span class="p">))</span><span class="o">.</span><span class="n">size</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="FeatureStore.metadata">
@@ -299,7 +379,7 @@
 <span class="sd">        Dict</span>
 <span class="sd">            The metadata of the feature.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">((</span><span class="n">domain</span><span class="p">,</span> <span class="n">type_name</span><span class="p">,</span> <span class="n">feature_name</span><span class="p">))</span><span class="o">.</span><span class="n">metadata</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="FeatureStore.update">
@@ -331,7 +411,7 @@
 <span class="sd">            must have the same length. If None, the entire feature will be</span>
 <span class="sd">            updated.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">((</span><span class="n">domain</span><span class="p">,</span> <span class="n">type_name</span><span class="p">,</span> <span class="n">feature_name</span><span class="p">))</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">ids</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="FeatureStore.keys">

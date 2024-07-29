@@ -4,12 +4,12 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TorchBasedFeatureStore &mdash; DGL 2.3.0 documentation</title>
+  <title>TorchBasedFeatureStore &mdash; DGL 2.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -22,7 +22,7 @@
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=c3c8ae58"></script>
+        <script src="../_static/documentation_options.js?v=9caaf7ed"></script>
         <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -48,7 +48,7 @@
             DGL
           </a>
               <div class="version">
-                2.3.0
+                2.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -171,7 +171,8 @@ list of <cite>OnDiskFeatureData</cite>.</p>
 <p>For a feature store, its format must be either “pt” or “npy” for Pytorch or
 Numpy formats. If the format is “pt”, the feature store must be loaded in
 memory. If the format is “npy”, the feature store can be loaded in memory or
-on disk.</p>
+on disk. Note that you can use gb.numpy_save_aligned as a replacement for
+np.save to potentially get increased performance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>feat_data</strong> (<em>List</em><em>[</em><em>OnDiskFeatureData</em><em>]</em>) – The description of the feature stores.</p>
@@ -184,7 +185,7 @@ on disk.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">edge_label</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">node_feat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">edge_label</span><span class="p">,</span> <span class="s2">&quot;/tmp/edge_label.pt&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;/tmp/node_feat.npy&quot;</span><span class="p">,</span> <span class="n">node_feat</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gb</span><span class="o">.</span><span class="n">numpy_save_aligned</span><span class="p">(</span><span class="s2">&quot;/tmp/node_feat.npy&quot;</span><span class="p">,</span> <span class="n">node_feat</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">feat_data</span> <span class="o">=</span> <span class="p">[</span>
 <span class="gp">... </span>    <span class="n">gb</span><span class="o">.</span><span class="n">OnDiskFeatureData</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="s2">&quot;edge&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;author:writes:paper&quot;</span><span class="p">,</span>
 <span class="gp">... </span>        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;torch&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;/tmp/edge_label.pt&quot;</span><span class="p">,</span>
@@ -192,7 +193,7 @@ on disk.</p>
 <span class="gp">... </span>    <span class="n">gb</span><span class="o">.</span><span class="n">OnDiskFeatureData</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="s2">&quot;node&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;paper&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;feat&quot;</span><span class="p">,</span>
 <span class="gp">... </span>        <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;numpy&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;/tmp/node_feat.npy&quot;</span><span class="p">,</span> <span class="n">in_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
 <span class="gp">... </span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">feature_sotre</span> <span class="o">=</span> <span class="n">gb</span><span class="o">.</span><span class="n">TorchBasedFeatureStore</span><span class="p">(</span><span class="n">feat_data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">feature_store</span> <span class="o">=</span> <span class="n">gb</span><span class="o">.</span><span class="n">TorchBasedFeatureStore</span><span class="p">(</span><span class="n">feat_data</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="py method">
