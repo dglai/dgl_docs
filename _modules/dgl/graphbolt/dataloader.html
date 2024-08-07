@@ -8,7 +8,7 @@
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -134,12 +134,10 @@
 <span></span><span class="sd">&quot;&quot;&quot;Graph Bolt DataLoaders&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
-<span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>
 
 <span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">import</span> <span class="nn">torch.utils.data</span>
+<span class="kn">import</span> <span class="nn">torch.utils.data</span> <span class="k">as</span> <span class="nn">torch_data</span>
 <span class="kn">import</span> <span class="nn">torchdata.dataloader2.graph</span> <span class="k">as</span> <span class="nn">dp_utils</span>
-<span class="kn">import</span> <span class="nn">torchdata.datapipes</span> <span class="k">as</span> <span class="nn">dp</span>
 
 <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">CopyTo</span><span class="p">,</span> <span class="n">get_host_to_device_uva_stream</span>
 <span class="kn">from</span> <span class="nn">.feature_fetcher</span> <span class="kn">import</span> <span class="n">FeatureFetcher</span><span class="p">,</span> <span class="n">FeatureFetcherStartMarker</span>
@@ -203,7 +201,7 @@
     <span class="n">torch</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">graphbolt</span><span class="o">.</span><span class="n">set_worker_id</span><span class="p">(</span><span class="n">worked_id</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">MultiprocessingWrapper</span><span class="p">(</span><span class="n">dp</span><span class="o">.</span><span class="n">iter</span><span class="o">.</span><span class="n">IterDataPipe</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">MultiprocessingWrapper</span><span class="p">(</span><span class="n">torch_data</span><span class="o">.</span><span class="n">IterDataPipe</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Wraps a datapipe with multiprocessing.</span>
 
 <span class="sd">    Parameters</span>
@@ -221,7 +219,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datapipe</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">persistent_workers</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dataloader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataloader</span> <span class="o">=</span> <span class="n">torch_data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span>
             <span class="n">datapipe</span><span class="p">,</span>
             <span class="n">batch_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">num_workers</span><span class="o">=</span><span class="n">num_workers</span><span class="p">,</span>
@@ -235,7 +233,7 @@
 
 <div class="viewcode-block" id="DataLoader">
 <a class="viewcode-back" href="../../../generated/dgl.graphbolt.DataLoader.html#dgl.graphbolt.DataLoader">[docs]</a>
-<span class="k">class</span> <span class="nc">DataLoader</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">DataLoader</span><span class="p">(</span><span class="n">torch_data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Multiprocessing DataLoader.</span>
 
 <span class="sd">    Iterates over the data pipeline with everything before feature fetching</span>
@@ -341,7 +339,6 @@
                 <span class="n">datapipe_graph</span><span class="p">,</span>
                 <span class="n">SamplePerLayer</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="n">executor</span> <span class="o">=</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
             <span class="n">gpu_graph_cache</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">for</span> <span class="n">sampler</span> <span class="ow">in</span> <span class="n">samplers</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">num_gpu_cached_edges</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">gpu_graph_cache</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -354,7 +351,6 @@
                     <span class="n">sampler</span><span class="o">.</span><span class="n">fetch_and_sample</span><span class="p">(</span>
                         <span class="n">gpu_graph_cache</span><span class="p">,</span>
                         <span class="n">get_host_to_device_uva_stream</span><span class="p">(),</span>
-                        <span class="n">executor</span><span class="p">,</span>
                         <span class="mi">1</span><span class="p">,</span>
                     <span class="p">),</span>
                 <span class="p">)</span>
@@ -370,11 +366,10 @@
                     <span class="n">datapipe_graph</span> <span class="o">=</span> <span class="n">dp_utils</span><span class="o">.</span><span class="n">replace_dp</span><span class="p">(</span>
                         <span class="n">datapipe_graph</span><span class="p">,</span>
                         <span class="n">copier</span><span class="p">,</span>
-                        <span class="n">copier</span><span class="o">.</span><span class="n">datapipe</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span>
-                            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">pin_memory</span><span class="p">()</span>
-                        <span class="p">)</span><span class="o">.</span><span class="n">prefetch</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-                        <span class="c1"># After the data gets pinned, we can copy non_blocking.</span>
-                        <span class="o">.</span><span class="n">copy_to</span><span class="p">(</span><span class="n">copier</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">non_blocking</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                        <span class="c1"># Add prefetch so that CPU and GPU can run concurrently.</span>
+                        <span class="n">copier</span><span class="o">.</span><span class="n">datapipe</span><span class="o">.</span><span class="n">prefetch</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">copy_to</span><span class="p">(</span>
+                            <span class="n">copier</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">non_blocking</span><span class="o">=</span><span class="kc">True</span>
+                        <span class="p">),</span>
                     <span class="p">)</span>
 
         <span class="c1"># The stages after feature fetching is still done in the main process.</span>

@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -159,7 +159,7 @@
 <h1>dgl.distributed.dgl_partition_to_graphbolt<a class="headerlink" href="#dgl-distributed-dgl-partition-to-graphbolt" title="Link to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="dgl.distributed.dgl_partition_to_graphbolt">
-<span class="sig-prename descclassname"><span class="pre">dgl.distributed.</span></span><span class="sig-name descname"><span class="pre">dgl_partition_to_graphbolt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">part_config</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">store_eids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">store_inner_node</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">store_inner_edge</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_formats</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dgl/distributed/partition.html#dgl_partition_to_graphbolt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.dgl_partition_to_graphbolt" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">dgl.distributed.</span></span><span class="sig-name descname"><span class="pre">dgl_partition_to_graphbolt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">part_config</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">store_eids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">store_inner_node</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">store_inner_edge</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_formats</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dgl/distributed/partition.html#dgl_partition_to_graphbolt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.dgl_partition_to_graphbolt" title="Link to this definition"></a></dt>
 <dd><p>Convert partitions of dgl to FusedCSCSamplingGraph of GraphBolt.</p>
 <p>This API converts <cite>DGLGraph</cite> partitions to <cite>FusedCSCSamplingGraph</cite> which is
 dedicated for sampling in <cite>GraphBolt</cite>. New graphs will be stored alongside
@@ -179,6 +179,8 @@ it is not necessary to specify this argument. It’s mainly for
 specifying <cite>coo</cite> format to save edge ID mapping and destination node
 IDs. If not specified, whether to save <cite>coo</cite> format is determined by
 the availability of the format in DGL partitions. Default: None.</p></li>
+<li><p><strong>n_jobs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Number of parallel jobs to run during partition conversion. Max parallelism
+is determined by the partition count.</p></li>
 </ul>
 </dd>
 </dl>

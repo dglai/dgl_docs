@@ -130,7 +130,7 @@
       },
       "outputs": [],
       "source": [
-        "def main():\n    if not torch.cuda.is_available():\n        print(\"No GPU found!\")\n        return\n\n    devices = [\n        torch.device(f\"cuda:{i}\") for i in range(torch.cuda.device_count())\n    ]\n    world_size = len(devices)\n\n    print(f\"Training with {world_size} gpus.\")\n\n    # Load and preprocess dataset.\n    dataset = gb.BuiltinDataset(\"ogbn-arxiv\").load()\n\n    # Thread limiting to avoid resource competition.\n    os.environ[\"OMP_NUM_THREADS\"] = str(mp.cpu_count() // 2 // world_size)\n\n    mp.set_sharing_strategy(\"file_system\")\n    mp.spawn(\n        run,\n        args=(world_size, devices, dataset),\n        nprocs=world_size,\n        join=True,\n    )\n\n\nif __name__ == \"__main__\":\n    main()"
+        "def main():\n  #  if not torch.cuda.is_available():\n #       print(\"No GPU found!\")\n    return\n\n    devices = [\n        torch.device(f\"cuda:{i}\") for i in range(torch.cuda.device_count())\n    ]\n    world_size = len(devices)\n\n    print(f\"Training with {world_size} gpus.\")\n\n    # Load and preprocess dataset.\n    dataset = gb.BuiltinDataset(\"ogbn-arxiv\").load()\n\n    # Thread limiting to avoid resource competition.\n    os.environ[\"OMP_NUM_THREADS\"] = str(mp.cpu_count() // 2 // world_size)\n\n    mp.set_sharing_strategy(\"file_system\")\n    mp.spawn(\n        run,\n        args=(world_size, devices, dataset),\n        nprocs=world_size,\n        join=True,\n    )\n\n\nif __name__ == \"__main__\":\n    main()"
       ]
     }
   ],

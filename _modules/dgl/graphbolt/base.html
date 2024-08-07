@@ -8,7 +8,7 @@
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -150,8 +150,7 @@
     <span class="p">)</span>
 
 <span class="c1"># pylint: disable=wrong-import-position</span>
-<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">functional_datapipe</span>
-<span class="kn">from</span> <span class="nn">torchdata.datapipes.iter</span> <span class="kn">import</span> <span class="n">IterDataPipe</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">functional_datapipe</span><span class="p">,</span> <span class="n">IterDataPipe</span>
 
 <span class="kn">from</span> <span class="nn">.internal_utils</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">get_nonproperty_attributes</span><span class="p">,</span>
@@ -165,7 +164,6 @@
     <span class="s2">&quot;etype_str_to_tuple&quot;</span><span class="p">,</span>
     <span class="s2">&quot;etype_tuple_to_str&quot;</span><span class="p">,</span>
     <span class="s2">&quot;CopyTo&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;FutureWaiter&quot;</span><span class="p">,</span>
     <span class="s2">&quot;Waiter&quot;</span><span class="p">,</span>
     <span class="s2">&quot;Bufferer&quot;</span><span class="p">,</span>
     <span class="s2">&quot;EndMarker&quot;</span><span class="p">,</span>
@@ -524,9 +522,6 @@
 
     <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">datapipe</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">non_blocking</span><span class="p">:</span>
-                <span class="c1"># The copy is non blocking only if contents of data are pinned.</span>
-                <span class="k">assert</span> <span class="n">data</span><span class="o">.</span><span class="n">is_pinned</span><span class="p">(),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2"> should be pinned.&quot;</span>
             <span class="k">yield</span> <span class="n">recursive_apply</span><span class="p">(</span>
                 <span class="n">data</span><span class="p">,</span> <span class="n">apply_to</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">non_blocking</span>
             <span class="p">)</span></div>
@@ -603,18 +598,6 @@
         <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">datapipe</span><span class="p">:</span>
             <span class="n">data</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
             <span class="k">yield</span> <span class="n">data</span>
-
-
-<span class="nd">@functional_datapipe</span><span class="p">(</span><span class="s2">&quot;wait_future&quot;</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">FutureWaiter</span><span class="p">(</span><span class="n">IterDataPipe</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calls the result function of all items and returns their results.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datapipe</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span>
-
-    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">datapipe</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="n">data</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
 
 
 <span class="nd">@dataclass</span>

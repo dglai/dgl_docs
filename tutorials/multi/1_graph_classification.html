@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -163,7 +163,7 @@ labels = labels.to(device)
 <p>Intuitively, we can distribute the workload along the dimension of data. This allows multiple GPUs to perform the forward and backward computation of multiple gradient descents in parallel. To distribute a dataset across multiple GPUs, we need to partition it into multiple mutually exclusive subsets of a similar size, one per GPU. We need to repeat the random partition every epoch to guarantee randomness. We can use :func:<code class="docutils literal notranslate"><span class="pre">~dgl.dataloading.pytorch.GraphDataLoader</span></code>, which wraps some PyTorch
 APIs and does the job for graph classification in data loading.</p>
 <p>Once all GPUs have finished the backward computation for its minibatch, we need to synchronize the model parameter update across them. Specifically, this involves collecting gradients from all GPUs, averaging them and updating the model parameters on each GPU. We can wrap a PyTorch model with :func:<code class="docutils literal notranslate"><span class="pre">~torch.nn.parallel.DistributedDataParallel</span></code> so that the model parameter update will invoke gradient synchronization first under the hood.</p>
-<p><img alt="7816ea810ab34319aa96ffe236456820" class="no-scaled-link" src="https://data.dgl.ai/tutorial/mgpu_gc.png" style="width: 450px;" /></p>
+<p><img alt="01017901a9f04c699d1686b23a4d4ff4" class="no-scaled-link" src="https://data.dgl.ai/tutorial/mgpu_gc.png" style="width: 450px;" /></p>
 <p>That’s the core behind this tutorial. We will explore it more in detail with a complete example below.</p>
 <div class="admonition note">
 <div class="admonition-title fa fa-exclamation-circle"><h4></div><p>Note</p>
@@ -358,7 +358,7 @@ APIs and does the job for graph classification in data loading.</p>
 </div>
 </div>
 <p>Finally we load the dataset and launch the processes.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
@@ -367,9 +367,9 @@ APIs and does the job for graph classification in data loading.</p>
 
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No GPU found!&quot;</span><span class="p">)</span>
-        <span class="k">return</span>
+  <span class="c1">#  if not torch.cuda.is_available():</span>
+ <span class="c1">#       print(&quot;No GPU found!&quot;</span>
+    <span class="k">return</span>
 
     <span class="n">num_gpus</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">device_count</span><span class="p">()</span>
     <span class="n">dataset</span> <span class="o">=</span> <span class="n">GINDataset</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;IMDBBINARY&quot;</span><span class="p">,</span> <span class="n">self_loop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -380,14 +380,6 @@ APIs and does the job for graph classification in data loading.</p>
     <span class="n">main</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-No GPU found!
-</pre></div></div>
 </div>
 </section>
 </section>

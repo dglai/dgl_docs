@@ -123,7 +123,7 @@
       },
       "outputs": [],
       "source": [
-        "import torch.multiprocessing as mp\nfrom dgl.data import GINDataset\n\n\ndef main():\n    if not torch.cuda.is_available():\n        print(\"No GPU found!\")\n        return\n\n    num_gpus = torch.cuda.device_count()\n    dataset = GINDataset(name=\"IMDBBINARY\", self_loop=False)\n    mp.spawn(run, args=(num_gpus, dataset), nprocs=num_gpus)\n\n\nif __name__ == \"__main__\":\n    main()"
+        "import torch.multiprocessing as mp\nfrom dgl.data import GINDataset\n\n\ndef main():\n  #  if not torch.cuda.is_available():\n #       print(\"No GPU found!\"\n    return\n\n    num_gpus = torch.cuda.device_count()\n    dataset = GINDataset(name=\"IMDBBINARY\", self_loop=False)\n    mp.spawn(run, args=(num_gpus, dataset), nprocs=num_gpus)\n\n\nif __name__ == \"__main__\":\n    main()"
       ]
     }
   ],
