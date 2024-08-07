@@ -13,7 +13,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=0bf289b5" />
 
   
@@ -29,7 +29,6 @@
         <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
         <script src="../../_static/copybutton.js?v=ccdb6887"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -64,7 +63,7 @@
               <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Install and Setup</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">A Blitz Introduction to DGL</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">A Blitz ntroduction to DGL</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="1_introduction.html">Node Classification with DGL</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2_dglgraph.html">How Does DGL Represent A Graph?</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Write your own GNN module</a><ul>
@@ -144,7 +143,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">A Blitz Introduction to DGL</a></li>
+          <li class="breadcrumb-item"><a href="index.html">A Blitz ntroduction to DGL</a></li>
       <li class="breadcrumb-item active">Write your own GNN module</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/tutorials/blitz/3_message_passing.ipynb.txt" rel="nofollow"> View page source</a>
@@ -163,7 +162,7 @@
 <li><p>Understand DGL’s message passing APIs.</p></li>
 <li><p>Implement GraphSAGE convolution module by your own.</p></li>
 </ul>
-<p>This tutorial assumes that you already know :doc:<code class="docutils literal notranslate"><span class="pre">the</span> <span class="pre">basics</span> <span class="pre">of</span> <span class="pre">training</span> <span class="pre">a</span> <span class="pre">GNN</span> <span class="pre">for</span> <span class="pre">node</span> <span class="pre">classification</span> <span class="pre">&lt;1_introduction&gt;</span></code>.</p>
+<p>This tutorial assumes that you already know <code class="docutils literal notranslate"><span class="pre">the</span> <span class="pre">basics</span> <span class="pre">of</span> <span class="pre">training</span> <span class="pre">a</span> <span class="pre">GNN</span> <span class="pre">for</span> <span class="pre">node</span> <span class="pre">classification</span> <span class="pre">&lt;1_introduction&gt;</span></code>.</p>
 <p>(Time estimate: 10 minutes)</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -345,10 +344,12 @@ Done loading data from cached files.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 0, loss: 1.950, val acc: 0.162 (best 0.162), test acc: 0.149 (best 0.149)
-In epoch 5, loss: 1.903, val acc: 0.274 (best 0.274), test acc: 0.243 (best 0.243)
-In epoch 10, loss: 1.803, val acc: 0.572 (best 0.572), test acc: 0.534 (best 0.534)
-In epoch 15, loss: 1.645, val acc: 0.628 (best 0.636), test acc: 0.593 (best 0.602)
+In epoch 0, loss: 1.952, val acc: 0.156 (best 0.156), test acc: 0.144 (best 0.144)
+In epoch 5, loss: 1.874, val acc: 0.258 (best 0.258), test acc: 0.249 (best 0.249)
+In epoch 10, loss: 1.720, val acc: 0.306 (best 0.358), test acc: 0.317 (best 0.369)
+In epoch 15, loss: 1.489, val acc: 0.372 (best 0.372), test acc: 0.365 (best 0.365)
+In epoch 20, loss: 1.194, val acc: 0.452 (best 0.452), test acc: 0.453 (best 0.453)
+In epoch 25, loss: 0.872, val acc: 0.560 (best 0.560), test acc: 0.564 (best 0.564)
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -356,10 +357,12 @@ In epoch 15, loss: 1.645, val acc: 0.628 (best 0.636), test acc: 0.593 (best 0.6
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 20, loss: 1.429, val acc: 0.652 (best 0.652), test acc: 0.623 (best 0.623)
-In epoch 25, loss: 1.173, val acc: 0.678 (best 0.678), test acc: 0.662 (best 0.662)
-In epoch 30, loss: 0.904, val acc: 0.724 (best 0.724), test acc: 0.716 (best 0.716)
-In epoch 35, loss: 0.653, val acc: 0.738 (best 0.738), test acc: 0.743 (best 0.738)
+In epoch 30, loss: 0.575, val acc: 0.652 (best 0.652), test acc: 0.647 (best 0.647)
+In epoch 35, loss: 0.349, val acc: 0.704 (best 0.704), test acc: 0.708 (best 0.708)
+In epoch 40, loss: 0.202, val acc: 0.736 (best 0.736), test acc: 0.741 (best 0.741)
+In epoch 45, loss: 0.117, val acc: 0.748 (best 0.748), test acc: 0.752 (best 0.752)
+In epoch 50, loss: 0.071, val acc: 0.748 (best 0.752), test acc: 0.749 (best 0.751)
+In epoch 55, loss: 0.045, val acc: 0.750 (best 0.752), test acc: 0.754 (best 0.751)
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -367,10 +370,11 @@ In epoch 35, loss: 0.653, val acc: 0.738 (best 0.738), test acc: 0.743 (best 0.7
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 40, loss: 0.447, val acc: 0.746 (best 0.752), test acc: 0.751 (best 0.749)
-In epoch 45, loss: 0.294, val acc: 0.744 (best 0.752), test acc: 0.755 (best 0.749)
-In epoch 50, loss: 0.191, val acc: 0.752 (best 0.754), test acc: 0.752 (best 0.752)
-In epoch 55, loss: 0.126, val acc: 0.750 (best 0.754), test acc: 0.749 (best 0.752)
+In epoch 60, loss: 0.031, val acc: 0.756 (best 0.756), test acc: 0.755 (best 0.755)
+In epoch 65, loss: 0.023, val acc: 0.756 (best 0.756), test acc: 0.756 (best 0.755)
+In epoch 70, loss: 0.018, val acc: 0.758 (best 0.758), test acc: 0.757 (best 0.757)
+In epoch 75, loss: 0.014, val acc: 0.756 (best 0.758), test acc: 0.756 (best 0.757)
+In epoch 80, loss: 0.012, val acc: 0.754 (best 0.758), test acc: 0.757 (best 0.757)
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -378,11 +382,11 @@ In epoch 55, loss: 0.126, val acc: 0.750 (best 0.754), test acc: 0.749 (best 0.7
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 60, loss: 0.085, val acc: 0.752 (best 0.754), test acc: 0.749 (best 0.752)
-In epoch 65, loss: 0.060, val acc: 0.748 (best 0.754), test acc: 0.754 (best 0.752)
-In epoch 70, loss: 0.044, val acc: 0.748 (best 0.754), test acc: 0.753 (best 0.752)
-In epoch 75, loss: 0.034, val acc: 0.748 (best 0.754), test acc: 0.750 (best 0.752)
-In epoch 80, loss: 0.028, val acc: 0.750 (best 0.754), test acc: 0.751 (best 0.752)
+In epoch 85, loss: 0.011, val acc: 0.756 (best 0.758), test acc: 0.758 (best 0.757)
+In epoch 90, loss: 0.009, val acc: 0.752 (best 0.758), test acc: 0.759 (best 0.757)
+In epoch 95, loss: 0.008, val acc: 0.756 (best 0.758), test acc: 0.759 (best 0.757)
+In epoch 100, loss: 0.008, val acc: 0.756 (best 0.758), test acc: 0.760 (best 0.757)
+In epoch 105, loss: 0.007, val acc: 0.758 (best 0.758), test acc: 0.760 (best 0.757)
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -390,11 +394,11 @@ In epoch 80, loss: 0.028, val acc: 0.750 (best 0.754), test acc: 0.751 (best 0.7
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 85, loss: 0.023, val acc: 0.748 (best 0.754), test acc: 0.752 (best 0.752)
-In epoch 90, loss: 0.019, val acc: 0.748 (best 0.754), test acc: 0.749 (best 0.752)
-In epoch 95, loss: 0.017, val acc: 0.746 (best 0.754), test acc: 0.751 (best 0.752)
-In epoch 100, loss: 0.015, val acc: 0.750 (best 0.754), test acc: 0.751 (best 0.752)
-In epoch 105, loss: 0.013, val acc: 0.748 (best 0.754), test acc: 0.749 (best 0.752)
+In epoch 110, loss: 0.007, val acc: 0.758 (best 0.758), test acc: 0.759 (best 0.757)
+In epoch 115, loss: 0.006, val acc: 0.758 (best 0.758), test acc: 0.759 (best 0.757)
+In epoch 120, loss: 0.006, val acc: 0.756 (best 0.758), test acc: 0.759 (best 0.757)
+In epoch 125, loss: 0.005, val acc: 0.756 (best 0.758), test acc: 0.758 (best 0.757)
+In epoch 130, loss: 0.005, val acc: 0.752 (best 0.758), test acc: 0.759 (best 0.757)
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -402,11 +406,11 @@ In epoch 105, loss: 0.013, val acc: 0.748 (best 0.754), test acc: 0.749 (best 0.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 110, loss: 0.012, val acc: 0.748 (best 0.754), test acc: 0.748 (best 0.752)
-In epoch 115, loss: 0.011, val acc: 0.748 (best 0.754), test acc: 0.749 (best 0.752)
-In epoch 120, loss: 0.010, val acc: 0.750 (best 0.754), test acc: 0.749 (best 0.752)
-In epoch 125, loss: 0.009, val acc: 0.750 (best 0.754), test acc: 0.749 (best 0.752)
-In epoch 130, loss: 0.009, val acc: 0.750 (best 0.754), test acc: 0.748 (best 0.752)
+In epoch 135, loss: 0.005, val acc: 0.752 (best 0.758), test acc: 0.759 (best 0.757)
+In epoch 140, loss: 0.004, val acc: 0.754 (best 0.758), test acc: 0.758 (best 0.757)
+In epoch 145, loss: 0.004, val acc: 0.752 (best 0.758), test acc: 0.759 (best 0.757)
+In epoch 150, loss: 0.004, val acc: 0.752 (best 0.758), test acc: 0.760 (best 0.757)
+In epoch 155, loss: 0.004, val acc: 0.752 (best 0.758), test acc: 0.760 (best 0.757)
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -414,22 +418,12 @@ In epoch 130, loss: 0.009, val acc: 0.750 (best 0.754), test acc: 0.748 (best 0.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 135, loss: 0.008, val acc: 0.750 (best 0.754), test acc: 0.748 (best 0.752)
-In epoch 140, loss: 0.008, val acc: 0.750 (best 0.754), test acc: 0.749 (best 0.752)
-In epoch 145, loss: 0.007, val acc: 0.748 (best 0.754), test acc: 0.748 (best 0.752)
-In epoch 150, loss: 0.007, val acc: 0.748 (best 0.754), test acc: 0.747 (best 0.752)
-In epoch 155, loss: 0.006, val acc: 0.750 (best 0.754), test acc: 0.747 (best 0.752)
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-In epoch 160, loss: 0.006, val acc: 0.750 (best 0.754), test acc: 0.748 (best 0.752)
-In epoch 165, loss: 0.006, val acc: 0.750 (best 0.754), test acc: 0.748 (best 0.752)
-In epoch 170, loss: 0.005, val acc: 0.752 (best 0.754), test acc: 0.745 (best 0.752)
-In epoch 175, loss: 0.005, val acc: 0.752 (best 0.754), test acc: 0.746 (best 0.752)
+In epoch 160, loss: 0.004, val acc: 0.752 (best 0.758), test acc: 0.760 (best 0.757)
+In epoch 165, loss: 0.003, val acc: 0.752 (best 0.758), test acc: 0.760 (best 0.757)
+In epoch 170, loss: 0.003, val acc: 0.752 (best 0.758), test acc: 0.760 (best 0.757)
+In epoch 175, loss: 0.003, val acc: 0.752 (best 0.758), test acc: 0.761 (best 0.757)
+In epoch 180, loss: 0.003, val acc: 0.752 (best 0.758), test acc: 0.761 (best 0.757)
+In epoch 185, loss: 0.003, val acc: 0.752 (best 0.758), test acc: 0.761 (best 0.757)
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -437,10 +431,8 @@ In epoch 175, loss: 0.005, val acc: 0.752 (best 0.754), test acc: 0.746 (best 0.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 180, loss: 0.005, val acc: 0.752 (best 0.754), test acc: 0.746 (best 0.752)
-In epoch 185, loss: 0.005, val acc: 0.754 (best 0.754), test acc: 0.747 (best 0.752)
-In epoch 190, loss: 0.004, val acc: 0.754 (best 0.754), test acc: 0.747 (best 0.752)
-In epoch 195, loss: 0.004, val acc: 0.754 (best 0.754), test acc: 0.749 (best 0.752)
+In epoch 190, loss: 0.003, val acc: 0.752 (best 0.758), test acc: 0.761 (best 0.757)
+In epoch 195, loss: 0.003, val acc: 0.752 (best 0.758), test acc: 0.761 (best 0.757)
 </pre></div></div>
 </div>
 </section>
@@ -522,8 +514,7 @@ In epoch 195, loss: 0.004, val acc: 0.754 (best 0.754), test acc: 0.749 (best 0.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 0, loss: 1.948, val acc: 0.162 (best 0.162), test acc: 0.149 (best 0.149)
-In epoch 5, loss: 1.873, val acc: 0.506 (best 0.512), test acc: 0.474 (best 0.485)
+In epoch 0, loss: 1.949, val acc: 0.316 (best 0.316), test acc: 0.319 (best 0.319)
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -531,8 +522,7 @@ In epoch 5, loss: 1.873, val acc: 0.506 (best 0.512), test acc: 0.474 (best 0.48
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 10, loss: 1.726, val acc: 0.590 (best 0.590), test acc: 0.579 (best 0.579)
-In epoch 15, loss: 1.505, val acc: 0.630 (best 0.630), test acc: 0.632 (best 0.632)
+In epoch 5, loss: 1.907, val acc: 0.346 (best 0.358), test acc: 0.371 (best 0.370)
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -540,8 +530,7 @@ In epoch 15, loss: 1.505, val acc: 0.630 (best 0.630), test acc: 0.632 (best 0.6
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 20, loss: 1.225, val acc: 0.674 (best 0.674), test acc: 0.670 (best 0.670)
-In epoch 25, loss: 0.919, val acc: 0.712 (best 0.712), test acc: 0.695 (best 0.695)
+In epoch 10, loss: 1.824, val acc: 0.578 (best 0.578), test acc: 0.570 (best 0.570)
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -549,8 +538,7 @@ In epoch 25, loss: 0.919, val acc: 0.712 (best 0.712), test acc: 0.695 (best 0.6
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 30, loss: 0.631, val acc: 0.726 (best 0.726), test acc: 0.728 (best 0.723)
-In epoch 35, loss: 0.401, val acc: 0.740 (best 0.740), test acc: 0.753 (best 0.753)
+In epoch 15, loss: 1.691, val acc: 0.594 (best 0.600), test acc: 0.583 (best 0.581)
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -558,8 +546,7 @@ In epoch 35, loss: 0.401, val acc: 0.740 (best 0.740), test acc: 0.753 (best 0.7
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 40, loss: 0.242, val acc: 0.754 (best 0.754), test acc: 0.765 (best 0.763)
-In epoch 45, loss: 0.145, val acc: 0.756 (best 0.756), test acc: 0.770 (best 0.769)
+In epoch 20, loss: 1.504, val acc: 0.602 (best 0.602), test acc: 0.597 (best 0.597)
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -567,8 +554,7 @@ In epoch 45, loss: 0.145, val acc: 0.756 (best 0.756), test acc: 0.770 (best 0.7
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 50, loss: 0.089, val acc: 0.756 (best 0.758), test acc: 0.773 (best 0.772)
-In epoch 55, loss: 0.058, val acc: 0.758 (best 0.758), test acc: 0.771 (best 0.772)
+In epoch 25, loss: 1.270, val acc: 0.636 (best 0.636), test acc: 0.626 (best 0.626)
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -576,8 +562,7 @@ In epoch 55, loss: 0.058, val acc: 0.758 (best 0.758), test acc: 0.771 (best 0.7
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 60, loss: 0.040, val acc: 0.760 (best 0.760), test acc: 0.775 (best 0.775)
-In epoch 65, loss: 0.029, val acc: 0.760 (best 0.760), test acc: 0.777 (best 0.775)
+In epoch 30, loss: 1.008, val acc: 0.660 (best 0.660), test acc: 0.652 (best 0.652)
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -585,8 +570,7 @@ In epoch 65, loss: 0.029, val acc: 0.760 (best 0.760), test acc: 0.777 (best 0.7
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 70, loss: 0.022, val acc: 0.764 (best 0.764), test acc: 0.774 (best 0.774)
-In epoch 75, loss: 0.018, val acc: 0.764 (best 0.764), test acc: 0.774 (best 0.774)
+In epoch 35, loss: 0.749, val acc: 0.684 (best 0.684), test acc: 0.681 (best 0.681)
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -594,8 +578,7 @@ In epoch 75, loss: 0.018, val acc: 0.764 (best 0.764), test acc: 0.774 (best 0.7
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 80, loss: 0.015, val acc: 0.764 (best 0.764), test acc: 0.773 (best 0.774)
-In epoch 85, loss: 0.013, val acc: 0.764 (best 0.764), test acc: 0.772 (best 0.774)
+In epoch 40, loss: 0.523, val acc: 0.700 (best 0.700), test acc: 0.697 (best 0.697)
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -603,8 +586,7 @@ In epoch 85, loss: 0.013, val acc: 0.764 (best 0.764), test acc: 0.772 (best 0.7
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 90, loss: 0.012, val acc: 0.764 (best 0.764), test acc: 0.773 (best 0.774)
-In epoch 95, loss: 0.010, val acc: 0.764 (best 0.764), test acc: 0.771 (best 0.774)
+In epoch 45, loss: 0.349, val acc: 0.714 (best 0.714), test acc: 0.715 (best 0.713)
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -612,8 +594,7 @@ In epoch 95, loss: 0.010, val acc: 0.764 (best 0.764), test acc: 0.771 (best 0.7
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 100, loss: 0.009, val acc: 0.762 (best 0.764), test acc: 0.771 (best 0.774)
-In epoch 105, loss: 0.009, val acc: 0.762 (best 0.764), test acc: 0.772 (best 0.774)
+In epoch 50, loss: 0.228, val acc: 0.718 (best 0.718), test acc: 0.717 (best 0.719)
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -621,8 +602,7 @@ In epoch 105, loss: 0.009, val acc: 0.762 (best 0.764), test acc: 0.772 (best 0.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 110, loss: 0.008, val acc: 0.764 (best 0.766), test acc: 0.772 (best 0.772)
-In epoch 115, loss: 0.007, val acc: 0.764 (best 0.766), test acc: 0.771 (best 0.772)
+In epoch 55, loss: 0.151, val acc: 0.710 (best 0.718), test acc: 0.716 (best 0.719)
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -630,8 +610,7 @@ In epoch 115, loss: 0.007, val acc: 0.764 (best 0.766), test acc: 0.771 (best 0.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 120, loss: 0.007, val acc: 0.764 (best 0.766), test acc: 0.772 (best 0.772)
-In epoch 125, loss: 0.006, val acc: 0.764 (best 0.766), test acc: 0.773 (best 0.772)
+In epoch 60, loss: 0.102, val acc: 0.704 (best 0.718), test acc: 0.715 (best 0.719)
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -639,8 +618,7 @@ In epoch 125, loss: 0.006, val acc: 0.764 (best 0.766), test acc: 0.773 (best 0.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 130, loss: 0.006, val acc: 0.764 (best 0.766), test acc: 0.774 (best 0.772)
-In epoch 135, loss: 0.006, val acc: 0.764 (best 0.766), test acc: 0.773 (best 0.772)
+In epoch 65, loss: 0.072, val acc: 0.702 (best 0.718), test acc: 0.724 (best 0.719)
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -648,8 +626,7 @@ In epoch 135, loss: 0.006, val acc: 0.764 (best 0.766), test acc: 0.773 (best 0.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 140, loss: 0.005, val acc: 0.764 (best 0.766), test acc: 0.772 (best 0.772)
-In epoch 145, loss: 0.005, val acc: 0.762 (best 0.766), test acc: 0.771 (best 0.772)
+In epoch 70, loss: 0.053, val acc: 0.712 (best 0.718), test acc: 0.721 (best 0.719)
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -657,8 +634,7 @@ In epoch 145, loss: 0.005, val acc: 0.762 (best 0.766), test acc: 0.771 (best 0.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 150, loss: 0.005, val acc: 0.762 (best 0.766), test acc: 0.772 (best 0.772)
-In epoch 155, loss: 0.004, val acc: 0.762 (best 0.766), test acc: 0.772 (best 0.772)
+In epoch 75, loss: 0.041, val acc: 0.714 (best 0.718), test acc: 0.722 (best 0.719)
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -666,8 +642,7 @@ In epoch 155, loss: 0.004, val acc: 0.762 (best 0.766), test acc: 0.772 (best 0.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 160, loss: 0.004, val acc: 0.762 (best 0.766), test acc: 0.772 (best 0.772)
-In epoch 165, loss: 0.004, val acc: 0.764 (best 0.766), test acc: 0.773 (best 0.772)
+In epoch 80, loss: 0.033, val acc: 0.714 (best 0.718), test acc: 0.724 (best 0.719)
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -675,8 +650,7 @@ In epoch 165, loss: 0.004, val acc: 0.764 (best 0.766), test acc: 0.773 (best 0.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 170, loss: 0.004, val acc: 0.764 (best 0.766), test acc: 0.773 (best 0.772)
-In epoch 175, loss: 0.004, val acc: 0.764 (best 0.766), test acc: 0.772 (best 0.772)
+In epoch 85, loss: 0.027, val acc: 0.710 (best 0.718), test acc: 0.723 (best 0.719)
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -684,8 +658,167 @@ In epoch 175, loss: 0.004, val acc: 0.764 (best 0.766), test acc: 0.772 (best 0.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 180, loss: 0.003, val acc: 0.764 (best 0.766), test acc: 0.771 (best 0.772)
-In epoch 185, loss: 0.003, val acc: 0.764 (best 0.766), test acc: 0.773 (best 0.772)
+In epoch 90, loss: 0.023, val acc: 0.710 (best 0.718), test acc: 0.724 (best 0.719)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In epoch 95, loss: 0.020, val acc: 0.712 (best 0.718), test acc: 0.725 (best 0.719)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In epoch 100, loss: 0.018, val acc: 0.712 (best 0.718), test acc: 0.726 (best 0.719)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In epoch 105, loss: 0.016, val acc: 0.712 (best 0.718), test acc: 0.731 (best 0.719)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In epoch 110, loss: 0.014, val acc: 0.712 (best 0.718), test acc: 0.731 (best 0.719)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In epoch 115, loss: 0.013, val acc: 0.712 (best 0.718), test acc: 0.730 (best 0.719)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In epoch 120, loss: 0.012, val acc: 0.714 (best 0.718), test acc: 0.732 (best 0.719)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In epoch 125, loss: 0.011, val acc: 0.714 (best 0.718), test acc: 0.732 (best 0.719)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In epoch 130, loss: 0.010, val acc: 0.714 (best 0.718), test acc: 0.734 (best 0.719)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In epoch 135, loss: 0.010, val acc: 0.714 (best 0.718), test acc: 0.733 (best 0.719)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In epoch 140, loss: 0.009, val acc: 0.714 (best 0.718), test acc: 0.731 (best 0.719)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In epoch 145, loss: 0.008, val acc: 0.714 (best 0.718), test acc: 0.731 (best 0.719)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In epoch 150, loss: 0.008, val acc: 0.714 (best 0.718), test acc: 0.731 (best 0.719)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In epoch 155, loss: 0.007, val acc: 0.712 (best 0.718), test acc: 0.730 (best 0.719)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In epoch 160, loss: 0.007, val acc: 0.712 (best 0.718), test acc: 0.730 (best 0.719)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In epoch 165, loss: 0.007, val acc: 0.712 (best 0.718), test acc: 0.730 (best 0.719)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In epoch 170, loss: 0.006, val acc: 0.712 (best 0.718), test acc: 0.731 (best 0.719)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In epoch 175, loss: 0.006, val acc: 0.712 (best 0.718), test acc: 0.731 (best 0.719)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In epoch 180, loss: 0.006, val acc: 0.712 (best 0.718), test acc: 0.731 (best 0.719)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In epoch 185, loss: 0.005, val acc: 0.712 (best 0.718), test acc: 0.731 (best 0.719)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In epoch 190, loss: 0.005, val acc: 0.712 (best 0.718), test acc: 0.731 (best 0.719)
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -693,8 +826,7 @@ In epoch 185, loss: 0.003, val acc: 0.764 (best 0.766), test acc: 0.773 (best 0.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 190, loss: 0.003, val acc: 0.764 (best 0.766), test acc: 0.773 (best 0.772)
-In epoch 195, loss: 0.003, val acc: 0.768 (best 0.768), test acc: 0.773 (best 0.773)
+In epoch 195, loss: 0.005, val acc: 0.712 (best 0.718), test acc: 0.730 (best 0.719)
 </pre></div></div>
 </div>
 </section>
@@ -722,7 +854,7 @@ In epoch 195, loss: 0.003, val acc: 0.768 (best 0.768), test acc: 0.773 (best 0.
 </div>
 </div>
 <p>In short, DGL will group the nodes by their in-degrees, and for each group DGL stacks the incoming messages along the second dimension. You can then perform a reduction along the second dimension to aggregate messages.</p>
-<p>For more details on customizing message and reduce function with user-defined function, please refer to the <code class="docutils literal notranslate"><span class="pre">API</span> <span class="pre">reference</span> <span class="pre">&lt;apiudf&gt;</span></code>.</p>
+<p>For more details on customizing message and reduce function with user-defined function, please refer to the <a class="reference external" href="../../api/python/dgl.function.html#apifunction">API reference.</a></p>
 </section>
 <section id="Best-practice-of-writing-custom-GNN-modules">
 <h2>Best practice of writing custom GNN modules<a class="headerlink" href="#Best-practice-of-writing-custom-GNN-modules" title="Link to this heading"></a></h2>
@@ -737,7 +869,7 @@ In epoch 195, loss: 0.003, val acc: 0.768 (best 0.768), test acc: 0.773 (best 0.
 <section id="What’s-next?">
 <h2>What’s next?<a class="headerlink" href="#What’s-next?" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">Writing</span> <span class="pre">Efficient</span> <span class="pre">Message</span> <span class="pre">Passing</span>&#160;&#160;&#160; <span class="pre">Code</span> <span class="pre">&lt;guide-message-passing-efficient&gt;</span></code>.</p></li>
+<li><p><a class="reference external" href="../../guide/message-efficient.html#guide-message-passing-efficient">Writing Efficient Message Passing Code.</a></p></li>
 </ul>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:

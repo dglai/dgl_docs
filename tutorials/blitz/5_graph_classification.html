@@ -13,7 +13,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=0bf289b5" />
 
   
@@ -29,7 +29,6 @@
         <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
         <script src="../../_static/copybutton.js?v=ccdb6887"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -64,7 +63,7 @@
               <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Install and Setup</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">A Blitz Introduction to DGL</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">A Blitz ntroduction to DGL</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="1_introduction.html">Node Classification with DGL</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2_dglgraph.html">How Does DGL Represent A Graph?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="3_message_passing.html">Write your own GNN module</a></li>
@@ -143,7 +142,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">A Blitz Introduction to DGL</a></li>
+          <li class="breadcrumb-item"><a href="index.html">A Blitz ntroduction to DGL</a></li>
       <li class="breadcrumb-item active">Training a GNN for Graph Classification</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/tutorials/blitz/5_graph_classification.ipynb.txt" rel="nofollow"> View page source</a>
@@ -260,9 +259,9 @@ Number of graph categories: 2
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[Graph(num_nodes=124, num_edges=566,
+[Graph(num_nodes=220, num_edges=904,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), tensor([0, 0, 0, 0, 0])]
+      edata_schemes={}), tensor([0, 0, 0, 1, 1])]
 </pre></div></div>
 </div>
 <p>As each element in <code class="docutils literal notranslate"><span class="pre">dataset</span></code> has a graph and a label, the <code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code> will return two objects for each iteration. The first element is the batched graph, and the second element is simply a label vector representing the category of each graph in the mini-batch. Next, we’ll talked about the batched graph.</p>
@@ -297,18 +296,18 @@ nodes and edges of each graph element.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Number of nodes for each graph element in the batch: tensor([14,  9, 22, 31, 48])
-Number of edges for each graph element in the batch: tensor([ 78,  41, 106, 145, 196])
+Number of nodes for each graph element in the batch: tensor([ 27,  27,  20, 140,   6])
+Number of edges for each graph element in the batch: tensor([125, 141, 104, 506,  28])
 The original graphs in the minibatch:
-[Graph(num_nodes=14, num_edges=78,
+[Graph(num_nodes=27, num_edges=125,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), Graph(num_nodes=9, num_edges=41,
+      edata_schemes={}), Graph(num_nodes=27, num_edges=141,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), Graph(num_nodes=22, num_edges=106,
+      edata_schemes={}), Graph(num_nodes=20, num_edges=104,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), Graph(num_nodes=31, num_edges=145,
+      edata_schemes={}), Graph(num_nodes=140, num_edges=506,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), Graph(num_nodes=48, num_edges=196,
+      edata_schemes={}), Graph(num_nodes=6, num_edges=28,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
       edata_schemes={})]
 </pre></div></div>
@@ -379,7 +378,7 @@ The original graphs in the minibatch:
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Test accuracy: 0.26905829596412556
+Test accuracy: 0.36771300448430494
 </pre></div></div>
 </div>
 </section>
