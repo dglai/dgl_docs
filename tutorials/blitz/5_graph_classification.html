@@ -29,6 +29,7 @@
         <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
         <script src="../../_static/copybutton.js?v=ccdb6887"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -259,9 +260,9 @@ Number of graph categories: 2
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[Graph(num_nodes=159, num_edges=741,
+[Graph(num_nodes=174, num_edges=874,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), tensor([0, 0, 0, 0, 0])]
+      edata_schemes={}), tensor([0, 1, 0, 0, 0])]
 </pre></div></div>
 </div>
 <p>As each element in <code class="docutils literal notranslate"><span class="pre">dataset</span></code> has a graph and a label, the <code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code> will return two objects for each iteration. The first element is the batched graph, and the second element is simply a label vector representing the category of each graph in the mini-batch. Next, we’ll talked about the batched graph.</p>
@@ -296,18 +297,18 @@ nodes and edges of each graph element.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Number of nodes for each graph element in the batch: tensor([14, 54, 24, 40, 27])
-Number of edges for each graph element in the batch: tensor([ 64, 262, 108, 174, 133])
+Number of nodes for each graph element in the batch: tensor([99,  4, 27, 23, 21])
+Number of edges for each graph element in the batch: tensor([485,  16, 151, 105, 117])
 The original graphs in the minibatch:
-[Graph(num_nodes=14, num_edges=64,
+[Graph(num_nodes=99, num_edges=485,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), Graph(num_nodes=54, num_edges=262,
+      edata_schemes={}), Graph(num_nodes=4, num_edges=16,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), Graph(num_nodes=24, num_edges=108,
+      edata_schemes={}), Graph(num_nodes=27, num_edges=151,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), Graph(num_nodes=40, num_edges=174,
+      edata_schemes={}), Graph(num_nodes=23, num_edges=105,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), Graph(num_nodes=27, num_edges=133,
+      edata_schemes={}), Graph(num_nodes=21, num_edges=117,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
       edata_schemes={})]
 </pre></div></div>
@@ -378,7 +379,7 @@ The original graphs in the minibatch:
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Test accuracy: 0.15246636771300448
+Test accuracy: 0.2645739910313901
 </pre></div></div>
 </div>
 </section>
