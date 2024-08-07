@@ -182,7 +182,7 @@
 <section id="Overview-of-Graph-Classification-with-GNN">
 <h2>Overview of Graph Classification with GNN<a class="headerlink" href="#Overview-of-Graph-Classification-with-GNN" title="Link to this heading"></a></h2>
 <p>Graph classification or regression requires a model to predict certain graph-level properties of a single graph given its node and edge features. Molecular property prediction is one particular application.</p>
-<p>This tutorial shows how to train a graph classification model for a small dataset from the paper <a class="reference external" href="https://arxiv.org/abs/1810.00826">How Powerful Are Graph Neural Networks</a>_.</p>
+<p>This tutorial shows how to train a graph classification model for a small dataset from the paper <a class="reference external" href="https://arxiv.org/abs/1810.00826">How Powerful Are Graph Neural Networks</a>.</p>
 </section>
 <section id="Loading-Data">
 <h2>Loading Data<a class="headerlink" href="#Loading-Data" title="Link to this heading"></a></h2>
@@ -221,7 +221,7 @@ Number of graph categories: 2
 <section id="Defining-Data-Loader">
 <h2>Defining Data Loader<a class="headerlink" href="#Defining-Data-Loader" title="Link to this heading"></a></h2>
 <p>A graph classification dataset usually contains two types of elements: a set of graphs, and their graph-level labels. Similar to an image classification task, when the dataset is large enough, we need to train with mini-batches. When you train a model for image classification or language modeling, you will use a <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code> to iterate over the dataset. In DGL, you can use the <code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code>.</p>
-<p>You can also use various dataset samplers provided in <a class="reference external" href="https://pytorch.org/docs/stable/data.html#data-loading-order-and-sampler">torch.utils.data.sampler</a>_. For example, this tutorial creates a training <code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code> and test <code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code>, using <code class="docutils literal notranslate"><span class="pre">SubsetRandomSampler</span></code> to tell PyTorch to sample from only a subset of the dataset.</p>
+<p>You can also use various dataset samplers provided in <a class="reference external" href="https://pytorch.org/docs/stable/data.html#data-loading-order-and-sampler">torch.utils.data.sampler</a>. For example, this tutorial creates a training <code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code> and test <code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code>, using <code class="docutils literal notranslate"><span class="pre">SubsetRandomSampler</span></code> to tell PyTorch to sample from only a subset of the dataset.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
@@ -259,16 +259,16 @@ Number of graph categories: 2
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[Graph(num_nodes=220, num_edges=904,
+[Graph(num_nodes=159, num_edges=741,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), tensor([0, 0, 0, 1, 1])]
+      edata_schemes={}), tensor([0, 0, 0, 0, 0])]
 </pre></div></div>
 </div>
 <p>As each element in <code class="docutils literal notranslate"><span class="pre">dataset</span></code> has a graph and a label, the <code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code> will return two objects for each iteration. The first element is the batched graph, and the second element is simply a label vector representing the category of each graph in the mini-batch. Next, we’ll talked about the batched graph.</p>
 </section>
 <section id="A-Batched-Graph-in-DGL">
 <h2>A Batched Graph in DGL<a class="headerlink" href="#A-Batched-Graph-in-DGL" title="Link to this heading"></a></h2>
-<p>In each mini-batch, the sampled graphs are combined into a single bigger batched graph via <code class="docutils literal notranslate"><span class="pre">dgl.batch</span></code>. The single bigger batched graph merges all original graphs as separately connected components, with the node and edge features concatenated. This bigger graph is also a <code class="docutils literal notranslate"><span class="pre">DGLGraph</span></code> instance (so you can still treat it as a normal <code class="docutils literal notranslate"><span class="pre">DGLGraph</span></code> object as in <a class="reference internal" href="2_dglgraph.html"><span class="doc">here</span></a>_). It however contains the information necessary for recovering the original graphs, such as the number of
+<p>In each mini-batch, the sampled graphs are combined into a single bigger batched graph via <code class="docutils literal notranslate"><span class="pre">dgl.batch</span></code>. The single bigger batched graph merges all original graphs as separately connected components, with the node and edge features concatenated. This bigger graph is also a <code class="docutils literal notranslate"><span class="pre">DGLGraph</span></code> instance (so you can still treat it as a normal <code class="docutils literal notranslate"><span class="pre">DGLGraph</span></code> object as in <a class="reference internal" href="2_dglgraph.html"><span class="doc">here</span></a>). It however contains the information necessary for recovering the original graphs, such as the number of
 nodes and edges of each graph element.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -296,18 +296,18 @@ nodes and edges of each graph element.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Number of nodes for each graph element in the batch: tensor([ 27,  27,  20, 140,   6])
-Number of edges for each graph element in the batch: tensor([125, 141, 104, 506,  28])
+Number of nodes for each graph element in the batch: tensor([14, 54, 24, 40, 27])
+Number of edges for each graph element in the batch: tensor([ 64, 262, 108, 174, 133])
 The original graphs in the minibatch:
-[Graph(num_nodes=27, num_edges=125,
+[Graph(num_nodes=14, num_edges=64,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), Graph(num_nodes=27, num_edges=141,
+      edata_schemes={}), Graph(num_nodes=54, num_edges=262,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), Graph(num_nodes=20, num_edges=104,
+      edata_schemes={}), Graph(num_nodes=24, num_edges=108,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), Graph(num_nodes=140, num_edges=506,
+      edata_schemes={}), Graph(num_nodes=40, num_edges=174,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), Graph(num_nodes=6, num_edges=28,
+      edata_schemes={}), Graph(num_nodes=27, num_edges=133,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
       edata_schemes={})]
 </pre></div></div>
@@ -315,7 +315,7 @@ The original graphs in the minibatch:
 </section>
 <section id="Define-Model">
 <h2>Define Model<a class="headerlink" href="#Define-Model" title="Link to this heading"></a></h2>
-<p>This tutorial will build a two-layer <a class="reference external" href="http://tkipf.github.io/graph-convolutional-networks/">Graph Convolutional Network (GCN)</a>_. Each of its layer computes new node representations by aggregating neighbor information. If you have gone through the :doc:<code class="docutils literal notranslate"><span class="pre">introduction</span> <span class="pre">&lt;1_introduction&gt;</span></code>, you will notice two differences:</p>
+<p>This tutorial will build a two-layer <a class="reference external" href="http://tkipf.github.io/graph-convolutional-networks/">Graph Convolutional Network (GCN)</a>. Each of its layer computes new node representations by aggregating neighbor information. If you have gone through the <a class="reference external" href="1_introduction">introduction</a>, you will notice two differences:</p>
 <ul class="simple">
 <li><p>Since the task is to predict a single category for the <em>entire graph</em> instead of for every node, you will need to aggregate the representations of all the nodes and potentially the edges to form a graph-level representation. Such process is more commonly referred as a <em>readout</em>. A simple choice is to average the node features of a graph with <code class="docutils literal notranslate"><span class="pre">dgl.mean_nodes()</span></code>.</p></li>
 <li><p>The input graph to the model will be a batched graph yielded by the <code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code>. The readout functions provided by DGL can handle batched graphs so that they will return one representation for each minibatch element.</p></li>
@@ -378,14 +378,14 @@ The original graphs in the minibatch:
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Test accuracy: 0.36771300448430494
+Test accuracy: 0.15246636771300448
 </pre></div></div>
 </div>
 </section>
 <section id="What’s-next">
 <h2>What’s next<a class="headerlink" href="#What’s-next" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>See <a class="reference external" href="https://github.com/dmlc/dgl/tree/master/examples/pytorch/gin">GIN example</a>_ for an end-to-end graph classification model.</p></li>
+<li><p>See <a class="reference external" href="https://github.com/dmlc/dgl/tree/master/examples/pytorch/gin">GIN example</a> for an end-to-end graph classification model.</p></li>
 </ul>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:

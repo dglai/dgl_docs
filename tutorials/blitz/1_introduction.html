@@ -181,8 +181,8 @@
 <section id="Overview-of-Node-Classification-with-GNN">
 <h2>Overview of Node Classification with GNN<a class="headerlink" href="#Overview-of-Node-Classification-with-GNN" title="Link to this heading"></a></h2>
 <p>One of the most popular and widely adopted tasks on graph data is node classification, where a model needs to predict the ground truth category of each node. Before graph neural networks, many proposed methods are using either connectivity alone (such as DeepWalk or node2vec), or simple combinations of connectivity and the node’s own features. GNNs, by contrast, offers an opportunity to obtain node representations by combining the connectivity and features of a <em>local neighborhood</em>.</p>
-<p><a class="reference external" href="https://arxiv.org/abs/1609.02907">Kipf et al.,</a>_ is an example that formulates the node classification problem as a semi-supervised node classification task. With the help of only a small portion of labeled nodes, a graph neural network (GNN) can accurately predict the node category of the others.</p>
-<p>This tutorial will show how to build such a GNN for semi-supervised node classification with only a small number of labels on the Cora dataset, a citation network with papers as nodes and citations as edges. The task is to predict the category of a given paper. Each paper node contains a word count vector as its features, normalized so that they sum up to one, as described in Section 5.2 of <a class="reference external" href="https://arxiv.org/abs/1609.02907">the paper</a>_.</p>
+<p><a class="reference external" href="https://arxiv.org/abs/1609.02907">Kipf et al.,</a> is an example that formulates the node classification problem as a semi-supervised node classification task. With the help of only a small portion of labeled nodes, a graph neural network (GNN) can accurately predict the node category of the others.</p>
+<p>This tutorial will show how to build such a GNN for semi-supervised node classification with only a small number of labels on the Cora dataset, a citation network with papers as nodes and citations as edges. The task is to predict the category of a given paper. Each paper node contains a word count vector as its features, normalized so that they sum up to one, as described in Section 5.2 of <a class="reference external" href="https://arxiv.org/abs/1609.02907">the paper</a>.</p>
 </section>
 <section id="Loading-Cora-Dataset">
 <h2>Loading Cora Dataset<a class="headerlink" href="#Loading-Cora-Dataset" title="Link to this heading"></a></h2>
@@ -259,7 +259,7 @@ Edge features
 </section>
 <section id="Defining-a-Graph-Convolutional-Network-(GCN)">
 <h2>Defining a Graph Convolutional Network (GCN)<a class="headerlink" href="#Defining-a-Graph-Convolutional-Network-(GCN)" title="Link to this heading"></a></h2>
-<p>This tutorial will build a two-layer <a class="reference external" href="http://tkipf.github.io/graph-convolutional-networks/">Graph Convolutional Network (GCN)</a>_. Each layer computes new node representations by aggregating neighbor information.</p>
+<p>This tutorial will build a two-layer <a class="reference external" href="http://tkipf.github.io/graph-convolutional-networks/">Graph Convolutional Network (GCN)</a>. Each layer computes new node representations by aggregating neighbor information.</p>
 <p>To build a multi-layer GCN you can simply stack <code class="docutils literal notranslate"><span class="pre">dgl.nn.GraphConv</span></code> modules, which inherit <code class="docutils literal notranslate"><span class="pre">torch.nn.Module</span></code>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -347,14 +347,14 @@ Edge features
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 0, loss: 1.946, val acc: 0.114 (best 0.114), test acc: 0.085 (best 0.085)
-In epoch 5, loss: 1.896, val acc: 0.494 (best 0.526), test acc: 0.465 (best 0.491)
-In epoch 10, loss: 1.816, val acc: 0.592 (best 0.592), test acc: 0.601 (best 0.601)
-In epoch 15, loss: 1.711, val acc: 0.646 (best 0.646), test acc: 0.632 (best 0.632)
-In epoch 20, loss: 1.582, val acc: 0.658 (best 0.658), test acc: 0.650 (best 0.650)
-In epoch 25, loss: 1.432, val acc: 0.676 (best 0.676), test acc: 0.681 (best 0.681)
-In epoch 30, loss: 1.266, val acc: 0.686 (best 0.686), test acc: 0.700 (best 0.700)
-In epoch 35, loss: 1.093, val acc: 0.696 (best 0.696), test acc: 0.719 (best 0.719)
+In epoch 0, loss: 1.946, val acc: 0.130 (best 0.130), test acc: 0.146 (best 0.146)
+In epoch 5, loss: 1.883, val acc: 0.380 (best 0.440), test acc: 0.424 (best 0.431)
+In epoch 10, loss: 1.792, val acc: 0.502 (best 0.502), test acc: 0.549 (best 0.549)
+In epoch 15, loss: 1.679, val acc: 0.576 (best 0.576), test acc: 0.618 (best 0.618)
+In epoch 20, loss: 1.544, val acc: 0.644 (best 0.644), test acc: 0.692 (best 0.692)
+In epoch 25, loss: 1.392, val acc: 0.694 (best 0.694), test acc: 0.723 (best 0.723)
+In epoch 30, loss: 1.228, val acc: 0.724 (best 0.724), test acc: 0.749 (best 0.749)
+In epoch 35, loss: 1.058, val acc: 0.736 (best 0.738), test acc: 0.769 (best 0.761)
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -362,14 +362,14 @@ In epoch 35, loss: 1.093, val acc: 0.696 (best 0.696), test acc: 0.719 (best 0.7
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 40, loss: 0.924, val acc: 0.706 (best 0.706), test acc: 0.728 (best 0.728)
-In epoch 45, loss: 0.767, val acc: 0.718 (best 0.718), test acc: 0.741 (best 0.741)
-In epoch 50, loss: 0.629, val acc: 0.728 (best 0.728), test acc: 0.753 (best 0.753)
-In epoch 55, loss: 0.512, val acc: 0.746 (best 0.746), test acc: 0.764 (best 0.764)
-In epoch 60, loss: 0.415, val acc: 0.752 (best 0.752), test acc: 0.771 (best 0.769)
-In epoch 65, loss: 0.337, val acc: 0.770 (best 0.770), test acc: 0.783 (best 0.783)
-In epoch 70, loss: 0.275, val acc: 0.776 (best 0.776), test acc: 0.782 (best 0.783)
-In epoch 75, loss: 0.225, val acc: 0.774 (best 0.776), test acc: 0.789 (best 0.783)
+In epoch 40, loss: 0.893, val acc: 0.752 (best 0.752), test acc: 0.772 (best 0.772)
+In epoch 45, loss: 0.739, val acc: 0.754 (best 0.754), test acc: 0.771 (best 0.772)
+In epoch 50, loss: 0.604, val acc: 0.756 (best 0.756), test acc: 0.776 (best 0.776)
+In epoch 55, loss: 0.489, val acc: 0.760 (best 0.760), test acc: 0.778 (best 0.778)
+In epoch 60, loss: 0.395, val acc: 0.768 (best 0.768), test acc: 0.781 (best 0.781)
+In epoch 65, loss: 0.320, val acc: 0.780 (best 0.780), test acc: 0.782 (best 0.782)
+In epoch 70, loss: 0.260, val acc: 0.782 (best 0.782), test acc: 0.787 (best 0.785)
+In epoch 75, loss: 0.213, val acc: 0.782 (best 0.782), test acc: 0.784 (best 0.785)
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -377,10 +377,10 @@ In epoch 75, loss: 0.225, val acc: 0.774 (best 0.776), test acc: 0.789 (best 0.7
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 80, loss: 0.186, val acc: 0.776 (best 0.776), test acc: 0.791 (best 0.783)
-In epoch 85, loss: 0.155, val acc: 0.776 (best 0.776), test acc: 0.796 (best 0.783)
-In epoch 90, loss: 0.130, val acc: 0.772 (best 0.778), test acc: 0.793 (best 0.794)
-In epoch 95, loss: 0.110, val acc: 0.776 (best 0.778), test acc: 0.793 (best 0.794)
+In epoch 80, loss: 0.176, val acc: 0.786 (best 0.786), test acc: 0.781 (best 0.783)
+In epoch 85, loss: 0.146, val acc: 0.786 (best 0.786), test acc: 0.781 (best 0.783)
+In epoch 90, loss: 0.123, val acc: 0.784 (best 0.788), test acc: 0.780 (best 0.779)
+In epoch 95, loss: 0.105, val acc: 0.786 (best 0.788), test acc: 0.782 (best 0.779)
 </pre></div></div>
 </div>
 </section>

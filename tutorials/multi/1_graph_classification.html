@@ -162,7 +162,7 @@ labels = labels.to(device)
 <p>Intuitively, we can distribute the workload along the dimension of data. This allows multiple GPUs to perform the forward and backward computation of multiple gradient descents in parallel. To distribute a dataset across multiple GPUs, we need to partition it into multiple mutually exclusive subsets of a similar size, one per GPU. We need to repeat the random partition every epoch to guarantee randomness. We can use :func:<code class="docutils literal notranslate"><span class="pre">~dgl.dataloading.pytorch.GraphDataLoader</span></code>, which wraps some PyTorch
 APIs and does the job for graph classification in data loading.</p>
 <p>Once all GPUs have finished the backward computation for its minibatch, we need to synchronize the model parameter update across them. Specifically, this involves collecting gradients from all GPUs, averaging them and updating the model parameters on each GPU. We can wrap a PyTorch model with :func:<code class="docutils literal notranslate"><span class="pre">~torch.nn.parallel.DistributedDataParallel</span></code> so that the model parameter update will invoke gradient synchronization first under the hood.</p>
-<p><img alt="acb55caacec54f74b475c947acf2cf36" class="no-scaled-link" src="https://data.dgl.ai/tutorial/mgpu_gc.png" style="width: 450px;" /></p>
+<p><img alt="a9649160c4ac4fd1a885020f6beac3e8" class="no-scaled-link" src="https://data.dgl.ai/tutorial/mgpu_gc.png" style="width: 450px;" /></p>
 <p>That’s the core behind this tutorial. We will explore it more in detail with a complete example below.</p>
 <div class="admonition note">
 <div class="admonition-title fa fa-exclamation-circle"><h4></div><p>Note</p>

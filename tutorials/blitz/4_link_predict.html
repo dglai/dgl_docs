@@ -154,7 +154,7 @@
              
   <section id="Link-Prediction-using-Graph-Neural-Networks">
 <h1>Link Prediction using Graph Neural Networks<a class="headerlink" href="#Link-Prediction-using-Graph-Neural-Networks" title="Link to this heading"></a></h1>
-<p>In the :doc:<code class="docutils literal notranslate"><span class="pre">introduction</span> <span class="pre">&lt;1_introduction&gt;</span></code>, you have already learned the basic workflow of using GNNs for node classification, i.e. predicting the category of a node in a graph. This tutorial will teach you how to train a GNN for link prediction, i.e. predicting the existence of an edge between two arbitrary nodes in a graph.</p>
+<p>In the <a class="reference external" href="1_introduction">introduction</a>, you have already learned the basic workflow of using GNNs for node classification, i.e. predicting the category of a node in a graph. This tutorial will teach you how to train a GNN for link prediction, i.e. predicting the existence of an edge between two arbitrary nodes in a graph.</p>
 <p>By the end of this tutorial you will be able to</p>
 <ul class="simple">
 <li><p>Build a GNN-based link prediction model.</p></li>
@@ -192,13 +192,13 @@
 </ul>
 <div class="admonition note">
 <div class="admonition-title fa fa-exclamation-circle"><h4></div><p>Note</p>
-</h4><p><p>The practice comes from <a class="reference external" href="https://papers.nips.cc/paper/2018/file/53f0d7c537d99b3824f0f99d62ea2428-Paper.pdf">SEAL</a>_, although the model here does not use their idea of node labeling.</p>
+</h4><p><p>The practice comes from <a class="reference external" href="https://papers.nips.cc/paper/2018/file/53f0d7c537d99b3824f0f99d62ea2428-Paper.pdf">SEAL</a>, although the model here does not use their idea of node labeling.</p>
 </p></div>
 <p>In some domains such as large-scale recommender systems or information retrieval, you may favor metrics that emphasize good performance of top-K predictions. In these cases you may want to consider other metrics such as mean average precision, and use other negative sampling methods, which are beyond the scope of this tutorial.</p>
 </section>
 <section id="Loading-graph-and-features">
 <h2>Loading graph and features<a class="headerlink" href="#Loading-graph-and-features" title="Link to this heading"></a></h2>
-<p>Following the :doc:<code class="docutils literal notranslate"><span class="pre">introduction</span> <span class="pre">&lt;1_introduction&gt;</span></code>, this tutorial first loads the Cora dataset.</p>
+<p>Following the <a class="reference external" href="1_introduction">introduction</a>, this tutorial first loads the Cora dataset.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -274,7 +274,7 @@ Done loading data from cached files.
 </section>
 <section id="Define-a-GraphSAGE-model">
 <h2>Define a GraphSAGE model<a class="headerlink" href="#Define-a-GraphSAGE-model" title="Link to this heading"></a></h2>
-<p>This tutorial builds a model consisting of two <a class="reference external" href="https://arxiv.org/abs/1706.02216">GraphSAGE</a>_ layers, each computes new node representations by averaging neighbor information. DGL provides <code class="docutils literal notranslate"><span class="pre">dgl.nn.SAGEConv</span></code> that conveniently creates a GraphSAGE layer.</p>
+<p>This tutorial builds a model consisting of two <a class="reference external" href="https://arxiv.org/abs/1706.02216">GraphSAGE</a> layers, each computes new node representations by averaging neighbor information. DGL provides <code class="docutils literal notranslate"><span class="pre">dgl.nn.SAGEConv</span></code> that conveniently creates a GraphSAGE layer.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
@@ -385,7 +385,7 @@ can directly feed the node representations computed on the entire graph to the p
 </p></div>
 <div class="admonition note">
 <div class="admonition-title fa fa-exclamation-circle"><h4></div><p>Note</p>
-</h4><p><p>If you have read the :doc:<code class="docutils literal notranslate"><span class="pre">message</span> <span class="pre">passing</span>&#160;&#160;&#160; <span class="pre">tutorial</span> <span class="pre">&lt;3_message_passing&gt;</span></code>, you will notice that the argument <code class="docutils literal notranslate"><span class="pre">apply_edges</span></code> takes has exactly the same form as a message function in <code class="docutils literal notranslate"><span class="pre">update_all</span></code>.</p>
+</h4><p><p>If you have read the <a class="reference external" href="3_message_passing">message passing tutorial</a>, you will notice that the argument <code class="docutils literal notranslate"><span class="pre">apply_edges</span></code> takes has exactly the same form as a message function in <code class="docutils literal notranslate"><span class="pre">update_all</span></code>.</p>
 </p></div>
 </section>
 <section id="Training-loop">
@@ -472,11 +472,12 @@ can directly feed the node representations computed on the entire graph to the p
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 0, loss: 0.6967938542366028
-In epoch 5, loss: 0.683931291103363
-In epoch 10, loss: 0.6345721483230591
-In epoch 15, loss: 0.5463965535163879
-In epoch 20, loss: 0.49671149253845215
+In epoch 0, loss: 0.7056194543838501
+In epoch 5, loss: 0.6905152797698975
+In epoch 10, loss: 0.6757305264472961
+In epoch 15, loss: 0.6364702582359314
+In epoch 20, loss: 0.5719689726829529
+In epoch 25, loss: 0.5337627530097961
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -484,11 +485,12 @@ In epoch 20, loss: 0.49671149253845215
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 25, loss: 0.45883044600486755
-In epoch 30, loss: 0.43079835176467896
-In epoch 35, loss: 0.41132688522338867
-In epoch 40, loss: 0.3860461115837097
-In epoch 45, loss: 0.36524727940559387
+In epoch 30, loss: 0.5048756003379822
+In epoch 35, loss: 0.47809651494026184
+In epoch 40, loss: 0.4585602283477783
+In epoch 45, loss: 0.43933162093162537
+In epoch 50, loss: 0.4213399887084961
+In epoch 55, loss: 0.40327340364456177
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -496,12 +498,12 @@ In epoch 45, loss: 0.36524727940559387
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 50, loss: 0.34250250458717346
-In epoch 55, loss: 0.32106757164001465
-In epoch 60, loss: 0.29845190048217773
-In epoch 65, loss: 0.27582091093063354
-In epoch 70, loss: 0.2527374029159546
-In epoch 75, loss: 0.22997553646564484
+In epoch 60, loss: 0.38560420274734497
+In epoch 65, loss: 0.3675564229488373
+In epoch 70, loss: 0.3490712344646454
+In epoch 75, loss: 0.33022695779800415
+In epoch 80, loss: 0.3110397160053253
+In epoch 85, loss: 0.2913322150707245
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -509,10 +511,8 @@ In epoch 75, loss: 0.22997553646564484
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-In epoch 80, loss: 0.2073439508676529
-In epoch 85, loss: 0.1852315366268158
-In epoch 90, loss: 0.1637161821126938
-In epoch 95, loss: 0.1429675966501236
+In epoch 90, loss: 0.2706688344478607
+In epoch 95, loss: 0.24967224895954132
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -520,7 +520,7 @@ In epoch 95, loss: 0.1429675966501236
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-AUC 0.858042721412367
+AUC 0.8547669639046742
 </pre></div></div>
 </div>
 </section>
