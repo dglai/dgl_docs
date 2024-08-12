@@ -13,7 +13,7 @@
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/nbsphinx-code-cells.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=0bf289b5" />
 
   
@@ -166,7 +166,7 @@
 <p>where <span class="math notranslate nohighlight">\(\mathcal{N}(i)\)</span> is the set of its one-hop neighbors (to include <span class="math notranslate nohighlight">\(v_i\)</span> in the set, simply add a self-loop to each node), <span class="math notranslate nohighlight">\(c_{ij}=\sqrt{|\mathcal{N}(i)|}\sqrt{|\mathcal{N}(j)|}\)</span> is a normalization constant based on graph structure, <span class="math notranslate nohighlight">\(\sigma\)</span> is an activation function (GCN uses ReLU), and <span class="math notranslate nohighlight">\(W^{(l)}\)</span> is a shared weight matrix for node-wise feature transformation. Another model proposed in
 <a class="reference external" href="https://www-cs-faculty.stanford.edu/people/jure/pubs/graphsage-nips17.pdf">GraphSAGE</a> employs the same update rule except that they set <span class="math notranslate nohighlight">\(c_{ij}=|\mathcal{N}(i)|\)</span>.</p>
 <p>GAT introduces the attention mechanism as a substitute for the statically normalized convolution operation. Below are the equations to compute the node embedding <span class="math notranslate nohighlight">\(h_i^{(l+1)}\)</span> of layer <span class="math notranslate nohighlight">\(l+1\)</span> from the embeddings of layer <span class="math notranslate nohighlight">\(l\)</span>.</p>
-<p><img alt="7e71c0aa68d84cfd9bebaa5971261153" class="no-scaled-link" src="https://data.dgl.ai/tutorial/gat/gat.png" style="width: 450px;" /></p>
+<p><img alt="f2aed979023b4eebaae4f936b44ad472" class="no-scaled-link" src="https://data.dgl.ai/tutorial/gat/gat.png" style="width: 450px;" /></p>
 <dl class="simple">
 <dt>:nbsphinx-math:<a href="#id1"><span class="problematic" id="id2">`</span></a>begin{align}begin{align}</dt><dd><p>z_i^{(l)}&amp;=W^{(l)}h_i^{(l)},&amp;(1) \
 e_{ij}^{(l)}&amp;=text{LeakyReLU}(vec a^{(l)^T}(z_i^{(l)}||z_j^{(l)})),&amp;(2)\
@@ -460,8 +460,8 @@ Done loading data from cached files.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Epoch 00000 | Loss 1.9461 | Time(s) nan
-Epoch 00001 | Loss 1.9440 | Time(s) nan
+Epoch 00000 | Loss 1.9481 | Time(s) nan
+Epoch 00001 | Loss 1.9463 | Time(s) nan
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -469,8 +469,8 @@ Epoch 00001 | Loss 1.9440 | Time(s) nan
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Epoch 00002 | Loss 1.9419 | Time(s) nan
-Epoch 00003 | Loss 1.9398 | Time(s) 0.1051
+Epoch 00002 | Loss 1.9445 | Time(s) nan
+Epoch 00003 | Loss 1.9427 | Time(s) 0.1151
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -478,8 +478,8 @@ Epoch 00003 | Loss 1.9398 | Time(s) 0.1051
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Epoch 00004 | Loss 1.9376 | Time(s) 0.1040
-Epoch 00005 | Loss 1.9355 | Time(s) 0.1062
+Epoch 00004 | Loss 1.9410 | Time(s) 0.1101
+Epoch 00005 | Loss 1.9392 | Time(s) 0.1072
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -487,8 +487,8 @@ Epoch 00005 | Loss 1.9355 | Time(s) 0.1062
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Epoch 00006 | Loss 1.9334 | Time(s) 0.1085
-Epoch 00007 | Loss 1.9313 | Time(s) 0.1087
+Epoch 00006 | Loss 1.9374 | Time(s) 0.1062
+Epoch 00007 | Loss 1.9356 | Time(s) 0.1054
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -496,8 +496,8 @@ Epoch 00007 | Loss 1.9313 | Time(s) 0.1087
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Epoch 00008 | Loss 1.9291 | Time(s) 0.1079
-Epoch 00009 | Loss 1.9270 | Time(s) 0.1071
+Epoch 00008 | Loss 1.9339 | Time(s) 0.1054
+Epoch 00009 | Loss 1.9321 | Time(s) 0.1050
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -505,8 +505,8 @@ Epoch 00009 | Loss 1.9270 | Time(s) 0.1071
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Epoch 00010 | Loss 1.9249 | Time(s) 0.1066
-Epoch 00011 | Loss 1.9227 | Time(s) 0.1061
+Epoch 00010 | Loss 1.9303 | Time(s) 0.1047
+Epoch 00011 | Loss 1.9285 | Time(s) 0.1045
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -514,8 +514,8 @@ Epoch 00011 | Loss 1.9227 | Time(s) 0.1061
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Epoch 00012 | Loss 1.9206 | Time(s) 0.1059
-Epoch 00013 | Loss 1.9184 | Time(s) 0.1057
+Epoch 00012 | Loss 1.9267 | Time(s) 0.1043
+Epoch 00013 | Loss 1.9249 | Time(s) 0.1041
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -523,8 +523,8 @@ Epoch 00013 | Loss 1.9184 | Time(s) 0.1057
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Epoch 00014 | Loss 1.9163 | Time(s) 0.1055
-Epoch 00015 | Loss 1.9141 | Time(s) 0.1053
+Epoch 00014 | Loss 1.9231 | Time(s) 0.1040
+Epoch 00015 | Loss 1.9212 | Time(s) 0.1038
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -532,8 +532,8 @@ Epoch 00015 | Loss 1.9141 | Time(s) 0.1053
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Epoch 00016 | Loss 1.9120 | Time(s) 0.1051
-Epoch 00017 | Loss 1.9098 | Time(s) 0.1050
+Epoch 00016 | Loss 1.9194 | Time(s) 0.1038
+Epoch 00017 | Loss 1.9175 | Time(s) 0.1037
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -541,8 +541,8 @@ Epoch 00017 | Loss 1.9098 | Time(s) 0.1050
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Epoch 00018 | Loss 1.9076 | Time(s) 0.1049
-Epoch 00019 | Loss 1.9054 | Time(s) 0.1048
+Epoch 00018 | Loss 1.9157 | Time(s) 0.1036
+Epoch 00019 | Loss 1.9138 | Time(s) 0.1036
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -550,8 +550,8 @@ Epoch 00019 | Loss 1.9054 | Time(s) 0.1048
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Epoch 00020 | Loss 1.9032 | Time(s) 0.1047
-Epoch 00021 | Loss 1.9009 | Time(s) 0.1046
+Epoch 00020 | Loss 1.9119 | Time(s) 0.1035
+Epoch 00021 | Loss 1.9100 | Time(s) 0.1034
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -559,8 +559,8 @@ Epoch 00021 | Loss 1.9009 | Time(s) 0.1046
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Epoch 00022 | Loss 1.8987 | Time(s) 0.1045
-Epoch 00023 | Loss 1.8965 | Time(s) 0.1048
+Epoch 00022 | Loss 1.9081 | Time(s) 0.1033
+Epoch 00023 | Loss 1.9062 | Time(s) 0.1037
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -568,8 +568,8 @@ Epoch 00023 | Loss 1.8965 | Time(s) 0.1048
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Epoch 00024 | Loss 1.8942 | Time(s) 0.1048
-Epoch 00025 | Loss 1.8920 | Time(s) 0.1047
+Epoch 00024 | Loss 1.9043 | Time(s) 0.1037
+Epoch 00025 | Loss 1.9024 | Time(s) 0.1036
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -577,8 +577,8 @@ Epoch 00025 | Loss 1.8920 | Time(s) 0.1047
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Epoch 00026 | Loss 1.8897 | Time(s) 0.1046
-Epoch 00027 | Loss 1.8874 | Time(s) 0.1046
+Epoch 00026 | Loss 1.9004 | Time(s) 0.1036
+Epoch 00027 | Loss 1.8984 | Time(s) 0.1036
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -586,8 +586,8 @@ Epoch 00027 | Loss 1.8874 | Time(s) 0.1046
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Epoch 00028 | Loss 1.8851 | Time(s) 0.1045
-Epoch 00029 | Loss 1.8828 | Time(s) 0.1044
+Epoch 00028 | Loss 1.8965 | Time(s) 0.1035
+Epoch 00029 | Loss 1.8945 | Time(s) 0.1035
 </pre></div></div>
 </div>
 </section>
@@ -626,14 +626,14 @@ Epoch 00029 | Loss 1.8828 | Time(s) 0.1044
 </ul>
 <p><em>What kind of attention distribution has our model learned?</em></p>
 <p>Because the attention weight <span class="math notranslate nohighlight">\(a_{ij}\)</span> is associated with edges, you can visualize it by coloring edges. Below you can pick a subgraph of Cora and plot the attention weights of the last <code class="docutils literal notranslate"><span class="pre">GATLayer</span></code>. The nodes are colored according to their labels, whereas the edges are colored according to the magnitude of the attention weights, which can be referred with the colorbar on the right.</p>
-<p><img alt="496a5bdd1f4d4238885fac69226816d5" class="no-scaled-link" src="https://data.dgl.ai/tutorial/gat/cora-attention.png" style="width: 600px;" /></p>
+<p><img alt="ed7a2b0c02f24f45b6856536794e802f" class="no-scaled-link" src="https://data.dgl.ai/tutorial/gat/cora-attention.png" style="width: 600px;" /></p>
 <p>You can see that the model seems to learn different attention weights. To understand the distribution more thoroughly, measure the <a class="reference external" href="https://en.wikipedia.org/wiki/Entropy_(information_theory)">entropy</a> of the attention distribution. For any node <span class="math notranslate nohighlight">\(i\)</span>, <span class="math notranslate nohighlight">\(\{\alpha_{ij}\}_{j\in\mathcal{N}(i)}\)</span> forms a discrete probability distribution over all its neighbors with the entropy given by</p>
 <p><span class="math">\begin{align}H({\alpha_{ij}}_{j\in\mathcal{N}(i)})=-\sum_{j\in\mathcal{N}(i)} \alpha_{ij}\log\alpha_{ij}\end{align}</span></p>
 <p>A low entropy means a high degree of concentration, and vice versa. An entropy of 0 means all attention is on one source node. The uniform distribution has the highest entropy of <span class="math notranslate nohighlight">\(\log(\mathcal{N}(i))\)</span>. Ideally, you want to see the model learns a distribution of lower entropy (i.e, one or two neighbors are much more important than the others).</p>
 <p>Note that since nodes can have different degrees, the maximum entropy will also be different. Therefore, you plot the aggregated histogram of entropy values of all nodes in the entire graph. Below are the attention histogram of learned by each attention head.</p>
 <p>|image2|</p>
 <p>As a reference, here is the histogram if all the nodes have uniform attention weight distribution.</p>
-<p><img alt="a37e91e7afd0488a8d4c59578d406eef" class="no-scaled-link" src="https://data.dgl.ai/tutorial/gat/cora-attention-uniform-hist.png" style="width: 250px;" /></p>
+<p><img alt="3e53769b77e54314aea204c88a167005" class="no-scaled-link" src="https://data.dgl.ai/tutorial/gat/cora-attention-uniform-hist.png" style="width: 250px;" /></p>
 <p>One can see that <strong>the attention values learned is quite similar to uniform distribution</strong> (i.e, all neighbors are equally important). This partially explains why the performance of GAT is close to that of GCN on Cora (according to <a class="reference external" href="https://arxiv.org/pdf/1710.10903.pdf">author’s reported result</a>, the accuracy difference averaged over 100 runs is less than 2 percent). Attention does not matter since it does not differentiate much.</p>
 <p><em>Does that mean the attention mechanism is not useful?</em> No! A different dataset exhibits an entirely different pattern, as you can see next.</p>
 </section>
@@ -684,7 +684,7 @@ F1_{micro}=2\frac{precision*recall}{precision+recall}
 </p></div></li>
 </ul>
 <p>During training, use <code class="docutils literal notranslate"><span class="pre">BCEWithLogitsLoss</span></code> as the loss function. The learning curves of GAT and GCN are presented below; what is evident is the dramatic performance adavantage of GAT over GCN.</p>
-<p><img alt="4e6c191857d144d28c57fc1bbc0ecadb" class="no-scaled-link" src="https://data.dgl.ai/tutorial/gat/ppi-curve.png" style="width: 300px;" /></p>
+<p><img alt="86dcbd994820443c99ba397bf09de30f" class="no-scaled-link" src="https://data.dgl.ai/tutorial/gat/ppi-curve.png" style="width: 300px;" /></p>
 <p>As before, you can have a statistical understanding of the attentions learned by showing the histogram plot for the node-wise attention entropy. Below are the attention histograms learned by different attention layers.</p>
 <p><em>Attention learned in layer 1:</em></p>
 <p>|image5|</p>
@@ -693,7 +693,7 @@ F1_{micro}=2\frac{precision*recall}{precision+recall}
 <p><em>Attention learned in final layer:</em></p>
 <p>|image7|</p>
 <p>Again, comparing with uniform distribution:</p>
-<p><img alt="8edefaccacf5462e8f60501062d8ac2f" class="no-scaled-link" src="https://data.dgl.ai/tutorial/gat/ppi-uniform-hist.png" style="width: 250px;" /></p>
+<p><img alt="fdab1dda8c8c4d4fb745530eff9e2a5d" class="no-scaled-link" src="https://data.dgl.ai/tutorial/gat/ppi-uniform-hist.png" style="width: 250px;" /></p>
 <p>Clearly, <strong>GAT does learn sharp attention weights</strong>! There is a clear pattern over the layers as well: <strong>the attention gets sharper with a higher layer</strong>.</p>
 <p>Unlike the Cora dataset where GAT’s gain is minimal at best, for PPI there is a significant performance gap between GAT and other GNN variants compared in <a class="reference external" href="https://arxiv.org/pdf/1710.10903.pdf">the GAT paper</a> (at least 20 percent), and the attention distributions between the two clearly differ. While this deserves further research, one immediate conclusion is that GAT’s advantage lies perhaps more in its ability to handle a graph with more complex neighborhood structure.</p>
 </section>

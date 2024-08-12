@@ -13,7 +13,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=0bf289b5" />
 
   
@@ -260,9 +260,9 @@ Number of graph categories: 2
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[Graph(num_nodes=174, num_edges=874,
+[Graph(num_nodes=160, num_edges=764,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), tensor([0, 1, 0, 0, 0])]
+      edata_schemes={}), tensor([0, 0, 0, 1, 0])]
 </pre></div></div>
 </div>
 <p>As each element in <code class="docutils literal notranslate"><span class="pre">dataset</span></code> has a graph and a label, the <code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code> will return two objects for each iteration. The first element is the batched graph, and the second element is simply a label vector representing the category of each graph in the mini-batch. Next, we’ll talked about the batched graph.</p>
@@ -297,18 +297,18 @@ nodes and edges of each graph element.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Number of nodes for each graph element in the batch: tensor([99,  4, 27, 23, 21])
-Number of edges for each graph element in the batch: tensor([485,  16, 151, 105, 117])
+Number of nodes for each graph element in the batch: tensor([22, 36, 55, 33, 14])
+Number of edges for each graph element in the batch: tensor([106, 178, 249, 155,  76])
 The original graphs in the minibatch:
-[Graph(num_nodes=99, num_edges=485,
+[Graph(num_nodes=22, num_edges=106,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), Graph(num_nodes=4, num_edges=16,
+      edata_schemes={}), Graph(num_nodes=36, num_edges=178,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), Graph(num_nodes=27, num_edges=151,
+      edata_schemes={}), Graph(num_nodes=55, num_edges=249,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), Graph(num_nodes=23, num_edges=105,
+      edata_schemes={}), Graph(num_nodes=33, num_edges=155,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), Graph(num_nodes=21, num_edges=117,
+      edata_schemes={}), Graph(num_nodes=14, num_edges=76,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
       edata_schemes={})]
 </pre></div></div>
@@ -379,7 +379,7 @@ The original graphs in the minibatch:
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Test accuracy: 0.2645739910313901
+Test accuracy: 0.25112107623318386
 </pre></div></div>
 </div>
 </section>
