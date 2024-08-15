@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Computation times &mdash; DGL 2.4 documentation</title>
+  <title>A Blitz Introduction to DGL &mdash; DGL 2.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
@@ -29,9 +29,13 @@
         <script src="../../_static/copybutton.js?v=ccdb6887"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Node Classification with DGL" href="1_introduction.html" />
+    <link rel="prev" title="Install and Setup" href="../../install/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -57,9 +61,17 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Install and Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html">A Blitz Introduction to DGL</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">A Blitz Introduction to DGL</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="1_introduction.html">Node Classification with DGL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_dglgraph.html">How Does DGL Represent A Graph?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_message_passing.html">Write your own GNN module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_link_predict.html">Link Prediction using Graph Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_graph_classification.html">Training a GNN for Graph Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6_load_data.html">Make Your Own Dataset</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Advanced Materials</span></p>
 <ul>
@@ -121,9 +133,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Computation times</li>
+      <li class="breadcrumb-item active">A Blitz Introduction to DGL</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/tutorials/blitz/sg_execution_times.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/tutorials/blitz/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -131,62 +143,38 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="computation-times">
-<span id="sphx-glr-tutorials-blitz-sg-execution-times"></span><h1>Computation times<a class="headerlink" href="#computation-times" title="Link to this heading"></a></h1>
-<p><strong>00:26.607</strong> total execution time for 6 files <strong>from tutorials/blitz</strong>:</p>
-<div class="docutils container">
-<style scoped>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
-<link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
-</style>
-<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-<script type="text/javascript" class="init">
-$(document).ready( function () {
-    $('table.sg-datatable').DataTable({order: [[1, 'desc']]});
-} );
-</script><table class="table table-striped sg-datatable docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Example</p></th>
-<th class="head"><p>Time</p></th>
-<th class="head"><p>Mem (MB)</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><a class="reference internal" href="5_graph_classification.html#sphx-glr-tutorials-blitz-5-graph-classification-py"><span class="std std-ref">Training a GNN for Graph Classification</span></a> (<code class="docutils literal notranslate"><span class="pre">5_graph_classification.py</span></code>)</p></td>
-<td><p>00:20.330</p></td>
-<td><p>0.0</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="3_message_passing.html#sphx-glr-tutorials-blitz-3-message-passing-py"><span class="std std-ref">Write your own GNN module</span></a> (<code class="docutils literal notranslate"><span class="pre">3_message_passing.py</span></code>)</p></td>
-<td><p>00:03.819</p></td>
-<td><p>0.0</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="4_link_predict.html#sphx-glr-tutorials-blitz-4-link-predict-py"><span class="std std-ref">Link Prediction using Graph Neural Networks</span></a> (<code class="docutils literal notranslate"><span class="pre">4_link_predict.py</span></code>)</p></td>
-<td><p>00:01.249</p></td>
-<td><p>0.0</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="1_introduction.html#sphx-glr-tutorials-blitz-1-introduction-py"><span class="std std-ref">Node Classification with DGL</span></a> (<code class="docutils literal notranslate"><span class="pre">1_introduction.py</span></code>)</p></td>
-<td><p>00:00.977</p></td>
-<td><p>0.0</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="6_load_data.html#sphx-glr-tutorials-blitz-6-load-data-py"><span class="std std-ref">Make Your Own Dataset</span></a> (<code class="docutils literal notranslate"><span class="pre">6_load_data.py</span></code>)</p></td>
-<td><p>00:00.217</p></td>
-<td><p>0.0</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="2_dglgraph.html#sphx-glr-tutorials-blitz-2-dglgraph-py"><span class="std std-ref">How Does DGL Represent A Graph?</span></a> (<code class="docutils literal notranslate"><span class="pre">2_dglgraph.py</span></code>)</p></td>
-<td><p>00:00.015</p></td>
-<td><p>0.0</p></td>
-</tr>
-</tbody>
-</table>
+  <section id="a-blitz-introduction-to-dgl">
+<h1>A Blitz Introduction to DGL<a class="headerlink" href="#a-blitz-introduction-to-dgl" title="Link to this heading"></a></h1>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="GNNs are powerful tools for many machine learning tasks on graphs. In this introductory tutorial, you will learn the basic workflow of using GNNs for node classification, i.e. predicting the category of a node in a graph."><img alt="" src="../../_images/sphx_glr_1_introduction_thumb.png" />
+<p><a class="reference internal" href="1_introduction.html#sphx-glr-tutorials-blitz-1-introduction-py"><span class="std std-ref">Node Classification with DGL</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Node Classification with DGL</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="By the end of this tutorial you will be able to:"><img alt="" src="../../_images/sphx_glr_2_dglgraph_thumb.png" />
+<p><a class="reference internal" href="2_dglgraph.html#sphx-glr-tutorials-blitz-2-dglgraph-py"><span class="std std-ref">How Does DGL Represent A Graph?</span></a></p>
+  <div class="sphx-glr-thumbnail-title">How Does DGL Represent A Graph?</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Sometimes, your model goes beyond simply stacking existing GNN modules. For example, you would like to invent a new way of aggregating neighbor information by considering node importance or edge weights."><img alt="" src="../../_images/sphx_glr_3_message_passing_thumb.png" />
+<p><a class="reference internal" href="3_message_passing.html#sphx-glr-tutorials-blitz-3-message-passing-py"><span class="std std-ref">Write your own GNN module</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Write your own GNN module</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="In the 1_introduction, you have already learned the basic workflow of using GNNs for node classification, i.e. predicting the category of a node in a graph. This tutorial will teach you how to train a GNN for link prediction, i.e. predicting the existence of an edge between two arbitrary nodes in a graph."><img alt="" src="../../_images/sphx_glr_4_link_predict_thumb.png" />
+<p><a class="reference internal" href="4_link_predict.html#sphx-glr-tutorials-blitz-4-link-predict-py"><span class="std std-ref">Link Prediction using Graph Neural Networks</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Link Prediction using Graph Neural Networks</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="By the end of this tutorial, you will be able to"><img alt="" src="../../_images/sphx_glr_5_graph_classification_thumb.png" />
+<p><a class="reference internal" href="5_graph_classification.html#sphx-glr-tutorials-blitz-5-graph-classification-py"><span class="std std-ref">Training a GNN for Graph Classification</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Training a GNN for Graph Classification</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This tutorial assumes that you already know the basics of training a GNN for node classification &lt;1_introduction&gt; and how to create, load, and store a DGL graph &lt;2_dglgraph&gt;."><img alt="" src="../../_images/sphx_glr_6_load_data_thumb.png" />
+<p><a class="reference internal" href="6_load_data.html#sphx-glr-tutorials-blitz-6-load-data-py"><span class="std std-ref">Make Your Own Dataset</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Make Your Own Dataset</div>
+</div></div><div class="toctree-wrapper compound">
 </div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </section>
 
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../../install/index.html" class="btn btn-neutral float-left" title="Install and Setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="1_introduction.html" class="btn btn-neutral float-right" title="Node Classification with DGL" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 
