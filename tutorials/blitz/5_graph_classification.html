@@ -9,11 +9,10 @@
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=0bf289b5" />
 
   
@@ -30,8 +29,6 @@
         <script src="../../_static/copybutton.js?v=ccdb6887"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -64,19 +61,19 @@
               <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Install and Setup</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">A Blitz ntroduction to DGL</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">A Blitz Introduction to DGL</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="1_introduction.html">Node Classification with DGL</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2_dglgraph.html">How Does DGL Represent A Graph?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="3_message_passing.html">Write your own GNN module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="4_link_predict.html">Link Prediction using Graph Neural Networks</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Training a GNN for Graph Classification</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Overview-of-Graph-Classification-with-GNN">Overview of Graph Classification with GNN</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Loading-Data">Loading Data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Defining-Data-Loader">Defining Data Loader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#A-Batched-Graph-in-DGL">A Batched Graph in DGL</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Define-Model">Define Model</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Training-Loop">Training Loop</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#What’s-next">What’s next</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#overview-of-graph-classification-with-gnn">Overview of Graph Classification with GNN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#loading-data">Loading Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#defining-data-loader">Defining Data Loader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#a-batched-graph-in-dgl">A Batched Graph in DGL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#define-model">Define Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#training-loop">Training Loop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#whats-next">What’s next</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="6_load_data.html">Make Your Own Dataset</a></li>
@@ -143,10 +140,10 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">A Blitz ntroduction to DGL</a></li>
+          <li class="breadcrumb-item"><a href="index.html">A Blitz Introduction to DGL</a></li>
       <li class="breadcrumb-item active">Training a GNN for Graph Classification</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/tutorials/blitz/5_graph_classification.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/tutorials/blitz/5_graph_classification.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -154,8 +151,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="Training-a-GNN-for-Graph-Classification">
-<h1>Training a GNN for Graph Classification<a class="headerlink" href="#Training-a-GNN-for-Graph-Classification" title="Link to this heading"></a></h1>
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-tutorials-blitz-5-graph-classification-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="training-a-gnn-for-graph-classification">
+<span id="sphx-glr-tutorials-blitz-5-graph-classification-py"></span><h1>Training a GNN for Graph Classification<a class="headerlink" href="#training-a-gnn-for-graph-classification" title="Link to this heading"></a></h1>
 <p>By the end of this tutorial, you will be able to</p>
 <ul class="simple">
 <li><p>Load a DGL-provided graph classification dataset.</p></li>
@@ -165,11 +167,7 @@
 <li><p>Train and evaluate the model on a DGL-provided dataset.</p></li>
 </ul>
 <p>(Time estimate: 18 minutes)</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 
 <a href="https://docs.python.org/3/library/os.html#os.environ" title="os.environ" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-data"><span class="n">os</span><span class="o">.</span><span class="n">environ</span></a><span class="p">[</span><span class="s2">&quot;DGLBACKEND&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pytorch&quot;</span>
 <span class="kn">import</span> <span class="nn">dgl</span>
@@ -179,55 +177,51 @@
 <span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
 </pre></div>
 </div>
-</div>
-<section id="Overview-of-Graph-Classification-with-GNN">
-<h2>Overview of Graph Classification with GNN<a class="headerlink" href="#Overview-of-Graph-Classification-with-GNN" title="Link to this heading"></a></h2>
-<p>Graph classification or regression requires a model to predict certain graph-level properties of a single graph given its node and edge features. Molecular property prediction is one particular application.</p>
-<p>This tutorial shows how to train a graph classification model for a small dataset from the paper <a class="reference external" href="https://arxiv.org/abs/1810.00826">How Powerful Are Graph Neural Networks</a>.</p>
+<section id="overview-of-graph-classification-with-gnn">
+<h2>Overview of Graph Classification with GNN<a class="headerlink" href="#overview-of-graph-classification-with-gnn" title="Link to this heading"></a></h2>
+<p>Graph classification or regression requires a model to predict certain
+graph-level properties of a single graph given its node and edge
+features.  Molecular property prediction is one particular application.</p>
+<p>This tutorial shows how to train a graph classification model for a
+small dataset from the paper <a class="reference external" href="https://arxiv.org/abs/1810.00826">How Powerful Are Graph Neural
+Networks</a>.</p>
 </section>
-<section id="Loading-Data">
-<h2>Loading Data<a class="headerlink" href="#Loading-Data" title="Link to this heading"></a></h2>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate a synthetic dataset with 10000 graphs, ranging from 10 to 500 nodes.</span>
+<section id="loading-data">
+<h2>Loading Data<a class="headerlink" href="#loading-data" title="Link to this heading"></a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate a synthetic dataset with 10000 graphs, ranging from 10 to 500 nodes.</span>
 <span class="n">dataset</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">GINDataset</span><span class="p">(</span><span class="s2">&quot;PROTEINS&quot;</span><span class="p">,</span> <span class="n">self_loop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<p>The dataset is a set of graphs, each with node features and a single label. One can see the node feature dimensionality and the number of possible graph categories of <code class="docutils literal notranslate"><span class="pre">GINDataset</span></code> objects in <code class="docutils literal notranslate"><span class="pre">dim_nfeats</span></code> and <code class="docutils literal notranslate"><span class="pre">gclasses</span></code> attributes.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Node feature dimensionality:&quot;</span><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dataset</span><span class="o">.</span><span class="n">dim_nfeats</span></a><span class="p">)</span>
+<p>The dataset is a set of graphs, each with node features and a single
+label. One can see the node feature dimensionality and the number of
+possible graph categories of <code class="docutils literal notranslate"><span class="pre">GINDataset</span></code> objects in <code class="docutils literal notranslate"><span class="pre">dim_nfeats</span></code>
+and <code class="docutils literal notranslate"><span class="pre">gclasses</span></code> attributes.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Node feature dimensionality:&quot;</span><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dataset</span><span class="o">.</span><span class="n">dim_nfeats</span></a><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of graph categories:&quot;</span><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dataset</span><span class="o">.</span><span class="n">gclasses</span></a><span class="p">)</span>
 
 
 <span class="kn">from</span> <span class="nn">dgl.dataloading</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic" class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class"><span class="n">GraphDataLoader</span></a>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Node feature dimensionality: 3
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Node feature dimensionality: 3
 Number of graph categories: 2
-</pre></div></div>
-</div>
-</section>
-<section id="Defining-Data-Loader">
-<h2>Defining Data Loader<a class="headerlink" href="#Defining-Data-Loader" title="Link to this heading"></a></h2>
-<p>A graph classification dataset usually contains two types of elements: a set of graphs, and their graph-level labels. Similar to an image classification task, when the dataset is large enough, we need to train with mini-batches. When you train a model for image classification or language modeling, you will use a <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code> to iterate over the dataset. In DGL, you can use the <code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code>.</p>
-<p>You can also use various dataset samplers provided in <a class="reference external" href="https://pytorch.org/docs/stable/data.html#data-loading-order-and-sampler">torch.utils.data.sampler</a>. For example, this tutorial creates a training <code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code> and test <code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code>, using <code class="docutils literal notranslate"><span class="pre">SubsetRandomSampler</span></code> to tell PyTorch to sample from only a subset of the dataset.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.data.sampler</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic" class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class"><span class="n">SubsetRandomSampler</span></a>
+</section>
+<section id="defining-data-loader">
+<h2>Defining Data Loader<a class="headerlink" href="#defining-data-loader" title="Link to this heading"></a></h2>
+<p>A graph classification dataset usually contains two types of elements: a
+set of graphs, and their graph-level labels. Similar to an image
+classification task, when the dataset is large enough, we need to train
+with mini-batches. When you train a model for image classification or
+language modeling, you will use a <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code> to iterate over the
+dataset. In DGL, you can use the <code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code>.</p>
+<p>You can also use various dataset samplers provided in
+<a class="reference external" href="https://pytorch.org/docs/stable/data.html#data-loading-order-and-sampler">torch.utils.data.sampler</a>.
+For example, this tutorial creates a training <code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code> and
+test <code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code>, using <code class="docutils literal notranslate"><span class="pre">SubsetRandomSampler</span></code> to tell PyTorch
+to sample from only a subset of the dataset.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.data.sampler</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic" class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class"><span class="n">SubsetRandomSampler</span></a>
 
 <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_examples</span></a> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
 <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_train</span></a> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_examples</span></a> <span class="o">*</span> <span class="mf">0.8</span><span class="p">)</span>
@@ -243,39 +237,36 @@ Number of graph categories: 2
 <span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<p>You can try to iterate over the created <code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code> and see what it gives:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">it</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">train_dataloader</span><span class="p">)</span>
+<p>You can try to iterate over the created <code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code> and see what it
+gives:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">it</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">train_dataloader</span><span class="p">)</span>
 <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch</span></a> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch</span></a><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-[Graph(num_nodes=160, num_edges=764,
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[Graph(num_nodes=281, num_edges=1231,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), tensor([0, 0, 0, 1, 0])]
-</pre></div></div>
-</div>
-<p>As each element in <code class="docutils literal notranslate"><span class="pre">dataset</span></code> has a graph and a label, the <code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code> will return two objects for each iteration. The first element is the batched graph, and the second element is simply a label vector representing the category of each graph in the mini-batch. Next, we’ll talked about the batched graph.</p>
-</section>
-<section id="A-Batched-Graph-in-DGL">
-<h2>A Batched Graph in DGL<a class="headerlink" href="#A-Batched-Graph-in-DGL" title="Link to this heading"></a></h2>
-<p>In each mini-batch, the sampled graphs are combined into a single bigger batched graph via <code class="docutils literal notranslate"><span class="pre">dgl.batch</span></code>. The single bigger batched graph merges all original graphs as separately connected components, with the node and edge features concatenated. This bigger graph is also a <code class="docutils literal notranslate"><span class="pre">DGLGraph</span></code> instance (so you can still treat it as a normal <code class="docutils literal notranslate"><span class="pre">DGLGraph</span></code> object as in <a class="reference internal" href="2_dglgraph.html"><span class="doc">here</span></a>). It however contains the information necessary for recovering the original graphs, such as the number of
-nodes and edges of each graph element.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+      edata_schemes={}), tensor([0, 0, 0, 0, 0])]
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">batched_graph</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch</span></a>
+<p>As each element in <code class="docutils literal notranslate"><span class="pre">dataset</span></code> has a graph and a label, the
+<code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code> will return two objects for each iteration. The
+first element is the batched graph, and the second element is simply a
+label vector representing the category of each graph in the mini-batch.
+Next, we’ll talked about the batched graph.</p>
+</section>
+<section id="a-batched-graph-in-dgl">
+<h2>A Batched Graph in DGL<a class="headerlink" href="#a-batched-graph-in-dgl" title="Link to this heading"></a></h2>
+<p>In each mini-batch, the sampled graphs are combined into a single bigger
+batched graph via <code class="docutils literal notranslate"><span class="pre">dgl.batch</span></code>. The single bigger batched graph merges
+all original graphs as separately connected components, with the node
+and edge features concatenated. This bigger graph is also a <code class="docutils literal notranslate"><span class="pre">DGLGraph</span></code>
+instance (so you can
+still treat it as a normal <code class="docutils literal notranslate"><span class="pre">DGLGraph</span></code> object as in
+<a class="reference internal" href="2_dglgraph.html"><span class="doc">here</span></a>). It however contains the information
+necessary for recovering the original graphs, such as the number of
+nodes and edges of each graph element.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">batched_graph</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch</span></a>
 <span class="nb">print</span><span class="p">(</span>
     <span class="s2">&quot;Number of nodes for each graph element in the batch:&quot;</span><span class="p">,</span>
     <span class="n">batched_graph</span><span class="o">.</span><span class="n">batch_num_nodes</span><span class="p">(),</span>
@@ -291,41 +282,44 @@ nodes and edges of each graph element.</p>
 <span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">graphs</span></a><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Number of nodes for each graph element in the batch: tensor([22, 36, 55, 33, 14])
-Number of edges for each graph element in the batch: tensor([106, 178, 249, 155,  76])
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Number of nodes for each graph element in the batch: tensor([152,  14,  24,  27,  64])
+Number of edges for each graph element in the batch: tensor([616,  62, 114, 129, 310])
 The original graphs in the minibatch:
-[Graph(num_nodes=22, num_edges=106,
+[Graph(num_nodes=152, num_edges=616,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), Graph(num_nodes=36, num_edges=178,
+      edata_schemes={}), Graph(num_nodes=14, num_edges=62,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), Graph(num_nodes=55, num_edges=249,
+      edata_schemes={}), Graph(num_nodes=24, num_edges=114,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), Graph(num_nodes=33, num_edges=155,
+      edata_schemes={}), Graph(num_nodes=27, num_edges=129,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), Graph(num_nodes=14, num_edges=76,
+      edata_schemes={}), Graph(num_nodes=64, num_edges=310,
       ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
       edata_schemes={})]
-</pre></div></div>
-</div>
-</section>
-<section id="Define-Model">
-<h2>Define Model<a class="headerlink" href="#Define-Model" title="Link to this heading"></a></h2>
-<p>This tutorial will build a two-layer <a class="reference external" href="http://tkipf.github.io/graph-convolutional-networks/">Graph Convolutional Network (GCN)</a>. Each of its layer computes new node representations by aggregating neighbor information. If you have gone through the <a class="reference external" href="1_introduction">introduction</a>, you will notice two differences:</p>
-<ul class="simple">
-<li><p>Since the task is to predict a single category for the <em>entire graph</em> instead of for every node, you will need to aggregate the representations of all the nodes and potentially the edges to form a graph-level representation. Such process is more commonly referred as a <em>readout</em>. A simple choice is to average the node features of a graph with <code class="docutils literal notranslate"><span class="pre">dgl.mean_nodes()</span></code>.</p></li>
-<li><p>The input graph to the model will be a batched graph yielded by the <code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code>. The readout functions provided by DGL can handle batched graphs so that they will return one representation for each minibatch element.</p></li>
-</ul>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dgl.nn</span> <span class="kn">import</span> <span class="n">GraphConv</span>
+</section>
+<section id="define-model">
+<h2>Define Model<a class="headerlink" href="#define-model" title="Link to this heading"></a></h2>
+<p>This tutorial will build a two-layer <a class="reference external" href="http://tkipf.github.io/graph-convolutional-networks/">Graph Convolutional Network
+(GCN)</a>. Each of
+its layer computes new node representations by aggregating neighbor
+information. If you have gone through the
+<a class="reference internal" href="1_introduction.html"><span class="doc">introduction</span></a>, you will notice two
+differences:</p>
+<ul class="simple">
+<li><p>Since the task is to predict a single category for the <em>entire graph</em>
+instead of for every node, you will need to aggregate the
+representations of all the nodes and potentially the edges to form a
+graph-level representation. Such process is more commonly referred as
+a <em>readout</em>. A simple choice is to average the node features of a
+graph with <code class="docutils literal notranslate"><span class="pre">dgl.mean_nodes()</span></code>.</p></li>
+<li><p>The input graph to the model will be a batched graph yielded by the
+<code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code>. The readout functions provided by DGL can handle
+batched graphs so that they will return one representation for each
+minibatch element.</p></li>
+</ul>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dgl.nn</span> <span class="kn">import</span> <span class="n">GraphConv</span>
 
 
 <span class="k">class</span> <span class="nc">GCN</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
@@ -342,16 +336,13 @@ The original graphs in the minibatch:
         <span class="k">return</span> <span class="n">dgl</span><span class="o">.</span><span class="n">mean_nodes</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="s2">&quot;h&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
 </section>
-<section id="Training-Loop">
-<h2>Training Loop<a class="headerlink" href="#Training-Loop" title="Link to this heading"></a></h2>
-<p>The training loop iterates over the training set with the <code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code> object and computes the gradients, just like image classification or language modeling.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create the model with given dimensions</span>
+<section id="training-loop">
+<h2>Training Loop<a class="headerlink" href="#training-loop" title="Link to this heading"></a></h2>
+<p>The training loop iterates over the training set with the
+<code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code> object and computes the gradients, just like
+image classification or language modeling.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create the model with given dimensions</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">GCN</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dataset</span><span class="o">.</span><span class="n">dim_nfeats</span></a><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dataset</span><span class="o">.</span><span class="n">gclasses</span></a><span class="p">)</span>
 <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
 
@@ -373,30 +364,34 @@ The original graphs in the minibatch:
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Test accuracy:&quot;</span><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_correct</span></a> <span class="o">/</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_tests</span></a><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Test accuracy: 0.25112107623318386
-</pre></div></div>
-</div>
-</section>
-<section id="What’s-next">
-<h2>What’s next<a class="headerlink" href="#What’s-next" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p>See <a class="reference external" href="https://github.com/dmlc/dgl/tree/master/examples/pytorch/gin">GIN example</a> for an end-to-end graph classification model.</p></li>
-</ul>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Test accuracy: 0.08968609865470852
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Thumbnail credits: DGL</span>
+</section>
+<section id="whats-next">
+<h2>What’s next<a class="headerlink" href="#whats-next" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>See <a class="reference external" href="https://github.com/dmlc/dgl/tree/master/examples/pytorch/gin">GIN
+example</a>
+for an end-to-end graph classification model.</p></li>
+</ul>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Thumbnail credits: DGL</span>
 <span class="c1"># sphinx_gallery_thumbnail_path = &#39;_static/blitz_5_graph_classification.png&#39;</span>
 </pre></div>
 </div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 20.172 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-blitz-5-graph-classification-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/4050a45fd5b85070ff144419307a88ac/5_graph_classification.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">5_graph_classification.ipynb</span></code></a></p>
 </div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/ae1209d61d402e4b9fe4ac4a64047fd0/5_graph_classification.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">5_graph_classification.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/e6917177684709288f2016fb487d5c20/5_graph_classification.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">5_graph_classification.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </section>
 </section>
 

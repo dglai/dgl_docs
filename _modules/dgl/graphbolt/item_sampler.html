@@ -8,7 +8,7 @@
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -139,7 +139,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torch.distributed</span> <span class="k">as</span> <span class="nn">dist</span>
-<span class="kn">from</span> <span class="nn">torchdata.datapipes.iter</span> <span class="kn">import</span> <span class="n">IterDataPipe</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">IterDataPipe</span>
 
 <span class="kn">from</span> <span class="nn">.internal</span> <span class="kn">import</span> <span class="n">calculate_range</span>
 <span class="kn">from</span> <span class="nn">.internal_utils</span> <span class="kn">import</span> <span class="n">gb_warning</span>
@@ -247,9 +247,9 @@
 <span class="sd">    pairs with negative sources/destinations.</span>
 
 <span class="sd">    Note: This class `ItemSampler` is not decorated with</span>
-<span class="sd">    `torchdata.datapipes.functional_datapipe` on purpose. This indicates it</span>
+<span class="sd">    `torch.utils.data.functional_datapipe` on purpose. This indicates it</span>
 <span class="sd">    does not support function-like call. But any iterable datapipes from</span>
-<span class="sd">    `torchdata` can be further appended.</span>
+<span class="sd">    `torch.utils.data.datapipes` can be further appended.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -330,7 +330,7 @@
 <span class="sd">        compacted_seeds=None, blocks=None,)</span>
 
 <span class="sd">    5. Further process batches with other datapipes such as</span>
-<span class="sd">    :class:`torchdata.datapipes.iter.Mapper`.</span>
+<span class="sd">    :class:`torch.utils.data.datapipes.iter.Mapper`.</span>
 
 <span class="sd">    &gt;&gt;&gt; item_set = gb.ItemSet(torch.arange(0, 10))</span>
 <span class="sd">    &gt;&gt;&gt; data_pipe = gb.ItemSampler(item_set, 4)</span>
@@ -503,9 +503,9 @@
 <span class="sd">    of items.</span>
 
 <span class="sd">    Note: This class `DistributedItemSampler` is not decorated with</span>
-<span class="sd">    `torchdata.datapipes.functional_datapipe` on purpose. This indicates it</span>
+<span class="sd">    `torch.utils.data.functional_datapipe` on purpose. This indicates it</span>
 <span class="sd">    does not support function-like call. But any iterable datapipes from</span>
-<span class="sd">    `torchdata` can be further appended.</span>
+<span class="sd">    `torch.utils.data.datapipes` can be further appended.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>

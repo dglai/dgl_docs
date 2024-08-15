@@ -9,11 +9,10 @@
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=0bf289b5" />
 
   
@@ -30,8 +29,6 @@
         <script src="../../_static/copybutton.js?v=ccdb6887"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -64,7 +61,7 @@
               <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Install and Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../blitz/index.html">A Blitz ntroduction to DGL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../blitz/index.html">A Blitz Introduction to DGL</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Advanced Materials</span></p>
 <ul class="current">
@@ -133,7 +130,7 @@
           <li class="breadcrumb-item"><a href="index.html">Training on Multiple GPUs</a></li>
       <li class="breadcrumb-item active">Single Machine Multi-GPU Minibatch Node Classification</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/tutorials/multi/2_node_classification.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/tutorials/multi/2_node_classification.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -141,22 +138,32 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="Single-Machine-Multi-GPU-Minibatch-Node-Classification">
-<h1>Single Machine Multi-GPU Minibatch Node Classification<a class="headerlink" href="#Single-Machine-Multi-GPU-Minibatch-Node-Classification" title="Link to this heading"></a></h1>
-<p>In this tutorial, you will learn how to use multiple GPUs in training a graph neural network (GNN) for node classification.</p>
-<p>This tutorial assumes that you have read the <a class="reference external" href="../../notebooks/stochastic_training/node_classification.ipynb">Stochastic GNN Training for Node Classification in DGL</a>_. It also assumes that you know the basics of training general models with multi-GPU with <code class="docutils literal notranslate"><span class="pre">DistributedDataParallel</span></code>.</p>
-<div class="admonition note">
-<div class="admonition-title fa fa-exclamation-circle"><h4></div><p>Note</p>
-</h4><p><p>See <a class="reference external" href="https://pytorch.org/tutorials/intermediate/ddp_tutorial.html">this tutorial</a>_ from PyTorch for general multi-GPU training with <code class="docutils literal notranslate"><span class="pre">DistributedDataParallel</span></code>. Also, see the first section of :doc:<code class="docutils literal notranslate"><span class="pre">the</span> <span class="pre">multi-GPU</span> <span class="pre">graph</span> <span class="pre">classification</span>&#160;&#160;&#160; <span class="pre">tutorial</span> <span class="pre">&lt;1_graph_classification&gt;</span></code> for an overview of using <code class="docutils literal notranslate"><span class="pre">DistributedDataParallel</span></code> with DGL.</p>
-</p></div>
-<section id="Importing-Packages">
-<h2>Importing Packages<a class="headerlink" href="#Importing-Packages" title="Link to this heading"></a></h2>
-<p>We use <code class="docutils literal notranslate"><span class="pre">torch.distributed</span></code> to initialize a distributed training context and <code class="docutils literal notranslate"><span class="pre">torch.multiprocessing</span></code> to spawn multiple processes for each GPU.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
-</pre></div>
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-tutorials-multi-2-node-classification-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<section class="sphx-glr-example-title" id="single-machine-multi-gpu-minibatch-node-classification">
+<span id="sphx-glr-tutorials-multi-2-node-classification-py"></span><h1>Single Machine Multi-GPU Minibatch Node Classification<a class="headerlink" href="#single-machine-multi-gpu-minibatch-node-classification" title="Link to this heading"></a></h1>
+<p>In this tutorial, you will learn how to use multiple GPUs in training a
+graph neural network (GNN) for node classification.</p>
+<p>This tutorial assumes that you have read the <a class="reference external" href="../../notebooks/stochastic_training/node_classification.ipynb">Stochastic GNN Training for Node
+Classification in DGL</a>.
+It also assumes that you know the basics of training general
+models with multi-GPU with <code class="docutils literal notranslate"><span class="pre">DistributedDataParallel</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See <a class="reference external" href="https://pytorch.org/tutorials/intermediate/ddp_tutorial.html">this tutorial</a>
+from PyTorch for general multi-GPU training with <code class="docutils literal notranslate"><span class="pre">DistributedDataParallel</span></code>.  Also,
+see the first section of <a class="reference internal" href="1_graph_classification.html"><span class="doc">the multi-GPU graph classification
+tutorial</span></a>
+for an overview of using <code class="docutils literal notranslate"><span class="pre">DistributedDataParallel</span></code> with DGL.</p>
+</div>
+<section id="importing-packages">
+<h2>Importing Packages<a class="headerlink" href="#importing-packages" title="Link to this heading"></a></h2>
+<p>We use <code class="docutils literal notranslate"><span class="pre">torch.distributed</span></code> to initialize a distributed training context
+and <code class="docutils literal notranslate"><span class="pre">torch.multiprocessing</span></code> to spawn multiple processes for each GPU.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 
 <a href="https://docs.python.org/3/library/os.html#os.environ" title="os.environ" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-data"><span class="n">os</span><span class="o">.</span><span class="n">environ</span></a><span class="p">[</span><span class="s2">&quot;DGLBACKEND&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pytorch&quot;</span>
 <span class="kn">import</span> <span class="nn">time</span>
@@ -174,16 +181,12 @@
 <span class="kn">from</span> <span class="nn">tqdm.auto</span> <span class="kn">import</span> <span class="n">tqdm</span>
 </pre></div>
 </div>
-</div>
 </section>
-<section id="Defining-Model">
-<h2>Defining Model<a class="headerlink" href="#Defining-Model" title="Link to this heading"></a></h2>
-<p>The model will be again identical to <a class="reference external" href="../../notebooks/stochastic_training/node_classification.ipynb">Stochastic GNN Training for Node Classification in DGL</a>_.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SAGE</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<section id="defining-model">
+<h2>Defining Model<a class="headerlink" href="#defining-model" title="Link to this heading"></a></h2>
+<p>The model will be again identical to <a class="reference external" href="../../notebooks/stochastic_training/node_classification.ipynb">Stochastic GNN Training for Node
+Classification in DGL</a>.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SAGE</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="n">out_size</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">()</span>
@@ -208,23 +211,24 @@
         <span class="k">return</span> <span class="n">hidden_x</span>
 </pre></div>
 </div>
-</div>
 </section>
-<section id="Mini-batch-Data-Loading">
-<h2>Mini-batch Data Loading<a class="headerlink" href="#Mini-batch-Data-Loading" title="Link to this heading"></a></h2>
-<p>The major difference from the previous tutorial is that we will use <code class="docutils literal notranslate"><span class="pre">DistributedItemSampler</span></code> instead of <code class="docutils literal notranslate"><span class="pre">ItemSampler</span></code> to sample mini-batches of nodes. <code class="docutils literal notranslate"><span class="pre">DistributedItemSampler</span></code> is a distributed version of <code class="docutils literal notranslate"><span class="pre">ItemSampler</span></code> that works with <code class="docutils literal notranslate"><span class="pre">DistributedDataParallel</span></code>. It is implemented as a wrapper around <code class="docutils literal notranslate"><span class="pre">ItemSampler</span></code> and will sample the same minibatch on all replicas. It also supports dropping the last non-full minibatch to avoid the need for padding.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_dataloader</span><span class="p">(</span>
+<section id="mini-batch-data-loading">
+<h2>Mini-batch Data Loading<a class="headerlink" href="#mini-batch-data-loading" title="Link to this heading"></a></h2>
+<p>The major difference from the previous tutorial is that we will use
+<code class="docutils literal notranslate"><span class="pre">DistributedItemSampler</span></code> instead of <code class="docutils literal notranslate"><span class="pre">ItemSampler</span></code> to sample mini-batches
+of nodes.  <code class="docutils literal notranslate"><span class="pre">DistributedItemSampler</span></code> is a distributed version of
+<code class="docutils literal notranslate"><span class="pre">ItemSampler</span></code> that works with <code class="docutils literal notranslate"><span class="pre">DistributedDataParallel</span></code>.  It is
+implemented as a wrapper around <code class="docutils literal notranslate"><span class="pre">ItemSampler</span></code> and will sample the same
+minibatch on all replicas.  It also supports dropping the last non-full
+minibatch to avoid the need for padding.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_dataloader</span><span class="p">(</span>
     <span class="n">graph</span><span class="p">,</span>
     <span class="n">features</span><span class="p">,</span>
     <span class="n">itemset</span><span class="p">,</span>
     <span class="n">device</span><span class="p">,</span>
     <span class="n">is_train</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="n">datapipe</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="collections.abc.Iterable" class="sphx-glr-backref-module-collections-abc sphx-glr-backref-type-py-class"><span class="n">gb</span><span class="o">.</span><span class="n">DistributedItemSampler</span></a><span class="p">(</span>
+    <span class="n">datapipe</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic" class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class"><span class="n">gb</span><span class="o">.</span><span class="n">DistributedItemSampler</span></a><span class="p">(</span>
         <span class="n">item_set</span><span class="o">=</span><span class="n">itemset</span><span class="p">,</span>
         <span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
         <span class="n">drop_last</span><span class="o">=</span><span class="n">is_train</span><span class="p">,</span>
@@ -256,16 +260,11 @@
     <span class="k">return</span> <span class="n">tensor</span> <span class="o">/</span> <span class="n">weight</span>
 </pre></div>
 </div>
-</div>
 </section>
-<section id="Evaluation-Loop">
-<h2>Evaluation Loop<a class="headerlink" href="#Evaluation-Loop" title="Link to this heading"></a></h2>
+<section id="evaluation-loop">
+<h2>Evaluation Loop<a class="headerlink" href="#evaluation-loop" title="Link to this heading"></a></h2>
 <p>The evaluation loop is almost identical to the previous tutorial.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">itemset</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
     <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
     <span class="n">y</span> <span class="o">=</span> <span class="p">[]</span>
@@ -294,16 +293,17 @@
     <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">y_i</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">y_i</span> <span class="ow">in</span> <span class="n">y</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
 </section>
-<section id="Training-Loop">
-<h2>Training Loop<a class="headerlink" href="#Training-Loop" title="Link to this heading"></a></h2>
-<p>The training loop is also almost identical to the previous tutorial except that we use Join Context Manager to solve the uneven input problem. The mechanics of Distributed Data Parallel (DDP) training in PyTorch requires the number of inputs are the same for all ranks, otherwise the program may error or hang. To solve it, PyTorch provides Join Context Manager. Please refer to <a class="reference external" href="https://pytorch.org/tutorials/advanced/generic_join.html">this tutorial</a>_ for detailed information.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">train</span><span class="p">(</span>
+<section id="training-loop">
+<h2>Training Loop<a class="headerlink" href="#training-loop" title="Link to this heading"></a></h2>
+<p>The training loop is also almost identical to the previous tutorial except
+that we use Join Context Manager to solve the uneven input problem. The
+mechanics of Distributed Data Parallel (DDP) training in PyTorch requires
+the number of inputs are the same for all ranks, otherwise the program may
+error or hang. To solve it, PyTorch provides Join Context Manager. Please
+refer to <a class="reference external" href="https://pytorch.org/tutorials/advanced/generic_join.html">this tutorial</a>
+for detailed information.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">train</span><span class="p">(</span>
     <span class="n">rank</span><span class="p">,</span>
     <span class="n">graph</span><span class="p">,</span>
     <span class="n">features</span><span class="p">,</span>
@@ -380,16 +380,14 @@
             <span class="p">)</span>
 </pre></div>
 </div>
-</div>
 </section>
-<section id="Defining-Traning-and-Evaluation-Procedures">
-<h2>Defining Traning and Evaluation Procedures<a class="headerlink" href="#Defining-Traning-and-Evaluation-Procedures" title="Link to this heading"></a></h2>
-<p>The following code defines the main function for each process. It is similar to the previous tutorial except that we need to initialize a distributed training context with <code class="docutils literal notranslate"><span class="pre">torch.distributed</span></code> and wrap the model with <code class="docutils literal notranslate"><span class="pre">torch.nn.parallel.DistributedDataParallel</span></code>.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">world_size</span><span class="p">,</span> <span class="n">devices</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+<section id="defining-traning-and-evaluation-procedures">
+<h2>Defining Traning and Evaluation Procedures<a class="headerlink" href="#defining-traning-and-evaluation-procedures" title="Link to this heading"></a></h2>
+<p>The following code defines the main function for each process. It is
+similar to the previous tutorial except that we need to initialize a
+distributed training context with <code class="docutils literal notranslate"><span class="pre">torch.distributed</span></code> and wrap the model
+with <code class="docutils literal notranslate"><span class="pre">torch.nn.parallel.DistributedDataParallel</span></code>.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">world_size</span><span class="p">,</span> <span class="n">devices</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
     <span class="c1"># Set up multiprocessing environment.</span>
     <span class="n">device</span> <span class="o">=</span> <span class="n">devices</span><span class="p">[</span><span class="n">rank</span><span class="p">]</span>
     <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">set_device</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
@@ -448,19 +446,15 @@
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test Accuracy </span><span class="si">{</span><span class="n">test_acc</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
 </section>
-<section id="Spawning-Trainer-Processes">
-<h2>Spawning Trainer Processes<a class="headerlink" href="#Spawning-Trainer-Processes" title="Link to this heading"></a></h2>
-<p>The following code spawns a process for each GPU and calls the <code class="docutils literal notranslate"><span class="pre">run</span></code> function defined above.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-  <span class="c1">#  if not torch.cuda.is_available():</span>
- <span class="c1">#       print(&quot;No GPU found!&quot;)</span>
-    <span class="k">return</span>
+<section id="spawning-trainer-processes">
+<h2>Spawning Trainer Processes<a class="headerlink" href="#spawning-trainer-processes" title="Link to this heading"></a></h2>
+<p>The following code spawns a process for each GPU and calls the <code class="docutils literal notranslate"><span class="pre">run</span></code>
+function defined above.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No GPU found!&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
 
     <span class="n">devices</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cuda:</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">device_count</span><span class="p">())</span>
@@ -488,7 +482,22 @@
     <span class="n">main</span><span class="p">()</span>
 </pre></div>
 </div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>No GPU found!
+</pre></div>
 </div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.083 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-multi-2-node-classification-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/0c638c5fe1559d5c5412450f6d33520e/2_node_classification.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">2_node_classification.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/3aa3eaf84cee1a4ab77e086b67de8362/2_node_classification.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">2_node_classification.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/07263c83904e04064b4f22ef48036843/2_node_classification.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">2_node_classification.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </section>
 </section>
 

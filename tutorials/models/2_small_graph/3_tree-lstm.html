@@ -9,11 +9,10 @@
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/nbsphinx-code-cells.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=0bf289b5" />
 
   
@@ -64,7 +63,7 @@
               <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Install and Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../blitz/index.html">A Blitz ntroduction to DGL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../blitz/index.html">A Blitz Introduction to DGL</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Advanced Materials</span></p>
 <ul class="current">
@@ -139,7 +138,7 @@
           <li class="breadcrumb-item"><a href="index.html">Batching many small graphs</a></li>
       <li class="breadcrumb-item active">Tree-LSTM in DGL</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../../_sources/tutorials/models/2_small_graph/3_tree-lstm.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="../../../_sources/tutorials/models/2_small_graph/3_tree-lstm.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -147,35 +146,55 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="Tree-LSTM-in-DGL">
-<h1>Tree-LSTM in DGL<a class="headerlink" href="#Tree-LSTM-in-DGL" title="Link to this heading"></a></h1>
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-tutorials-models-2-small-graph-3-tree-lstm-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="tree-lstm-in-dgl">
+<span id="model-tree-lstm"></span><span id="sphx-glr-tutorials-models-2-small-graph-3-tree-lstm-py"></span><h1>Tree-LSTM in DGL<a class="headerlink" href="#tree-lstm-in-dgl" title="Link to this heading"></a></h1>
 <p><strong>Author</strong>: Zihao Ye, Qipeng Guo, <a class="reference external" href="https://jermainewang.github.io/">Minjie Wang</a>, <a class="reference external" href="https://cs.nyu.edu/~jakezhao/">Jake Zhao</a>, Zheng Zhang</p>
-<div class="alert alert-danger"><h4><p>Warning</p>
-</h4><p><p>The tutorial aims at gaining insights into the paper, with code as a mean of explanation. The implementation thus is NOT optimized for running efficiency. For recommended implementation, please refer to the <a class="reference external" href="https://github.com/dmlc/dgl/tree/master/examples">official examples</a>.</p>
-</p></div><div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The tutorial aims at gaining insights into the paper, with code as a mean
+of explanation. The implementation thus is NOT optimized for running
+efficiency. For recommended implementation, please refer to the <a class="reference external" href="https://github.com/dmlc/dgl/tree/master/examples">official
+examples</a>.</p>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
-</pre></div>
-</div>
-</div>
-<p>In this tutorial, you learn to use Tree-LSTM networks for sentiment analysis. The Tree-LSTM is a generalization of long short-term memory (LSTM) networks to tree-structured network topologies.</p>
-<p>The Tree-LSTM structure was first introduced by Kai et. al in an ACL 2015 paper: <a class="reference external" href="https://arxiv.org/pdf/1503.00075.pdf">Improved Semantic Representations From Tree-Structured Long Short-Term Memory Networks</a>_. The core idea is to introduce syntactic information for language tasks by extending the chain-structured LSTM to a tree-structured LSTM. The dependency tree and constituency tree techniques are leveraged to obtain a ‘’latent tree’’.</p>
-<p>The challenge in training Tree-LSTMs is batching — a standard technique in machine learning to accelerate optimization. However, since trees generally have different shapes by nature, parallization is non-trivial. DGL offers an alternative. Pool all the trees into one single graph then induce the message passing over them, guided by the structure of each tree.</p>
-<section id="The-task-and-the-dataset">
-<h2>The task and the dataset<a class="headerlink" href="#The-task-and-the-dataset" title="Link to this heading"></a></h2>
-<p>The steps here use the <a class="reference external" href="https://nlp.stanford.edu/sentiment/">Stanford Sentiment Treebank</a>_ in <code class="docutils literal notranslate"><span class="pre">dgl.data</span></code>. The dataset provides a fine-grained, tree-level sentiment annotation. There are five classes: Very negative, negative, neutral, positive, and very positive, which indicate the sentiment in the current subtree. Non-leaf nodes in a constituency tree do not contain words, so use a special <code class="docutils literal notranslate"><span class="pre">PAD_WORD</span></code> token to denote them. During training and inference their embeddings would be masked
-to all-zero.</p>
+<p>In this tutorial, you learn to use Tree-LSTM networks for sentiment analysis.
+The Tree-LSTM is a generalization of long short-term memory (LSTM) networks to tree-structured network topologies.</p>
+<p>The Tree-LSTM structure was first introduced by Kai et. al in an ACL 2015
+paper: <a class="reference external" href="https://arxiv.org/pdf/1503.00075.pdf">Improved Semantic Representations From Tree-Structured Long
+Short-Term Memory Networks</a>.
+The core idea is to introduce syntactic information for language tasks by
+extending the chain-structured LSTM to a tree-structured LSTM. The dependency
+tree and constituency tree techniques are leveraged to obtain a ‘’latent tree’’.</p>
+<p>The challenge in training Tree-LSTMs is batching — a standard
+technique in machine learning to accelerate optimization. However, since trees
+generally have different shapes by nature, parallization is non-trivial.
+DGL offers an alternative. Pool all the trees into one single graph then
+induce the message passing over them, guided by the structure of each tree.</p>
+<section id="the-task-and-the-dataset">
+<h2>The task and the dataset<a class="headerlink" href="#the-task-and-the-dataset" title="Link to this heading"></a></h2>
+<p>The steps here use the
+<a class="reference external" href="https://nlp.stanford.edu/sentiment/">Stanford Sentiment Treebank</a> in
+<code class="docutils literal notranslate"><span class="pre">dgl.data</span></code>. The dataset provides a fine-grained, tree-level sentiment
+annotation. There are five classes: Very negative, negative, neutral, positive, and
+very positive, which indicate the sentiment in the current subtree. Non-leaf
+nodes in a constituency tree do not contain words, so use a special
+<code class="docutils literal notranslate"><span class="pre">PAD_WORD</span></code> token to denote them. During training and inference
+their embeddings would be masked to all-zero.</p>
 <figure class="align-default">
-<img alt="https://i.loli.net/2018/11/08/5be3d4bfe031b.png:alt:" src="https://i.loli.net/2018/11/08/5be3d4bfe031b.png:alt:" />
+<img alt="" src="https://i.loli.net/2018/11/08/5be3d4bfe031b.png" />
 </figure>
-<p>The figure displays one sample of the SST dataset, which is a constituency parse tree with their nodes labeled with sentiment. To speed up things, build a tiny set with five sentences and take a look at the first one.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/collections.html#collections.namedtuple" title="collections.namedtuple" class="sphx-glr-backref-module-collections sphx-glr-backref-type-py-function"><span class="n">namedtuple</span></a>
+<p>The figure displays one sample of the SST dataset, which is a
+constituency parse tree with their nodes labeled with sentiment. To
+speed up things, build a tiny set with five sentences and take a look
+at the first one.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/collections.html#collections.namedtuple" title="collections.namedtuple" class="sphx-glr-backref-module-collections sphx-glr-backref-type-py-function"><span class="n">namedtuple</span></a>
 
 <a href="https://docs.python.org/3/library/os.html#os.environ" title="os.environ" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-data"><span class="n">os</span><span class="o">.</span><span class="n">environ</span></a><span class="p">[</span><span class="s2">&quot;DGLBACKEND&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pytorch&quot;</span>
 <span class="kn">import</span> <span class="nn">dgl</span>
@@ -205,24 +224,15 @@ to all-zero.</p>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-the rock is destined to be the 21st century &#39;s new `` conan &#39;&#39; and that he &#39;s going to make a splash even greater than arnold schwarzenegger , jean-claud van damme or steven segal .
-</pre></div></div>
-</div>
-</section>
-<section id="Step-1:-Batching">
-<h2>Step 1: Batching<a class="headerlink" href="#Step-1:-Batching" title="Link to this heading"></a></h2>
-<p>Add all the trees to one graph, using the :func:<code class="docutils literal notranslate"><span class="pre">~dgl.batched_graph.batch</span></code> API.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>the rock is destined to be the 21st century &#39;s new `` conan &#39;&#39; and that he &#39;s going to make a splash even greater than arnold schwarzenegger , jean-claud van damme or steven segal .
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+</section>
+<section id="step-1-batching">
+<h2>Step 1: Batching<a class="headerlink" href="#step-1-batching" title="Link to this heading"></a></h2>
+<p>Add all the trees to one graph, using
+the <code class="xref py py-func docutils literal notranslate"><span class="pre">batch()</span></code> API.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
 <span class="n">graph</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tiny_sst</span></a><span class="p">)</span>
 
@@ -244,51 +254,67 @@ the rock is destined to be the 21st century &#39;s new `` conan &#39;&#39; and t
 <span class="n">plot_tree</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">to_networkx</span><span class="p">())</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../../../_images/tutorials_models_2_small_graph_3_tree-lstm_5_0.png" src="../../../_images/tutorials_models_2_small_graph_3_tree-lstm_5_0.png" />
-</div>
-</div>
-<p>You can read more about the definition of :func:<code class="docutils literal notranslate"><span class="pre">~dgl.batch</span></code>, or skip ahead to the next step:</p>
-<div class="alert alert-info"><h4><p>Note</p>
-</h4><p><p><strong>Definition</strong>: :func:<code class="docutils literal notranslate"><span class="pre">~dgl.batch</span></code> unions a list of <span class="math notranslate nohighlight">\(B\)</span> :class:<code class="docutils literal notranslate"><span class="pre">~dgl.DGLGraph</span></code> s and returns a :class:<code class="docutils literal notranslate"><span class="pre">~dgl.DGLGraph</span></code> of batch size <span class="math notranslate nohighlight">\(B\)</span>.</p>
-<ul>
-<li><p>The union includes all the nodes, edges, and their features. The order of nodes, edges, and features are preserved.</p>
-<ul class="simple">
-<li><p>Given that you have <span class="math notranslate nohighlight">\(V_i\)</span> nodes for graph <span class="math notranslate nohighlight">\(\mathcal{G}_i\)</span>, the node ID <span class="math notranslate nohighlight">\(j\)</span> in graph <span class="math notranslate nohighlight">\(\mathcal{G}_i\)</span> correspond to node ID <span class="math notranslate nohighlight">\(j + \sum_{k=1}^{i-1} V_k\)</span> in the batched graph.</p></li>
-<li><p>Therefore, performing feature transformation and message passing on the batched graph is equivalent to doing those on all <code class="docutils literal notranslate"><span class="pre">DGLGraph</span></code> constituents in parallel.</p></li>
-</ul>
-</li>
-<li><p>Duplicate references to the same graph are treated as deep copies; the nodes, edges, and features are duplicated, and mutation on one reference does not affect the other.</p></li>
-<li><p>The batched graph keeps track of the meta information of the constituents so it can be :func:<code class="docutils literal notranslate"><span class="pre">~dgl.batched_graph.unbatch</span></code> ed to list of <code class="docutils literal notranslate"><span class="pre">DGLGraph</span></code> s.</p>
-</p></div></li>
-</ul>
-</section>
-<section id="Step-2:-Tree-LSTM-cell-with-message-passing-APIs">
-<h2>Step 2: Tree-LSTM cell with message-passing APIs<a class="headerlink" href="#Step-2:-Tree-LSTM-cell-with-message-passing-APIs" title="Link to this heading"></a></h2>
-<p>Researchers have proposed two types of Tree-LSTMs: Child-Sum Tree-LSTMs, and <span class="math notranslate nohighlight">\(N\)</span>-ary Tree-LSTMs. In this tutorial you focus on applying <em>Binary</em> Tree-LSTM to binarized constituency trees. This application is also known as <em>Constituency Tree-LSTM</em>. Use PyTorch as a backend framework to set up the network.</p>
-<p>In <code class="docutils literal notranslate"><span class="pre">N</span></code>-ary Tree-LSTM, each unit at node <span class="math notranslate nohighlight">\(j\)</span> maintains a hidden representation <span class="math notranslate nohighlight">\(h_j\)</span> and a memory cell <span class="math notranslate nohighlight">\(c_j\)</span>. The unit <span class="math notranslate nohighlight">\(j\)</span> takes the input vector <span class="math notranslate nohighlight">\(x_j\)</span> and the hidden representations of the child units: <span class="math notranslate nohighlight">\(h_{jl}, 1\leq l\leq N\)</span> as input, then update its new hidden representation <span class="math notranslate nohighlight">\(h_j\)</span> and memory cell <span class="math notranslate nohighlight">\(c_j\)</span> by:</p>
-<dl class="simple">
-<dt>:nbsphinx-math:<a href="#id1"><span class="problematic" id="id2">`</span></a>begin{align}i_j &amp; = &amp; sigmaleft(W^{(i)}x_j + sum_{l=1}^{N}U^{(i)}_l h_{jl} + b^{(i)}right),  &amp; (1)\</dt><dd><p>f_{jk} &amp; = &amp; sigmaleft(W^{(f)}x_j + sum_{l=1}^{N}U_{kl}^{(f)} h_{jl} + b^{(f)} right), &amp;  (2)\
-o_j &amp; = &amp; sigmaleft(W^{(o)}x_j + sum_{l=1}^{N}U_{l}^{(o)} h_{jl} + b^{(o)} right), &amp; (3)  \
-u_j &amp; = &amp; textrm{tanh}left(W^{(u)}x_j + sum_{l=1}^{N} U_l^{(u)}h_{jl} + b^{(u)} right), &amp; (4)\
-c_j &amp; = &amp; i_j odot u_j + sum_{l=1}^{N} f_{jl} odot c_{jl}, &amp;(5) \
-h_j &amp; = &amp; o_j cdot textrm{tanh}(c_j), &amp;(6)  \end{align}`</p>
-</dd>
-</dl>
-<p>It can be decomposed into three phases: <code class="docutils literal notranslate"><span class="pre">message_func</span></code>, <code class="docutils literal notranslate"><span class="pre">reduce_func</span></code> and <code class="docutils literal notranslate"><span class="pre">apply_node_func</span></code>.</p>
-<div class="admonition note">
-<div class="admonition-title fa fa-exclamation-circle"><h4></div><p>Note</p>
-</h4><p><p><code class="docutils literal notranslate"><span class="pre">apply_node_func</span></code> is a new node UDF that has not been introduced before. In <code class="docutils literal notranslate"><span class="pre">apply_node_func</span></code>, a user specifies what to do with node features, without considering edge features and messages. In a Tree-LSTM case, <code class="docutils literal notranslate"><span class="pre">apply_node_func</span></code> is a must, since there exists (leaf) nodes with <span class="math notranslate nohighlight">\(0\)</span> incoming edges, which would not be updated with <code class="docutils literal notranslate"><span class="pre">reduce_func</span></code>.</p>
-</p></div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<img src="../../../_images/sphx_glr_3_tree-lstm_001.png" srcset="../../../_images/sphx_glr_3_tree-lstm_001.png" alt="3 tree lstm" class = "sphx-glr-single-img"/><p>You can read more about the definition of <a class="reference internal" href="../../../generated/dgl.batch.html#dgl.batch" title="dgl.batch"><code class="xref py py-func docutils literal notranslate"><span class="pre">batch()</span></code></a>, or
+skip ahead to the next step:
+.. note:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>**Definition**: :func:`~dgl.batch` unions a list of :math:`B`
+  :class:`~dgl.DGLGraph`\ s and returns a :class:`~dgl.DGLGraph` of batch
+  size :math:`B`.
+
+- The union includes all the nodes,
+  edges, and their features. The order of nodes, edges, and features are
+  preserved.
+
+    - Given that you have :math:`V_i` nodes for graph
+      :math:`\mathcal{G}_i`, the node ID :math:`j` in graph
+      :math:`\mathcal{G}_i` correspond to node ID
+      :math:`j + \sum_{k=1}^{i-1} V_k` in the batched graph.
+
+    - Therefore, performing feature transformation and message passing on
+      the batched graph is equivalent to doing those
+      on all ``DGLGraph`` constituents in parallel.
+
+- Duplicate references to the same graph are
+  treated as deep copies; the nodes, edges, and features are duplicated,
+  and mutation on one reference does not affect the other.
+- The batched graph keeps track of the meta
+  information of the constituents so it can be
+  :func:`~dgl.batched_graph.unbatch`\ ed to list of ``DGLGraph``\ s.
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="nn">th</span>
+</section>
+<section id="step-2-tree-lstm-cell-with-message-passing-apis">
+<h2>Step 2: Tree-LSTM cell with message-passing APIs<a class="headerlink" href="#step-2-tree-lstm-cell-with-message-passing-apis" title="Link to this heading"></a></h2>
+<p>Researchers have proposed two types of Tree-LSTMs: Child-Sum
+Tree-LSTMs, and <span class="math notranslate nohighlight">\(N\)</span>-ary Tree-LSTMs. In this tutorial you focus
+on applying <em>Binary</em> Tree-LSTM to binarized constituency trees. This
+application is also known as <em>Constituency Tree-LSTM</em>. Use PyTorch
+as a backend framework to set up the network.</p>
+<p>In <cite>N</cite>-ary Tree-LSTM, each unit at node <span class="math notranslate nohighlight">\(j\)</span> maintains a hidden
+representation <span class="math notranslate nohighlight">\(h_j\)</span> and a memory cell <span class="math notranslate nohighlight">\(c_j\)</span>. The unit
+<span class="math notranslate nohighlight">\(j\)</span> takes the input vector <span class="math notranslate nohighlight">\(x_j\)</span> and the hidden
+representations of the child units: <span class="math notranslate nohighlight">\(h_{jl}, 1\leq l\leq N\)</span> as
+input, then update its new hidden representation <span class="math notranslate nohighlight">\(h_j\)</span> and memory
+cell <span class="math notranslate nohighlight">\(c_j\)</span> by:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}i_j &amp; = &amp; \sigma\left(W^{(i)}x_j + \sum_{l=1}^{N}U^{(i)}_l h_{jl} + b^{(i)}\right),  &amp; (1)\\
+f_{jk} &amp; = &amp; \sigma\left(W^{(f)}x_j + \sum_{l=1}^{N}U_{kl}^{(f)} h_{jl} + b^{(f)} \right), &amp;  (2)\\
+o_j &amp; = &amp; \sigma\left(W^{(o)}x_j + \sum_{l=1}^{N}U_{l}^{(o)} h_{jl} + b^{(o)} \right), &amp; (3)  \\
+u_j &amp; = &amp; \textrm{tanh}\left(W^{(u)}x_j + \sum_{l=1}^{N} U_l^{(u)}h_{jl} + b^{(u)} \right), &amp; (4)\\
+c_j &amp; = &amp; i_j \odot u_j + \sum_{l=1}^{N} f_{jl} \odot c_{jl}, &amp;(5) \\
+h_j &amp; = &amp; o_j \cdot \textrm{tanh}(c_j), &amp;(6)  \\\end{split}\]</div>
+<p>It can be decomposed into three phases: <code class="docutils literal notranslate"><span class="pre">message_func</span></code>,
+<code class="docutils literal notranslate"><span class="pre">reduce_func</span></code> and <code class="docutils literal notranslate"><span class="pre">apply_node_func</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">apply_node_func</span></code> is a new node UDF that has not been introduced before. In
+<code class="docutils literal notranslate"><span class="pre">apply_node_func</span></code>, a user specifies what to do with node features,
+without considering edge features and messages. In a Tree-LSTM case,
+<code class="docutils literal notranslate"><span class="pre">apply_node_func</span></code> is a must, since there exists (leaf) nodes with
+<span class="math notranslate nohighlight">\(0\)</span> incoming edges, which would not be updated with
+<code class="docutils literal notranslate"><span class="pre">reduce_func</span></code>.</p>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="nn">th</span>
 <span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
 
 
@@ -324,21 +350,24 @@ h_j &amp; = &amp; o_j cdot textrm{tanh}(c_j), &amp;(6)  \end{align}`</p>
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;h&quot;</span><span class="p">:</span> <span class="n">h</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="n">c</span><span class="p">}</span>
 </pre></div>
 </div>
-</div>
 </section>
-<section id="Step-3:-Define-traversal">
-<h2>Step 3: Define traversal<a class="headerlink" href="#Step-3:-Define-traversal" title="Link to this heading"></a></h2>
-<p>After you define the message-passing functions, induce the right order to trigger them. This is a significant departure from models such as GCN, where all nodes are pulling messages from upstream ones <em>simultaneously</em>.</p>
-<p>In the case of Tree-LSTM, messages start from leaves of the tree, and propagate/processed upwards until they reach the roots. A visualization is as follows:</p>
+<section id="step-3-define-traversal">
+<h2>Step 3: Define traversal<a class="headerlink" href="#step-3-define-traversal" title="Link to this heading"></a></h2>
+<p>After you define the message-passing functions, induce the
+right order to trigger them. This is a significant departure from models
+such as GCN, where all nodes are pulling messages from upstream ones
+<em>simultaneously</em>.</p>
+<p>In the case of Tree-LSTM, messages start from leaves of the tree, and
+propagate/processed upwards until they reach the roots. A visualization
+is as follows:</p>
 <figure class="align-default">
-<img alt="https://i.loli.net/2018/11/09/5be4b5d2df54d.gif:alt:" src="https://i.loli.net/2018/11/09/5be4b5d2df54d.gif:alt:" />
+<img alt="" src="https://i.loli.net/2018/11/09/5be4b5d2df54d.gif" />
 </figure>
-<p>DGL defines a generator to perform the topological sort, each item is a tensor recording the nodes from bottom level to the roots. One can appreciate the degree of parallelism by inspecting the difference of the followings:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># to heterogenous graph</span>
+<p>DGL defines a generator to perform the topological sort, each item is a
+tensor recording the nodes from bottom level to the roots. One can
+appreciate the degree of parallelism by inspecting the difference of the
+followings:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># to heterogenous graph</span>
 <span class="n">trv_a_tree</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">graph</span><span class="p">(</span><span class="n">a_tree</span><span class="o">.</span><span class="n">edges</span><span class="p">())</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Traversing one tree:&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">dgl</span><span class="o">.</span><span class="n">topological_nodes_generator</span><span class="p">(</span><span class="n">trv_a_tree</span><span class="p">))</span>
@@ -349,13 +378,7 @@ h_j &amp; = &amp; o_j cdot textrm{tanh}(c_j), &amp;(6)  \end{align}`</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">dgl</span><span class="o">.</span><span class="n">topological_nodes_generator</span><span class="p">(</span><span class="n">trv_graph</span><span class="p">))</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Traversing one tree:
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Traversing one tree:
 (tensor([ 2,  3,  6,  8, 13, 15, 17, 19, 22, 23, 25, 27, 28, 29, 30, 32, 34, 36,
         38, 40, 43, 46, 47, 49, 50, 52, 58, 59, 60, 62, 64, 65, 66, 68, 69, 70]), tensor([ 1, 21, 26, 45, 48, 57, 63, 67]), tensor([24, 44, 56, 61]), tensor([20, 42, 55]), tensor([18, 54]), tensor([16, 53]), tensor([14, 51]), tensor([12, 41]), tensor([11, 39]), tensor([10, 37]), tensor([35]), tensor([33]), tensor([31]), tensor([9]), tensor([7]), tensor([5]), tensor([4]), tensor([0]))
 Traversing many trees at the same time:
@@ -372,14 +395,10 @@ Traversing many trees at the same time:
         111, 116, 128, 131, 139, 151, 157, 160, 169, 173, 177, 183, 188, 196,
         211, 217, 228, 247, 254, 261, 268]), tensor([ 24,  44,  56,  61,  75,  89,  99, 107, 115, 126, 137, 149, 156, 167,
         181, 186, 194, 209, 215, 226, 245, 252, 266]), tensor([ 20,  42,  55,  73,  87, 124, 136, 154, 180, 207, 224, 243, 250, 265]), tensor([ 18,  54,  86, 123, 134, 148, 176, 206, 222, 241, 264]), tensor([ 16,  53,  84, 122, 172, 204, 239, 260]), tensor([ 14,  51,  80, 120, 166, 203, 238, 258]), tensor([ 12,  41,  72, 114, 165, 201, 236]), tensor([ 11,  39, 106, 163, 199, 234]), tensor([ 10,  37, 104, 147, 193, 233]), tensor([ 35,  98, 146, 231]), tensor([ 33,  97, 145, 221]), tensor([ 31,  71, 144]), tensor([9]), tensor([7]), tensor([5]), tensor([4]), tensor([0]))
-</pre></div></div>
-</div>
-<p>Call :meth:<code class="docutils literal notranslate"><span class="pre">~dgl.DGLGraph.prop_nodes</span></code> to trigger the message passing:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dgl.function</span> <span class="k">as</span> <span class="nn">fn</span>
+<p>Call <a class="reference internal" href="../../../generated/dgl.DGLGraph.prop_nodes.html#dgl.DGLGraph.prop_nodes" title="dgl.DGLGraph.prop_nodes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">prop_nodes()</span></code></a> to trigger the message passing:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dgl.function</span> <span class="k">as</span> <span class="nn">fn</span>
 <span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="nn">th</span>
 
 <span class="n">trv_graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
@@ -394,20 +413,18 @@ Traversing many trees at the same time:
 <span class="c1"># dgl.prop_nodes_topo(graph)</span>
 </pre></div>
 </div>
-</div>
 <div class="admonition note">
-<div class="admonition-title fa fa-exclamation-circle"><h4></div><p>Note</p>
-</h4><p><p>Before you call :meth:<code class="docutils literal notranslate"><span class="pre">~dgl.DGLGraph.prop_nodes</span></code>, specify a <code class="docutils literal notranslate"><span class="pre">message_func</span></code> and <code class="docutils literal notranslate"><span class="pre">reduce_func</span></code> in advance. In the example, you can see built-in copy-from-source and sum functions as message functions, and a reduce function for demonstration.</p>
-</p></div>
-</section>
-<section id="Putting-it-together">
-<h2>Putting it together<a class="headerlink" href="#Putting-it-together" title="Link to this heading"></a></h2>
-<p>Here is the complete code that specifies the <code class="docutils literal notranslate"><span class="pre">Tree-LSTM</span></code> class.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
-</pre></div>
+<p class="admonition-title">Note</p>
+<p>Before you call <a class="reference internal" href="../../../generated/dgl.DGLGraph.prop_nodes.html#dgl.DGLGraph.prop_nodes" title="dgl.DGLGraph.prop_nodes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">prop_nodes()</span></code></a>, specify a
+<cite>message_func</cite> and <cite>reduce_func</cite> in advance. In the example, you can see built-in
+copy-from-source and sum functions as message functions, and a reduce
+function for demonstration.</p>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TreeLSTM</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+</section>
+<section id="putting-it-together">
+<h2>Putting it together<a class="headerlink" href="#putting-it-together" title="Link to this heading"></a></h2>
+<p>Here is the complete code that specifies the <code class="docutils literal notranslate"><span class="pre">Tree-LSTM</span></code> class.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TreeLSTM</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_vocabs</span></a><span class="p">,</span>
@@ -471,16 +488,11 @@ Traversing many trees at the same time:
 <span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
 </pre></div>
 </div>
-</div>
 </section>
-<section id="Main-Loop">
-<h2>Main Loop<a class="headerlink" href="#Main-Loop" title="Link to this heading"></a></h2>
+<section id="main-loop">
+<h2>Main Loop<a class="headerlink" href="#main-loop" title="Link to this heading"></a></h2>
 <p>Finally, you could write a training paradigm in PyTorch.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic" class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class"><span class="n">DataLoader</span></a>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic" class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class"><span class="n">DataLoader</span></a>
 
 <span class="n">device</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
 <span class="c1"># hyper parameters</span>
@@ -546,13 +558,7 @@ Traversing many trees at the same time:
         <span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-TreeLSTM(
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>TreeLSTM(
   (embedding): Embedding(19536, 256)
   (dropout): Dropout(p=0.5, inplace=False)
   (linear): Linear(in_features=256, out_features=5, bias=True)
@@ -562,56 +568,36 @@ TreeLSTM(
     (U_f): Linear(in_features=512, out_features=512, bias=True)
   )
 )
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/home/ubuntu/dgl_doc_dev/dgl/python/dgl/core.py:82: DGLWarning: The input graph for the user-defined edge function does not contain valid edges
+/home/ubuntu/dgl_test/python/dgl/core.py:82: DGLWarning: The input graph for the user-defined edge function does not contain valid edges
   dgl_warning(
-</pre></div></div>
+Epoch 00000 | Step 00000 | Loss 445.3806 | Acc 0.1538 |
+Epoch 00001 | Step 00000 | Loss 276.9058 | Acc 0.7106 |
+Epoch 00002 | Step 00000 | Loss 971.6472 | Acc 0.4652 |
+Epoch 00003 | Step 00000 | Loss 237.6392 | Acc 0.7253 |
+Epoch 00004 | Step 00000 | Loss 181.1399 | Acc 0.8242 |
+Epoch 00005 | Step 00000 | Loss 455.7067 | Acc 0.6850 |
+Epoch 00006 | Step 00000 | Loss 157.3696 | Acc 0.8425 |
+Epoch 00007 | Step 00000 | Loss 86.9251 | Acc 0.9121 |
+Epoch 00008 | Step 00000 | Loss 64.9808 | Acc 0.9414 |
+Epoch 00009 | Step 00000 | Loss 53.7886 | Acc 0.9560 |
+</pre></div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
+<p>To train the model on a full dataset with different settings (such as CPU or GPU),
+refer to the <a class="reference external" href="https://github.com/dmlc/dgl/tree/master/examples/pytorch/tree_lstm">PyTorch example</a>.
+There is also an implementation of the Child-Sum Tree-LSTM.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.931 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-models-2-small-graph-3-tree-lstm-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../../_downloads/9f3dd8c4e3a1346dffc152c3a0e871cb/3_tree-lstm.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">3_tree-lstm.ipynb</span></code></a></p>
 </div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Epoch 00000 | Step 00000 | Loss 431.8057 | Acc 0.3004 |
-Epoch 00001 | Step 00000 | Loss 243.8302 | Acc 0.7692 |
-Epoch 00002 | Step 00000 | Loss 1175.0660 | Acc 0.3919 |
-</pre></div></div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../../_downloads/7fac5af9055787d6d59980ef1cc4f8f6/3_tree-lstm.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">3_tree-lstm.py</span></code></a></p>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../../_downloads/8db7ffb9a0985efae446d8584cf63f1d/3_tree-lstm.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">3_tree-lstm.zip</span></code></a></p>
 </div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Epoch 00003 | Step 00000 | Loss 391.2954 | Acc 0.6007 |
-Epoch 00004 | Step 00000 | Loss 202.6438 | Acc 0.7949 |
-Epoch 00005 | Step 00000 | Loss 575.4738 | Acc 0.6923 |
-</pre></div></div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Epoch 00006 | Step 00000 | Loss 145.2396 | Acc 0.8498 |
-Epoch 00007 | Step 00000 | Loss 114.1111 | Acc 0.8938 |
-Epoch 00008 | Step 00000 | Loss 87.9166 | Acc 0.9084 |
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Epoch 00009 | Step 00000 | Loss 62.7974 | Acc 0.9414 |
-</pre></div></div>
-</div>
-<p>To train the model on a full dataset with different settings (such as CPU or GPU), refer to the <a class="reference external" href="https://github.com/dmlc/dgl/tree/master/examples/pytorch/tree_lstm">PyTorch example</a>_. There is also an implementation of the Child-Sum Tree-LSTM.</p>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </section>
 </section>
 

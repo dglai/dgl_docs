@@ -8,7 +8,7 @@
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -280,7 +280,7 @@
 <div class="viewcode-block" id="TorchBasedFeature.read_async">
 <a class="viewcode-back" href="../../../../generated/dgl.graphbolt.TorchBasedFeature.html#dgl.graphbolt.TorchBasedFeature.read_async">[docs]</a>
     <span class="k">def</span> <span class="nf">read_async</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the feature by index asynchronously.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Read the feature by index asynchronously.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -295,7 +295,7 @@
 <span class="sd">            can be accessed by calling `.wait()`. on the returned future object.</span>
 <span class="sd">            It is undefined behavior to call `.wait()` more than once.</span>
 
-<span class="sd">        Example Usage</span>
+<span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; import dgl.graphbolt as gb</span>
 <span class="sd">        &gt;&gt;&gt; feature = gb.Feature(...)</span>
@@ -507,6 +507,8 @@
 
 
 
+<div class="viewcode-block" id="DiskBasedFeature">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.DiskBasedFeature.html#dgl.graphbolt.DiskBasedFeature">[docs]</a>
 <span class="k">class</span> <span class="nc">DiskBasedFeature</span><span class="p">(</span><span class="n">Feature</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;A wrapper of disk based feature.</span>
 
@@ -552,6 +554,8 @@
                 <span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">num_threads</span>
             <span class="p">)</span>
 
+<div class="viewcode-block" id="DiskBasedFeature.read">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.DiskBasedFeature.html#dgl.graphbolt.DiskBasedFeature.read">[docs]</a>
     <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the feature by index.</span>
 <span class="sd">        The returned tensor will be on CPU.</span>
@@ -573,10 +577,13 @@
             <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">IndexError</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">index_select</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="p">,</span> <span class="n">ids</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">index_select</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="p">,</span> <span class="n">ids</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="DiskBasedFeature.read_async">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.DiskBasedFeature.html#dgl.graphbolt.DiskBasedFeature.read_async">[docs]</a>
     <span class="k">def</span> <span class="nf">read_async</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the feature by index asynchronously.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Read the feature by index asynchronously.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -591,7 +598,7 @@
 <span class="sd">            can be accessed by calling `.wait()`. on the returned future object.</span>
 <span class="sd">            It is undefined behavior to call `.wait()` more than once.</span>
 
-<span class="sd">        Example Usage</span>
+<span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; import dgl.graphbolt as gb</span>
 <span class="sd">        &gt;&gt;&gt; feature = gb.Feature(...)</span>
@@ -628,8 +635,11 @@
 
             <span class="k">yield</span> <span class="n">_Waiter</span><span class="p">(</span><span class="n">values_copy_event</span><span class="p">,</span> <span class="n">values_cuda</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ondisk_npy_array</span><span class="o">.</span><span class="n">index_select</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ondisk_npy_array</span><span class="o">.</span><span class="n">index_select</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="DiskBasedFeature.read_async_num_stages">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.DiskBasedFeature.html#dgl.graphbolt.DiskBasedFeature.read_async_num_stages">[docs]</a>
     <span class="k">def</span> <span class="nf">read_async_num_stages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids_device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The number of stages of the read_async operation. See read_async</span>
 <span class="sd">        function for directions on its use. This function is required to return</span>
@@ -645,8 +655,11 @@
 <span class="sd">        int</span>
 <span class="sd">            The number of stages of the read_async operation.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="mi">3</span> <span class="k">if</span> <span class="n">ids_device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;cuda&quot;</span> <span class="k">else</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="mi">3</span> <span class="k">if</span> <span class="n">ids_device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;cuda&quot;</span> <span class="k">else</span> <span class="mi">1</span></div>
 
+
+<div class="viewcode-block" id="DiskBasedFeature.size">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.DiskBasedFeature.html#dgl.graphbolt.DiskBasedFeature.size">[docs]</a>
     <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the size of the feature.</span>
 <span class="sd">        Returns</span>
@@ -654,12 +667,18 @@
 <span class="sd">        torch.Size</span>
 <span class="sd">            The size of the feature.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span></div>
 
+
+<div class="viewcode-block" id="DiskBasedFeature.update">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.DiskBasedFeature.html#dgl.graphbolt.DiskBasedFeature.update">[docs]</a>
     <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">ids</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Disk based feature does not support update for now.&quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
+
+<div class="viewcode-block" id="DiskBasedFeature.metadata">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.DiskBasedFeature.html#dgl.graphbolt.DiskBasedFeature.metadata">[docs]</a>
     <span class="k">def</span> <span class="nf">metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the metadata of the feature.</span>
 <span class="sd">        Returns</span>
@@ -669,25 +688,35 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">metadata</span><span class="p">()</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="DiskBasedFeature.read_into_memory">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.DiskBasedFeature.html#dgl.graphbolt.DiskBasedFeature.read_into_memory">[docs]</a>
     <span class="k">def</span> <span class="nf">read_into_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TorchBasedFeature</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Change disk-based feature to torch-based feature.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">TorchBasedFeature</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">TorchBasedFeature</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="DiskBasedFeature.to">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.DiskBasedFeature.html#dgl.graphbolt.DiskBasedFeature.to">[docs]</a>
     <span class="k">def</span> <span class="nf">to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>  <span class="c1"># pylint: disable=invalid-name</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Placeholder `DiskBasedFeature` to implementation. It is a no-op.&quot;&quot;&quot;</span>
         <span class="n">gb_warning</span><span class="p">(</span>
             <span class="s2">&quot;`DiskBasedFeature.to(device)` is not supported. Leaving unmodified.&quot;</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
 
+
+<div class="viewcode-block" id="DiskBasedFeature.pin_memory_">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.DiskBasedFeature.html#dgl.graphbolt.DiskBasedFeature.pin_memory_">[docs]</a>
     <span class="k">def</span> <span class="nf">pin_memory_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pylint: disable=invalid-name</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Placeholder `DiskBasedFeature` pin_memory_ implementation. It is a no-op.&quot;&quot;&quot;</span>
         <span class="n">gb_warning</span><span class="p">(</span>
             <span class="s2">&quot;`DiskBasedFeature.pin_memory_()` is not supported. Leaving unmodified.&quot;</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="n">ret</span> <span class="o">=</span> <span class="p">(</span>
@@ -708,7 +737,8 @@
             <span class="n">Classname</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
             <span class="n">feature</span><span class="o">=</span><span class="n">feature_str</span><span class="p">,</span>
             <span class="n">metadata</span><span class="o">=</span><span class="n">metadata_str</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="TorchBasedFeatureStore">

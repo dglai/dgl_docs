@@ -9,11 +9,10 @@
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=0bf289b5" />
 
   
@@ -30,8 +29,6 @@
         <script src="../../_static/copybutton.js?v=ccdb6887"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -64,7 +61,7 @@
               <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Install and Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../blitz/index.html">A Blitz ntroduction to DGL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../blitz/index.html">A Blitz Introduction to DGL</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Advanced Materials</span></p>
 <ul class="current">
@@ -133,7 +130,7 @@
           <li class="breadcrumb-item"><a href="index.html">Training on Multiple GPUs</a></li>
       <li class="breadcrumb-item active">Single Machine Multi-GPU Minibatch Graph Classification</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/tutorials/multi/1_graph_classification.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/tutorials/multi/1_graph_classification.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -141,42 +138,67 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="Single-Machine-Multi-GPU-Minibatch-Graph-Classification">
-<h1>Single Machine Multi-GPU Minibatch Graph Classification<a class="headerlink" href="#Single-Machine-Multi-GPU-Minibatch-Graph-Classification" title="Link to this heading"></a></h1>
-<p>In this tutorial, you will learn how to use multiple GPUs in training a graph neural network (GNN) for graph classification. This tutorial assumes knowledge in GNNs for graph classification and we recommend you to check :doc:<code class="docutils literal notranslate"><span class="pre">Training</span> <span class="pre">a</span> <span class="pre">GNN</span> <span class="pre">for</span> <span class="pre">Graph</span> <span class="pre">Classification</span> <span class="pre">&lt;../blitz/5_graph_classification&gt;</span></code> otherwise.</p>
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-tutorials-multi-1-graph-classification-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="single-machine-multi-gpu-minibatch-graph-classification">
+<span id="sphx-glr-tutorials-multi-1-graph-classification-py"></span><h1>Single Machine Multi-GPU Minibatch Graph Classification<a class="headerlink" href="#single-machine-multi-gpu-minibatch-graph-classification" title="Link to this heading"></a></h1>
+<p>In this tutorial, you will learn how to use multiple GPUs in training a
+graph neural network (GNN) for graph classification. This tutorial assumes
+knowledge in GNNs for graph classification and we recommend you to check
+<a class="reference internal" href="../blitz/5_graph_classification.html"><span class="doc">Training a GNN for Graph Classification</span></a> otherwise.</p>
 <p>(Time estimate: 8 minutes)</p>
-<p>To use a single GPU in training a GNN, we need to put the model, graph(s), and other tensors (e.g. labels) on the same GPU:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>import torch
+<p>To use a single GPU in training a GNN, we need to put the model, graph(s), and other
+tensors (e.g. labels) on the same GPU:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
 
-# Use the first GPU
-device = torch.device(&quot;cuda:0&quot;)
-model = model.to(device)
-graph = graph.to(device)
-labels = labels.to(device)
+<span class="c1"># Use the first GPU</span>
+<span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda:0&quot;</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">graph</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The node and edge features in the graphs, if any, will also be on the GPU. After that, the forward computation, backward computation and parameter update will take place on the GPU. For graph classification, this repeats for each minibatch gradient descent.</p>
-<p>Using multiple GPUs allows performing more computation per unit of time. It is like having a team work together, where each GPU is a team member. We need to distribute the computation workload across GPUs and let them synchronize the efforts regularly. PyTorch provides convenient APIs for this task with multiple processes, one per GPU, and we can use them in conjunction with DGL.</p>
-<p>Intuitively, we can distribute the workload along the dimension of data. This allows multiple GPUs to perform the forward and backward computation of multiple gradient descents in parallel. To distribute a dataset across multiple GPUs, we need to partition it into multiple mutually exclusive subsets of a similar size, one per GPU. We need to repeat the random partition every epoch to guarantee randomness. We can use :func:<code class="docutils literal notranslate"><span class="pre">~dgl.dataloading.pytorch.GraphDataLoader</span></code>, which wraps some PyTorch
+<p>The node and edge features in the graphs, if any, will also be on the GPU.
+After that, the forward computation, backward computation and parameter
+update will take place on the GPU. For graph classification, this repeats
+for each minibatch gradient descent.</p>
+<p>Using multiple GPUs allows performing more computation per unit of time. It
+is like having a team work together, where each GPU is a team member. We need
+to distribute the computation workload across GPUs and let them synchronize
+the efforts regularly. PyTorch provides convenient APIs for this task with
+multiple processes, one per GPU, and we can use them in conjunction with DGL.</p>
+<p>Intuitively, we can distribute the workload along the dimension of data. This
+allows multiple GPUs to perform the forward and backward computation of
+multiple gradient descents in parallel. To distribute a dataset across
+multiple GPUs, we need to partition it into multiple mutually exclusive
+subsets of a similar size, one per GPU. We need to repeat the random
+partition every epoch to guarantee randomness. We can use
+<code class="xref py py-func docutils literal notranslate"><span class="pre">GraphDataLoader()</span></code>, which wraps some PyTorch
 APIs and does the job for graph classification in data loading.</p>
-<p>Once all GPUs have finished the backward computation for its minibatch, we need to synchronize the model parameter update across them. Specifically, this involves collecting gradients from all GPUs, averaging them and updating the model parameters on each GPU. We can wrap a PyTorch model with :func:<code class="docutils literal notranslate"><span class="pre">~torch.nn.parallel.DistributedDataParallel</span></code> so that the model parameter update will invoke gradient synchronization first under the hood.</p>
-<p><img alt="418bef8b220d46928fbaddb4a102b233" class="no-scaled-link" src="https://data.dgl.ai/tutorial/mgpu_gc.png" style="width: 450px;" /></p>
-<p>That’s the core behind this tutorial. We will explore it more in detail with a complete example below.</p>
+<p>Once all GPUs have finished the backward computation for its minibatch,
+we need to synchronize the model parameter update across them. Specifically,
+this involves collecting gradients from all GPUs, averaging them and updating
+the model parameters on each GPU. We can wrap a PyTorch model with
+<code class="xref py py-func docutils literal notranslate"><span class="pre">DistributedDataParallel()</span></code> so that the model
+parameter update will invoke gradient synchronization first under the hood.</p>
+<a class="reference internal image-reference" href="https://data.dgl.ai/tutorial/mgpu_gc.png"><img alt="https://data.dgl.ai/tutorial/mgpu_gc.png" class="align-center" src="https://data.dgl.ai/tutorial/mgpu_gc.png" style="width: 450px;" /></a>
+<p>That’s the core behind this tutorial. We will explore it more in detail with
+a complete example below.</p>
 <div class="admonition note">
-<div class="admonition-title fa fa-exclamation-circle"><h4></div><p>Note</p>
-</h4><p><p>See <a class="reference external" href="https://pytorch.org/tutorials/intermediate/ddp_tutorial.html">this tutorial</a>_ from PyTorch for general multi-GPU training with <code class="docutils literal notranslate"><span class="pre">DistributedDataParallel</span></code>.</p>
-</p></div>
-<section id="Distributed-Process-Group-Initialization">
-<h2>Distributed Process Group Initialization<a class="headerlink" href="#Distributed-Process-Group-Initialization" title="Link to this heading"></a></h2>
-<p>For communication between multiple processes in multi-gpu training, we need to start the distributed backend at the beginning of each process. We use <code class="docutils literal notranslate"><span class="pre">world_size</span></code> to refer to the number of processes and <code class="docutils literal notranslate"><span class="pre">rank</span></code> to refer to the process ID, which should be an integer from <code class="docutils literal notranslate"><span class="pre">0</span></code> to <code class="docutils literal notranslate"><span class="pre">world_size</span> <span class="pre">-</span> <span class="pre">1</span></code>.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
-</pre></div>
+<p class="admonition-title">Note</p>
+<p>See <a class="reference external" href="https://pytorch.org/tutorials/intermediate/ddp_tutorial.html">this tutorial</a>
+from PyTorch for general multi-GPU training with <code class="docutils literal notranslate"><span class="pre">DistributedDataParallel</span></code>.</p>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<section id="distributed-process-group-initialization">
+<h2>Distributed Process Group Initialization<a class="headerlink" href="#distributed-process-group-initialization" title="Link to this heading"></a></h2>
+<p>For communication between multiple processes in multi-gpu training, we need
+to start the distributed backend at the beginning of each process. We use
+<cite>world_size</cite> to refer to the number of processes and <cite>rank</cite> to refer to the
+process ID, which should be an integer from <cite>0</cite> to <cite>world_size - 1</cite>.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 
 <a href="https://docs.python.org/3/library/os.html#os.environ" title="os.environ" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-data"><span class="n">os</span><span class="o">.</span><span class="n">environ</span></a><span class="p">[</span><span class="s2">&quot;DGLBACKEND&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pytorch&quot;</span>
 <span class="kn">import</span> <span class="nn">torch.distributed</span> <span class="k">as</span> <span class="nn">dist</span>
@@ -191,16 +213,16 @@ APIs and does the job for graph classification in data loading.</p>
     <span class="p">)</span>
 </pre></div>
 </div>
-</div>
 </section>
-<section id="Data-Loader-Preparation">
-<h2>Data Loader Preparation<a class="headerlink" href="#Data-Loader-Preparation" title="Link to this heading"></a></h2>
-<p>We split the dataset into training, validation and test subsets. In dataset splitting, we need to use a same random seed across processes to ensure a same split. We follow the common practice to train with multiple GPUs and evaluate with a single GPU, thus only set <code class="docutils literal notranslate"><span class="pre">use_ddp</span></code> to True in the :func:<code class="docutils literal notranslate"><span class="pre">~dgl.dataloading.pytorch.GraphDataLoader</span></code> for the training set, where <code class="docutils literal notranslate"><span class="pre">ddp</span></code> stands for :func:<code class="docutils literal notranslate"><span class="pre">~torch.nn.parallel.DistributedDataParallel</span></code>.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dgl.data</span> <span class="kn">import</span> <span class="n">split_dataset</span>
+<section id="data-loader-preparation">
+<h2>Data Loader Preparation<a class="headerlink" href="#data-loader-preparation" title="Link to this heading"></a></h2>
+<p>We split the dataset into training, validation and test subsets. In dataset
+splitting, we need to use a same random seed across processes to ensure a
+same split. We follow the common practice to train with multiple GPUs and
+evaluate with a single GPU, thus only set <cite>use_ddp</cite> to True in the
+<code class="xref py py-func docutils literal notranslate"><span class="pre">GraphDataLoader()</span></code> for the training set, where
+<cite>ddp</cite> stands for <code class="xref py py-func docutils literal notranslate"><span class="pre">DistributedDataParallel()</span></code>.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dgl.data</span> <span class="kn">import</span> <span class="n">split_dataset</span>
 <span class="kn">from</span> <span class="nn">dgl.dataloading</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic" class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class"><span class="n">GraphDataLoader</span></a>
 
 
@@ -218,16 +240,11 @@ APIs and does the job for graph classification in data loading.</p>
     <span class="k">return</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">val_loader</span><span class="p">,</span> <span class="n">test_loader</span>
 </pre></div>
 </div>
-</div>
 </section>
-<section id="Model-Initialization">
-<h2>Model Initialization<a class="headerlink" href="#Model-Initialization" title="Link to this heading"></a></h2>
+<section id="model-initialization">
+<h2>Model Initialization<a class="headerlink" href="#model-initialization" title="Link to this heading"></a></h2>
 <p>For this tutorial, we use a simplified Graph Isomorphism Network (GIN).</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
 <span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
 
 <span class="kn">from</span> <span class="nn">dgl.nn.pytorch</span> <span class="kn">import</span> <span class="n">GINConv</span><span class="p">,</span> <span class="n">SumPooling</span>
@@ -253,13 +270,10 @@ APIs and does the job for graph classification in data loading.</p>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">feats</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<p>To ensure same initial model parameters across processes, we need to set the same random seed before model initialization. Once we construct a model instance, we wrap it with :func:<code class="docutils literal notranslate"><span class="pre">~torch.nn.parallel.DistributedDataParallel</span></code>.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<p>To ensure same initial model parameters across processes, we need to set the
+same random seed before model initialization. Once we construct a model
+instance, we wrap it with <code class="xref py py-func docutils literal notranslate"><span class="pre">DistributedDataParallel()</span></code>.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">torch.nn.parallel</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/abc.html#abc.ABC" title="abc.ABC" class="sphx-glr-backref-module-abc sphx-glr-backref-type-py-class"><span class="n">DistributedDataParallel</span></a>
 
 
@@ -276,16 +290,11 @@ APIs and does the job for graph classification in data loading.</p>
     <span class="k">return</span> <span class="n">model</span>
 </pre></div>
 </div>
-</div>
 </section>
-<section id="Main-Function-for-Each-Process">
-<h2>Main Function for Each Process<a class="headerlink" href="#Main-Function-for-Each-Process" title="Link to this heading"></a></h2>
+<section id="main-function-for-each-process">
+<h2>Main Function for Each Process<a class="headerlink" href="#main-function-for-each-process" title="Link to this heading"></a></h2>
 <p>Define the model evaluation function as in the single-GPU setting.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
     <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
 
     <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
@@ -305,13 +314,8 @@ APIs and does the job for graph classification in data loading.</p>
     <span class="k">return</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">total_correct</span> <span class="o">/</span> <span class="n">total</span>
 </pre></div>
 </div>
-</div>
 <p>Define the run function for each process.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.optim</span> <span class="kn">import</span> <span class="n">Adam</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.optim</span> <span class="kn">import</span> <span class="n">Adam</span>
 
 
 <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">world_size</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
@@ -356,20 +360,15 @@ APIs and does the job for graph classification in data loading.</p>
     <span class="n">dist</span><span class="o">.</span><span class="n">destroy_process_group</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
 <p>Finally we load the dataset and launch the processes.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch.multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch.multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
 <span class="kn">from</span> <span class="nn">dgl.data</span> <span class="kn">import</span> <span class="n">GINDataset</span>
 
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-  <span class="c1">#  if not torch.cuda.is_available():</span>
- <span class="c1">#       print(&quot;No GPU found!&quot;</span>
-    <span class="k">return</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No GPU found!&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
 
     <span class="n">num_gpus</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">device_count</span><span class="p">()</span>
     <span class="n">dataset</span> <span class="o">=</span> <span class="n">GINDataset</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;IMDBBINARY&quot;</span><span class="p">,</span> <span class="n">self_loop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -380,7 +379,22 @@ APIs and does the job for graph classification in data loading.</p>
     <span class="n">main</span><span class="p">()</span>
 </pre></div>
 </div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>No GPU found!
+</pre></div>
 </div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.003 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-multi-1-graph-classification-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/cabb9e1c7f78718ebb79d8822f13d081/1_graph_classification.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">1_graph_classification.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/535dbad517572f87241f90e76068ec44/1_graph_classification.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">1_graph_classification.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/e2ff40a53f462d83a7864f137b48a708/1_graph_classification.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">1_graph_classification.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </section>
 </section>
 

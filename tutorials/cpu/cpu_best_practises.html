@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -29,8 +29,6 @@
         <script src="../../_static/copybutton.js?v=ccdb6887"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -63,7 +61,7 @@
               <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Install and Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../blitz/index.html">A Blitz ntroduction to DGL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../blitz/index.html">A Blitz Introduction to DGL</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Advanced Materials</span></p>
 <ul class="current">
@@ -132,7 +130,7 @@
           <li class="breadcrumb-item"><a href="index.html">Training on CPUs</a></li>
       <li class="breadcrumb-item active">CPU Best Practices</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/tutorials/cpu/cpu_best_practises.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/tutorials/cpu/cpu_best_practises.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -140,54 +138,104 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="CPU-Best-Practices">
-<h1>CPU Best Practices<a class="headerlink" href="#CPU-Best-Practices" title="Link to this heading"></a></h1>
-<p>This chapter focus on providing best practises for environment setup to get the best performance during training and inference on the CPU.</p>
-<section id="Intel">
-<h2>Intel<a class="headerlink" href="#Intel" title="Link to this heading"></a></h2>
-<section id="Hyper-threading">
-<h3>Hyper-threading<a class="headerlink" href="#Hyper-threading" title="Link to this heading"></a></h3>
-<p>For specific workloads as GNN’s domain, suggested default setting for having best performance is to turn off hyperthreading. Turning off the hyper threading feature can be done at BIOS [#f1]_ or operating system level [#f2]_ [#f3]_ .</p>
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-tutorials-cpu-cpu-best-practises-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="cpu-best-practices">
+<span id="sphx-glr-tutorials-cpu-cpu-best-practises-py"></span><h1>CPU Best Practices<a class="headerlink" href="#cpu-best-practices" title="Link to this heading"></a></h1>
+<p>This chapter focus on providing best practises for environment setup
+to get the best performance during training and inference on the CPU.</p>
+<section id="intel">
+<h2>Intel<a class="headerlink" href="#intel" title="Link to this heading"></a></h2>
+<section id="hyper-threading">
+<h3>Hyper-threading<a class="headerlink" href="#hyper-threading" title="Link to this heading"></a></h3>
+<p>For specific workloads as GNN’s domain, suggested default setting for having best performance
+is to turn off hyperthreading.
+Turning off the hyper threading feature can be done at BIOS <a class="footnote-reference brackets" href="#f1" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> or operating system level <a class="footnote-reference brackets" href="#f2" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> <a class="footnote-reference brackets" href="#f3" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a> .</p>
 </section>
-<section id="Alternative-memory-allocators">
-<h3>Alternative memory allocators<a class="headerlink" href="#Alternative-memory-allocators" title="Link to this heading"></a></h3>
+<section id="alternative-memory-allocators">
+<h3>Alternative memory allocators<a class="headerlink" href="#alternative-memory-allocators" title="Link to this heading"></a></h3>
 <p>Alternative memory allocators, such as <em>tcmalloc</em>, might provide significant performance improvements by more efficient memory usage, reducing overhead on unnecessary memory allocations or deallocations. <em>tcmalloc</em> uses thread-local caches to reduce overhead on thread synchronization, locks contention by using spinlocks and per-thread arenas respectively and categorizes memory allocations by sizes to reduce overhead on memory fragmentation.</p>
 <p>To take advantage of optimizations <em>tcmalloc</em> provides, install it on your system (on Ubuntu <em>tcmalloc</em> is included in libgoogle-perftools4 package) and add shared library to the LD_PRELOAD environment variable:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">LD_PRELOAD</span><span class="o">=</span>/lib/x86_64-linux-gnu/libtcmalloc.so.4:<span class="nv">$LD_PRELOAD</span>
 </pre></div>
 </div>
 </section>
-<section id="OpenMP-settings">
-<h3>OpenMP settings<a class="headerlink" href="#OpenMP-settings" title="Link to this heading"></a></h3>
-<p>As <code class="docutils literal notranslate"><span class="pre">OpenMP</span></code> is the default parallel backend, we could control performance including sampling and training via <code class="docutils literal notranslate"><span class="pre">dgl.utils.set_num_threads()</span></code>.</p>
-<p>If number of OpenMP threads is not set and <code class="docutils literal notranslate"><span class="pre">num_workers</span></code> in dataloader is set to 0, the OpenMP runtime typically use the number of available CPU cores by default. This works well for most cases, and is also the default behavior in DGL.</p>
-<p>If <code class="docutils literal notranslate"><span class="pre">num_workers</span></code> in dataloader is set to greater than 0, the number of OpenMP threads will be set to <strong>1</strong> for each worker process. This is the default behavior in PyTorch. In this case, we can set the number of OpenMP threads to the number of CPU cores in the main process.</p>
-<p>Performance tuning is highly dependent on the workload and hardware configuration. We recommend users to try different settings and choose the best one for their own cases.</p>
+<section id="openmp-settings">
+<h3>OpenMP settings<a class="headerlink" href="#openmp-settings" title="Link to this heading"></a></h3>
+<p>As <cite>OpenMP</cite> is the default parallel backend, we could control performance
+including sampling and training via <cite>dgl.utils.set_num_threads()</cite>.</p>
+<p>If number of OpenMP threads is not set and <cite>num_workers</cite> in dataloader is set
+to 0, the OpenMP runtime typically use the number of available CPU cores by
+default. This works well for most cases, and is also the default behavior in DGL.</p>
+<p>If <cite>num_workers</cite> in dataloader is set to greater than 0, the number of
+OpenMP threads will be set to <strong>1</strong> for each worker process. This is the
+default behavior in PyTorch. In this case, we can set the number of OpenMP
+threads to the number of CPU cores in the main process.</p>
+<p>Performance tuning is highly dependent on the workload and hardware
+configuration. We recommend users to try different settings and choose the
+best one for their own cases.</p>
 <p><strong>Dataloader CPU affinity</strong></p>
 <div class="admonition note">
-<div class="admonition-title fa fa-exclamation-circle"><h4></div><p>Note</p>
-</h4><p><p>This feature is available for <code class="docutils literal notranslate"><span class="pre">dgl.dataloading.DataLoader</span></code> only. Not available for dataloaders in <code class="docutils literal notranslate"><span class="pre">dgl.graphbolt</span></code> yet.</p>
-</p></div>
-<p>If number of dataloader workers is more than 0, please consider using <strong>use_cpu_affinity()</strong> method of DGL Dataloader class, it will generally result in significant performance improvement for training.</p>
-<p><em>use_cpu_affinity</em> will set the proper OpenMP thread count (equal to the number of CPU cores allocated for main process), affinitize dataloader workers for separate CPU cores and restrict the main process to remaining cores</p>
-<p>In multiple NUMA nodes setups <em>use_cpu_affinity</em> will only use cores of NUMA node 0 by default with an assumption, that the workload is scaling poorly across multiple NUMA nodes. If you believe your workload will have better performance utilizing more than one NUMA node, you can pass the list of cores to use for dataloading (loader_cores) and for compute (compute_cores).</p>
-<p>loader_cores and compute_cores arguments (list of CPU cores) can be passed to <em>enable_cpu_affinity</em> for more control over which cores should be used, e.g. in case a workload scales well across multiple NUMA nodes.</p>
-<p>Usage: .. code:: python</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dataloader = dgl.dataloading.DataLoader(...)
-...
-with dataloader.enable_cpu_affinity():
-    &lt;training loop or inferencing&gt;
+<p class="admonition-title">Note</p>
+<p>This feature is available for <cite>dgl.dataloading.DataLoader</cite> only. Not
+available for dataloaders in <cite>dgl.graphbolt</cite> yet.</p>
+</div>
+<p>If number of dataloader workers is more than 0, please consider using <strong>use_cpu_affinity()</strong> method
+of DGL Dataloader class, it will generally result in significant performance improvement for training.</p>
+<p><em>use_cpu_affinity</em> will set the proper OpenMP thread count (equal to the number of CPU cores allocated for main process),
+affinitize dataloader workers for separate CPU cores and restrict the main process to remaining cores</p>
+<p>In multiple NUMA nodes setups <em>use_cpu_affinity</em> will only use cores of NUMA node 0 by default
+with an assumption, that the workload is scaling poorly across multiple NUMA nodes. If you believe
+your workload will have better performance utilizing more than one NUMA node, you can pass
+the list of cores to use for dataloading (loader_cores) and for compute (compute_cores).</p>
+<p>loader_cores and compute_cores arguments (list of CPU cores) can be passed to <em>enable_cpu_affinity</em> for more
+control over which cores should be used, e.g. in case a workload scales well across multiple NUMA nodes.</p>
+<dl>
+<dt>Usage:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dataloader</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">dataloading</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="k">with</span> <span class="n">dataloader</span><span class="o">.</span><span class="n">enable_cpu_affinity</span><span class="p">():</span>
+    <span class="o">&lt;</span><span class="n">training</span> <span class="n">loop</span> <span class="ow">or</span> <span class="n">inferencing</span><span class="o">&gt;</span>
 </pre></div>
 </div>
+</dd>
+</dl>
 <p><strong>Manual control</strong></p>
-<p>For advanced and more fine-grained control over OpenMP settings please refer to Maximize Performance of Intel® Optimization for PyTorch* on CPU [#f4]_ article</p>
+<p>For advanced and more fine-grained control over OpenMP settings please refer to Maximize Performance of Intel® Optimization for PyTorch* on CPU <a class="footnote-reference brackets" href="#f4" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a> article</p>
 <p class="rubric">Footnotes</p>
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="f1" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
-<p><a class="reference external" href="https://www.intel.com/content/www/us/en/support/articles/000007645/boards-and-kits/desktop-boards.html">https://www.intel.com/content/www/us/en/support/articles/000007645/boards-and-kits/desktop-boards.html</a> .. [#f2] <a class="reference external" href="https://aws.amazon.com/blogs/compute/disabling-intel-hyper-threading-technology-on-amazon-linux/">https://aws.amazon.com/blogs/compute/disabling-intel-hyper-threading-technology-on-amazon-linux/</a> .. [#f3] <a class="reference external" href="https://aws.amazon.com/blogs/compute/disabling-intel-hyper-threading-technology-on-amazon-ec2-windows-instances/">https://aws.amazon.com/blogs/compute/disabling-intel-hyper-threading-technology-on-amazon-ec2-windows-instances/</a> .. [#f4] <a class="reference external" href="https://software.intel.com/content/www/us/en/develop/articles/how-to-get-better-performance-on-pytorchcaffe2-with-intel-acceleration.html">https://software.intel.com/content/www/us/en/develop/articles/how-to-get-better-performance-on-pytorchcaffe2-with-intel-acceleration.html</a></p>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://www.intel.com/content/www/us/en/support/articles/000007645/boards-and-kits/desktop-boards.html">https://www.intel.com/content/www/us/en/support/articles/000007645/boards-and-kits/desktop-boards.html</a></p>
+</aside>
+<aside class="footnote brackets" id="f2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://aws.amazon.com/blogs/compute/disabling-intel-hyper-threading-technology-on-amazon-linux/">https://aws.amazon.com/blogs/compute/disabling-intel-hyper-threading-technology-on-amazon-linux/</a></p>
+</aside>
+<aside class="footnote brackets" id="f3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">3</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://aws.amazon.com/blogs/compute/disabling-intel-hyper-threading-technology-on-amazon-ec2-windows-instances/">https://aws.amazon.com/blogs/compute/disabling-intel-hyper-threading-technology-on-amazon-ec2-windows-instances/</a></p>
+</aside>
+<aside class="footnote brackets" id="f4" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">4</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://software.intel.com/content/www/us/en/develop/articles/how-to-get-better-performance-on-pytorchcaffe2-with-intel-acceleration.html">https://software.intel.com/content/www/us/en/develop/articles/how-to-get-better-performance-on-pytorchcaffe2-with-intel-acceleration.html</a></p>
 </aside>
 </aside>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.000 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-cpu-cpu-best-practises-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/5182549a5385495284e700d7e0cebe4b/cpu_best_practises.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">cpu_best_practises.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/db8457286f2f76ae7bc8a317d0cbcc70/cpu_best_practises.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">cpu_best_practises.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/e7752d00024aa9efd86bb6652302fd62/cpu_best_practises.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">cpu_best_practises.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </section>
 </section>
 </section>

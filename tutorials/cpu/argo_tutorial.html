@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -29,8 +29,6 @@
         <script src="../../_static/copybutton.js?v=ccdb6887"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -63,7 +61,7 @@
               <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Install and Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../blitz/index.html">A Blitz ntroduction to DGL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../blitz/index.html">A Blitz Introduction to DGL</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Advanced Materials</span></p>
 <ul class="current">
@@ -132,7 +130,7 @@
           <li class="breadcrumb-item"><a href="index.html">Training on CPUs</a></li>
       <li class="breadcrumb-item active">Improve Scalability on Multi-Core CPUs</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/tutorials/cpu/argo_tutorial.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/tutorials/cpu/argo_tutorial.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -140,82 +138,211 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="Improve-Scalability-on-Multi-Core-CPUs">
-<h1>Improve Scalability on Multi-Core CPUs<a class="headerlink" href="#Improve-Scalability-on-Multi-Core-CPUs" title="Link to this heading"></a></h1>
-<p>Graph Neural Network (GNN) training suffers from low scalability on multi-core CPUs. Specificially, the performance often caps at 16 cores, and no improvement is observed when applying more than 16 cores [#f1]<em>. ARGO is a runtime system that offers scalable performance.
-With ARGO enabled, we are able to scale over 64 cores, allowing ARGO to speedup GNN training (in terms of epoch time) by up to 4.30x and 3.32x on a Xeon 8380H and a Xeon 6430L, respectively [#f2]</em>. This chapter focus on how to setup ARGO to unleash the potential of multi-core CPUs to speedup GNN training.</p>
-<section id="Installation">
-<h2>Installation<a class="headerlink" href="#Installation" title="Link to this heading"></a></h2>
-<p>ARGO utilizes the scikit-optimize library for auto-tuning. Please install scikit-optimize to run ARGO: .. code-block:: shell conda install -c conda-forge “scikit-optimize&gt;=0.9.0” or .. code-block:: shell pip install scikit-optimize&gt;=0.9</p>
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-tutorials-cpu-argo-tutorial-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="improve-scalability-on-multi-core-cpus">
+<span id="sphx-glr-tutorials-cpu-argo-tutorial-py"></span><h1>Improve Scalability on Multi-Core CPUs<a class="headerlink" href="#improve-scalability-on-multi-core-cpus" title="Link to this heading"></a></h1>
+<p>Graph Neural Network (GNN) training suffers from low scalability on multi-core CPUs.
+Specificially, the performance often caps at 16 cores, and no improvement is observed when applying more than 16 cores <a class="footnote-reference brackets" href="#f1" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.
+ARGO is a runtime system that offers scalable performance.
+With ARGO enabled, we are able to scale over 64 cores, allowing ARGO to speedup GNN training (in terms of epoch time) by up to 4.30x and 3.32x on a Xeon 8380H and a Xeon 6430L, respectively <a class="footnote-reference brackets" href="#f2" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>.
+This chapter focus on how to setup ARGO to unleash the potential of multi-core CPUs to speedup GNN training.</p>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<p>ARGO utilizes the scikit-optimize library for auto-tuning. Please install scikit-optimize to run ARGO:
+.. code-block:: shell</p>
+<blockquote>
+<div><p>conda install -c conda-forge “scikit-optimize&gt;=0.9.0”</p>
+</div></blockquote>
+<p>or
+.. code-block:: shell</p>
+<blockquote>
+<div><p>pip install scikit-optimize&gt;=0.9</p>
+</div></blockquote>
 </section>
-<section id="Enabling-ARGO-on-your-own-GNN-program">
-<h2>Enabling ARGO on your own GNN program<a class="headerlink" href="#Enabling-ARGO-on-your-own-GNN-program" title="Link to this heading"></a></h2>
-<p>In this section, we provide a step-by-step tutorial on how to enable ARGO on a DGL program. We use the <em>ogb_example.py</em> [#f3]_ as an example.</p>
-<div class="admonition note">
-<div class="admonition-title fa fa-exclamation-circle"><h4></div><p>Note</p>
-</h4><p><p>We also provide the complete example file <em>ogb_example_ARGO.py</em> [#f4]_ which followed the steps below to enable ARGO on <em>ogb_example.py</em>.</p>
-</p></div>
-<section id="Step-1">
-<h3>Step 1<a class="headerlink" href="#Step-1" title="Link to this heading"></a></h3>
-<p>First, include all necessary packages on top of the file. Please place your file and <em>argo.py</em> [#f5]_ in the same directory.</p>
-</section>
-<section id="Step-2">
-<h3>Step 2<a class="headerlink" href="#Step-2" title="Link to this heading"></a></h3>
-<p>Setup PyTorch Distributed Data Parallel (DDP)</p>
-<p>2.1. Add the initialization function on top of the training program, and wrap the <code class="docutils literal notranslate"><span class="pre">model</span></code> with the DDP wrapper .. code-block:: python def train(…): dist.init_process_group(‘gloo’, rank=rank, world_size=world_size) # newly added model = SAGE(…) # original code model = DistributedDataParallel(model) # newly added …</p>
-<p>2.2. In the main program, add the following before launching the training function .. code-block:: python … os.environ[‘MASTER_ADDR’] = ‘127.0.0.1’ os.environ[‘MASTER_PORT’] = ‘29501’ mp.set_start_method(‘fork’, force=True) train(args, device, data) # original code for launching the training function</p>
-</section>
-<section id="Step-3">
-<h3>Step 3<a class="headerlink" href="#Step-3" title="Link to this heading"></a></h3>
-<p>Enable ARGO by initializing the runtime system, and wrapping the training function .. code-block:: python runtime = ARGO(n_search = 15, epoch = args.num_epochs, batch_size = args.batch_size) # initialization runtime.run(train, args=(args, device, data)) # wrap the training function</p>
-<div class="admonition note">
-<div class="admonition-title fa fa-exclamation-circle"><h4></div><p>Note</p>
-</h4><p><p>ARGO takes three input parameters: number of searches <em>n_search</em>, number of epochs, and the mini-batch size. Increasing <em>n_search</em> potentially leads to a better configuration with less epoch time; however, searching itself also causes extra overhead. We recommend setting <em>n_search</em> from 15 to 45 for an optimal overall performance.</p>
-</p></div>
-</section>
-<section id="Step-4">
-<h3>Step 4<a class="headerlink" href="#Step-4" title="Link to this heading"></a></h3>
-<p>Modify the input of the training function, by directly adding ARGO parameters after the original inputs.</p>
-<p>This is the original function: .. code-block:: python def train(args, device, data):</p>
-<p>Add the following variables: <em>rank, world_size, comp_core, load_core, counter, b_size, ep</em> .. code-block:: python def train(args, device, data, rank, world_size, comp_core, load_core, counter, b_size, ep):</p>
-</section>
-<section id="Step-5">
-<h3>Step 5<a class="headerlink" href="#Step-5" title="Link to this heading"></a></h3>
-<p>Modify the <em>dataloader</em> function in the training function .. code-block:: python dataloader = dgl.dataloading.DataLoader( g, train_nid, sampler, batch_size=b_size, # modified shuffle=True, drop_last=False, num_workers=len(load_core), # modified use_ddp = True) # newly added</p>
-</section>
-<section id="Step-6">
-<h3>Step 6<a class="headerlink" href="#Step-6" title="Link to this heading"></a></h3>
-<p>Enable core-binding by adding <em>enable_cpu_affinity()</em> before the training for-loop, and also change the number of epochs into the variable <em>ep</em>: .. code-block:: python with dataloader.enable_cpu_affinity(loader_cores=load_core, compute_cores=comp_core): for epoch in range(ep): # change num_epochs to ep</p>
-</section>
-<section id="Step-7">
-<h3>Step 7<a class="headerlink" href="#Step-7" title="Link to this heading"></a></h3>
-<p>Last step! Load the model before training and save it afterward.</p>
-<p>Original Program: .. code-block:: python with dataloader.enable_cpu_affinity(loader_cores=load_core, compute_cores=comp_core): for epoch in range(ep): … # training operations</p>
-<p>Modified: .. code-block:: python PATH = “model.pt” if counter[0] != 0: checkpoint = th.load(PATH) model.load_state_dict(checkpoint[‘model_state_dict’]) optimizer.load_state_dict(checkpoint[‘optimizer_state_dict’]) epoch = checkpoint[‘epoch’] loss = checkpoint[‘loss’]</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>with dataloader.enable_cpu_affinity(loader_cores=load_core, compute_cores=comp_core):
-    for epoch in range(ep):
-    ... # training operations
-
-dist.barrier()
-if rank == 0:
-    th.save({&#39;epoch&#39;: counter[0],
-                &#39;model_state_dict&#39;: model.state_dict(),
-                &#39;optimizer_state_dict&#39;: optimizer.state_dict(),
-                &#39;loss&#39;: loss,
-                }, PATH)
+<section id="enabling-argo-on-your-own-gnn-program">
+<h2>Enabling ARGO on your own GNN program<a class="headerlink" href="#enabling-argo-on-your-own-gnn-program" title="Link to this heading"></a></h2>
+<p>In this section, we provide a step-by-step tutorial on how to enable ARGO on a DGL program.
+We use the <em>ogb_example.py</em> <a class="footnote-reference brackets" href="#f3" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a> as an example.
+.. note:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">We</span> <span class="n">also</span> <span class="n">provide</span> <span class="n">the</span> <span class="n">complete</span> <span class="n">example</span> <span class="n">file</span> <span class="o">*</span><span class="n">ogb_example_ARGO</span><span class="o">.</span><span class="n">py</span><span class="o">*</span> <span class="p">[</span><span class="c1">#f4]_</span>
+<span class="n">which</span> <span class="n">followed</span> <span class="n">the</span> <span class="n">steps</span> <span class="n">below</span> <span class="n">to</span> <span class="n">enable</span> <span class="n">ARGO</span> <span class="n">on</span> <span class="o">*</span><span class="n">ogb_example</span><span class="o">.</span><span class="n">py</span><span class="o">*.</span>
 </pre></div>
 </div>
+<section id="step-1">
+<h3>Step 1<a class="headerlink" href="#step-1" title="Link to this heading"></a></h3>
+<p>First, include all necessary packages on top of the file. Please place your file and <em>argo.py</em> <a class="footnote-reference brackets" href="#f5" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a> in the same directory.</p>
 </section>
-<section id="Step-8">
-<h3>Step 8<a class="headerlink" href="#Step-8" title="Link to this heading"></a></h3>
-<p>Done! You can now run your GNN program with ARGO enabled. .. code-block:: shell python .py</p>
+<section id="step-2">
+<h3>Step 2<a class="headerlink" href="#step-2" title="Link to this heading"></a></h3>
+<p>Setup PyTorch Distributed Data Parallel (DDP)</p>
+<p>2.1. Add the initialization function on top of the training program, and wrap the <code class="docutils literal notranslate"><span class="pre">`model`</span></code> with the DDP wrapper
+.. code-block:: python</p>
+<blockquote>
+<div><dl class="simple">
+<dt>def train(…):</dt><dd><p>dist.init_process_group(‘gloo’, rank=rank, world_size=world_size) # newly added
+model = SAGE(…) # original code
+model = DistributedDataParallel(model) # newly added
+…</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>2.2. In the main program, add the following before launching the training function
+.. code-block:: python</p>
+<blockquote>
+<div><p>…
+os.environ[‘MASTER_ADDR’] = ‘127.0.0.1’
+os.environ[‘MASTER_PORT’] = ‘29501’
+mp.set_start_method(‘fork’, force=True)
+train(args, device, data) # original code for launching the training function</p>
+</div></blockquote>
+</section>
+<section id="step-3">
+<h3>Step 3<a class="headerlink" href="#step-3" title="Link to this heading"></a></h3>
+<p>Enable ARGO by initializing the runtime system, and wrapping the training function
+.. code-block:: python</p>
+<blockquote>
+<div><p>runtime = ARGO(n_search = 15, epoch = args.num_epochs, batch_size = args.batch_size) # initialization
+runtime.run(train, args=(args, device, data)) # wrap the training function</p>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>ARGO takes three input parameters: number of searches <em>n_search</em>, number of epochs, and the mini-batch size.
+Increasing <em>n_search</em> potentially leads to a better configuration with less epoch time;
+however, searching itself also causes extra overhead. We recommend setting <em>n_search</em> from 15 to 45 for an optimal overall performance.</p>
+</div>
+</section>
+<section id="step-4">
+<h3>Step 4<a class="headerlink" href="#step-4" title="Link to this heading"></a></h3>
+<p>Modify the input of the training function, by directly adding ARGO parameters after the original inputs.</p>
+<p>This is the original function:
+.. code-block:: python</p>
+<blockquote>
+<div><p>def train(args, device, data):</p>
+</div></blockquote>
+<p>Add the following variables: <em>rank, world_size, comp_core, load_core, counter, b_size, ep</em>
+.. code-block:: python</p>
+<blockquote>
+<div><p>def train(args, device, data, rank, world_size, comp_core, load_core, counter, b_size, ep):</p>
+</div></blockquote>
+</section>
+<section id="step-5">
+<h3>Step 5<a class="headerlink" href="#step-5" title="Link to this heading"></a></h3>
+<p>Modify the <em>dataloader</em> function in the training function
+.. code-block:: python</p>
+<blockquote>
+<div><dl class="simple">
+<dt>dataloader = dgl.dataloading.DataLoader(</dt><dd><p>g,
+train_nid,
+sampler,
+batch_size=b_size, # modified
+shuffle=True,
+drop_last=False,
+num_workers=len(load_core), # modified
+use_ddp = True) # newly added</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="step-6">
+<h3>Step 6<a class="headerlink" href="#step-6" title="Link to this heading"></a></h3>
+<p>Enable core-binding by adding <em>enable_cpu_affinity()</em> before the training for-loop, and also change the number of epochs into the variable <em>ep</em>:
+.. code-block:: python</p>
+<blockquote>
+<div><dl class="simple">
+<dt>with dataloader.enable_cpu_affinity(loader_cores=load_core, compute_cores=comp_core):</dt><dd><p>for epoch in range(ep): # change num_epochs to ep</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="step-7">
+<h3>Step 7<a class="headerlink" href="#step-7" title="Link to this heading"></a></h3>
+<p>Last step! Load the model before training and save it afterward.</p>
+<p>Original Program:
+.. code-block:: python</p>
+<blockquote>
+<div><dl class="simple">
+<dt>with dataloader.enable_cpu_affinity(loader_cores=load_core, compute_cores=comp_core):</dt><dd><p>for epoch in range(ep):
+… # training operations</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>Modified:
+.. code-block:: python</p>
+<blockquote>
+<div><p>PATH = “model.pt”
+if counter[0] != 0:</p>
+<blockquote>
+<div><p>checkpoint = th.load(PATH)
+model.load_state_dict(checkpoint[‘model_state_dict’])
+optimizer.load_state_dict(checkpoint[‘optimizer_state_dict’])
+epoch = checkpoint[‘epoch’]
+loss = checkpoint[‘loss’]</p>
+</div></blockquote>
+<dl class="simple">
+<dt>with dataloader.enable_cpu_affinity(loader_cores=load_core, compute_cores=comp_core):</dt><dd><p>for epoch in range(ep):
+… # training operations</p>
+</dd>
+</dl>
+<p>dist.barrier()
+if rank == 0:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>th.save({‘epoch’: counter[0],</dt><dd><p>‘model_state_dict’: model.state_dict(),
+‘optimizer_state_dict’: optimizer.state_dict(),
+‘loss’: loss,
+}, PATH)</p>
+</dd>
+</dl>
+</div></blockquote>
+</div></blockquote>
+</section>
+<section id="step-8">
+<h3>Step 8<a class="headerlink" href="#step-8" title="Link to this heading"></a></h3>
+<p>Done! You can now run your GNN program with ARGO enabled.
+.. code-block:: shell</p>
+<blockquote>
+<div><p>python &lt;your_code&gt;.py</p>
+</div></blockquote>
 <p class="rubric">Footnotes</p>
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="f1" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
-<p><a class="reference external" href="https://github.com/dmlc/dgl/blob/master/examples/pytorch/argo/argo_scale.png">https://github.com/dmlc/dgl/blob/master/examples/pytorch/argo/argo_scale.png</a> .. [#f2] <a class="reference external" href="https://arxiv.org/abs/2402.03671">https://arxiv.org/abs/2402.03671</a> .. [#f3] <a class="reference external" href="https://github.com/dmlc/dgl/blob/master/examples/pytorch/argo/ogb_example.py">https://github.com/dmlc/dgl/blob/master/examples/pytorch/argo/ogb_example.py</a> .. [#f4] <a class="reference external" href="https://github.com/dmlc/dgl/blob/master/examples/pytorch/argo/ogb_example_ARGO.py">https://github.com/dmlc/dgl/blob/master/examples/pytorch/argo/ogb_example_ARGO.py</a> .. [#f5] <a class="reference external" href="https://github.com/dmlc/dgl/blob/master/examples/pytorch/argo/argo.py">https://github.com/dmlc/dgl/blob/master/examples/pytorch/argo/argo.py</a></p>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://github.com/dmlc/dgl/blob/master/examples/pytorch/argo/argo_scale.png">https://github.com/dmlc/dgl/blob/master/examples/pytorch/argo/argo_scale.png</a></p>
+</aside>
+<aside class="footnote brackets" id="f2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://arxiv.org/abs/2402.03671">https://arxiv.org/abs/2402.03671</a></p>
+</aside>
+<aside class="footnote brackets" id="f3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">3</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://github.com/dmlc/dgl/blob/master/examples/pytorch/argo/ogb_example.py">https://github.com/dmlc/dgl/blob/master/examples/pytorch/argo/ogb_example.py</a></p>
+</aside>
+<aside class="footnote brackets" id="f4" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://github.com/dmlc/dgl/blob/master/examples/pytorch/argo/ogb_example_ARGO.py">https://github.com/dmlc/dgl/blob/master/examples/pytorch/argo/ogb_example_ARGO.py</a></p>
+</aside>
+<aside class="footnote brackets" id="f5" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">5</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://github.com/dmlc/dgl/blob/master/examples/pytorch/argo/argo.py">https://github.com/dmlc/dgl/blob/master/examples/pytorch/argo/argo.py</a></p>
 </aside>
 </aside>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.000 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-cpu-argo-tutorial-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/a4b2864d10b66fa0b1ca211bd02f9dd3/argo_tutorial.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">argo_tutorial.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/bcadb5a8e2a2db1ab56690add8d0bf2c/argo_tutorial.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">argo_tutorial.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/b3bc1d9d825616020677599977e5c38a/argo_tutorial.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">argo_tutorial.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </section>
 </section>
 </section>

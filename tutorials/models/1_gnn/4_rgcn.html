@@ -9,11 +9,10 @@
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/nbsphinx-code-cells.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=0bf289b5" />
 
   
@@ -64,7 +63,7 @@
               <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Install and Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../blitz/index.html">A Blitz ntroduction to DGL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../blitz/index.html">A Blitz Introduction to DGL</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Advanced Materials</span></p>
 <ul class="current">
@@ -142,7 +141,7 @@
           <li class="breadcrumb-item"><a href="index.html">Graph neural networks and its variants</a></li>
       <li class="breadcrumb-item active">Relational Graph Convolutional Network</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../../_sources/tutorials/models/1_gnn/4_rgcn.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="../../../_sources/tutorials/models/1_gnn/4_rgcn.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -150,70 +149,130 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="Relational-Graph-Convolutional-Network">
-<h1>Relational Graph Convolutional Network<a class="headerlink" href="#Relational-Graph-Convolutional-Network" title="Link to this heading"></a></h1>
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-tutorials-models-1-gnn-4-rgcn-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="relational-graph-convolutional-network">
+<span id="model-rgcn"></span><span id="sphx-glr-tutorials-models-1-gnn-4-rgcn-py"></span><h1>Relational Graph Convolutional Network<a class="headerlink" href="#relational-graph-convolutional-network" title="Link to this heading"></a></h1>
 <p><strong>Author:</strong> Lingfan Yu, Mufei Li, Zheng Zhang</p>
-<div class="alert alert-danger"><h4><p>Warning</p>
-</h4><p><p>The tutorial aims at gaining insights into the paper, with code as a mean of explanation. The implementation thus is NOT optimized for running efficiency. For recommended implementation, please refer to the <a class="reference external" href="https://github.com/dmlc/dgl/tree/master/examples">official examples</a>.</p>
-</p></div><p>In this tutorial, you learn how to implement a relational graph convolutional network (R-GCN). This type of network is one effort to generalize GCN to handle different relationships between entities in a knowledge base. To learn more about the research behind R-GCN, see <a class="reference external" href="https://arxiv.org/pdf/1703.06103.pdf">Modeling Relational Data with Graph Convolutional Networks</a></p>
-<p>The straightforward graph convolutional network (GCN) exploits structural information of a dataset (that is, the graph connectivity) in order to improve the extraction of node representations. Graph edges are left as untyped.</p>
-<p>A knowledge graph is made up of a collection of triples in the form subject, relation, object. Edges thus encode important information and have their own embeddings to be learned. Furthermore, there may exist multiple edges among any given pair.</p>
-<section id="A-brief-introduction-to-R-GCN">
-<h2>A brief introduction to R-GCN<a class="headerlink" href="#A-brief-introduction-to-R-GCN" title="Link to this heading"></a></h2>
-<p>In <em>statistical relational learning</em> (SRL), there are two fundamental tasks:</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The tutorial aims at gaining insights into the paper, with code as a mean
+of explanation. The implementation thus is NOT optimized for running
+efficiency. For recommended implementation, please refer to the <a class="reference external" href="https://github.com/dmlc/dgl/tree/master/examples">official
+examples</a>.</p>
+</div>
+<p>In this tutorial, you learn how to implement a relational graph convolutional
+network (R-GCN). This type of network is one effort to generalize GCN
+to handle different relationships between entities in a knowledge base. To
+learn more about the research behind R-GCN, see <a class="reference external" href="https://arxiv.org/pdf/1703.06103.pdf">Modeling Relational Data with Graph Convolutional
+Networks</a></p>
+<p>The straightforward graph convolutional network (GCN) exploits
+structural information of a dataset (that is, the graph connectivity) in order to
+improve the extraction of node representations. Graph edges are left as
+untyped.</p>
+<p>A knowledge graph is made up of a collection of triples in the form
+subject, relation, object. Edges thus encode important information and
+have their own embeddings to be learned. Furthermore, there may exist
+multiple edges among any given pair.</p>
+<section id="a-brief-introduction-to-r-gcn">
+<h2>A brief introduction to R-GCN<a class="headerlink" href="#a-brief-introduction-to-r-gcn" title="Link to this heading"></a></h2>
+<p>In <em>statistical relational learning</em> (SRL), there are two fundamental
+tasks:</p>
 <ul class="simple">
-<li><p><strong>Entity classification</strong> - Where you assign types and categorical properties to entities.</p></li>
+<li><p><strong>Entity classification</strong> - Where you assign types and categorical
+properties to entities.</p></li>
 <li><p><strong>Link prediction</strong> - Where you recover missing triples.</p></li>
 </ul>
-<p>In both cases, missing information is expected to be recovered from the neighborhood structure of the graph. For example, the R-GCN paper cited earlier provides the following example. Knowing that Mikhail Baryshnikov was educated at the Vaganova Academy implies both that Mikhail Baryshnikov should have the label person, and that the triple (Mikhail Baryshnikov, lived in, Russia) must belong to the knowledge graph.</p>
-<p>R-GCN solves these two problems using a common graph convolutional network. It’s extended with multi-edge encoding to compute embedding of the entities, but with different downstream processing.</p>
+<p>In both cases, missing information is expected to be recovered from the
+neighborhood structure of the graph. For example, the R-GCN
+paper cited earlier provides the following example. Knowing that Mikhail Baryshnikov was educated at the Vaganova Academy
+implies both that Mikhail Baryshnikov should have the label person, and
+that the triple (Mikhail Baryshnikov, lived in, Russia) must belong to the
+knowledge graph.</p>
+<p>R-GCN solves these two problems using a common graph convolutional network. It’s
+extended with multi-edge encoding to compute embedding of the entities, but
+with different downstream processing.</p>
 <ul class="simple">
-<li><p>Entity classification is done by attaching a softmax classifier at the final embedding of an entity (node). Training is through loss of standard cross-entropy.</p></li>
-<li><p>Link prediction is done by reconstructing an edge with an autoencoder architecture, using a parameterized score function. Training uses negative sampling.</p></li>
+<li><p>Entity classification is done by attaching a softmax classifier at the
+final embedding of an entity (node). Training is through loss of standard
+cross-entropy.</p></li>
+<li><p>Link prediction is done by reconstructing an edge with an autoencoder
+architecture, using a parameterized score function. Training uses negative
+sampling.</p></li>
 </ul>
-<p>This tutorial focuses on the first task, entity classification, to show how to generate entity representation. <a class="reference external" href="https://github.com/dmlc/dgl/tree/master/examples/pytorch/rgcn">Complete code</a> for both tasks is found in the DGL Github repository.</p>
+<p>This tutorial focuses on the first task, entity classification, to show how to generate entity
+representation. <a class="reference external" href="https://github.com/dmlc/dgl/tree/master/examples/pytorch/rgcn">Complete
+code</a>
+for both tasks is found in the DGL Github repository.</p>
 </section>
-<section id="Key-ideas-of-R-GCN">
-<h2>Key ideas of R-GCN<a class="headerlink" href="#Key-ideas-of-R-GCN" title="Link to this heading"></a></h2>
-<p>Recall that in GCN, the hidden representation for each node <span class="math notranslate nohighlight">\(i\)</span> at <span class="math notranslate nohighlight">\((l+1)^{th}\)</span> layer is computed by:</p>
-<p><span class="math">\begin{align}h_i^{l+1} = \sigma\left(\sum_{j\in N_i}\frac{1}{c_i} W^{(l)} h_j^{(l)}\right)~~~~~~~~~~(1)\\\end{align}</span></p>
+<section id="key-ideas-of-r-gcn">
+<h2>Key ideas of R-GCN<a class="headerlink" href="#key-ideas-of-r-gcn" title="Link to this heading"></a></h2>
+<p>Recall that in GCN, the hidden representation for each node <span class="math notranslate nohighlight">\(i\)</span> at
+<span class="math notranslate nohighlight">\((l+1)^{th}\)</span> layer is computed by:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}h_i^{l+1} = \sigma\left(\sum_{j\in N_i}\frac{1}{c_i} W^{(l)} h_j^{(l)}\right)~~~~~~~~~~(1)\\\end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(c_i\)</span> is a normalization constant.</p>
-<p>The key difference between R-GCN and GCN is that in R-GCN, edges can represent different relations. In GCN, weight <span class="math notranslate nohighlight">\(W^{(l)}\)</span> in equation <span class="math notranslate nohighlight">\((1)\)</span> is shared by all edges in layer <span class="math notranslate nohighlight">\(l\)</span>. In contrast, in R-GCN, different edge types use different weights and only edges of the same relation type <span class="math notranslate nohighlight">\(r\)</span> are associated with the same projection weight <span class="math notranslate nohighlight">\(W_r^{(l)}\)</span>.</p>
-<p>So the hidden representation of entities in <span class="math notranslate nohighlight">\((l+1)^{th}\)</span> layer in R-GCN can be formulated as the following equation:</p>
-<p><span class="math">\begin{align}h_i^{l+1} = \sigma\left(W_0^{(l)}h_i^{(l)}+\sum_{r\in R}\sum_{j\in N_i^r}\frac{1}{c_{i,r}}W_r^{(l)}h_j^{(l)}\right)~~~~~~~~~~(2)\\\end{align}</span></p>
-<p>where <span class="math notranslate nohighlight">\(N_i^r\)</span> denotes the set of neighbor indices of node <span class="math notranslate nohighlight">\(i\)</span> under relation <span class="math notranslate nohighlight">\(r\in R\)</span> and <span class="math notranslate nohighlight">\(c_{i,r}\)</span> is a normalization constant. In entity classification, the R-GCN paper uses <span class="math notranslate nohighlight">\(c_{i,r}=|N_i^r|\)</span>.</p>
-<p>The problem of applying the above equation directly is the rapid growth of the number of parameters, especially with highly multi-relational data. In order to reduce model parameter size and prevent overfitting, the original paper proposes to use basis decomposition.</p>
-<p><span class="math">\begin{align}W_r^{(l)}=\sum\limits_{b=1}^B a_{rb}^{(l)}V_b^{(l)}~~~~~~~~~~(3)\\\end{align}</span></p>
-<p>Therefore, the weight <span class="math notranslate nohighlight">\(W_r^{(l)}\)</span> is a linear combination of basis transformation <span class="math notranslate nohighlight">\(V_b^{(l)}\)</span> with coefficients <span class="math notranslate nohighlight">\(a_{rb}^{(l)}\)</span>. The number of bases <span class="math notranslate nohighlight">\(B\)</span> is much smaller than the number of relations in the knowledge base.</p>
+<p>The key difference between R-GCN and GCN is that in R-GCN, edges can
+represent different relations. In GCN, weight <span class="math notranslate nohighlight">\(W^{(l)}\)</span> in equation
+<span class="math notranslate nohighlight">\((1)\)</span> is shared by all edges in layer <span class="math notranslate nohighlight">\(l\)</span>. In contrast, in
+R-GCN, different edge types use different weights and only edges of the
+same relation type <span class="math notranslate nohighlight">\(r\)</span> are associated with the same projection weight
+<span class="math notranslate nohighlight">\(W_r^{(l)}\)</span>.</p>
+<p>So the hidden representation of entities in <span class="math notranslate nohighlight">\((l+1)^{th}\)</span> layer in
+R-GCN can be formulated as the following equation:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}h_i^{l+1} = \sigma\left(W_0^{(l)}h_i^{(l)}+\sum_{r\in R}\sum_{j\in N_i^r}\frac{1}{c_{i,r}}W_r^{(l)}h_j^{(l)}\right)~~~~~~~~~~(2)\\\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(N_i^r\)</span> denotes the set of neighbor indices of node <span class="math notranslate nohighlight">\(i\)</span>
+under relation <span class="math notranslate nohighlight">\(r\in R\)</span> and <span class="math notranslate nohighlight">\(c_{i,r}\)</span> is a normalization
+constant. In entity classification, the R-GCN paper uses
+<span class="math notranslate nohighlight">\(c_{i,r}=|N_i^r|\)</span>.</p>
+<p>The problem of applying the above equation directly is the rapid growth of
+the number of parameters, especially with highly multi-relational data. In
+order to reduce model parameter size and prevent overfitting, the original
+paper proposes to use basis decomposition.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}W_r^{(l)}=\sum\limits_{b=1}^B a_{rb}^{(l)}V_b^{(l)}~~~~~~~~~~(3)\\\end{split}\]</div>
+<p>Therefore, the weight <span class="math notranslate nohighlight">\(W_r^{(l)}\)</span> is a linear combination of basis
+transformation <span class="math notranslate nohighlight">\(V_b^{(l)}\)</span> with coefficients <span class="math notranslate nohighlight">\(a_{rb}^{(l)}\)</span>.
+The number of bases <span class="math notranslate nohighlight">\(B\)</span> is much smaller than the number of relations
+in the knowledge base.</p>
 <div class="admonition note">
-<div class="admonition-title fa fa-exclamation-circle"><h4></div><p>Note</p>
-</h4><p><p>Another weight regularization, block-decomposition, is implemented in the <a href="#id1"><span class="problematic" id="id2">`link prediction &lt;link-prediction_&gt;`__</span></a>.</p>
-</p></div>
+<p class="admonition-title">Note</p>
+<p>Another weight regularization, block-decomposition, is implemented in
+the <a class="reference internal" href="#link-prediction">link prediction</a>.</p>
+</div>
 </section>
-<section id="Implement-R-GCN-in-DGL">
-<h2>Implement R-GCN in DGL<a class="headerlink" href="#Implement-R-GCN-in-DGL" title="Link to this heading"></a></h2>
-<p>An R-GCN model is composed of several R-GCN layers. The first R-GCN layer also serves as input layer and takes in features (for example, description texts) that are associated with node entity and project to hidden space. In this tutorial, we only use the entity ID as an entity feature.</p>
-<section id="R-GCN-layers">
-<h3>R-GCN layers<a class="headerlink" href="#R-GCN-layers" title="Link to this heading"></a></h3>
+<section id="implement-r-gcn-in-dgl">
+<h2>Implement R-GCN in DGL<a class="headerlink" href="#implement-r-gcn-in-dgl" title="Link to this heading"></a></h2>
+<p>An R-GCN model is composed of several R-GCN layers. The first R-GCN layer
+also serves as input layer and takes in features (for example, description texts)
+that are associated with node entity and project to hidden space. In this tutorial,
+we only use the entity ID as an entity feature.</p>
+<section id="r-gcn-layers">
+<h3>R-GCN layers<a class="headerlink" href="#r-gcn-layers" title="Link to this heading"></a></h3>
 <p>For each node, an R-GCN layer performs the following steps:</p>
 <ul class="simple">
-<li><p>Compute outgoing message using node representation and weight matrix associated with the edge type (message function)</p></li>
-<li><p>Aggregate incoming messages and generate new node representations (reduce and apply function)</p></li>
+<li><p>Compute outgoing message using node representation and weight matrix
+associated with the edge type (message function)</p></li>
+<li><p>Aggregate incoming messages and generate new node representations (reduce
+and apply function)</p></li>
 </ul>
 <p>The following code is the definition of an R-GCN hidden layer.</p>
 <div class="admonition note">
-<div class="admonition-title fa fa-exclamation-circle"><h4></div><p>Note</p>
-</h4><p><p>Each relation type is associated with a different weight. Therefore, the full weight matrix has three dimensions: relation, input_feature, output_feature.</p>
-</p></div>
-<div class="admonition note">
-<div class="admonition-title fa fa-exclamation-circle"><h4></div><p>Note</p>
-</h4><p><p>This is showing how to implement an R-GCN from scratch. DGL provides a more efficient :class:<code class="docutils literal notranslate"><span class="pre">builtin</span> <span class="pre">R-GCN</span> <span class="pre">layer</span> <span class="pre">module</span> <span class="pre">&lt;dgl.nn.pytorch.conv.RelGraphConv&gt;</span></code>.</p>
-</p></div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
-</pre></div>
+<p class="admonition-title">Note</p>
+<p>Each relation type is associated with a different weight. Therefore,
+the full weight matrix has three dimensions: relation, input_feature,
+output_feature.</p>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is showing how to implement an R-GCN from scratch.  DGL provides a more
+efficient <a class="reference internal" href="../../../generated/dgl.nn.pytorch.conv.RelGraphConv.html#dgl.nn.pytorch.conv.RelGraphConv" title="dgl.nn.pytorch.conv.RelGraphConv"><code class="xref py py-class docutils literal notranslate"><span class="pre">builtin</span> <span class="pre">R-GCN</span> <span class="pre">layer</span> <span class="pre">module</span></code></a>.</p>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 
 <a href="https://docs.python.org/3/library/os.html#os.environ" title="os.environ" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-data"><span class="n">os</span><span class="o">.</span><span class="n">environ</span></a><span class="p">[</span><span class="s2">&quot;DGLBACKEND&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pytorch&quot;</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/functools.html#functools.partial" title="functools.partial" class="sphx-glr-backref-module-functools sphx-glr-backref-type-py-function"><span class="n">partial</span></a>
@@ -313,15 +372,10 @@
         <span class="n">g</span><span class="o">.</span><span class="n">update_all</span><span class="p">(</span><span class="n">message_func</span><span class="p">,</span> <span class="n">fn</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">msg</span><span class="o">=</span><span class="s2">&quot;msg&quot;</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="s2">&quot;h&quot;</span><span class="p">),</span> <span class="n">apply_func</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
 </section>
-<section id="Full-R-GCN-model-defined">
-<h3>Full R-GCN model defined<a class="headerlink" href="#Full-R-GCN-model-defined" title="Link to this heading"></a></h3>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<section id="full-r-gcn-model-defined">
+<h3>Full R-GCN model defined<a class="headerlink" href="#full-r-gcn-model-defined" title="Link to this heading"></a></h3>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">num_nodes</span><span class="p">,</span>
@@ -399,16 +453,11 @@
         <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;h&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
 </section>
-<section id="Handle-dataset">
-<h3>Handle dataset<a class="headerlink" href="#Handle-dataset" title="Link to this heading"></a></h3>
+<section id="handle-dataset">
+<h3>Handle dataset<a class="headerlink" href="#handle-dataset" title="Link to this heading"></a></h3>
 <p>This tutorial uses Institute for Applied Informatics and Formal Description Methods (AIFB) dataset from R-GCN paper.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load graph data</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># load graph data</span>
 <span class="n">dataset</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">rdf</span><span class="o">.</span><span class="n">AIFBDataset</span><span class="p">()</span>
 <span class="n">g</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">category</span></a> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">predict_category</span>
@@ -425,23 +474,13 @@
 <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">category_id</span></a> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ntypes</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">category</span></a><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Done loading data from cached files.
-</pre></div></div>
-</div>
-</section>
-<section id="Create-graph-and-model">
-<h3>Create graph and model<a class="headerlink" href="#Create-graph-and-model" title="Link to this heading"></a></h3>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Done loading data from cached files.
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># configurations</span>
+</section>
+<section id="create-graph-and-model">
+<h3>Create graph and model<a class="headerlink" href="#create-graph-and-model" title="Link to this heading"></a></h3>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># configurations</span>
 <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_hidden</span></a> <span class="o">=</span> <span class="mi">16</span>  <span class="c1"># number of hidden units</span>
 <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_bases</span></a> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>  <span class="c1"># use number of relations as number of bases</span>
 <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_hidden_layers</span></a> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># use 1 input layer, 1 output layer, no hidden layer</span>
@@ -465,15 +504,10 @@ Done loading data from cached files.
 <span class="p">)</span>
 </pre></div>
 </div>
-</div>
 </section>
-<section id="Training-loop">
-<h3>Training loop<a class="headerlink" href="#Training-loop" title="Link to this heading"></a></h3>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># optimizer</span>
+<section id="training-loop">
+<h3>Training loop<a class="headerlink" href="#training-loop" title="Link to this heading"></a></h3>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># optimizer</span>
 <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lr</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lr</span></a><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">l2norm</span></a><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;start training...&quot;</span><span class="p">)</span>
@@ -503,74 +537,61 @@ Done loading data from cached files.
     <span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-start training...
-Epoch 00000 | Train Accuracy: 0.3143 | Train Loss: 1.3860 | Validation Accuracy: 0.2778 | Validation loss: 1.3862
-Epoch 00001 | Train Accuracy: 0.9857 | Train Loss: 1.3571 | Validation Accuracy: 0.9444 | Validation loss: 1.3637
-Epoch 00002 | Train Accuracy: 0.9857 | Train Loss: 1.3112 | Validation Accuracy: 0.9722 | Validation loss: 1.3266
-Epoch 00003 | Train Accuracy: 0.9857 | Train Loss: 1.2488 | Validation Accuracy: 0.9722 | Validation loss: 1.2752
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Epoch 00004 | Train Accuracy: 0.9857 | Train Loss: 1.1774 | Validation Accuracy: 0.9722 | Validation loss: 1.2145
-Epoch 00005 | Train Accuracy: 0.9857 | Train Loss: 1.1087 | Validation Accuracy: 0.9722 | Validation loss: 1.1547
-Epoch 00006 | Train Accuracy: 0.9857 | Train Loss: 1.0496 | Validation Accuracy: 0.9722 | Validation loss: 1.1025
-Epoch 00007 | Train Accuracy: 0.9786 | Train Loss: 1.0013 | Validation Accuracy: 0.9722 | Validation loss: 1.0585
-Epoch 00008 | Train Accuracy: 0.9786 | Train Loss: 0.9635 | Validation Accuracy: 0.9722 | Validation loss: 1.0222
-Epoch 00009 | Train Accuracy: 0.9786 | Train Loss: 0.9350 | Validation Accuracy: 0.9722 | Validation loss: 0.9936
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Epoch 00010 | Train Accuracy: 0.9786 | Train Loss: 0.9143 | Validation Accuracy: 0.9722 | Validation loss: 0.9723
-Epoch 00011 | Train Accuracy: 0.9857 | Train Loss: 0.8991 | Validation Accuracy: 0.9722 | Validation loss: 0.9569
-Epoch 00012 | Train Accuracy: 0.9857 | Train Loss: 0.8875 | Validation Accuracy: 0.9722 | Validation loss: 0.9455
-Epoch 00013 | Train Accuracy: 0.9857 | Train Loss: 0.8782 | Validation Accuracy: 0.9722 | Validation loss: 0.9366
-Epoch 00014 | Train Accuracy: 0.9857 | Train Loss: 0.8701 | Validation Accuracy: 0.9722 | Validation loss: 0.9292
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Epoch 00015 | Train Accuracy: 0.9857 | Train Loss: 0.8627 | Validation Accuracy: 0.9722 | Validation loss: 0.9225
-Epoch 00016 | Train Accuracy: 0.9857 | Train Loss: 0.8556 | Validation Accuracy: 0.9722 | Validation loss: 0.9162
-Epoch 00017 | Train Accuracy: 0.9857 | Train Loss: 0.8486 | Validation Accuracy: 0.9722 | Validation loss: 0.9101
-Epoch 00018 | Train Accuracy: 0.9857 | Train Loss: 0.8416 | Validation Accuracy: 0.9722 | Validation loss: 0.9041
-Epoch 00019 | Train Accuracy: 0.9857 | Train Loss: 0.8347 | Validation Accuracy: 0.9722 | Validation loss: 0.8981
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Epoch 00020 | Train Accuracy: 0.9857 | Train Loss: 0.8278 | Validation Accuracy: 0.9722 | Validation loss: 0.8922
-Epoch 00021 | Train Accuracy: 0.9857 | Train Loss: 0.8211 | Validation Accuracy: 0.9722 | Validation loss: 0.8864
-Epoch 00022 | Train Accuracy: 0.9857 | Train Loss: 0.8146 | Validation Accuracy: 0.9722 | Validation loss: 0.8807
-Epoch 00023 | Train Accuracy: 0.9857 | Train Loss: 0.8083 | Validation Accuracy: 0.9722 | Validation loss: 0.8752
-Epoch 00024 | Train Accuracy: 0.9857 | Train Loss: 0.8025 | Validation Accuracy: 0.9722 | Validation loss: 0.8700
-</pre></div></div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>start training...
+Epoch 00000 | Train Accuracy: 0.3714 | Train Loss: 1.3862 | Validation Accuracy: 0.5000 | Validation loss: 1.3858
+Epoch 00001 | Train Accuracy: 0.9429 | Train Loss: 1.3555 | Validation Accuracy: 0.9167 | Validation loss: 1.3619
+Epoch 00002 | Train Accuracy: 0.9500 | Train Loss: 1.3096 | Validation Accuracy: 0.9167 | Validation loss: 1.3251
+Epoch 00003 | Train Accuracy: 0.9429 | Train Loss: 1.2470 | Validation Accuracy: 0.9167 | Validation loss: 1.2747
+Epoch 00004 | Train Accuracy: 0.9429 | Train Loss: 1.1730 | Validation Accuracy: 0.9167 | Validation loss: 1.2131
+Epoch 00005 | Train Accuracy: 0.9429 | Train Loss: 1.0976 | Validation Accuracy: 0.9167 | Validation loss: 1.1466
+Epoch 00006 | Train Accuracy: 0.9429 | Train Loss: 1.0302 | Validation Accuracy: 0.9167 | Validation loss: 1.0833
+Epoch 00007 | Train Accuracy: 0.9429 | Train Loss: 0.9753 | Validation Accuracy: 0.9167 | Validation loss: 1.0288
+Epoch 00008 | Train Accuracy: 0.9429 | Train Loss: 0.9328 | Validation Accuracy: 0.9167 | Validation loss: 0.9846
+Epoch 00009 | Train Accuracy: 0.9429 | Train Loss: 0.8999 | Validation Accuracy: 0.9167 | Validation loss: 0.9496
+Epoch 00010 | Train Accuracy: 0.9500 | Train Loss: 0.8740 | Validation Accuracy: 0.9167 | Validation loss: 0.9219
+Epoch 00011 | Train Accuracy: 0.9500 | Train Loss: 0.8539 | Validation Accuracy: 0.9444 | Validation loss: 0.8999
+Epoch 00012 | Train Accuracy: 0.9500 | Train Loss: 0.8387 | Validation Accuracy: 0.9444 | Validation loss: 0.8829
+Epoch 00013 | Train Accuracy: 0.9500 | Train Loss: 0.8277 | Validation Accuracy: 0.9444 | Validation loss: 0.8698
+Epoch 00014 | Train Accuracy: 0.9571 | Train Loss: 0.8199 | Validation Accuracy: 0.9444 | Validation loss: 0.8600
+Epoch 00015 | Train Accuracy: 0.9571 | Train Loss: 0.8145 | Validation Accuracy: 0.9444 | Validation loss: 0.8526
+Epoch 00016 | Train Accuracy: 0.9571 | Train Loss: 0.8107 | Validation Accuracy: 0.9167 | Validation loss: 0.8471
+Epoch 00017 | Train Accuracy: 0.9571 | Train Loss: 0.8078 | Validation Accuracy: 0.9167 | Validation loss: 0.8430
+Epoch 00018 | Train Accuracy: 0.9571 | Train Loss: 0.8056 | Validation Accuracy: 0.9167 | Validation loss: 0.8399
+Epoch 00019 | Train Accuracy: 0.9571 | Train Loss: 0.8039 | Validation Accuracy: 0.9167 | Validation loss: 0.8375
+Epoch 00020 | Train Accuracy: 0.9571 | Train Loss: 0.8024 | Validation Accuracy: 0.9167 | Validation loss: 0.8356
+Epoch 00021 | Train Accuracy: 0.9571 | Train Loss: 0.8010 | Validation Accuracy: 0.9167 | Validation loss: 0.8342
+Epoch 00022 | Train Accuracy: 0.9571 | Train Loss: 0.7998 | Validation Accuracy: 0.9167 | Validation loss: 0.8330
+Epoch 00023 | Train Accuracy: 0.9571 | Train Loss: 0.7987 | Validation Accuracy: 0.9167 | Validation loss: 0.8321
+Epoch 00024 | Train Accuracy: 0.9571 | Train Loss: 0.7976 | Validation Accuracy: 0.9167 | Validation loss: 0.8313
+</pre></div>
 </div>
 </section>
 </section>
-<section id="The-second-task,-link-prediction">
-<h2>The second task, link prediction<a class="headerlink" href="#The-second-task,-link-prediction" title="Link to this heading"></a></h2>
-<p>So far, you have seen how to use DGL to implement entity classification with an R-GCN model. In the knowledge base setting, representation generated by R-GCN can be used to uncover potential relationships between nodes. In the R-GCN paper, the authors feed the entity representations generated by R-GCN into the <a class="reference external" href="https://arxiv.org/pdf/1412.6575.pdf">DistMult</a> prediction model to predict possible relationships.</p>
-<p>The implementation is similar to that presented here, but with an extra DistMult layer stacked on top of the R-GCN layers. You can find the complete implementation of link prediction with R-GCN in our <a class="reference external" href="https://github.com/dmlc/dgl/blob/master/examples/pytorch/rgcn/link.py">Github Python code example</a>.</p>
+<section id="the-second-task-link-prediction">
+<span id="link-prediction"></span><h2>The second task, link prediction<a class="headerlink" href="#the-second-task-link-prediction" title="Link to this heading"></a></h2>
+<p>So far, you have seen how to use DGL to implement entity classification with an
+R-GCN model. In the knowledge base setting, representation generated by
+R-GCN can be used to uncover potential relationships between nodes. In the
+R-GCN paper, the authors feed the entity representations generated by R-GCN
+into the <a class="reference external" href="https://arxiv.org/pdf/1412.6575.pdf">DistMult</a> prediction model
+to predict possible relationships.</p>
+<p>The implementation is similar to that presented here, but with an extra DistMult layer
+stacked on top of the R-GCN layers. You can find the complete
+implementation of link prediction with R-GCN in our <a class="reference external" href="https://github.com/dmlc/dgl/blob/master/examples/pytorch/rgcn/link.py">Github Python code
+example</a>.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.086 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-models-1-gnn-4-rgcn-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../../_downloads/be527058f1b143daf0768d117b30c374/4_rgcn.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">4_rgcn.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../../_downloads/208df4cdd7544e5c637ccb811ef670ea/4_rgcn.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">4_rgcn.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../../_downloads/40a3cadd8f5b33a55c8d4b43619eeead/4_rgcn.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">4_rgcn.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </section>
 </section>
 

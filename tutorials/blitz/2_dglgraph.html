@@ -9,11 +9,10 @@
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=0bf289b5" />
 
   
@@ -30,8 +29,6 @@
         <script src="../../_static/copybutton.js?v=ccdb6887"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -64,15 +61,15 @@
               <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Install and Setup</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">A Blitz ntroduction to DGL</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">A Blitz Introduction to DGL</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="1_introduction.html">Node Classification with DGL</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">How Does DGL Represent A Graph?</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#DGL-Graph-Construction">DGL Graph Construction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Assigning-Node-and-Edge-Features-to-Graph">Assigning Node and Edge Features to Graph</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Querying-Graph-Structures">Querying Graph Structures</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Graph-Transformations">Graph Transformations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Loading-and-Saving-Graphs">Loading and Saving Graphs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#What’s-next?">What’s next?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dgl-graph-construction">DGL Graph Construction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#assigning-node-and-edge-features-to-graph">Assigning Node and Edge Features to Graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#querying-graph-structures">Querying Graph Structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#graph-transformations">Graph Transformations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#loading-and-saving-graphs">Loading and Saving Graphs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#whats-next">What’s next?</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="3_message_passing.html">Write your own GNN module</a></li>
@@ -142,10 +139,10 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">A Blitz ntroduction to DGL</a></li>
+          <li class="breadcrumb-item"><a href="index.html">A Blitz Introduction to DGL</a></li>
       <li class="breadcrumb-item active">How Does DGL Represent A Graph?</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/tutorials/blitz/2_dglgraph.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/tutorials/blitz/2_dglgraph.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -153,26 +150,33 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="How-Does-DGL-Represent-A-Graph?">
-<h1>How Does DGL Represent A Graph?<a class="headerlink" href="#How-Does-DGL-Represent-A-Graph?" title="Link to this heading"></a></h1>
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-tutorials-blitz-2-dglgraph-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="how-does-dgl-represent-a-graph">
+<span id="sphx-glr-tutorials-blitz-2-dglgraph-py"></span><h1>How Does DGL Represent A Graph?<a class="headerlink" href="#how-does-dgl-represent-a-graph" title="Link to this heading"></a></h1>
 <p>By the end of this tutorial you will be able to:</p>
 <ul class="simple">
 <li><p>Construct a graph in DGL from scratch.</p></li>
 <li><p>Assign node and edge features to a graph.</p></li>
-<li><p>Query properties of a DGL graph such as node degrees and connectivity.</p></li>
+<li><p>Query properties of a DGL graph such as node degrees and
+connectivity.</p></li>
 <li><p>Transform a DGL graph into another graph.</p></li>
 <li><p>Load and save DGL graphs.</p></li>
 </ul>
 <p>(Time estimate: 16 minutes)</p>
-<section id="DGL-Graph-Construction">
-<h2>DGL Graph Construction<a class="headerlink" href="#DGL-Graph-Construction" title="Link to this heading"></a></h2>
-<p>DGL represents a directed graph as a <code class="docutils literal notranslate"><span class="pre">DGLGraph</span></code> object. You can construct a graph by specifying the number of nodes in the graph as well as the list of source and destination nodes. Nodes in the graph have consecutive IDs starting from 0.</p>
-<p>For instance, the following code constructs a directed star graph with 5 leaves. The center node’s ID is 0. The edges go from the center node to the leaves.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<section id="dgl-graph-construction">
+<h2>DGL Graph Construction<a class="headerlink" href="#dgl-graph-construction" title="Link to this heading"></a></h2>
+<p>DGL represents a directed graph as a <code class="docutils literal notranslate"><span class="pre">DGLGraph</span></code> object. You can
+construct a graph by specifying the number of nodes in the graph as well
+as the list of source and destination nodes.  Nodes in the graph have
+consecutive IDs starting from 0.</p>
+<p>For instance, the following code constructs a directed star graph with 5
+leaves. The center node’s ID is 0. The edges go from the
+center node to the leaves.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 
 <a href="https://docs.python.org/3/library/os.html#os.environ" title="os.environ" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-data"><span class="n">os</span><span class="o">.</span><span class="n">environ</span></a><span class="p">[</span><span class="s2">&quot;DGLBACKEND&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pytorch&quot;</span>
 <span class="kn">import</span> <span class="nn">dgl</span>
@@ -190,39 +194,38 @@
 <span class="n">g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">graph</span><span class="p">(([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]))</span>
 </pre></div>
 </div>
-</div>
-<p>Edges in the graph have consecutive IDs starting from 0, and are in the same order as the list of source and destination nodes during creation.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print the source and destination nodes of every edge.</span>
+<p>Edges in the graph have consecutive IDs starting from 0, and are
+in the same order as the list of source and destination nodes during
+creation.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print the source and destination nodes of every edge.</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">())</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-(tensor([0, 0, 0, 0, 0]), tensor([1, 2, 3, 4, 5]))
-</pre></div></div>
-</div>
-<div class="admonition note">
-<div class="admonition-title fa fa-exclamation-circle"><h4></div><p>Note</p>
-</h4><p><p><code class="docutils literal notranslate"><span class="pre">DGLGraph</span></code>’s are always directed to best fit the computation pattern of graph neural networks, where the messages sent from one node to the other are often different between both directions. If you want to handle undirected graphs, you may consider treating it as a bidirectional graph. See ` &lt;2_dglgraph#graph-transformations&gt;`__ for an example of making a bidirectional graph.</p>
-</p></div>
-</section>
-<section id="Assigning-Node-and-Edge-Features-to-Graph">
-<h2>Assigning Node and Edge Features to Graph<a class="headerlink" href="#Assigning-Node-and-Edge-Features-to-Graph" title="Link to this heading"></a></h2>
-<p>Many graph data contain attributes on nodes and edges. Although the types of node and edge attributes can be arbitrary in real world, <code class="docutils literal notranslate"><span class="pre">DGLGraph</span></code> only accepts attributes stored in tensors (with numerical contents). Consequently, an attribute of all the nodes or edges must have the same shape. In the context of deep learning, those attributes are often called <em>features</em>.</p>
-<p>You can assign and retrieve node and edge features via <code class="docutils literal notranslate"><span class="pre">ndata</span></code> and <code class="docutils literal notranslate"><span class="pre">edata</span></code> interface.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([0, 0, 0, 0, 0]), tensor([1, 2, 3, 4, 5]))
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Assign a 3-dimensional node feature vector for each node.</span>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">DGLGraph</span></code>’s are always directed to best fit the computation
+pattern of graph neural networks, where the messages sent
+from one node to the other are often different between both
+directions. If you want to handle undirected graphs, you may consider
+treating it as a bidirectional graph. See <a class="reference internal" href="#graph-transformations">Graph
+Transformations</a> for an example of making
+a bidirectional graph.</p>
+</div>
+</section>
+<section id="assigning-node-and-edge-features-to-graph">
+<h2>Assigning Node and Edge Features to Graph<a class="headerlink" href="#assigning-node-and-edge-features-to-graph" title="Link to this heading"></a></h2>
+<p>Many graph data contain attributes on nodes and edges.
+Although the types of node and edge attributes can be arbitrary in real
+world, <code class="docutils literal notranslate"><span class="pre">DGLGraph</span></code> only accepts attributes stored in tensors (with
+numerical contents). Consequently, an attribute of all the nodes or
+edges must have the same shape. In the context of deep learning, those
+attributes are often called <em>features</em>.</p>
+<p>You can assign and retrieve node and edge features via <code class="docutils literal notranslate"><span class="pre">ndata</span></code> and
+<code class="docutils literal notranslate"><span class="pre">edata</span></code> interface.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Assign a 3-dimensional node feature vector for each node.</span>
 <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="c1"># Assign a 4-dimensional edge feature vector for each edge.</span>
 <span class="n">g</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
@@ -232,38 +235,34 @@
 <span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-tensor([[ 0.2838,  0.7313, -0.3907, -0.8948],
-        [ 0.8773,  0.6123, -0.6040, -0.6645],
-        [ 0.0763, -0.5807,  0.3039, -0.0434],
-        [-0.2832,  0.7514,  1.3341,  0.6205],
-        [ 0.6647, -0.3760,  0.8073,  0.5963]])
-</pre></div></div>
-</div>
-<div class="admonition note">
-<div class="admonition-title fa fa-exclamation-circle"><h4></div><p>Note</p>
-</h4><p><p>The vast development of deep learning has provided us many ways to encode various types of attributes into numerical features. Here are some general suggestions:</p>
-<ul class="simple">
-<li><p>For categorical attributes (e.g. gender, occupation), consider converting them to integers or one-hot encoding.</p></li>
-<li><p>For variable length string contents (e.g. news article, quote), consider applying a language model.</p></li>
-<li><p>For images, consider applying a vision model such as CNNs.</p></li>
-</ul>
-<p>You can find plenty of materials on how to encode such attributes into a tensor in the <a class="reference external" href="https://pytorch.org/tutorials/">PyTorch Deep Learning Tutorials</a>.</p>
-</p></div>
-</section>
-<section id="Querying-Graph-Structures">
-<h2>Querying Graph Structures<a class="headerlink" href="#Querying-Graph-Structures" title="Link to this heading"></a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">DGLGraph</span></code> object provides various methods to query a graph structure.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[ 0.0439,  0.5296, -0.2741, -0.2168],
+        [-1.3590, -0.9350,  0.2109,  0.6789],
+        [ 0.8780,  1.5933, -0.2901,  0.1147],
+        [-0.3909, -0.0910, -0.1642, -0.1780],
+        [ 0.1628, -0.1896, -2.0124, -1.2347]])
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">())</span>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The vast development of deep learning has provided us many
+ways to encode various types of attributes into numerical features.
+Here are some general suggestions:</p>
+<ul class="simple">
+<li><p>For categorical attributes (e.g. gender, occupation), consider
+converting them to integers or one-hot encoding.</p></li>
+<li><p>For variable length string contents (e.g. news article, quote),
+consider applying a language model.</p></li>
+<li><p>For images, consider applying a vision model such as CNNs.</p></li>
+</ul>
+<p>You can find plenty of materials on how to encode such attributes
+into a tensor in the <a class="reference external" href="https://pytorch.org/tutorials/">PyTorch Deep Learning
+Tutorials</a>.</p>
+</div>
+</section>
+<section id="querying-graph-structures">
+<h2>Querying Graph Structures<a class="headerlink" href="#querying-graph-structures" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">DGLGraph</span></code> object provides various methods to query a graph structure.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">())</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">num_edges</span><span class="p">())</span>
 <span class="c1"># Out degrees of the center node</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">out_degrees</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
@@ -271,39 +270,27 @@ tensor([[ 0.2838,  0.7313, -0.3907, -0.8948],
 <span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">in_degrees</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-6
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>6
 5
 5
 0
-</pre></div></div>
-</div>
-</section>
-<section id="Graph-Transformations">
-<h2>Graph Transformations<a class="headerlink" href="#Graph-Transformations" title="Link to this heading"></a></h2>
-<p>DGL provides many APIs to transform a graph to another such as extracting a subgraph:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Induce a subgraph from node 0, node 1 and node 3 from the original graph.</span>
+</section>
+<section id="graph-transformations">
+<h2>Graph Transformations<a class="headerlink" href="#graph-transformations" title="Link to this heading"></a></h2>
+<p>DGL provides many APIs to transform a graph to another such as
+extracting a subgraph:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Induce a subgraph from node 0, node 1 and node 3 from the original graph.</span>
 <span class="n">sg1</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">subgraph</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
 <span class="c1"># Induce a subgraph from edge 0, edge 1 and edge 3 from the original graph.</span>
 <span class="n">sg2</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">edge_subgraph</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
 </pre></div>
 </div>
-</div>
-<p>You can obtain the node/edge mapping from the subgraph to the original graph by looking into the node feature <code class="docutils literal notranslate"><span class="pre">dgl.NID</span></code> or edge feature <code class="docutils literal notranslate"><span class="pre">dgl.EID</span></code> in the new graph.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The original IDs of each node in sg1</span>
+<p>You can obtain the node/edge mapping from the subgraph to the original
+graph by looking into the node feature <code class="docutils literal notranslate"><span class="pre">dgl.NID</span></code> or edge feature
+<code class="docutils literal notranslate"><span class="pre">dgl.EID</span></code> in the new graph.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># The original IDs of each node in sg1</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">sg1</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span></a><span class="p">])</span>
 <span class="c1"># The original IDs of each edge in sg1</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">sg1</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dgl</span><span class="o">.</span><span class="n">EID</span></a><span class="p">])</span>
@@ -313,24 +300,15 @@ tensor([[ 0.2838,  0.7313, -0.3907, -0.8948],
 <span class="nb">print</span><span class="p">(</span><span class="n">sg2</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dgl</span><span class="o">.</span><span class="n">EID</span></a><span class="p">])</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-tensor([0, 1, 3])
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([0, 1, 3])
 tensor([0, 2])
 tensor([0, 1, 2, 4])
 tensor([0, 1, 3])
-</pre></div></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">subgraph</span></code> and <code class="docutils literal notranslate"><span class="pre">edge_subgraph</span></code> also copies the original features to the subgraph:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The original node feature of each node in sg1</span>
+<p><code class="docutils literal notranslate"><span class="pre">subgraph</span></code> and <code class="docutils literal notranslate"><span class="pre">edge_subgraph</span></code> also copies the original features
+to the subgraph:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># The original node feature of each node in sg1</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">sg1</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">])</span>
 <span class="c1"># The original edge feature of each node in sg1</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">sg1</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">])</span>
@@ -340,57 +318,40 @@ tensor([0, 1, 3])
 <span class="nb">print</span><span class="p">(</span><span class="n">sg2</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-tensor([[-0.0940,  0.2487, -0.5297],
-        [ 0.8216,  0.5285,  0.1067],
-        [ 0.4254,  0.1196, -0.3035]])
-tensor([[ 0.2838,  0.7313, -0.3907, -0.8948],
-        [ 0.0763, -0.5807,  0.3039, -0.0434]])
-tensor([[-0.0940,  0.2487, -0.5297],
-        [ 0.8216,  0.5285,  0.1067],
-        [ 1.3890, -0.9784,  0.7681],
-        [-0.8496,  2.0467,  1.6226]])
-tensor([[ 0.2838,  0.7313, -0.3907, -0.8948],
-        [ 0.8773,  0.6123, -0.6040, -0.6645],
-        [-0.2832,  0.7514,  1.3341,  0.6205]])
-</pre></div></div>
-</div>
-<p>Another common transformation is to add a reverse edge for each edge in the original graph with <code class="docutils literal notranslate"><span class="pre">dgl.add_reverse_edges</span></code>.</p>
-<div class="admonition note">
-<div class="admonition-title fa fa-exclamation-circle"><h4></div><p>Note</p>
-</h4><p><p>If you have an undirected graph, it is better to convert it into a bidirectional graph first via adding reverse edges.</p>
-</p></div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[-1.3934, -0.8392,  0.0190],
+        [-1.2052,  0.2880, -0.5789],
+        [-0.5700,  0.8591,  0.8131]])
+tensor([[ 0.0439,  0.5296, -0.2741, -0.2168],
+        [ 0.8780,  1.5933, -0.2901,  0.1147]])
+tensor([[-1.3934, -0.8392,  0.0190],
+        [-1.2052,  0.2880, -0.5789],
+        [ 1.1100,  0.0112,  0.2303],
+        [-0.5434,  0.7383, -0.9221]])
+tensor([[ 0.0439,  0.5296, -0.2741, -0.2168],
+        [-1.3590, -0.9350,  0.2109,  0.6789],
+        [-0.3909, -0.0910, -0.1642, -0.1780]])
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">newg</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">add_reverse_edges</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<p>Another common transformation is to add a reverse edge for each edge in
+the original graph with <code class="docutils literal notranslate"><span class="pre">dgl.add_reverse_edges</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you have an undirected graph, it is better to convert it
+into a bidirectional graph first via adding reverse edges.</p>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">newg</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">add_reverse_edges</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">newg</span><span class="o">.</span><span class="n">edges</span><span class="p">())</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-(tensor([0, 0, 0, 0, 0, 1, 2, 3, 4, 5]), tensor([1, 2, 3, 4, 5, 0, 0, 0, 0, 0]))
-</pre></div></div>
-</div>
-</section>
-<section id="Loading-and-Saving-Graphs">
-<h2>Loading and Saving Graphs<a class="headerlink" href="#Loading-and-Saving-Graphs" title="Link to this heading"></a></h2>
-<p>You can save a graph or a list of graphs via <code class="docutils literal notranslate"><span class="pre">dgl.save_graphs</span></code> and load them back with <code class="docutils literal notranslate"><span class="pre">dgl.load_graphs</span></code>.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([0, 0, 0, 0, 0, 1, 2, 3, 4, 5]), tensor([1, 2, 3, 4, 5, 0, 0, 0, 0, 0]))
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save graphs</span>
+</section>
+<section id="loading-and-saving-graphs">
+<h2>Loading and Saving Graphs<a class="headerlink" href="#loading-and-saving-graphs" title="Link to this heading"></a></h2>
+<p>You can save a graph or a list of graphs via <code class="docutils literal notranslate"><span class="pre">dgl.save_graphs</span></code> and
+load them back with <code class="docutils literal notranslate"><span class="pre">dgl.load_graphs</span></code>.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save graphs</span>
 <span class="n">dgl</span><span class="o">.</span><span class="n">save_graphs</span><span class="p">(</span><span class="s2">&quot;graph.dgl&quot;</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span>
 <span class="n">dgl</span><span class="o">.</span><span class="n">save_graphs</span><span class="p">(</span><span class="s2">&quot;graphs.dgl&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">g</span><span class="p">,</span> <span class="n">sg1</span><span class="p">,</span> <span class="n">sg2</span><span class="p">])</span>
 
@@ -403,13 +364,7 @@ tensor([[ 0.2838,  0.7313, -0.3907, -0.8948],
 <span class="nb">print</span><span class="p">(</span><span class="n">sg2</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Graph(num_nodes=6, num_edges=5,
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Graph(num_nodes=6, num_edges=5,
       ndata_schemes={&#39;y&#39;: Scheme(shape=(5, 4), dtype=torch.float32), &#39;x&#39;: Scheme(shape=(3,), dtype=torch.float32)}
       edata_schemes={&#39;a&#39;: Scheme(shape=(4,), dtype=torch.float32)})
 Graph(num_nodes=6, num_edges=5,
@@ -421,26 +376,42 @@ Graph(num_nodes=3, num_edges=2,
 Graph(num_nodes=4, num_edges=3,
       ndata_schemes={&#39;_ID&#39;: Scheme(shape=(), dtype=torch.int64), &#39;y&#39;: Scheme(shape=(5, 4), dtype=torch.float32), &#39;x&#39;: Scheme(shape=(3,), dtype=torch.float32)}
       edata_schemes={&#39;_ID&#39;: Scheme(shape=(), dtype=torch.int64), &#39;a&#39;: Scheme(shape=(4,), dtype=torch.float32)})
-</pre></div></div>
-</div>
-</section>
-<section id="What’s-next?">
-<h2>What’s next?<a class="headerlink" href="#What’s-next?" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p>See <a class="reference external" href="../../api/python/dgl.DGLGraph.html#apigraph-querying-graph-structure">here</a> for a list of graph structure query APIs.</p></li>
-<li><p>See <a class="reference external" href="../../api/python/dgl.html#api-subgraph-extraction">here</a> for a list of subgraph extraction routines.</p></li>
-<li><p>See <a class="reference external" href="../../api/python/dgl.html#api-transform">here</a> for a list of graph transformation routines.</p></li>
-<li><p>API reference of <code class="docutils literal notranslate"><span class="pre">dgl.save_graphs</span></code> and <code class="docutils literal notranslate"><span class="pre">dgl.load_graphs</span></code></p></li>
-</ul>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Thumbnail credits: Wikipedia</span>
+</section>
+<section id="whats-next">
+<h2>What’s next?<a class="headerlink" href="#whats-next" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>See
+<a class="reference internal" href="../../api/python/dgl.DGLGraph.html#apigraph-querying-graph-structure"><span class="std std-ref">here</span></a>
+for a list of graph structure query APIs.</p></li>
+<li><p>See
+<a class="reference internal" href="../../api/python/dgl.html#api-subgraph-extraction"><span class="std std-ref">here</span></a>
+for a list of subgraph extraction routines.</p></li>
+<li><p>See
+<a class="reference internal" href="../../api/python/dgl.html#api-transform"><span class="std std-ref">here</span></a>
+for a list of graph transformation routines.</p></li>
+<li><p>API reference of <a class="reference internal" href="../../generated/dgl.save_graphs.html#dgl.save_graphs" title="dgl.save_graphs"><code class="xref py py-func docutils literal notranslate"><span class="pre">dgl.save_graphs()</span></code></a>
+and
+<a class="reference internal" href="../../generated/dgl.load_graphs.html#dgl.load_graphs" title="dgl.load_graphs"><code class="xref py py-func docutils literal notranslate"><span class="pre">dgl.load_graphs()</span></code></a></p></li>
+</ul>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Thumbnail credits: Wikipedia</span>
 <span class="c1"># sphinx_gallery_thumbnail_path = &#39;_static/blitz_2_dglgraph.png&#39;</span>
 </pre></div>
 </div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.015 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-blitz-2-dglgraph-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/5e754d077c80317655fc1cbae96537f9/2_dglgraph.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">2_dglgraph.ipynb</span></code></a></p>
 </div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/1357fffdf9ee9430b5258018c3185318/2_dglgraph.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">2_dglgraph.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/11500a931a1c5f9e708dfb4dfc465efe/2_dglgraph.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">2_dglgraph.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </section>
 </section>
 

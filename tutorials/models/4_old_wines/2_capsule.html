@@ -9,11 +9,10 @@
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/nbsphinx-code-cells.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=0bf289b5" />
 
   
@@ -64,7 +63,7 @@
               <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Install and Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../blitz/index.html">A Blitz ntroduction to DGL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../blitz/index.html">A Blitz Introduction to DGL</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Advanced Materials</span></p>
 <ul class="current">
@@ -140,7 +139,7 @@
           <li class="breadcrumb-item"><a href="index.html">Revisit classic models from a graph perspective</a></li>
       <li class="breadcrumb-item active">Capsule Network</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../../_sources/tutorials/models/4_old_wines/2_capsule.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="../../../_sources/tutorials/models/4_old_wines/2_capsule.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -148,33 +147,62 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="Capsule-Network">
-<h1>Capsule Network<a class="headerlink" href="#Capsule-Network" title="Link to this heading"></a></h1>
-<p><strong>Author</strong>: Jinjing Zhou, <a class="reference external" href="https://cs.nyu.edu/~jakezhao/">Jake Zhao</a>, Zheng Zhang, Jinyang Li</p>
-<p>In this tutorial, you learn how to describe one of the more classical models in terms of graphs. The approach offers a different perspective. The tutorial describes how to implement a Capsule model for the <a class="reference external" href="http://arxiv.org/abs/1710.09829">capsule network</a>_.</p>
-<div class="alert alert-danger"><h4><p>Warning</p>
-</h4><p><p>The tutorial aims at gaining insights into the paper, with code as a mean of explanation. The implementation thus is NOT optimized for running efficiency. For recommended implementation, please refer to the <a class="reference external" href="https://github.com/dmlc/dgl/tree/master/examples">official examples</a>.</p>
-</p></div><section id="Key-ideas-of-Capsule">
-<h2>Key ideas of Capsule<a class="headerlink" href="#Key-ideas-of-Capsule" title="Link to this heading"></a></h2>
-<p>The Capsule model offers two key ideas: Richer representation and dynamic routing.</p>
-<p><strong>Richer representation</strong> – In classic convolutional networks, a scalar value represents the activation of a given feature. By contrast, a capsule outputs a vector. The vector’s length represents the probability of a feature being present. The vector’s orientation represents the various properties of the feature (such as pose, deformation, texture etc.).</p>
-<p>|image0|</p>
-<p><strong>Dynamic routing</strong> – The output of a capsule is sent to certain parents in the layer above based on how well the capsule’s prediction agrees with that of a parent. Such dynamic routing-by-agreement generalizes the static routing of max-pooling.</p>
-<p>During training, routing is accomplished iteratively. Each iteration adjusts routing weights between capsules based on their observed agreements. It’s a manner similar to a k-means algorithm or <a class="reference external" href="https://en.wikipedia.org/wiki/Competitive_learning">competitive learning</a>_.</p>
-<p>In this tutorial, you see how a capsule’s dynamic routing algorithm can be naturally expressed as a graph algorithm. The implementation is adapted from <a class="reference external" href="https://github.com/cedrickchee/capsule-net-pytorch">Cedric Chee</a>_, replacing only the routing layer. This version achieves similar speed and accuracy.</p>
-</section>
-<section id="Model-implementation">
-<h2>Model implementation<a class="headerlink" href="#Model-implementation" title="Link to this heading"></a></h2>
-<p>Step 1: Setup and graph initialization ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</p>
-<p>The connectivity between two layers of capsules form a directed, bipartite graph, as shown in the Figure below.</p>
-<p>|image1|</p>
-<p>Each node <span class="math notranslate nohighlight">\(j\)</span> is associated with feature <span class="math notranslate nohighlight">\(v_j\)</span>, representing its capsule’s output. Each edge is associated with features <span class="math notranslate nohighlight">\(b_{ij}\)</span> and <span class="math notranslate nohighlight">\(\hat{u}_{j|i}\)</span>. <span class="math notranslate nohighlight">\(b_{ij}\)</span> determines routing weights, and <span class="math notranslate nohighlight">\(\hat{u}_{j|i}\)</span> represents the prediction of capsule <span class="math notranslate nohighlight">\(i\)</span> for <span class="math notranslate nohighlight">\(j\)</span>.</p>
-<p>Here’s how we set up the graph and initialize node and edge features.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
-</pre></div>
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-tutorials-models-4-old-wines-2-capsule-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<section class="sphx-glr-example-title" id="capsule-network">
+<span id="model-capsule"></span><span id="sphx-glr-tutorials-models-4-old-wines-2-capsule-py"></span><h1>Capsule Network<a class="headerlink" href="#capsule-network" title="Link to this heading"></a></h1>
+<p><strong>Author</strong>: Jinjing Zhou, <a class="reference external" href="https://cs.nyu.edu/~jakezhao/">Jake Zhao</a>, Zheng Zhang, Jinyang Li</p>
+<p>In this tutorial, you learn how to describe one of the more classical models in terms of graphs. The approach
+offers a different perspective. The tutorial describes how to implement a Capsule model for the
+<a class="reference external" href="http://arxiv.org/abs/1710.09829">capsule network</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The tutorial aims at gaining insights into the paper, with code as a mean
+of explanation. The implementation thus is NOT optimized for running
+efficiency. For recommended implementation, please refer to the <a class="reference external" href="https://github.com/dmlc/dgl/tree/master/examples">official
+examples</a>.</p>
+</div>
+<section id="key-ideas-of-capsule">
+<h2>Key ideas of Capsule<a class="headerlink" href="#key-ideas-of-capsule" title="Link to this heading"></a></h2>
+<p>The Capsule model offers two key ideas: Richer representation and dynamic routing.</p>
+<p><strong>Richer representation</strong> – In classic convolutional networks, a scalar
+value represents the activation of a given feature. By contrast, a
+capsule outputs a vector. The vector’s length represents the probability
+of a feature being present. The vector’s orientation represents the
+various properties of the feature (such as pose, deformation, texture
+etc.).</p>
+<p><img alt="image0" src="https://i.imgur.com/55Ovkdh.png" /></p>
+<p><strong>Dynamic routing</strong> – The output of a capsule is sent to
+certain parents in the layer above based on how well the capsule’s
+prediction agrees with that of a parent. Such dynamic
+routing-by-agreement generalizes the static routing of max-pooling.</p>
+<p>During training, routing is accomplished iteratively. Each iteration adjusts
+routing weights between capsules based on their observed agreements.
+It’s a manner similar to a k-means algorithm or <a class="reference external" href="https://en.wikipedia.org/wiki/Competitive_learning">competitive
+learning</a>.</p>
+<p>In this tutorial, you see how a capsule’s dynamic routing algorithm can be
+naturally expressed as a graph algorithm. The implementation is adapted
+from <a class="reference external" href="https://github.com/cedrickchee/capsule-net-pytorch">Cedric
+Chee</a>, replacing
+only the routing layer. This version achieves similar speed and accuracy.</p>
+</section>
+<section id="model-implementation">
+<h2>Model implementation<a class="headerlink" href="#model-implementation" title="Link to this heading"></a></h2>
+<section id="step-1-setup-and-graph-initialization">
+<h3>Step 1: Setup and graph initialization<a class="headerlink" href="#step-1-setup-and-graph-initialization" title="Link to this heading"></a></h3>
+<p>The connectivity between two layers of capsules form a directed,
+bipartite graph, as shown in the Figure below.</p>
+<p><img alt="image1" src="https://i.imgur.com/9tc6GLl.png" /></p>
+<p>Each node <span class="math notranslate nohighlight">\(j\)</span> is associated with feature <span class="math notranslate nohighlight">\(v_j\)</span>,
+representing its capsule’s output. Each edge is associated with
+features <span class="math notranslate nohighlight">\(b_{ij}\)</span> and <span class="math notranslate nohighlight">\(\hat{u}_{j|i}\)</span>. <span class="math notranslate nohighlight">\(b_{ij}\)</span>
+determines routing weights, and <span class="math notranslate nohighlight">\(\hat{u}_{j|i}\)</span> represents the
+prediction of capsule <span class="math notranslate nohighlight">\(i\)</span> for <span class="math notranslate nohighlight">\(j\)</span>.</p>
+<p>Here’s how we set up the graph and initialize node and edge features.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 
 <a href="https://docs.python.org/3/library/os.html#os.environ" title="os.environ" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-data"><span class="n">os</span><span class="o">.</span><span class="n">environ</span></a><span class="p">[</span><span class="s2">&quot;DGLBACKEND&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pytorch&quot;</span>
 <span class="kn">import</span> <span class="nn">dgl</span>
@@ -195,20 +223,23 @@
     <span class="k">return</span> <a href="https://networkx.org/documentation/stable/reference/classes/multidigraph.html#networkx.MultiDiGraph" title="networkx.MultiDiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">g</span></a>
 </pre></div>
 </div>
-</div>
-<section id="Step-2:-Define-message-passing-functions">
-<h3>Step 2: Define message passing functions<a class="headerlink" href="#Step-2:-Define-message-passing-functions" title="Link to this heading"></a></h3>
+</section>
+<section id="step-2-define-message-passing-functions">
+<h3>Step 2: Define message passing functions<a class="headerlink" href="#step-2-define-message-passing-functions" title="Link to this heading"></a></h3>
 <p>This is the pseudocode for Capsule’s routing algorithm.</p>
-<p>|image2| Implement pseudocode lines 4-7 in the class <code class="docutils literal notranslate"><span class="pre">DGLRoutingLayer</span></code> as the following steps:</p>
+<p><img alt="image2" src="https://i.imgur.com/mv1W9Rv.png" />
+Implement pseudocode lines 4-7 in the class <cite>DGLRoutingLayer</cite> as the following steps:</p>
 <ol class="arabic simple">
 <li><p>Calculate coupling coefficients.</p>
 <ul class="simple">
-<li><p>Coefficients are the softmax over all out-edge of in-capsules. <span class="math notranslate nohighlight">\(\textbf{c}_{i,j} = \text{softmax}(\textbf{b}_{i,j})\)</span>.</p></li>
+<li><p>Coefficients are the softmax over all out-edge of in-capsules.
+<span class="math notranslate nohighlight">\(\textbf{c}_{i,j} = \text{softmax}(\textbf{b}_{i,j})\)</span>.</p></li>
 </ul>
 </li>
 <li><p>Calculate weighted sum over all in-capsules.</p>
 <ul class="simple">
-<li><p>Output of a capsule is equal to the weighted sum of its in-capsules <span class="math notranslate nohighlight">\(s_j=\sum_i c_{ij}\hat{u}_{j|i}\)</span></p></li>
+<li><p>Output of a capsule is equal to the weighted sum of its in-capsules
+<span class="math notranslate nohighlight">\(s_j=\sum_i c_{ij}\hat{u}_{j|i}\)</span></p></li>
 </ul>
 </li>
 <li><p>Squash outputs.</p>
@@ -219,15 +250,12 @@
 </li>
 <li><p>Update weights by the amount of agreement.</p>
 <ul class="simple">
-<li><p>The scalar product <span class="math notranslate nohighlight">\(\hat{u}_{j|i}\cdot v_j\)</span> can be considered as how well capsule <span class="math notranslate nohighlight">\(i\)</span> agrees with <span class="math notranslate nohighlight">\(j\)</span>. It is used to update <span class="math notranslate nohighlight">\(b_{ij}=b_{ij}+\hat{u}_{j|i}\cdot v_j\)</span></p></li>
+<li><p>The scalar product <span class="math notranslate nohighlight">\(\hat{u}_{j|i}\cdot v_j\)</span> can be considered as how well capsule <span class="math notranslate nohighlight">\(i\)</span> agrees with <span class="math notranslate nohighlight">\(j\)</span>. It is used to update
+<span class="math notranslate nohighlight">\(b_{ij}=b_{ij}+\hat{u}_{j|i}\cdot v_j\)</span></p></li>
 </ul>
 </li>
 </ol>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dgl.function</span> <span class="k">as</span> <span class="nn">fn</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dgl.function</span> <span class="k">as</span> <span class="nn">fn</span>
 
 
 <span class="k">class</span> <span class="nc">DGLRoutingLayer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
@@ -272,38 +300,25 @@
         <span class="k">return</span> <span class="n">s</span>
 </pre></div>
 </div>
-</div>
 </section>
-<section id="Step-3:-Testing">
-<h3>Step 3: Testing<a class="headerlink" href="#Step-3:-Testing" title="Link to this heading"></a></h3>
+<section id="step-3-testing">
+<h3>Step 3: Testing<a class="headerlink" href="#step-3-testing" title="Link to this heading"></a></h3>
 <p>Make a simple 20x10 capsule layer.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">in_nodes</span></a> <span class="o">=</span> <span class="mi">20</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">in_nodes</span></a> <span class="o">=</span> <span class="mi">20</span>
 <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">out_nodes</span></a> <span class="o">=</span> <span class="mi">10</span>
 <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f_size</span></a> <span class="o">=</span> <span class="mi">4</span>
 <span class="n">u_hat</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">in_nodes</span></a> <span class="o">*</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">out_nodes</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f_size</span></a><span class="p">)</span>
 <span class="n">routing</span> <span class="o">=</span> <span class="n">DGLRoutingLayer</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">in_nodes</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">out_nodes</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f_size</span></a><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/home/ubuntu/dgl_doc_dev/dgl/python/dgl/heterograph.py:92: DGLWarning: Recommend creating graphs by `dgl.graph(data)` instead of `dgl.DGLGraph(data)`.
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/ubuntu/dgl_test/python/dgl/heterograph.py:92: DGLWarning: Recommend creating graphs by `dgl.graph(data)` instead of `dgl.DGLGraph(data)`.
   dgl_warning(
-</pre></div></div>
-</div>
-<p>You can visualize a Capsule network’s behavior by monitoring the entropy of coupling coefficients. They should start high and then drop, as the weights gradually concentrate on fewer edges.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">entropy_list</span></a> <span class="o">=</span> <span class="p">[]</span>
+<p>You can visualize a Capsule network’s behavior by monitoring the entropy
+of coupling coefficients. They should start high and then drop, as the
+weights gradually concentrate on fewer edges.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">entropy_list</span></a> <span class="o">=</span> <span class="p">[]</span>
 <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dist_list</span></a> <span class="o">=</span> <span class="p">[]</span>
 
 <span class="k">for</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">i</span></a> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
@@ -321,14 +336,9 @@
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.close.html#matplotlib.pyplot.close" title="matplotlib.pyplot.close" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">close</span></a><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<p>|image3|</p>
+<p><img alt="image3" src="https://i.imgur.com/dMvu7p3.png" /></p>
 <p>Alternatively, we can also watch the evolution of histograms.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.animation</span> <span class="k">as</span> <span class="nn">animation</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.animation</span> <span class="k">as</span> <span class="nn">animation</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="matplotlib.pyplot.figure" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
@@ -349,14 +359,10 @@
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.close.html#matplotlib.pyplot.close" title="matplotlib.pyplot.close" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">close</span></a><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<p>|image4|</p>
-<p>You can monitor the how lower-level Capsules gradually attach to one of the higher level ones.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<p><img alt="image4" src="https://github.com/VoVAllen/DGL_Capsule/raw/master/routing_dist.gif" /></p>
+<p>You can monitor the how lower-level Capsules gradually attach to one of the
+higher level ones.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 <span class="kn">from</span> <span class="nn">networkx.algorithms</span> <span class="kn">import</span> <span class="n">bipartite</span>
 
 <a href="https://networkx.org/documentation/stable/reference/classes/multidigraph.html#networkx.MultiDiGraph" title="networkx.MultiDiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">g</span></a> <span class="o">=</span> <span class="n">routing</span><span class="o">.</span><a href="https://networkx.org/documentation/stable/reference/classes/multidigraph.html#networkx.MultiDiGraph" title="networkx.MultiDiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">g</span></a><span class="o">.</span><span class="n">to_networkx</span><span class="p">()</span>
@@ -410,9 +416,23 @@
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.close.html#matplotlib.pyplot.close" title="matplotlib.pyplot.close" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">close</span></a><span class="p">()</span>
 </pre></div>
 </div>
+<p><img alt="image5" src="https://github.com/VoVAllen/DGL_Capsule/raw/master/routing_vis.gif" /></p>
+<p>The full code of this visualization is provided on
+<a class="reference external" href="https://github.com/dmlc/dgl/blob/master/examples/pytorch/capsule/simple_routing.py">GitHub</a>. The complete
+code that trains on MNIST is also on <a class="reference external" href="https://github.com/dmlc/dgl/tree/tutorial/examples/pytorch/capsule">GitHub</a>.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.298 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-models-4-old-wines-2-capsule-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../../_downloads/aa8cc853da6f389f02c225004d25790e/2_capsule.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">2_capsule.ipynb</span></code></a></p>
 </div>
-<p>|image5|</p>
-<p>The full code of this visualization is provided on <a class="reference external" href="https://github.com/dmlc/dgl/blob/master/examples/pytorch/capsule/simple_routing.py">GitHub</a><em>. The complete code that trains on MNIST is also on</em> <a class="reference external" href="https://github.com/dmlc/dgl/tree/tutorial/examples/pytorch/capsule">GitHub</a>.</p>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../../_downloads/ce377cd2bf95d879bb6b109c8eb687b6/2_capsule.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">2_capsule.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../../_downloads/acfa3347f63d993639b037e39bcaab21/2_capsule.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">2_capsule.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </section>
 </section>
 </section>

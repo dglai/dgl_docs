@@ -8,7 +8,7 @@
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -194,15 +194,16 @@
                 <span class="p">)</span>
                 <span class="k">for</span> <span class="n">ntype</span> <span class="ow">in</span> <span class="n">ntypes</span>
             <span class="p">}</span>
+            <span class="n">empty_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+                <span class="p">[],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">first_val</span><span class="o">.</span><span class="n">device</span>
+            <span class="p">)</span>
             <span class="n">seeds_timestamp</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="n">ntype</span><span class="p">:</span> <span class="n">seeds_timestamp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ntype</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">([]))</span>
+                <span class="n">ntype</span><span class="p">:</span> <span class="n">seeds_timestamp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ntype</span><span class="p">,</span> <span class="n">empty_tensor</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">ntype</span> <span class="ow">in</span> <span class="n">ntypes</span>
             <span class="p">}</span>
             <span class="k">if</span> <span class="n">seeds_pre_time_window</span><span class="p">:</span>
                 <span class="n">seeds_pre_time_window</span> <span class="o">=</span> <span class="p">{</span>
-                    <span class="n">ntype</span><span class="p">:</span> <span class="n">seeds_pre_time_window</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                        <span class="n">ntype</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">([])</span>
-                    <span class="p">)</span>
+                    <span class="n">ntype</span><span class="p">:</span> <span class="n">seeds_pre_time_window</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ntype</span><span class="p">,</span> <span class="n">empty_tensor</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">ntype</span> <span class="ow">in</span> <span class="n">ntypes</span>
                 <span class="p">}</span>
         <span class="k">for</span> <span class="n">hop</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_layers</span><span class="p">):</span>

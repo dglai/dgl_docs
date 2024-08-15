@@ -8,7 +8,7 @@
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -180,6 +180,8 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">original_row_node_ids</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">original_edge_ids</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1"># Used to fetch sampled_csc.indices if it is missing.</span>
+    <span class="n">_sampled_edge_ids</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sampled_csc</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
@@ -188,22 +190,34 @@
                     <span class="nb">isinstance</span><span class="p">(</span><span class="n">etype</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
                     <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">etype_str_to_tuple</span><span class="p">(</span><span class="n">etype</span><span class="p">))</span> <span class="o">==</span> <span class="mi">3</span>
                 <span class="p">),</span> <span class="s2">&quot;Edge type should be a string in format of str:str:str.&quot;</span>
-                <span class="k">assert</span> <span class="p">(</span>
-                    <span class="n">pair</span><span class="o">.</span><span class="n">indptr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">pair</span><span class="o">.</span><span class="n">indices</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="p">),</span> <span class="s2">&quot;Node pair should be have indptr and indice.&quot;</span>
-                <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pair</span><span class="o">.</span><span class="n">indptr</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
-                    <span class="n">pair</span><span class="o">.</span><span class="n">indices</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
-                <span class="p">),</span> <span class="s2">&quot;Nodes in pairs should be of type torch.Tensor.&quot;</span>
+                <span class="k">assert</span> <span class="n">pair</span><span class="o">.</span><span class="n">indptr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
+                    <span class="n">pair</span><span class="o">.</span><span class="n">indptr</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+                <span class="p">),</span> <span class="s2">&quot;Node pair should be have indptr of type torch.Tensor.&quot;</span>
+                <span class="c1"># For CUDA, indices may be None because it will be fetched later.</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">pair</span><span class="o">.</span><span class="n">indptr</span><span class="o">.</span><span class="n">is_cuda</span> <span class="ow">or</span> <span class="n">pair</span><span class="o">.</span><span class="n">indices</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+                        <span class="n">pair</span><span class="o">.</span><span class="n">indices</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+                    <span class="p">),</span> <span class="s2">&quot;Node pair should be have indices of type torch.Tensor.&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_sampled_edge_ids</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">etype</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+                    <span class="p">),</span> <span class="s2">&quot;When indices is missing, sampled edge ids needs to be provided.&quot;</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">assert</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">sampled_csc</span><span class="o">.</span><span class="n">indptr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampled_csc</span><span class="o">.</span><span class="n">indices</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="p">),</span> <span class="s2">&quot;Node pair should be have indptr and indice.&quot;</span>
-            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampled_csc</span><span class="o">.</span><span class="n">indptr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">sampled_csc</span><span class="o">.</span><span class="n">indptr</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
-            <span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">sampled_csc</span><span class="o">.</span><span class="n">indices</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
-            <span class="p">),</span> <span class="s2">&quot;Nodes in pairs should be of type torch.Tensor.&quot;</span>
+            <span class="p">),</span> <span class="s2">&quot;Node pair should be have torch.Tensor indptr.&quot;</span>
+            <span class="c1"># For CUDA, indices may be None because it will be fetched later.</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampled_csc</span><span class="o">.</span><span class="n">indptr</span><span class="o">.</span><span class="n">is_cuda</span>
+                <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampled_csc</span><span class="o">.</span><span class="n">indices</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="p">):</span>
+                <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">sampled_csc</span><span class="o">.</span><span class="n">indices</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+                <span class="p">),</span> <span class="s2">&quot;Node pair should have a torch.Tensor indices.&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_sampled_edge_ids</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+                <span class="p">),</span> <span class="s2">&quot;When indices is missing, sampled edge ids needs to be provided.&quot;</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">_sampled_subgraph_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;SampledSubgraphImpl&quot;</span><span class="p">)</span></div>
@@ -217,6 +231,8 @@
     <span class="n">attributes</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
 
     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="s2">&quot;_sampled_edge_ids&quot;</span><span class="p">:</span>
+            <span class="k">continue</span>
         <span class="n">val</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">sampled_subgraph</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">_add_indent</span><span class="p">(</span><span class="n">_str</span><span class="p">,</span> <span class="n">indent</span><span class="p">):</span>

@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -165,7 +165,7 @@
 <h1>NeighborSampler<a class="headerlink" href="#neighborsampler" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="dgl.graphbolt.NeighborSampler">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgl.graphbolt.</span></span><span class="sig-name descname"><span class="pre">NeighborSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datapipe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fanouts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prob_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deduplicate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dgl/graphbolt/impl/neighbor_sampler.html#NeighborSampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.graphbolt.NeighborSampler" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgl.graphbolt.</span></span><span class="sig-name descname"><span class="pre">NeighborSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datapipe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fanouts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prob_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deduplicate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlap_fetch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_gpu_cached_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpu_cache_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dgl/graphbolt/impl/neighbor_sampler.html#NeighborSampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.graphbolt.NeighborSampler" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">NeighborSamplerImpl</span></code></p>
 <p>Sample neighbor edges from a graph and return a subgraph.</p>
 <p>Functional name: <code class="xref py py-obj docutils literal notranslate"><span class="pre">sample_neighbor</span></code>.</p>
@@ -202,6 +202,15 @@ of elements equalling the total number of edges.</p></li>
 <li><p><strong>deduplicate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Boolean indicating whether seeds between hops will be deduplicated.
 If True, the same elements in seeds will be deleted to only one.
 Otherwise, the same elements will be remained.</p></li>
+<li><p><strong>overlap_fetch</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, the data loader will overlap the UVA graph fetching operations
+with the rest of operations by using an alternative CUDA stream. This
+option should be enabled if you have moved your graph to the pinned
+memory for optimal performance. Default is False.</p></li>
+<li><p><strong>num_gpu_cached_edges</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – If positive and overlap_graph_fetch is True, then the GPU will cache
+frequently accessed vertex neighborhoods to reduce the PCI-e bandwidth
+demand due to pinned graph accesses.</p></li>
+<li><p><strong>gpu_cache_threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – Determines how many times a vertex needs to be accessed before its
+neighborhood ends up being cached on the GPU.</p></li>
 </ul>
 </dd>
 </dl>
