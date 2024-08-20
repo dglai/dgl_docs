@@ -1,66 +1,59 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../../">
+
+<html class="writer-html5" data-content_root="../../" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Write your own GNN module &mdash; DGL 2.4 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
-      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=0bf289b5" />
-
-  
-  <!--[if lt IE 9]>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Write your own GNN module — DGL 2.3.1 documentation</title>
+<link href="../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script src="../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=9caaf7ed"></script>
-        <script src="../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../../_static/copybutton.js?v=ccdb6887"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="../../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Link Prediction using Graph Neural Networks" href="4_link_predict.html" />
-    <link rel="prev" title="How Does DGL Represent A Graph?" href="2_dglgraph.html" /> 
+<script src="../../_static/jquery.js?v=5d32c60e"></script>
+<script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../../_static/doctools.js?v=9a2dae69"></script>
+<script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+<script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../_static/js/theme.js"></script>
+<link href="../../genindex.html" rel="index" title="Index"/>
+<link href="../../search.html" rel="search" title="Search"/>
+<link href="4_link_predict.html" rel="next" title="Link Prediction using Graph Neural Networks"/>
+<link href="2_dglgraph.html" rel="prev" title="How Does DGL Represent A Graph?"/>
 </head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../../index.html" class="icon icon-home">
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../../index.html">
             DGL
           </a>
-              <div class="version">
-                2.4
+<div class="version">
+                2.3.1
               </div>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+<form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Install and Setup</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">A Blitz Introduction to DGL</a><ul class="current">
@@ -128,33 +121,29 @@
 <li class="toctree-l1"><a class="reference internal" href="../../env_var.html">Environment Variables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../resources.html">Resources</a></li>
 </ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">DGL</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">A Blitz Introduction to DGL</a></li>
-      <li class="breadcrumb-item active">Write your own GNN module</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/tutorials/blitz/3_message_passing.rst.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <div class="sphx-glr-download-link-note admonition note">
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../../index.html"></a></li>
+<li class="breadcrumb-item"><a href="index.html">A Blitz Introduction to DGL</a></li>
+<li class="breadcrumb-item active">Write your own GNN module</li>
+<li class="wy-breadcrumbs-aside">
+<a href="../../_sources/tutorials/blitz/3_message_passing.rst.txt" rel="nofollow"> View page source</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
 <p><a class="reference internal" href="#sphx-glr-download-tutorials-blitz-3-message-passing-py"><span class="std std-ref">Go to the end</span></a>
 to download the full example code.</p>
@@ -174,7 +163,7 @@ GNN for node classification</span></a>.</p>
 <p>(Time estimate: 10 minutes)</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 
-<a href="https://docs.python.org/3/library/os.html#os.environ" title="os.environ" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-data"><span class="n">os</span><span class="o">.</span><span class="n">environ</span></a><span class="p">[</span><span class="s2">&quot;DGLBACKEND&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pytorch&quot;</span>
+<a class="sphx-glr-backref-module-os sphx-glr-backref-type-py-data" href="https://docs.python.org/3/library/os.html#os.environ" title="os.environ"><span class="n">os</span><span class="o">.</span><span class="n">environ</span></a><span class="p">[</span><span class="s2">"DGLBACKEND"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"pytorch"</span>
 <span class="kn">import</span> <span class="nn">dgl</span>
 <span class="kn">import</span> <span class="nn">dgl.function</span> <span class="k">as</span> <span class="nn">fn</span>
 <span class="kn">import</span> <span class="nn">torch</span>
@@ -213,7 +202,7 @@ opposite direction.</p>
 <code class="xref py py-class docutils literal notranslate"><span class="pre">dgl.nn.SAGEConv</span></code>,
 here is how you can implement GraphSAGE convolution in DGL by your own.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SAGEConv</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Graph convolution module used by the GraphSAGE model.</span>
+<span class="w">    </span><span class="sd">"""Graph convolution module used by the GraphSAGE model.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -221,7 +210,7 @@ here is how you can implement GraphSAGE convolution in DGL by your own.</p>
 <span class="sd">        Input feature size.</span>
 <span class="sd">    out_feat : int</span>
 <span class="sd">        Output feature size.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_feat</span><span class="p">,</span> <span class="n">out_feat</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">SAGEConv</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -229,7 +218,7 @@ here is how you can implement GraphSAGE convolution in DGL by your own.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">linear</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_feat</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">out_feat</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Forward computation</span>
+<span class="w">        </span><span class="sd">"""Forward computation</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -237,15 +226,15 @@ here is how you can implement GraphSAGE convolution in DGL by your own.</p>
 <span class="sd">            The input graph.</span>
 <span class="sd">        h : Tensor</span>
 <span class="sd">            The input node feature.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">with</span> <span class="n">g</span><span class="o">.</span><span class="n">local_scope</span><span class="p">():</span>
-            <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;h&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"h"</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
             <span class="c1"># update_all is a message passing API.</span>
             <span class="n">g</span><span class="o">.</span><span class="n">update_all</span><span class="p">(</span>
-                <span class="n">message_func</span><span class="o">=</span><span class="n">fn</span><span class="o">.</span><span class="n">copy_u</span><span class="p">(</span><span class="s2">&quot;h&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">),</span>
-                <span class="n">reduce_func</span><span class="o">=</span><span class="n">fn</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;h_N&quot;</span><span class="p">),</span>
+                <span class="n">message_func</span><span class="o">=</span><span class="n">fn</span><span class="o">.</span><span class="n">copy_u</span><span class="p">(</span><span class="s2">"h"</span><span class="p">,</span> <span class="s2">"m"</span><span class="p">),</span>
+                <span class="n">reduce_func</span><span class="o">=</span><span class="n">fn</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s2">"m"</span><span class="p">,</span> <span class="s2">"h_N"</span><span class="p">),</span>
             <span class="p">)</span>
-            <span class="n">h_N</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;h_N&quot;</span><span class="p">]</span>
+            <span class="n">h_N</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"h_N"</span><span class="p">]</span>
             <span class="n">h_total</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">h</span><span class="p">,</span> <span class="n">h_N</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">h_total</span><span class="p">)</span>
 </pre></div>
@@ -295,11 +284,11 @@ from the introduction tutorial.</p>
     <span class="n">best_val_acc</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">best_test_acc</span> <span class="o">=</span> <span class="mi">0</span>
 
-    <span class="n">features</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;feat&quot;</span><span class="p">]</span>
-    <span class="n">labels</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span>
-    <span class="n">train_mask</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;train_mask&quot;</span><span class="p">]</span>
-    <span class="n">val_mask</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;val_mask&quot;</span><span class="p">]</span>
-    <span class="n">test_mask</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;test_mask&quot;</span><span class="p">]</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"feat"</span><span class="p">]</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"label"</span><span class="p">]</span>
+    <span class="n">train_mask</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"train_mask"</span><span class="p">]</span>
+    <span class="n">val_mask</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"val_mask"</span><span class="p">]</span>
+    <span class="n">test_mask</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"test_mask"</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">200</span><span class="p">):</span>
         <span class="c1"># Forward</span>
         <span class="n">logits</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">features</span><span class="p">)</span>
@@ -330,13 +319,13 @@ from the introduction tutorial.</p>
 
         <span class="k">if</span> <span class="n">e</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span>
-                <span class="s2">&quot;In epoch </span><span class="si">{}</span><span class="s2">, loss: </span><span class="si">{:.3f}</span><span class="s2">, val acc: </span><span class="si">{:.3f}</span><span class="s2"> (best </span><span class="si">{:.3f}</span><span class="s2">), test acc: </span><span class="si">{:.3f}</span><span class="s2"> (best </span><span class="si">{:.3f}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="s2">"In epoch </span><span class="si">{}</span><span class="s2">, loss: </span><span class="si">{:.3f}</span><span class="s2">, val acc: </span><span class="si">{:.3f}</span><span class="s2"> (best </span><span class="si">{:.3f}</span><span class="s2">), test acc: </span><span class="si">{:.3f}</span><span class="s2"> (best </span><span class="si">{:.3f}</span><span class="s2">)"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="n">e</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">val_acc</span><span class="p">,</span> <span class="n">best_val_acc</span><span class="p">,</span> <span class="n">test_acc</span><span class="p">,</span> <span class="n">best_test_acc</span>
                 <span class="p">)</span>
             <span class="p">)</span>
 
 
-<span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;feat&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">16</span><span class="p">,</span> <span class="n">dataset</span><span class="o">.</span><span class="n">num_classes</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"feat"</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">16</span><span class="p">,</span> <span class="n">dataset</span><span class="o">.</span><span class="n">num_classes</span><span class="p">)</span>
 <span class="n">train</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -348,46 +337,46 @@ from the introduction tutorial.</p>
   NumValidationSamples: 500
   NumTestSamples: 1000
 Done loading data from cached files.
-In epoch 0, loss: 1.953, val acc: 0.072 (best 0.072), test acc: 0.091 (best 0.091)
-In epoch 5, loss: 1.868, val acc: 0.078 (best 0.078), test acc: 0.104 (best 0.104)
-In epoch 10, loss: 1.723, val acc: 0.484 (best 0.490), test acc: 0.522 (best 0.519)
-In epoch 15, loss: 1.514, val acc: 0.524 (best 0.524), test acc: 0.564 (best 0.564)
-In epoch 20, loss: 1.254, val acc: 0.578 (best 0.578), test acc: 0.598 (best 0.598)
-In epoch 25, loss: 0.968, val acc: 0.620 (best 0.620), test acc: 0.631 (best 0.631)
-In epoch 30, loss: 0.692, val acc: 0.640 (best 0.640), test acc: 0.671 (best 0.671)
-In epoch 35, loss: 0.457, val acc: 0.674 (best 0.674), test acc: 0.689 (best 0.689)
-In epoch 40, loss: 0.282, val acc: 0.698 (best 0.698), test acc: 0.710 (best 0.710)
-In epoch 45, loss: 0.169, val acc: 0.736 (best 0.736), test acc: 0.732 (best 0.732)
-In epoch 50, loss: 0.102, val acc: 0.750 (best 0.750), test acc: 0.751 (best 0.747)
-In epoch 55, loss: 0.064, val acc: 0.756 (best 0.756), test acc: 0.750 (best 0.750)
-In epoch 60, loss: 0.043, val acc: 0.758 (best 0.758), test acc: 0.755 (best 0.755)
-In epoch 65, loss: 0.030, val acc: 0.756 (best 0.758), test acc: 0.754 (best 0.755)
-In epoch 70, loss: 0.023, val acc: 0.756 (best 0.758), test acc: 0.753 (best 0.755)
-In epoch 75, loss: 0.018, val acc: 0.752 (best 0.758), test acc: 0.755 (best 0.755)
-In epoch 80, loss: 0.015, val acc: 0.754 (best 0.758), test acc: 0.753 (best 0.755)
-In epoch 85, loss: 0.013, val acc: 0.756 (best 0.758), test acc: 0.753 (best 0.755)
-In epoch 90, loss: 0.011, val acc: 0.756 (best 0.758), test acc: 0.752 (best 0.755)
-In epoch 95, loss: 0.010, val acc: 0.756 (best 0.758), test acc: 0.753 (best 0.755)
-In epoch 100, loss: 0.009, val acc: 0.756 (best 0.758), test acc: 0.752 (best 0.755)
-In epoch 105, loss: 0.008, val acc: 0.754 (best 0.758), test acc: 0.753 (best 0.755)
-In epoch 110, loss: 0.008, val acc: 0.758 (best 0.758), test acc: 0.753 (best 0.755)
-In epoch 115, loss: 0.007, val acc: 0.758 (best 0.758), test acc: 0.754 (best 0.755)
-In epoch 120, loss: 0.006, val acc: 0.756 (best 0.758), test acc: 0.755 (best 0.755)
-In epoch 125, loss: 0.006, val acc: 0.756 (best 0.758), test acc: 0.755 (best 0.755)
-In epoch 130, loss: 0.006, val acc: 0.756 (best 0.758), test acc: 0.757 (best 0.755)
-In epoch 135, loss: 0.005, val acc: 0.756 (best 0.758), test acc: 0.757 (best 0.755)
-In epoch 140, loss: 0.005, val acc: 0.756 (best 0.758), test acc: 0.758 (best 0.755)
-In epoch 145, loss: 0.005, val acc: 0.756 (best 0.758), test acc: 0.758 (best 0.755)
-In epoch 150, loss: 0.004, val acc: 0.756 (best 0.758), test acc: 0.758 (best 0.755)
-In epoch 155, loss: 0.004, val acc: 0.756 (best 0.758), test acc: 0.757 (best 0.755)
-In epoch 160, loss: 0.004, val acc: 0.758 (best 0.758), test acc: 0.757 (best 0.755)
-In epoch 165, loss: 0.004, val acc: 0.758 (best 0.758), test acc: 0.757 (best 0.755)
-In epoch 170, loss: 0.004, val acc: 0.758 (best 0.758), test acc: 0.757 (best 0.755)
-In epoch 175, loss: 0.003, val acc: 0.758 (best 0.758), test acc: 0.757 (best 0.755)
-In epoch 180, loss: 0.003, val acc: 0.758 (best 0.758), test acc: 0.756 (best 0.755)
-In epoch 185, loss: 0.003, val acc: 0.758 (best 0.758), test acc: 0.757 (best 0.755)
-In epoch 190, loss: 0.003, val acc: 0.758 (best 0.758), test acc: 0.758 (best 0.755)
-In epoch 195, loss: 0.003, val acc: 0.758 (best 0.758), test acc: 0.758 (best 0.755)
+In epoch 0, loss: 1.951, val acc: 0.072 (best 0.072), test acc: 0.091 (best 0.091)
+In epoch 5, loss: 1.892, val acc: 0.074 (best 0.074), test acc: 0.091 (best 0.091)
+In epoch 10, loss: 1.766, val acc: 0.496 (best 0.496), test acc: 0.496 (best 0.496)
+In epoch 15, loss: 1.566, val acc: 0.702 (best 0.702), test acc: 0.701 (best 0.701)
+In epoch 20, loss: 1.295, val acc: 0.728 (best 0.728), test acc: 0.730 (best 0.730)
+In epoch 25, loss: 0.981, val acc: 0.728 (best 0.728), test acc: 0.726 (best 0.730)
+In epoch 30, loss: 0.673, val acc: 0.734 (best 0.734), test acc: 0.741 (best 0.732)
+In epoch 35, loss: 0.423, val acc: 0.742 (best 0.742), test acc: 0.761 (best 0.761)
+In epoch 40, loss: 0.251, val acc: 0.742 (best 0.742), test acc: 0.765 (best 0.761)
+In epoch 45, loss: 0.146, val acc: 0.750 (best 0.750), test acc: 0.763 (best 0.763)
+In epoch 50, loss: 0.087, val acc: 0.752 (best 0.752), test acc: 0.766 (best 0.764)
+In epoch 55, loss: 0.054, val acc: 0.750 (best 0.752), test acc: 0.769 (best 0.764)
+In epoch 60, loss: 0.037, val acc: 0.754 (best 0.754), test acc: 0.771 (best 0.771)
+In epoch 65, loss: 0.027, val acc: 0.752 (best 0.754), test acc: 0.766 (best 0.771)
+In epoch 70, loss: 0.020, val acc: 0.752 (best 0.754), test acc: 0.766 (best 0.771)
+In epoch 75, loss: 0.017, val acc: 0.752 (best 0.754), test acc: 0.768 (best 0.771)
+In epoch 80, loss: 0.014, val acc: 0.752 (best 0.754), test acc: 0.767 (best 0.771)
+In epoch 85, loss: 0.012, val acc: 0.748 (best 0.754), test acc: 0.768 (best 0.771)
+In epoch 90, loss: 0.011, val acc: 0.748 (best 0.754), test acc: 0.771 (best 0.771)
+In epoch 95, loss: 0.010, val acc: 0.748 (best 0.754), test acc: 0.770 (best 0.771)
+In epoch 100, loss: 0.009, val acc: 0.746 (best 0.754), test acc: 0.771 (best 0.771)
+In epoch 105, loss: 0.008, val acc: 0.746 (best 0.754), test acc: 0.771 (best 0.771)
+In epoch 110, loss: 0.007, val acc: 0.746 (best 0.754), test acc: 0.771 (best 0.771)
+In epoch 115, loss: 0.007, val acc: 0.748 (best 0.754), test acc: 0.773 (best 0.771)
+In epoch 120, loss: 0.006, val acc: 0.748 (best 0.754), test acc: 0.773 (best 0.771)
+In epoch 125, loss: 0.006, val acc: 0.748 (best 0.754), test acc: 0.773 (best 0.771)
+In epoch 130, loss: 0.006, val acc: 0.748 (best 0.754), test acc: 0.773 (best 0.771)
+In epoch 135, loss: 0.005, val acc: 0.746 (best 0.754), test acc: 0.773 (best 0.771)
+In epoch 140, loss: 0.005, val acc: 0.746 (best 0.754), test acc: 0.773 (best 0.771)
+In epoch 145, loss: 0.005, val acc: 0.748 (best 0.754), test acc: 0.772 (best 0.771)
+In epoch 150, loss: 0.004, val acc: 0.748 (best 0.754), test acc: 0.772 (best 0.771)
+In epoch 155, loss: 0.004, val acc: 0.748 (best 0.754), test acc: 0.772 (best 0.771)
+In epoch 160, loss: 0.004, val acc: 0.748 (best 0.754), test acc: 0.772 (best 0.771)
+In epoch 165, loss: 0.004, val acc: 0.748 (best 0.754), test acc: 0.772 (best 0.771)
+In epoch 170, loss: 0.004, val acc: 0.748 (best 0.754), test acc: 0.772 (best 0.771)
+In epoch 175, loss: 0.003, val acc: 0.748 (best 0.754), test acc: 0.772 (best 0.771)
+In epoch 180, loss: 0.003, val acc: 0.748 (best 0.754), test acc: 0.772 (best 0.771)
+In epoch 185, loss: 0.003, val acc: 0.746 (best 0.754), test acc: 0.772 (best 0.771)
+In epoch 190, loss: 0.003, val acc: 0.746 (best 0.754), test acc: 0.772 (best 0.771)
+In epoch 195, loss: 0.003, val acc: 0.744 (best 0.754), test acc: 0.772 (best 0.771)
 </pre></div>
 </div>
 </section>
@@ -403,7 +392,7 @@ neighbor representations using a weighted average. Note that <code class="docuti
 member can hold edge features which can also take part in message
 passing.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">WeightedSAGEConv</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Graph convolution module used by the GraphSAGE model with edge weights.</span>
+<span class="w">    </span><span class="sd">"""Graph convolution module used by the GraphSAGE model with edge weights.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -411,7 +400,7 @@ passing.</p>
 <span class="sd">        Input feature size.</span>
 <span class="sd">    out_feat : int</span>
 <span class="sd">        Output feature size.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_feat</span><span class="p">,</span> <span class="n">out_feat</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">WeightedSAGEConv</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -419,7 +408,7 @@ passing.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">linear</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_feat</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">out_feat</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Forward computation</span>
+<span class="w">        </span><span class="sd">"""Forward computation</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -429,15 +418,15 @@ passing.</p>
 <span class="sd">            The input node feature.</span>
 <span class="sd">        w : Tensor</span>
 <span class="sd">            The edge weight.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">with</span> <span class="n">g</span><span class="o">.</span><span class="n">local_scope</span><span class="p">():</span>
-            <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;h&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
-            <span class="n">g</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s2">&quot;w&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">w</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"h"</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s2">"w"</span><span class="p">]</span> <span class="o">=</span> <span class="n">w</span>
             <span class="n">g</span><span class="o">.</span><span class="n">update_all</span><span class="p">(</span>
-                <span class="n">message_func</span><span class="o">=</span><span class="n">fn</span><span class="o">.</span><span class="n">u_mul_e</span><span class="p">(</span><span class="s2">&quot;h&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">),</span>
-                <span class="n">reduce_func</span><span class="o">=</span><span class="n">fn</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;h_N&quot;</span><span class="p">),</span>
+                <span class="n">message_func</span><span class="o">=</span><span class="n">fn</span><span class="o">.</span><span class="n">u_mul_e</span><span class="p">(</span><span class="s2">"h"</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">,</span> <span class="s2">"m"</span><span class="p">),</span>
+                <span class="n">reduce_func</span><span class="o">=</span><span class="n">fn</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s2">"m"</span><span class="p">,</span> <span class="s2">"h_N"</span><span class="p">),</span>
             <span class="p">)</span>
-            <span class="n">h_N</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;h_N&quot;</span><span class="p">]</span>
+            <span class="n">h_N</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"h_N"</span><span class="p">]</span>
             <span class="n">h_total</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">h</span><span class="p">,</span> <span class="n">h_N</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">h_total</span><span class="p">)</span>
 </pre></div>
@@ -458,50 +447,50 @@ the model. You can replace it with your own edge weights.</p>
         <span class="k">return</span> <span class="n">h</span>
 
 
-<span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;feat&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">16</span><span class="p">,</span> <span class="n">dataset</span><span class="o">.</span><span class="n">num_classes</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"feat"</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">16</span><span class="p">,</span> <span class="n">dataset</span><span class="o">.</span><span class="n">num_classes</span><span class="p">)</span>
 <span class="n">train</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>In epoch 0, loss: 1.950, val acc: 0.114 (best 0.114), test acc: 0.103 (best 0.103)
-In epoch 5, loss: 1.871, val acc: 0.444 (best 0.444), test acc: 0.466 (best 0.466)
-In epoch 10, loss: 1.719, val acc: 0.678 (best 0.678), test acc: 0.671 (best 0.671)
-In epoch 15, loss: 1.491, val acc: 0.708 (best 0.708), test acc: 0.711 (best 0.711)
-In epoch 20, loss: 1.200, val acc: 0.724 (best 0.724), test acc: 0.738 (best 0.738)
-In epoch 25, loss: 0.881, val acc: 0.758 (best 0.758), test acc: 0.763 (best 0.763)
-In epoch 30, loss: 0.589, val acc: 0.764 (best 0.768), test acc: 0.769 (best 0.766)
-In epoch 35, loss: 0.366, val acc: 0.770 (best 0.776), test acc: 0.771 (best 0.766)
-In epoch 40, loss: 0.219, val acc: 0.774 (best 0.776), test acc: 0.773 (best 0.766)
-In epoch 45, loss: 0.131, val acc: 0.780 (best 0.780), test acc: 0.776 (best 0.776)
-In epoch 50, loss: 0.081, val acc: 0.774 (best 0.780), test acc: 0.782 (best 0.776)
-In epoch 55, loss: 0.052, val acc: 0.772 (best 0.780), test acc: 0.788 (best 0.776)
-In epoch 60, loss: 0.036, val acc: 0.774 (best 0.780), test acc: 0.787 (best 0.776)
-In epoch 65, loss: 0.026, val acc: 0.776 (best 0.780), test acc: 0.784 (best 0.776)
-In epoch 70, loss: 0.020, val acc: 0.774 (best 0.780), test acc: 0.783 (best 0.776)
-In epoch 75, loss: 0.016, val acc: 0.770 (best 0.780), test acc: 0.779 (best 0.776)
-In epoch 80, loss: 0.014, val acc: 0.772 (best 0.780), test acc: 0.779 (best 0.776)
-In epoch 85, loss: 0.012, val acc: 0.770 (best 0.780), test acc: 0.781 (best 0.776)
-In epoch 90, loss: 0.011, val acc: 0.770 (best 0.780), test acc: 0.778 (best 0.776)
-In epoch 95, loss: 0.009, val acc: 0.770 (best 0.780), test acc: 0.777 (best 0.776)
-In epoch 100, loss: 0.009, val acc: 0.768 (best 0.780), test acc: 0.778 (best 0.776)
-In epoch 105, loss: 0.008, val acc: 0.768 (best 0.780), test acc: 0.777 (best 0.776)
-In epoch 110, loss: 0.007, val acc: 0.770 (best 0.780), test acc: 0.776 (best 0.776)
-In epoch 115, loss: 0.007, val acc: 0.770 (best 0.780), test acc: 0.777 (best 0.776)
-In epoch 120, loss: 0.006, val acc: 0.770 (best 0.780), test acc: 0.776 (best 0.776)
-In epoch 125, loss: 0.006, val acc: 0.770 (best 0.780), test acc: 0.777 (best 0.776)
-In epoch 130, loss: 0.005, val acc: 0.770 (best 0.780), test acc: 0.777 (best 0.776)
-In epoch 135, loss: 0.005, val acc: 0.770 (best 0.780), test acc: 0.776 (best 0.776)
-In epoch 140, loss: 0.005, val acc: 0.770 (best 0.780), test acc: 0.776 (best 0.776)
-In epoch 145, loss: 0.005, val acc: 0.770 (best 0.780), test acc: 0.776 (best 0.776)
-In epoch 150, loss: 0.004, val acc: 0.770 (best 0.780), test acc: 0.775 (best 0.776)
-In epoch 155, loss: 0.004, val acc: 0.770 (best 0.780), test acc: 0.775 (best 0.776)
-In epoch 160, loss: 0.004, val acc: 0.770 (best 0.780), test acc: 0.775 (best 0.776)
-In epoch 165, loss: 0.004, val acc: 0.768 (best 0.780), test acc: 0.775 (best 0.776)
-In epoch 170, loss: 0.003, val acc: 0.768 (best 0.780), test acc: 0.775 (best 0.776)
-In epoch 175, loss: 0.003, val acc: 0.768 (best 0.780), test acc: 0.775 (best 0.776)
-In epoch 180, loss: 0.003, val acc: 0.766 (best 0.780), test acc: 0.774 (best 0.776)
-In epoch 185, loss: 0.003, val acc: 0.766 (best 0.780), test acc: 0.774 (best 0.776)
-In epoch 190, loss: 0.003, val acc: 0.766 (best 0.780), test acc: 0.774 (best 0.776)
-In epoch 195, loss: 0.003, val acc: 0.766 (best 0.780), test acc: 0.774 (best 0.776)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>In epoch 0, loss: 1.951, val acc: 0.058 (best 0.058), test acc: 0.064 (best 0.064)
+In epoch 5, loss: 1.891, val acc: 0.088 (best 0.342), test acc: 0.099 (best 0.335)
+In epoch 10, loss: 1.778, val acc: 0.306 (best 0.342), test acc: 0.279 (best 0.335)
+In epoch 15, loss: 1.607, val acc: 0.318 (best 0.342), test acc: 0.312 (best 0.335)
+In epoch 20, loss: 1.382, val acc: 0.370 (best 0.370), test acc: 0.371 (best 0.371)
+In epoch 25, loss: 1.123, val acc: 0.434 (best 0.434), test acc: 0.421 (best 0.421)
+In epoch 30, loss: 0.857, val acc: 0.508 (best 0.508), test acc: 0.480 (best 0.480)
+In epoch 35, loss: 0.609, val acc: 0.602 (best 0.602), test acc: 0.559 (best 0.559)
+In epoch 40, loss: 0.402, val acc: 0.680 (best 0.680), test acc: 0.631 (best 0.631)
+In epoch 45, loss: 0.249, val acc: 0.718 (best 0.718), test acc: 0.691 (best 0.691)
+In epoch 50, loss: 0.152, val acc: 0.738 (best 0.738), test acc: 0.717 (best 0.707)
+In epoch 55, loss: 0.094, val acc: 0.736 (best 0.738), test acc: 0.726 (best 0.707)
+In epoch 60, loss: 0.061, val acc: 0.740 (best 0.742), test acc: 0.725 (best 0.727)
+In epoch 65, loss: 0.042, val acc: 0.740 (best 0.742), test acc: 0.725 (best 0.727)
+In epoch 70, loss: 0.031, val acc: 0.746 (best 0.746), test acc: 0.724 (best 0.724)
+In epoch 75, loss: 0.024, val acc: 0.754 (best 0.754), test acc: 0.727 (best 0.727)
+In epoch 80, loss: 0.019, val acc: 0.752 (best 0.754), test acc: 0.726 (best 0.727)
+In epoch 85, loss: 0.016, val acc: 0.752 (best 0.754), test acc: 0.728 (best 0.727)
+In epoch 90, loss: 0.014, val acc: 0.750 (best 0.754), test acc: 0.728 (best 0.727)
+In epoch 95, loss: 0.012, val acc: 0.750 (best 0.754), test acc: 0.729 (best 0.727)
+In epoch 100, loss: 0.011, val acc: 0.748 (best 0.754), test acc: 0.730 (best 0.727)
+In epoch 105, loss: 0.010, val acc: 0.750 (best 0.754), test acc: 0.730 (best 0.727)
+In epoch 110, loss: 0.009, val acc: 0.752 (best 0.754), test acc: 0.730 (best 0.727)
+In epoch 115, loss: 0.008, val acc: 0.752 (best 0.754), test acc: 0.730 (best 0.727)
+In epoch 120, loss: 0.008, val acc: 0.752 (best 0.754), test acc: 0.731 (best 0.727)
+In epoch 125, loss: 0.007, val acc: 0.750 (best 0.754), test acc: 0.731 (best 0.727)
+In epoch 130, loss: 0.007, val acc: 0.750 (best 0.754), test acc: 0.730 (best 0.727)
+In epoch 135, loss: 0.006, val acc: 0.748 (best 0.754), test acc: 0.729 (best 0.727)
+In epoch 140, loss: 0.006, val acc: 0.750 (best 0.754), test acc: 0.730 (best 0.727)
+In epoch 145, loss: 0.006, val acc: 0.750 (best 0.754), test acc: 0.732 (best 0.727)
+In epoch 150, loss: 0.005, val acc: 0.750 (best 0.754), test acc: 0.733 (best 0.727)
+In epoch 155, loss: 0.005, val acc: 0.750 (best 0.754), test acc: 0.733 (best 0.727)
+In epoch 160, loss: 0.005, val acc: 0.750 (best 0.754), test acc: 0.733 (best 0.727)
+In epoch 165, loss: 0.004, val acc: 0.750 (best 0.754), test acc: 0.734 (best 0.727)
+In epoch 170, loss: 0.004, val acc: 0.750 (best 0.754), test acc: 0.733 (best 0.727)
+In epoch 175, loss: 0.004, val acc: 0.748 (best 0.754), test acc: 0.734 (best 0.727)
+In epoch 180, loss: 0.004, val acc: 0.748 (best 0.754), test acc: 0.733 (best 0.727)
+In epoch 185, loss: 0.004, val acc: 0.748 (best 0.754), test acc: 0.732 (best 0.727)
+In epoch 190, loss: 0.003, val acc: 0.748 (best 0.754), test acc: 0.732 (best 0.727)
+In epoch 195, loss: 0.003, val acc: 0.748 (best 0.754), test acc: 0.733 (best 0.727)
 </pre></div>
 </div>
 </section>
@@ -511,7 +500,7 @@ In epoch 195, loss: 0.003, val acc: 0.766 (best 0.780), test acc: 0.774 (best 0.
 expressiveness. Here is a user-defined message function that is
 equivalent to <code class="docutils literal notranslate"><span class="pre">fn.u_mul_e('h',</span> <span class="pre">'w',</span> <span class="pre">'m')</span></code>.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">u_mul_e_udf</span><span class="p">(</span><span class="n">edges</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;m&quot;</span><span class="p">:</span> <span class="n">edges</span><span class="o">.</span><span class="n">src</span><span class="p">[</span><span class="s2">&quot;h&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">edges</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;w&quot;</span><span class="p">]}</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">"m"</span><span class="p">:</span> <span class="n">edges</span><span class="o">.</span><span class="n">src</span><span class="p">[</span><span class="s2">"h"</span><span class="p">]</span> <span class="o">*</span> <span class="n">edges</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"w"</span><span class="p">]}</span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">edges</span></code> has three members: <code class="docutils literal notranslate"><span class="pre">src</span></code>, <code class="docutils literal notranslate"><span class="pre">data</span></code> and <code class="docutils literal notranslate"><span class="pre">dst</span></code>, representing
@@ -521,7 +510,7 @@ all edges.</p>
 is equivalent to the builtin <code class="docutils literal notranslate"><span class="pre">fn.mean('m',</span> <span class="pre">'h_N')</span></code> function that averages
 the incoming messages:</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mean_udf</span><span class="p">(</span><span class="n">nodes</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;h_N&quot;</span><span class="p">:</span> <span class="n">nodes</span><span class="o">.</span><span class="n">mailbox</span><span class="p">[</span><span class="s2">&quot;m&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">1</span><span class="p">)}</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">"h_N"</span><span class="p">:</span> <span class="n">nodes</span><span class="o">.</span><span class="n">mailbox</span><span class="p">[</span><span class="s2">"m"</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">1</span><span class="p">)}</span>
 </pre></div>
 </div>
 <p>In short, DGL will group the nodes by their in-degrees, and for each
@@ -551,10 +540,10 @@ edges.</p></li>
 Code</span></a>.</p></li>
 </ul>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Thumbnail credits: Representation Learning on Networks, Jure Leskovec, WWW 2018</span>
-<span class="c1"># sphinx_gallery_thumbnail_path = &#39;_static/blitz_3_message_passing.png&#39;</span>
+<span class="c1"># sphinx_gallery_thumbnail_path = '_static/blitz_3_message_passing.png'</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 3.819 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (2 minutes 50.280 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-blitz-3-message-passing-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/825e8f29152dbdc145c3400e2d8588ea/3_message_passing.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">3_message_passing.ipynb</span></code></a></p>
@@ -569,20 +558,16 @@ Code</span></a>.</p></li>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </section>
 </section>
-
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="2_dglgraph.html" class="btn btn-neutral float-left" title="How Does DGL Represent A Graph?" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="4_link_predict.html" class="btn btn-neutral float-right" title="Link Prediction using Graph Neural Networks" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2018, DGL Team.</p>
-  </div>
+</div>
+</div>
+<footer><div aria-label="Footer" class="rst-footer-buttons" role="navigation">
+<a accesskey="p" class="btn btn-neutral float-left" href="2_dglgraph.html" rel="prev" title="How Does DGL Represent A Graph?"><span aria-hidden="true" class="fa fa-arrow-circle-left"></span> Previous</a>
+<a accesskey="n" class="btn btn-neutral float-right" href="4_link_predict.html" rel="next" title="Link Prediction using Graph Neural Networks">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
+</div>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
@@ -590,15 +575,58 @@ Code</span></a>.</p></li>
    
 
 </footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+
+<script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
-
+  </script>
 </body>
 </html>

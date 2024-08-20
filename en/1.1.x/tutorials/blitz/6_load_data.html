@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+
+<html class="writer-html5" data-content_root="../../" lang="en">
+<head>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Make Your Own Dataset — DGL 2.1.0 documentation</title>
+<link href="../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+<script src="../../_static/jquery.js?v=5d32c60e"></script>
+<script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../../_static/documentation_options.js?v=20623aea"></script>
+<script src="../../_static/doctools.js?v=9a2dae69"></script>
+<script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script src="../../_static/js/theme.js"></script>
+<link href="../../genindex.html" rel="index" title="Index"/>
+<link href="../../search.html" rel="search" title="Search"/>
+<link href="../../stochastic_training/index.html" rel="next" title="🆕 Stochastic Training of GNNs with GraphBolt"/>
+<link href="5_graph_classification.html" rel="prev" title="Training a GNN for Graph Classification"/>
+</head>
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../../index.html">
+            DGL
+          </a>
+<div class="version">
+                2.1.0
+              </div>
+<div role="search">
+<form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
+</div>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Install and Setup</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">A Blitz Introduction to DGL</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="1_introduction.html">Node Classification with DGL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_dglgraph.html">How Does DGL Represent A Graph?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_message_passing.html">Write your own GNN module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_link_predict.html">Link Prediction using Graph Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_graph_classification.html">Training a GNN for Graph Classification</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Make Your Own Dataset</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dgldataset-object-overview"><code class="docutils literal notranslate"><span class="pre">DGLDataset</span></code> Object Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-dataset-for-node-classification-or-link-prediction-from-csv">Creating a Dataset for Node Classification or Link Prediction from CSV</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-dataset-for-graph-classification-from-csv">Creating a Dataset for Graph Classification from CSV</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-dataset-from-csv-via-csvdataset">Creating Dataset from CSV via <code class="xref py py-class docutils literal notranslate"><span class="pre">CSVDataset</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Materials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../stochastic_training/index.html">🆕 Stochastic Training of GNNs with GraphBolt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide_cn/index.html">用户指南【包含过时信息】</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide_ko/index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../graphtransformer/index.html">🆕 Tutorial: Graph Transformer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/sparse/index.html">Tutorials: dgl.sparse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cpu/index.html">Training on CPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../multi/index.html">Training on Multiple GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dist/index.html">Distributed training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models/index.html">Paper Study with DGL</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.html">dgl</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.data.html">dgl.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.dataloading.html">dgl.dataloading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.DGLGraph.html">dgl.DGLGraph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.distributed.html">dgl.distributed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.function.html">dgl.function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.geometry.html">dgl.geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.graphbolt.html">🆕 dgl.graphbolt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/nn.functional.html">dgl.nn.functional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.ops.html">dgl.ops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.optim.html">dgl.optim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.sampling.html">dgl.sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.sparse_v0.html">dgl.sparse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.multiprocessing.html">dgl.multiprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/transforms.html">dgl.transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/udf.html">User-defined Functions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute.html">Contribute to DGL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer/ffi.html">DGL Foreign Function Interface (FFI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../performance.html">Performance Benchmarks</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Misc</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../env_var.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resources.html">Resources</a></li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../../index.html"></a></li>
+<li class="breadcrumb-item"><a href="index.html">A Blitz Introduction to DGL</a></li>
+<li class="breadcrumb-item active">Make Your Own Dataset</li>
+<li class="wy-breadcrumbs-aside">
+<a href="../../_sources/tutorials/blitz/6_load_data.rst.txt" rel="nofollow"> View page source</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-tutorials-blitz-6-load-data-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="make-your-own-dataset">
+<span id="sphx-glr-tutorials-blitz-6-load-data-py"></span><h1>Make Your Own Dataset<a class="headerlink" href="#make-your-own-dataset" title="Link to this heading"></a></h1>
+<p>This tutorial assumes that you already know <a class="reference internal" href="1_introduction.html"><span class="doc">the basics of training a
+GNN for node classification</span></a> and <a class="reference internal" href="2_dglgraph.html"><span class="doc">how to
+create, load, and store a DGL graph</span></a>.</p>
+<p>By the end of this tutorial, you will be able to</p>
+<ul class="simple">
+<li><p>Create your own graph dataset for node classification, link
+prediction, or graph classification.</p></li>
+</ul>
+<p>(Time estimate: 15 minutes)</p>
+<section id="dgldataset-object-overview">
+<h2><code class="docutils literal notranslate"><span class="pre">DGLDataset</span></code> Object Overview<a class="headerlink" href="#dgldataset-object-overview" title="Link to this heading"></a></h2>
+<p>Your custom graph dataset should inherit the <code class="docutils literal notranslate"><span class="pre">dgl.data.DGLDataset</span></code>
+class and implement the following methods:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">__getitem__(self,</span> <span class="pre">i)</span></code>: retrieve the <code class="docutils literal notranslate"><span class="pre">i</span></code>-th example of the
+dataset. An example often contains a single DGL graph, and
+occasionally its label.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">__len__(self)</span></code>: the number of examples in the dataset.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">process(self)</span></code>: load and process raw data from disk.</p></li>
+</ul>
+</section>
+<section id="creating-a-dataset-for-node-classification-or-link-prediction-from-csv">
+<h2>Creating a Dataset for Node Classification or Link Prediction from CSV<a class="headerlink" href="#creating-a-dataset-for-node-classification-or-link-prediction-from-csv" title="Link to this heading"></a></h2>
+<p>A node classification dataset often consists of a single graph, as well
+as its node and edge features.</p>
+<p>This tutorial takes a small dataset based on <a class="reference external" href="https://en.wikipedia.org/wiki/Zachary%27s_karate_club">Zachary’s Karate Club
+network</a>. It
+contains</p>
+<ul class="simple">
+<li><p>A <code class="docutils literal notranslate"><span class="pre">members.csv</span></code> file containing the attributes of all
+members, as well as their attributes.</p></li>
+<li><p>An <code class="docutils literal notranslate"><span class="pre">interactions.csv</span></code> file
+containing the pair-wise interactions between two club members.</p></li>
+</ul>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">urllib.request</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<a class="sphx-glr-backref-module-urllib-request sphx-glr-backref-type-py-function" href="https://docs.python.org/3/library/urllib.request.html#urllib.request.urlretrieve" title="urllib.request.urlretrieve"><span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span></a><span class="p">(</span>
+    <span class="s2">"https://data.dgl.ai/tutorial/dataset/members.csv"</span><span class="p">,</span> <span class="s2">"./members.csv"</span>
+<span class="p">)</span>
+<a class="sphx-glr-backref-module-urllib-request sphx-glr-backref-type-py-function" href="https://docs.python.org/3/library/urllib.request.html#urllib.request.urlretrieve" title="urllib.request.urlretrieve"><span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span></a><span class="p">(</span>
+    <span class="s2">"https://data.dgl.ai/tutorial/dataset/interactions.csv"</span><span class="p">,</span>
+    <span class="s2">"./interactions.csv"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">members</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"./members.csv"</span><span class="p">)</span>
+<span class="n">members</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+
+<span class="n">interactions</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"./interactions.csv"</span><span class="p">)</span>
+<span class="n">interactions</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>Src</th>
+<th>Dst</th>
+<th>Weight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>0</th>
+<td>0</td>
+<td>1</td>
+<td>0.043591</td>
+</tr>
+<tr>
+<th>1</th>
+<td>0</td>
+<td>2</td>
+<td>0.282119</td>
+</tr>
+<tr>
+<th>2</th>
+<td>0</td>
+<td>3</td>
+<td>0.370293</td>
+</tr>
+<tr>
+<th>3</th>
+<td>0</td>
+<td>4</td>
+<td>0.730570</td>
+</tr>
+<tr>
+<th>4</th>
+<td>0</td>
+<td>5</td>
+<td>0.821187</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<br/>
+<br/><p>This tutorial treats the members as nodes and interactions as edges. It
+takes age as a numeric feature of the nodes, affiliated club as the label
+of the nodes, and edge weight as a numeric feature of the edges.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The original Zachary’s Karate Club network does not have
+member ages. The ages in this tutorial are generated synthetically
+for demonstrating how to add node features into the graph for dataset
+creation.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In practice, taking age directly as a numeric feature may
+not work well in machine learning; strategies like binning or
+normalizing the feature would work better. This tutorial directly
+takes the values as-is for simplicity.</p>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<a class="sphx-glr-backref-module-os sphx-glr-backref-type-py-data" href="https://docs.python.org/3/library/os.html#os.environ" title="os.environ"><span class="n">os</span><span class="o">.</span><span class="n">environ</span></a><span class="p">[</span><span class="s2">"DGLBACKEND"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"pytorch"</span>
+<span class="kn">import</span> <span class="nn">dgl</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">dgl.data</span> <span class="kn">import</span> <span class="n">DGLDataset</span>
+
+
+<span class="k">class</span> <span class="nc">KarateClubDataset</span><span class="p">(</span><span class="n">DGLDataset</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"karate_club"</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">nodes_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"./members.csv"</span><span class="p">)</span>
+        <span class="n">edges_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"./interactions.csv"</span><span class="p">)</span>
+        <span class="n">node_features</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">nodes_data</span><span class="p">[</span><span class="s2">"Age"</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">())</span>
+        <span class="n">node_labels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span>
+            <span class="n">nodes_data</span><span class="p">[</span><span class="s2">"Club"</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">"category"</span><span class="p">)</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">edge_features</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">edges_data</span><span class="p">[</span><span class="s2">"Weight"</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">())</span>
+        <span class="n">edges_src</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">edges_data</span><span class="p">[</span><span class="s2">"Src"</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">())</span>
+        <span class="n">edges_dst</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">edges_data</span><span class="p">[</span><span class="s2">"Dst"</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">graph</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">edges_src</span><span class="p">,</span> <span class="n">edges_dst</span><span class="p">),</span> <span class="n">num_nodes</span><span class="o">=</span><span class="n">nodes_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"feat"</span><span class="p">]</span> <span class="o">=</span> <span class="n">node_features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"label"</span><span class="p">]</span> <span class="o">=</span> <span class="n">node_labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s2">"weight"</span><span class="p">]</span> <span class="o">=</span> <span class="n">edge_features</span>
+
+        <span class="c1"># If your dataset is a node classification dataset, you will need to assign</span>
+        <span class="c1"># masks indicating whether a node belongs to training, validation, and test set.</span>
+        <span class="n">n_nodes</span> <span class="o">=</span> <span class="n">nodes_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">n_train</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_nodes</span> <span class="o">*</span> <span class="mf">0.6</span><span class="p">)</span>
+        <span class="n">n_val</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_nodes</span> <span class="o">*</span> <span class="mf">0.2</span><span class="p">)</span>
+        <span class="n">train_mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
+        <span class="n">val_mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
+        <span class="n">test_mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
+        <span class="n">train_mask</span><span class="p">[:</span><span class="n">n_train</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">val_mask</span><span class="p">[</span><span class="n">n_train</span> <span class="p">:</span> <span class="n">n_train</span> <span class="o">+</span> <span class="n">n_val</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">test_mask</span><span class="p">[</span><span class="n">n_train</span> <span class="o">+</span> <span class="n">n_val</span> <span class="p">:]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"train_mask"</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_mask</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"val_mask"</span><span class="p">]</span> <span class="o">=</span> <span class="n">val_mask</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"test_mask"</span><span class="p">]</span> <span class="o">=</span> <span class="n">test_mask</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">1</span>
+
+
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">KarateClubDataset</span><span class="p">()</span>
+<span class="n">graph</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/ubuntu/dgl_doc_dev/dgl/tutorials/blitz/6_load_data.py:106: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at /home/conda/feedstock_root/build_artifacts/libtorch_1718618105212/work/torch/csrc/utils/tensor_numpy.cpp:206.)
+  node_labels = torch.from_numpy(
+Graph(num_nodes=34, num_edges=156,
+      ndata_schemes={'feat': Scheme(shape=(), dtype=torch.int64), 'label': Scheme(shape=(), dtype=torch.int8), 'train_mask': Scheme(shape=(), dtype=torch.bool), 'val_mask': Scheme(shape=(), dtype=torch.bool), 'test_mask': Scheme(shape=(), dtype=torch.bool)}
+      edata_schemes={'weight': Scheme(shape=(), dtype=torch.float64)})
+</pre></div>
+</div>
+<p>Since a link prediction dataset only involves a single graph, preparing
+a link prediction dataset will have the same experience as preparing a
+node classification dataset.</p>
+</section>
+<section id="creating-a-dataset-for-graph-classification-from-csv">
+<h2>Creating a Dataset for Graph Classification from CSV<a class="headerlink" href="#creating-a-dataset-for-graph-classification-from-csv" title="Link to this heading"></a></h2>
+<p>Creating a graph classification dataset involves implementing
+<code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> to return both the graph and its graph-level label.</p>
+<p>This tutorial demonstrates how to create a graph classification dataset
+with the following synthetic CSV data:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">graph_edges.csv</span></code>: containing three columns:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">graph_id</span></code>: the ID of the graph.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">src</span></code>: the source node of an edge of the given graph.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dst</span></code>: the destination node of an edge of the given graph.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graph_properties.csv</span></code>: containing three columns:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">graph_id</span></code>: the ID of the graph.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">label</span></code>: the label of the graph.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_nodes</span></code>: the number of nodes in the graph.</p></li>
+</ul>
+</li>
+</ul>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a class="sphx-glr-backref-module-urllib-request sphx-glr-backref-type-py-function" href="https://docs.python.org/3/library/urllib.request.html#urllib.request.urlretrieve" title="urllib.request.urlretrieve"><span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span></a><span class="p">(</span>
+    <span class="s2">"https://data.dgl.ai/tutorial/dataset/graph_edges.csv"</span><span class="p">,</span> <span class="s2">"./graph_edges.csv"</span>
+<span class="p">)</span>
+<a class="sphx-glr-backref-module-urllib-request sphx-glr-backref-type-py-function" href="https://docs.python.org/3/library/urllib.request.html#urllib.request.urlretrieve" title="urllib.request.urlretrieve"><span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span></a><span class="p">(</span>
+    <span class="s2">"https://data.dgl.ai/tutorial/dataset/graph_properties.csv"</span><span class="p">,</span>
+    <span class="s2">"./graph_properties.csv"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">edges</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"./graph_edges.csv"</span><span class="p">)</span>
+<span class="n">properties</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"./graph_properties.csv"</span><span class="p">)</span>
+
+<span class="n">edges</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+
+<span class="n">properties</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">SyntheticDataset</span><span class="p">(</span><span class="n">DGLDataset</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"synthetic"</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"./graph_edges.csv"</span><span class="p">)</span>
+        <span class="n">properties</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"./graph_properties.csv"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graphs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Create a graph for each graph ID from the edges table.</span>
+        <span class="c1"># First process the properties table into two dictionaries with graph IDs as keys.</span>
+        <span class="c1"># The label and number of nodes are values.</span>
+        <span class="n">label_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">num_nodes_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">properties</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="n">label_dict</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s2">"graph_id"</span><span class="p">]]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">"label"</span><span class="p">]</span>
+            <span class="n">num_nodes_dict</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s2">"graph_id"</span><span class="p">]]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">"num_nodes"</span><span class="p">]</span>
+
+        <span class="c1"># For the edges, first group the table by graph IDs.</span>
+        <span class="n">edges_group</span> <span class="o">=</span> <span class="n">edges</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"graph_id"</span><span class="p">)</span>
+
+        <span class="c1"># For each graph ID...</span>
+        <span class="k">for</span> <span class="n">graph_id</span> <span class="ow">in</span> <span class="n">edges_group</span><span class="o">.</span><span class="n">groups</span><span class="p">:</span>
+            <span class="c1"># Find the edges as well as the number of nodes and its label.</span>
+            <span class="n">edges_of_id</span> <span class="o">=</span> <span class="n">edges_group</span><span class="o">.</span><span class="n">get_group</span><span class="p">(</span><span class="n">graph_id</span><span class="p">)</span>
+            <span class="n">src</span> <span class="o">=</span> <span class="n">edges_of_id</span><span class="p">[</span><span class="s2">"src"</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+            <span class="n">dst</span> <span class="o">=</span> <span class="n">edges_of_id</span><span class="p">[</span><span class="s2">"dst"</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+            <span class="n">num_nodes</span> <span class="o">=</span> <span class="n">num_nodes_dict</span><span class="p">[</span><span class="n">graph_id</span><span class="p">]</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">label_dict</span><span class="p">[</span><span class="n">graph_id</span><span class="p">]</span>
+
+            <span class="c1"># Create a graph and add it to the list of graphs and labels.</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">graph</span><span class="p">((</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">),</span> <span class="n">num_nodes</span><span class="o">=</span><span class="n">num_nodes</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">graphs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+
+        <span class="c1"># Convert the label list to tensor for saving.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">graphs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graphs</span><span class="p">)</span>
+
+
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">SyntheticDataset</span><span class="p">()</span>
+<span class="n">graph</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Graph(num_nodes=15, num_edges=45,
+      ndata_schemes={}
+      edata_schemes={}) tensor(0)
+</pre></div>
+</div>
+</section>
+<section id="creating-dataset-from-csv-via-csvdataset">
+<h2>Creating Dataset from CSV via <a class="reference internal" href="../../generated/dgl.data.CSVDataset.html#dgl.data.CSVDataset" title="dgl.data.CSVDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">CSVDataset</span></code></a><a class="headerlink" href="#creating-dataset-from-csv-via-csvdataset" title="Link to this heading"></a></h2>
+<p>The previous examples describe how to create a dataset from CSV files
+step-by-step. DGL also provides a utility class <a class="reference internal" href="../../generated/dgl.data.CSVDataset.html#dgl.data.CSVDataset" title="dgl.data.CSVDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">CSVDataset</span></code></a>
+for reading and parsing data from CSV files. See <a class="reference internal" href="../../guide/data-loadcsv.html#guide-data-pipeline-loadcsv"><span class="std std-ref">4.6 Loading data from CSV files</span></a>
+for more details.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Thumbnail credits: (Un)common Use Cases for Graph Databases, Michal Bachman</span>
+<span class="c1"># sphinx_gallery_thumbnail_path = '_static/blitz_6_load_data.png'</span>
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.508 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-blitz-6-load-data-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/9c0235d33759b8299198907802b45d92/6_load_data.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">6_load_data.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/0d6245ffa41a78ce521e917a400ee42f/6_load_data.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">6_load_data.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/1903c142e91864df519198e1fee658e8/6_load_data.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">6_load_data.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+</div>
+</div>
+<footer><div aria-label="Footer" class="rst-footer-buttons" role="navigation">
+<a accesskey="p" class="btn btn-neutral float-left" href="5_graph_classification.html" rel="prev" title="Training a GNN for Graph Classification"><span aria-hidden="true" class="fa fa-arrow-circle-left"></span> Previous</a>
+<a accesskey="n" class="btn btn-neutral float-right" href="../../stochastic_training/index.html" rel="next" title="🆕 Stochastic Training of GNNs with GraphBolt">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
+</div>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+</body>
+</html>

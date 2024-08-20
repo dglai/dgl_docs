@@ -1,66 +1,59 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../../../">
+
+<html class="writer-html5" data-content_root="../../../" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Graph Convolutional Network &mdash; DGL 2.4 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=0bf289b5" />
-
-  
-  <!--[if lt IE 9]>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Graph Convolutional Network — DGL 2.3.1 documentation</title>
+<link href="../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=9caaf7ed"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../../../_static/copybutton.js?v=ccdb6887"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="../../../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Relational Graph Convolutional Network" href="4_rgcn.html" />
-    <link rel="prev" title="Graph neural networks and its variants" href="index.html" /> 
+<script src="../../../_static/jquery.js?v=5d32c60e"></script>
+<script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../../../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../../../_static/doctools.js?v=9a2dae69"></script>
+<script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../../../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+<script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../../_static/js/theme.js"></script>
+<link href="../../../genindex.html" rel="index" title="Index"/>
+<link href="../../../search.html" rel="search" title="Search"/>
+<link href="4_rgcn.html" rel="next" title="Relational Graph Convolutional Network"/>
+<link href="index.html" rel="prev" title="Graph neural networks and its variants"/>
 </head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../../../index.html" class="icon icon-home">
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../../../index.html">
             DGL
           </a>
-              <div class="version">
-                2.4
+<div class="version">
+                2.3.1
               </div>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+<form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Install and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../blitz/index.html">A Blitz Introduction to DGL</a></li>
@@ -122,34 +115,30 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../env_var.html">Environment Variables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../resources.html">Resources</a></li>
 </ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">DGL</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html">Paper Study with DGL</a></li>
-          <li class="breadcrumb-item"><a href="index.html">Graph neural networks and its variants</a></li>
-      <li class="breadcrumb-item active">Graph Convolutional Network</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="../../../_sources/tutorials/models/1_gnn/1_gcn.rst.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <div class="sphx-glr-download-link-note admonition note">
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../../../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../../../index.html"></a></li>
+<li class="breadcrumb-item"><a href="../index.html">Paper Study with DGL</a></li>
+<li class="breadcrumb-item"><a href="index.html">Graph neural networks and its variants</a></li>
+<li class="breadcrumb-item active">Graph Convolutional Network</li>
+<li class="wy-breadcrumbs-aside">
+<a href="../../../_sources/tutorials/models/1_gnn/1_gcn.rst.txt" rel="nofollow"> View page source</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
 <p><a class="reference internal" href="#sphx-glr-download-tutorials-models-1-gnn-1-gcn-py"><span class="std std-ref">Go to the end</span></a>
 to download the full example code.</p>
@@ -192,7 +181,7 @@ aggregation on a node <span class="math notranslate nohighlight">\(u\)</span> on
 representations <span class="math notranslate nohighlight">\(h_v\)</span>, we can simply use builtin functions:</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 
-<a href="https://docs.python.org/3/library/os.html#os.environ" title="os.environ" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-data"><span class="n">os</span><span class="o">.</span><span class="n">environ</span></a><span class="p">[</span><span class="s2">&quot;DGLBACKEND&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pytorch&quot;</span>
+<a class="sphx-glr-backref-module-os sphx-glr-backref-type-py-data" href="https://docs.python.org/3/library/os.html#os.environ" title="os.environ"><span class="n">os</span><span class="o">.</span><span class="n">environ</span></a><span class="p">[</span><span class="s2">"DGLBACKEND"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"pytorch"</span>
 <span class="kn">import</span> <span class="nn">dgl</span>
 <span class="kn">import</span> <span class="nn">dgl.function</span> <span class="k">as</span> <span class="nn">fn</span>
 <span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="nn">th</span>
@@ -200,8 +189,8 @@ representations <span class="math notranslate nohighlight">\(h_v\)</span>, we ca
 <span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
 <span class="kn">from</span> <span class="nn">dgl</span> <span class="kn">import</span> <span class="n">DGLGraph</span>
 
-<span class="n">gcn_msg</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="n">copy_u</span><span class="p">(</span><span class="n">u</span><span class="o">=</span><span class="s2">&quot;h&quot;</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="s2">&quot;m&quot;</span><span class="p">)</span>
-<span class="n">gcn_reduce</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">msg</span><span class="o">=</span><span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="s2">&quot;h&quot;</span><span class="p">)</span>
+<span class="n">gcn_msg</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="n">copy_u</span><span class="p">(</span><span class="n">u</span><span class="o">=</span><span class="s2">"h"</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="s2">"m"</span><span class="p">)</span>
+<span class="n">gcn_reduce</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">msg</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="s2">"h"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>We then proceed to define the GCNLayer module. A GCNLayer essentially performs
@@ -218,12 +207,12 @@ efficient <a class="reference internal" href="../../../generated/dgl.nn.pytorch.
 
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">feature</span><span class="p">):</span>
         <span class="c1"># Creating a local scope so that all the stored ndata and edata</span>
-        <span class="c1"># (such as the `&#39;h&#39;` ndata below) are automatically popped out</span>
+        <span class="c1"># (such as the `'h'` ndata below) are automatically popped out</span>
         <span class="c1"># when the scope exits.</span>
         <span class="k">with</span> <span class="n">g</span><span class="o">.</span><span class="n">local_scope</span><span class="p">():</span>
-            <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;h&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">feature</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"h"</span><span class="p">]</span> <span class="o">=</span> <span class="n">feature</span>
             <span class="n">g</span><span class="o">.</span><span class="n">update_all</span><span class="p">(</span><span class="n">gcn_msg</span><span class="p">,</span> <span class="n">gcn_reduce</span><span class="p">)</span>
-            <span class="n">h</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;h&quot;</span><span class="p">]</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"h"</span><span class="p">]</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -266,10 +255,10 @@ so the last layer in general does not apply activation.</p>
 <span class="k">def</span> <span class="nf">load_cora_data</span><span class="p">():</span>
     <span class="n">dataset</span> <span class="o">=</span> <span class="n">CoraGraphDataset</span><span class="p">()</span>
     <span class="n">g</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">features</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;feat&quot;</span><span class="p">]</span>
-    <span class="n">labels</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span>
-    <span class="n">train_mask</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;train_mask&quot;</span><span class="p">]</span>
-    <span class="n">test_mask</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;test_mask&quot;</span><span class="p">]</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"feat"</span><span class="p">]</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"label"</span><span class="p">]</span>
+    <span class="n">train_mask</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"train_mask"</span><span class="p">]</span>
+    <span class="n">test_mask</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"test_mask"</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">g</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">train_mask</span><span class="p">,</span> <span class="n">test_mask</span>
 </pre></div>
 </div>
@@ -295,10 +284,10 @@ the performance of the model on the test dataset:</p>
 <span class="c1"># Add edges between each node and itself to preserve old node representations</span>
 <span class="n">g</span><span class="o">.</span><span class="n">add_edges</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">nodes</span><span class="p">(),</span> <span class="n">g</span><span class="o">.</span><span class="n">nodes</span><span class="p">())</span>
 <span class="n">optimizer</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">)</span>
-<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dur</span></a> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">epoch</span></a> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">):</span>
-    <span class="k">if</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">epoch</span></a> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
-        <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t0</span></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">dur</span></a> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">epoch</span></a> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">):</span>
+    <span class="k">if</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">epoch</span></a> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+        <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">t0</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function" href="https://docs.python.org/3/library/time.html#time.time" title="time.time"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span>
     <span class="n">net</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
     <span class="n">logits</span> <span class="o">=</span> <span class="n">net</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">features</span><span class="p">)</span>
     <span class="n">logp</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -308,12 +297,12 @@ the performance of the model on the test dataset:</p>
     <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
     <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
 
-    <span class="k">if</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">epoch</span></a> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
-        <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dur</span></a><span class="o">.</span><span class="n">append</span><span class="p">(</span><a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span> <span class="o">-</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t0</span></a><span class="p">)</span>
-    <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">acc</span></a> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">test_mask</span><span class="p">)</span>
+    <span class="k">if</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">epoch</span></a> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+        <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">dur</span></a><span class="o">.</span><span class="n">append</span><span class="p">(</span><a class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function" href="https://docs.python.org/3/library/time.html#time.time" title="time.time"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span> <span class="o">-</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">t0</span></a><span class="p">)</span>
+    <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">acc</span></a> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">test_mask</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span>
-        <span class="s2">&quot;Epoch </span><span class="si">{:05d}</span><span class="s2"> | Loss </span><span class="si">{:.4f}</span><span class="s2"> | Test Acc </span><span class="si">{:.4f}</span><span class="s2"> | Time(s) </span><span class="si">{:.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">epoch</span></a><span class="p">,</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">acc</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.mean.html#numpy.mean" title="numpy.mean" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">mean</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dur</span></a><span class="p">)</span>
+        <span class="s2">"Epoch </span><span class="si">{:05d}</span><span class="s2"> | Loss </span><span class="si">{:.4f}</span><span class="s2"> | Test Acc </span><span class="si">{:.4f}</span><span class="s2"> | Time(s) </span><span class="si">{:.4f}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">epoch</span></a><span class="p">,</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">acc</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function" href="https://numpy.org/doc/stable/reference/generated/numpy.mean.html#numpy.mean" title="numpy.mean"><span class="n">np</span><span class="o">.</span><span class="n">mean</span></a><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">dur</span></a><span class="p">)</span>
         <span class="p">)</span>
     <span class="p">)</span>
 </pre></div>
@@ -326,60 +315,60 @@ the performance of the model on the test dataset:</p>
   NumValidationSamples: 500
   NumTestSamples: 1000
 Done loading data from cached files.
-/opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
+/opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages/numpy/_core/fromnumeric.py:3596: RuntimeWarning: Mean of empty slice.
   return _methods._mean(a, axis=axis, dtype=dtype,
-/opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+/opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages/numpy/_core/_methods.py:138: RuntimeWarning: invalid value encountered in scalar divide
   ret = ret.dtype.type(ret / rcount)
-Epoch 00000 | Loss 1.9373 | Test Acc 0.2960 | Time(s) nan
-Epoch 00001 | Loss 1.7796 | Test Acc 0.3780 | Time(s) nan
-Epoch 00002 | Loss 1.6430 | Test Acc 0.4770 | Time(s) nan
-Epoch 00003 | Loss 1.5304 | Test Acc 0.6010 | Time(s) 0.0042
-Epoch 00004 | Loss 1.4387 | Test Acc 0.6540 | Time(s) 0.0042
-Epoch 00005 | Loss 1.3563 | Test Acc 0.6570 | Time(s) 0.0042
-Epoch 00006 | Loss 1.2757 | Test Acc 0.6820 | Time(s) 0.0042
-Epoch 00007 | Loss 1.1923 | Test Acc 0.7050 | Time(s) 0.0042
-Epoch 00008 | Loss 1.1069 | Test Acc 0.7230 | Time(s) 0.0042
-Epoch 00009 | Loss 1.0232 | Test Acc 0.7350 | Time(s) 0.0042
-Epoch 00010 | Loss 0.9447 | Test Acc 0.7290 | Time(s) 0.0042
-Epoch 00011 | Loss 0.8722 | Test Acc 0.7310 | Time(s) 0.0042
-Epoch 00012 | Loss 0.8048 | Test Acc 0.7340 | Time(s) 0.0042
-Epoch 00013 | Loss 0.7408 | Test Acc 0.7470 | Time(s) 0.0042
-Epoch 00014 | Loss 0.6802 | Test Acc 0.7590 | Time(s) 0.0042
-Epoch 00015 | Loss 0.6236 | Test Acc 0.7600 | Time(s) 0.0041
-Epoch 00016 | Loss 0.5714 | Test Acc 0.7520 | Time(s) 0.0041
-Epoch 00017 | Loss 0.5234 | Test Acc 0.7460 | Time(s) 0.0041
-Epoch 00018 | Loss 0.4795 | Test Acc 0.7470 | Time(s) 0.0041
-Epoch 00019 | Loss 0.4393 | Test Acc 0.7480 | Time(s) 0.0041
-Epoch 00020 | Loss 0.4024 | Test Acc 0.7460 | Time(s) 0.0041
-Epoch 00021 | Loss 0.3686 | Test Acc 0.7480 | Time(s) 0.0041
-Epoch 00022 | Loss 0.3377 | Test Acc 0.7550 | Time(s) 0.0041
-Epoch 00023 | Loss 0.3094 | Test Acc 0.7570 | Time(s) 0.0041
-Epoch 00024 | Loss 0.2835 | Test Acc 0.7570 | Time(s) 0.0041
-Epoch 00025 | Loss 0.2599 | Test Acc 0.7650 | Time(s) 0.0041
-Epoch 00026 | Loss 0.2383 | Test Acc 0.7640 | Time(s) 0.0041
-Epoch 00027 | Loss 0.2185 | Test Acc 0.7660 | Time(s) 0.0041
-Epoch 00028 | Loss 0.2003 | Test Acc 0.7650 | Time(s) 0.0041
-Epoch 00029 | Loss 0.1837 | Test Acc 0.7630 | Time(s) 0.0041
-Epoch 00030 | Loss 0.1685 | Test Acc 0.7610 | Time(s) 0.0041
-Epoch 00031 | Loss 0.1546 | Test Acc 0.7610 | Time(s) 0.0040
-Epoch 00032 | Loss 0.1420 | Test Acc 0.7590 | Time(s) 0.0040
-Epoch 00033 | Loss 0.1304 | Test Acc 0.7600 | Time(s) 0.0040
-Epoch 00034 | Loss 0.1199 | Test Acc 0.7570 | Time(s) 0.0040
-Epoch 00035 | Loss 0.1103 | Test Acc 0.7560 | Time(s) 0.0040
-Epoch 00036 | Loss 0.1016 | Test Acc 0.7560 | Time(s) 0.0040
-Epoch 00037 | Loss 0.0936 | Test Acc 0.7550 | Time(s) 0.0040
-Epoch 00038 | Loss 0.0863 | Test Acc 0.7540 | Time(s) 0.0040
-Epoch 00039 | Loss 0.0797 | Test Acc 0.7560 | Time(s) 0.0040
-Epoch 00040 | Loss 0.0736 | Test Acc 0.7580 | Time(s) 0.0040
-Epoch 00041 | Loss 0.0680 | Test Acc 0.7590 | Time(s) 0.0040
-Epoch 00042 | Loss 0.0629 | Test Acc 0.7560 | Time(s) 0.0040
-Epoch 00043 | Loss 0.0583 | Test Acc 0.7540 | Time(s) 0.0040
-Epoch 00044 | Loss 0.0540 | Test Acc 0.7540 | Time(s) 0.0040
-Epoch 00045 | Loss 0.0502 | Test Acc 0.7550 | Time(s) 0.0040
-Epoch 00046 | Loss 0.0466 | Test Acc 0.7580 | Time(s) 0.0040
-Epoch 00047 | Loss 0.0434 | Test Acc 0.7560 | Time(s) 0.0040
-Epoch 00048 | Loss 0.0404 | Test Acc 0.7560 | Time(s) 0.0040
-Epoch 00049 | Loss 0.0376 | Test Acc 0.7570 | Time(s) 0.0040
+Epoch 00000 | Loss 1.9571 | Test Acc 0.3450 | Time(s) nan
+Epoch 00001 | Loss 1.8254 | Test Acc 0.4160 | Time(s) nan
+Epoch 00002 | Loss 1.6893 | Test Acc 0.4820 | Time(s) nan
+Epoch 00003 | Loss 1.5510 | Test Acc 0.5260 | Time(s) 0.3399
+Epoch 00004 | Loss 1.4351 | Test Acc 0.5570 | Time(s) 0.3786
+Epoch 00005 | Loss 1.3372 | Test Acc 0.5930 | Time(s) 0.3815
+Epoch 00006 | Loss 1.2465 | Test Acc 0.6270 | Time(s) 0.3842
+Epoch 00007 | Loss 1.1566 | Test Acc 0.6690 | Time(s) 0.3849
+Epoch 00008 | Loss 1.0671 | Test Acc 0.7220 | Time(s) 0.3842
+Epoch 00009 | Loss 0.9804 | Test Acc 0.7410 | Time(s) 0.3784
+Epoch 00010 | Loss 0.9003 | Test Acc 0.7300 | Time(s) 0.3773
+Epoch 00011 | Loss 0.8300 | Test Acc 0.7170 | Time(s) 0.3820
+Epoch 00012 | Loss 0.7683 | Test Acc 0.6990 | Time(s) 0.3766
+Epoch 00013 | Loss 0.7128 | Test Acc 0.6920 | Time(s) 0.3783
+Epoch 00014 | Loss 0.6603 | Test Acc 0.6890 | Time(s) 0.3785
+Epoch 00015 | Loss 0.6104 | Test Acc 0.6910 | Time(s) 0.3782
+Epoch 00016 | Loss 0.5635 | Test Acc 0.6980 | Time(s) 0.3717
+Epoch 00017 | Loss 0.5195 | Test Acc 0.7120 | Time(s) 0.3710
+Epoch 00018 | Loss 0.4782 | Test Acc 0.7170 | Time(s) 0.3696
+Epoch 00019 | Loss 0.4401 | Test Acc 0.7310 | Time(s) 0.3697
+Epoch 00020 | Loss 0.4049 | Test Acc 0.7440 | Time(s) 0.3683
+Epoch 00021 | Loss 0.3727 | Test Acc 0.7530 | Time(s) 0.3677
+Epoch 00022 | Loss 0.3436 | Test Acc 0.7520 | Time(s) 0.3682
+Epoch 00023 | Loss 0.3170 | Test Acc 0.7560 | Time(s) 0.3690
+Epoch 00024 | Loss 0.2925 | Test Acc 0.7610 | Time(s) 0.3696
+Epoch 00025 | Loss 0.2698 | Test Acc 0.7630 | Time(s) 0.3696
+Epoch 00026 | Loss 0.2488 | Test Acc 0.7670 | Time(s) 0.3702
+Epoch 00027 | Loss 0.2292 | Test Acc 0.7620 | Time(s) 0.3711
+Epoch 00028 | Loss 0.2112 | Test Acc 0.7530 | Time(s) 0.3710
+Epoch 00029 | Loss 0.1946 | Test Acc 0.7530 | Time(s) 0.3709
+Epoch 00030 | Loss 0.1792 | Test Acc 0.7560 | Time(s) 0.3704
+Epoch 00031 | Loss 0.1650 | Test Acc 0.7540 | Time(s) 0.3715
+Epoch 00032 | Loss 0.1519 | Test Acc 0.7520 | Time(s) 0.3710
+Epoch 00033 | Loss 0.1398 | Test Acc 0.7470 | Time(s) 0.3660
+Epoch 00034 | Loss 0.1288 | Test Acc 0.7480 | Time(s) 0.3630
+Epoch 00035 | Loss 0.1186 | Test Acc 0.7480 | Time(s) 0.3604
+Epoch 00036 | Loss 0.1093 | Test Acc 0.7440 | Time(s) 0.3553
+Epoch 00037 | Loss 0.1007 | Test Acc 0.7420 | Time(s) 0.3509
+Epoch 00038 | Loss 0.0928 | Test Acc 0.7420 | Time(s) 0.3465
+Epoch 00039 | Loss 0.0855 | Test Acc 0.7410 | Time(s) 0.3444
+Epoch 00040 | Loss 0.0789 | Test Acc 0.7420 | Time(s) 0.3413
+Epoch 00041 | Loss 0.0728 | Test Acc 0.7420 | Time(s) 0.3390
+Epoch 00042 | Loss 0.0672 | Test Acc 0.7440 | Time(s) 0.3383
+Epoch 00043 | Loss 0.0621 | Test Acc 0.7430 | Time(s) 0.3349
+Epoch 00044 | Loss 0.0574 | Test Acc 0.7420 | Time(s) 0.3311
+Epoch 00045 | Loss 0.0531 | Test Acc 0.7410 | Time(s) 0.3291
+Epoch 00046 | Loss 0.0492 | Test Acc 0.7430 | Time(s) 0.3287
+Epoch 00047 | Loss 0.0457 | Test Acc 0.7430 | Time(s) 0.3261
+Epoch 00048 | Loss 0.0425 | Test Acc 0.7420 | Time(s) 0.3226
+Epoch 00049 | Loss 0.0395 | Test Acc 0.7430 | Time(s) 0.3224
 </pre></div>
 </div>
 </section>
@@ -407,7 +396,7 @@ in fact has already used this trick due to the use of builtin functions.</p>
 replace <span class="math notranslate nohighlight">\(\tilde{D}^{-\frac{1}{2}}\tilde{A}\tilde{D}^{-\frac{1}{2}}\)</span> with
 <span class="math notranslate nohighlight">\(\tilde{A}\)</span>. For a full implementation, see our example
 <a class="reference external" href="https://github.com/dmlc/dgl/tree/master/examples/pytorch/gcn">here</a>.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.379 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 25.698 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-models-1-gnn-1-gcn-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/4a28323096e685201ab0a13483dfbaa3/1_gcn.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">1_gcn.ipynb</span></code></a></p>
@@ -422,20 +411,16 @@ replace <span class="math notranslate nohighlight">\(\tilde{D}^{-\frac{1}{2}}\ti
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </section>
 </section>
-
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="Graph neural networks and its variants" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="4_rgcn.html" class="btn btn-neutral float-right" title="Relational Graph Convolutional Network" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2018, DGL Team.</p>
-  </div>
+</div>
+</div>
+<footer><div aria-label="Footer" class="rst-footer-buttons" role="navigation">
+<a accesskey="p" class="btn btn-neutral float-left" href="index.html" rel="prev" title="Graph neural networks and its variants"><span aria-hidden="true" class="fa fa-arrow-circle-left"></span> Previous</a>
+<a accesskey="n" class="btn btn-neutral float-right" href="4_rgcn.html" rel="next" title="Relational Graph Convolutional Network">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
+</div>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
@@ -443,15 +428,58 @@ replace <span class="math notranslate nohighlight">\(\tilde{D}^{-\frac{1}{2}}\ti
    
 
 </footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+
+<script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
-
+  </script>
 </body>
 </html>

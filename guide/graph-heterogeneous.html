@@ -1,66 +1,59 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../">
+
+<html class="writer-html5" data-content_root="../" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>1.5 Heterogeneous Graphs &mdash; DGL 2.4 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
-      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=0bf289b5" />
-
-  
-  <!--[if lt IE 9]>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>1.5 Heterogeneous Graphs — DGL 2.3.1 documentation</title>
+<link href="../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=9caaf7ed"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../_static/copybutton.js?v=ccdb6887"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="1.6 Using DGLGraph on a GPU" href="graph-gpu.html" />
-    <link rel="prev" title="1.4 Creating Graphs from External Sources" href="graph-external.html" /> 
+<script src="../_static/jquery.js?v=5d32c60e"></script>
+<script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../_static/doctools.js?v=9a2dae69"></script>
+<script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+<script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../_static/js/theme.js"></script>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="graph-gpu.html" rel="next" title="1.6 Using DGLGraph on a GPU"/>
+<link href="graph-external.html" rel="prev" title="1.4 Creating Graphs from External Sources"/>
 </head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../index.html" class="icon icon-home">
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../index.html">
             DGL
           </a>
-              <div class="version">
-                2.4
+<div class="version">
+                2.3.1
               </div>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+<form action="../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../install/index.html">Install and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/blitz/index.html">A Blitz Introduction to DGL</a></li>
@@ -128,41 +121,37 @@
 <li class="toctree-l1"><a class="reference internal" href="../env_var.html">Environment Variables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../resources.html">Resources</a></li>
 </ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">DGL</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">User Guide</a></li>
-          <li class="breadcrumb-item"><a href="graph.html">Chapter 1: Graph</a></li>
-      <li class="breadcrumb-item active">1.5 Heterogeneous Graphs</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/guide/graph-heterogeneous.rst.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="heterogeneous-graphs">
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../index.html"></a></li>
+<li class="breadcrumb-item"><a href="index.html">User Guide</a></li>
+<li class="breadcrumb-item"><a href="graph.html">Chapter 1: Graph</a></li>
+<li class="breadcrumb-item active">1.5 Heterogeneous Graphs</li>
+<li class="wy-breadcrumbs-aside">
+<a href="../_sources/guide/graph-heterogeneous.rst.txt" rel="nofollow"> View page source</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<section id="heterogeneous-graphs">
 <span id="guide-graph-heterogeneous"></span><h1>1.5 Heterogeneous Graphs<a class="headerlink" href="#heterogeneous-graphs" title="Link to this heading"></a></h1>
 <p><a class="reference internal" href="../guide_cn/graph-heterogeneous.html#guide-cn-graph-heterogeneous"><span class="std std-ref">(中文版)</span></a></p>
 <p>A heterogeneous graph can have nodes and edges of different types. Nodes/Edges of
 different types have independent ID space and feature storage. For example in the figure below, the
 user and game node IDs both start from zero and they have different features.</p>
 <figure class="align-default" id="id1">
-<img alt="https://data.dgl.ai/asset/image/user_guide_graphch_2.png" src="https://data.dgl.ai/asset/image/user_guide_graphch_2.png" />
+<img alt="https://data.dgl.ai/asset/image/user_guide_graphch_2.png" src="https://data.dgl.ai/asset/image/user_guide_graphch_2.png"/>
 <figcaption>
 <p><span class="caption-text">An example heterogeneous graph with two types of nodes (user and game) and two types of edges (follows and plays).</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>
@@ -178,27 +167,27 @@ Since relations disambiguate the edge types, DGL calls them canonical edge types
 
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create a heterograph with 3 node types and 3 edges types.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">graph_data</span> <span class="o">=</span> <span class="p">{</span>
-<span class="gp">... </span>   <span class="p">(</span><span class="s1">&#39;drug&#39;</span><span class="p">,</span> <span class="s1">&#39;interacts&#39;</span><span class="p">,</span> <span class="s1">&#39;drug&#39;</span><span class="p">):</span> <span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])),</span>
-<span class="gp">... </span>   <span class="p">(</span><span class="s1">&#39;drug&#39;</span><span class="p">,</span> <span class="s1">&#39;interacts&#39;</span><span class="p">,</span> <span class="s1">&#39;gene&#39;</span><span class="p">):</span> <span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])),</span>
-<span class="gp">... </span>   <span class="p">(</span><span class="s1">&#39;drug&#39;</span><span class="p">,</span> <span class="s1">&#39;treats&#39;</span><span class="p">,</span> <span class="s1">&#39;disease&#39;</span><span class="p">):</span> <span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">]),</span> <span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">2</span><span class="p">]))</span>
+<span class="gp">... </span>   <span class="p">(</span><span class="s1">'drug'</span><span class="p">,</span> <span class="s1">'interacts'</span><span class="p">,</span> <span class="s1">'drug'</span><span class="p">):</span> <span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])),</span>
+<span class="gp">... </span>   <span class="p">(</span><span class="s1">'drug'</span><span class="p">,</span> <span class="s1">'interacts'</span><span class="p">,</span> <span class="s1">'gene'</span><span class="p">):</span> <span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])),</span>
+<span class="gp">... </span>   <span class="p">(</span><span class="s1">'drug'</span><span class="p">,</span> <span class="s1">'treats'</span><span class="p">,</span> <span class="s1">'disease'</span><span class="p">):</span> <span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">]),</span> <span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">2</span><span class="p">]))</span>
 <span class="gp">... </span><span class="p">}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">heterograph</span><span class="p">(</span><span class="n">graph_data</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">ntypes</span>
-<span class="go">[&#39;disease&#39;, &#39;drug&#39;, &#39;gene&#39;]</span>
+<span class="go">['disease', 'drug', 'gene']</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">etypes</span>
-<span class="go">[&#39;interacts&#39;, &#39;interacts&#39;, &#39;treats&#39;]</span>
+<span class="go">['interacts', 'interacts', 'treats']</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">canonical_etypes</span>
-<span class="go">[(&#39;drug&#39;, &#39;interacts&#39;, &#39;drug&#39;),</span>
-<span class="go"> (&#39;drug&#39;, &#39;interacts&#39;, &#39;gene&#39;),</span>
-<span class="go"> (&#39;drug&#39;, &#39;treats&#39;, &#39;disease&#39;)]</span>
+<span class="go">[('drug', 'interacts', 'drug'),</span>
+<span class="go"> ('drug', 'interacts', 'gene'),</span>
+<span class="go"> ('drug', 'treats', 'disease')]</span>
 </pre></div>
 </div>
 <p>Note that homogeneous and bipartite graphs are just special heterogeneous graphs with one
 relation.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># A homogeneous graph</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dgl</span><span class="o">.</span><span class="n">heterograph</span><span class="p">({(</span><span class="s1">&#39;node_type&#39;</span><span class="p">,</span> <span class="s1">&#39;edge_type&#39;</span><span class="p">,</span> <span class="s1">&#39;node_type&#39;</span><span class="p">):</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dgl</span><span class="o">.</span><span class="n">heterograph</span><span class="p">({(</span><span class="s1">'node_type'</span><span class="p">,</span> <span class="s1">'edge_type'</span><span class="p">,</span> <span class="s1">'node_type'</span><span class="p">):</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># A bipartite graph</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dgl</span><span class="o">.</span><span class="n">heterograph</span><span class="p">({(</span><span class="s1">&#39;source_type&#39;</span><span class="p">,</span> <span class="s1">&#39;edge_type&#39;</span><span class="p">,</span> <span class="s1">&#39;destination_type&#39;</span><span class="p">):</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dgl</span><span class="o">.</span><span class="n">heterograph</span><span class="p">({(</span><span class="s1">'source_type'</span><span class="p">,</span> <span class="s1">'edge_type'</span><span class="p">,</span> <span class="s1">'destination_type'</span><span class="p">):</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)})</span>
 </pre></div>
 </div>
 <p>The <em>metagraph</em> associated with a heterogeneous graph is the schema of the graph. It specifies
@@ -206,15 +195,15 @@ type constraints on the sets of nodes and edges between the nodes. A node <span 
 corresponds to a node type in the associated heterograph. An edge <span class="math notranslate nohighlight">\((u, v)\)</span> in a metagraph indicates that
 there are edges from nodes of type <span class="math notranslate nohighlight">\(u\)</span> to nodes of type <span class="math notranslate nohighlight">\(v\)</span> in the associated heterograph.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span>
-<span class="go">Graph(num_nodes={&#39;disease&#39;: 3, &#39;drug&#39;: 3, &#39;gene&#39;: 4},</span>
-<span class="go">      num_edges={(&#39;drug&#39;, &#39;interacts&#39;, &#39;drug&#39;): 2,</span>
-<span class="go">                 (&#39;drug&#39;, &#39;interacts&#39;, &#39;gene&#39;): 2,</span>
-<span class="go">                 (&#39;drug&#39;, &#39;treats&#39;, &#39;disease&#39;): 1},</span>
-<span class="go">      metagraph=[(&#39;drug&#39;, &#39;drug&#39;, &#39;interacts&#39;),</span>
-<span class="go">                 (&#39;drug&#39;, &#39;gene&#39;, &#39;interacts&#39;),</span>
-<span class="go">                 (&#39;drug&#39;, &#39;disease&#39;, &#39;treats&#39;)])</span>
+<span class="go">Graph(num_nodes={'disease': 3, 'drug': 3, 'gene': 4},</span>
+<span class="go">      num_edges={('drug', 'interacts', 'drug'): 2,</span>
+<span class="go">                 ('drug', 'interacts', 'gene'): 2,</span>
+<span class="go">                 ('drug', 'treats', 'disease'): 1},</span>
+<span class="go">      metagraph=[('drug', 'drug', 'interacts'),</span>
+<span class="go">                 ('drug', 'gene', 'interacts'),</span>
+<span class="go">                 ('drug', 'disease', 'treats')])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">metagraph</span><span class="p">()</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span>
-<span class="go">OutMultiEdgeDataView([(&#39;drug&#39;, &#39;drug&#39;), (&#39;drug&#39;, &#39;gene&#39;), (&#39;drug&#39;, &#39;disease&#39;)])</span>
+<span class="go">OutMultiEdgeDataView([('drug', 'drug'), ('drug', 'gene'), ('drug', 'disease')])</span>
 </pre></div>
 </div>
 <p>See APIs: <a class="reference internal" href="../generated/dgl.heterograph.html#dgl.heterograph" title="dgl.heterograph"><code class="xref py py-func docutils literal notranslate"><span class="pre">dgl.heterograph()</span></code></a>, <a class="reference internal" href="../generated/dgl.DGLGraph.ntypes.html#dgl.DGLGraph.ntypes" title="dgl.DGLGraph.ntypes"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ntypes</span></code></a>, <a class="reference internal" href="../generated/dgl.DGLGraph.etypes.html#dgl.DGLGraph.etypes" title="dgl.DGLGraph.etypes"><code class="xref py py-attr docutils literal notranslate"><span class="pre">etypes</span></code></a>,
@@ -229,39 +218,39 @@ nodes/edges of different types have separate IDs.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">()</span>
 <span class="go">10</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get the number of drug nodes</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">(</span><span class="s1">&#39;drug&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">(</span><span class="s1">'drug'</span><span class="p">)</span>
 <span class="go">3</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Nodes of different types have separate IDs,</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># hence not well-defined without a type specified</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">nodes</span><span class="p">()</span>
 <span class="go">DGLError: Node type name must be specified if there are more than one node types.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">nodes</span><span class="p">(</span><span class="s1">&#39;drug&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">nodes</span><span class="p">(</span><span class="s1">'drug'</span><span class="p">)</span>
 <span class="go">tensor([0, 1, 2])</span>
 </pre></div>
 </div>
 <p>To set/get features for a specific node/edge type, DGL provides two new types of syntax –
 <cite>g.nodes[‘node_type’].data[‘feat_name’]</cite> and <cite>g.edges[‘edge_type’].data[‘feat_name’]</cite>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Set/get feature &#39;hv&#39; for nodes of type &#39;drug&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s1">&#39;drug&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;hv&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s1">&#39;drug&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;hv&#39;</span><span class="p">]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Set/get feature 'hv' for nodes of type 'drug'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s1">'drug'</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">'hv'</span><span class="p">]</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s1">'drug'</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">'hv'</span><span class="p">]</span>
 <span class="go">tensor([[1.],</span>
 <span class="go">        [1.],</span>
 <span class="go">        [1.]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Set/get feature &#39;he&#39; for edge of type &#39;treats&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="s1">&#39;treats&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;he&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="s1">&#39;treats&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;he&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Set/get feature 'he' for edge of type 'treats'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="s1">'treats'</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">'he'</span><span class="p">]</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="s1">'treats'</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">'he'</span><span class="p">]</span>
 <span class="go">tensor([[0.]])</span>
 </pre></div>
 </div>
 <p>If the graph only has one node/edge type, there is no need to specify the node/edge type.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">heterograph</span><span class="p">({</span>
-<span class="gp">... </span>   <span class="p">(</span><span class="s1">&#39;drug&#39;</span><span class="p">,</span> <span class="s1">&#39;interacts&#39;</span><span class="p">,</span> <span class="s1">&#39;drug&#39;</span><span class="p">):</span> <span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])),</span>
-<span class="gp">... </span>   <span class="p">(</span><span class="s1">&#39;drug&#39;</span><span class="p">,</span> <span class="s1">&#39;is similar&#39;</span><span class="p">,</span> <span class="s1">&#39;drug&#39;</span><span class="p">):</span> <span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]))</span>
+<span class="gp">... </span>   <span class="p">(</span><span class="s1">'drug'</span><span class="p">,</span> <span class="s1">'interacts'</span><span class="p">,</span> <span class="s1">'drug'</span><span class="p">):</span> <span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])),</span>
+<span class="gp">... </span>   <span class="p">(</span><span class="s1">'drug'</span><span class="p">,</span> <span class="s1">'is similar'</span><span class="p">,</span> <span class="s1">'drug'</span><span class="p">):</span> <span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]))</span>
 <span class="gp">... </span><span class="p">})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">nodes</span><span class="p">()</span>
 <span class="go">tensor([0, 1, 2, 3])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># To set/get feature with a single type, no need to use the new syntax</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;hv&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'hv'</span><span class="p">]</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -304,22 +293,22 @@ heterogeneous graphs in binary format and loading them from binary format.</p>
 <p>One can create a subgraph of a heterogeneous graph by specifying the relations to retain, with
 features copied if any.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">heterograph</span><span class="p">({</span>
-<span class="gp">... </span>   <span class="p">(</span><span class="s1">&#39;drug&#39;</span><span class="p">,</span> <span class="s1">&#39;interacts&#39;</span><span class="p">,</span> <span class="s1">&#39;drug&#39;</span><span class="p">):</span> <span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])),</span>
-<span class="gp">... </span>   <span class="p">(</span><span class="s1">&#39;drug&#39;</span><span class="p">,</span> <span class="s1">&#39;interacts&#39;</span><span class="p">,</span> <span class="s1">&#39;gene&#39;</span><span class="p">):</span> <span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])),</span>
-<span class="gp">... </span>   <span class="p">(</span><span class="s1">&#39;drug&#39;</span><span class="p">,</span> <span class="s1">&#39;treats&#39;</span><span class="p">,</span> <span class="s1">&#39;disease&#39;</span><span class="p">):</span> <span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">]),</span> <span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">2</span><span class="p">]))</span>
+<span class="gp">... </span>   <span class="p">(</span><span class="s1">'drug'</span><span class="p">,</span> <span class="s1">'interacts'</span><span class="p">,</span> <span class="s1">'drug'</span><span class="p">):</span> <span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])),</span>
+<span class="gp">... </span>   <span class="p">(</span><span class="s1">'drug'</span><span class="p">,</span> <span class="s1">'interacts'</span><span class="p">,</span> <span class="s1">'gene'</span><span class="p">):</span> <span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])),</span>
+<span class="gp">... </span>   <span class="p">(</span><span class="s1">'drug'</span><span class="p">,</span> <span class="s1">'treats'</span><span class="p">,</span> <span class="s1">'disease'</span><span class="p">):</span> <span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">]),</span> <span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">2</span><span class="p">]))</span>
 <span class="gp">... </span><span class="p">})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s1">&#39;drug&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;hv&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s1">'drug'</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">'hv'</span><span class="p">]</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Retain relations (&#39;drug&#39;, &#39;interacts&#39;, &#39;drug&#39;) and (&#39;drug&#39;, &#39;treats&#39;, &#39;disease&#39;)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># All nodes for &#39;drug&#39; and &#39;disease&#39; will be retained</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">eg</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">edge_type_subgraph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="p">[(</span><span class="s1">&#39;drug&#39;</span><span class="p">,</span> <span class="s1">&#39;interacts&#39;</span><span class="p">,</span> <span class="s1">&#39;drug&#39;</span><span class="p">),</span>
-<span class="gp">... </span>                                <span class="p">(</span><span class="s1">&#39;drug&#39;</span><span class="p">,</span> <span class="s1">&#39;treats&#39;</span><span class="p">,</span> <span class="s1">&#39;disease&#39;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Retain relations ('drug', 'interacts', 'drug') and ('drug', 'treats', 'disease')</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># All nodes for 'drug' and 'disease' will be retained</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">eg</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">edge_type_subgraph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="p">[(</span><span class="s1">'drug'</span><span class="p">,</span> <span class="s1">'interacts'</span><span class="p">,</span> <span class="s1">'drug'</span><span class="p">),</span>
+<span class="gp">... </span>                                <span class="p">(</span><span class="s1">'drug'</span><span class="p">,</span> <span class="s1">'treats'</span><span class="p">,</span> <span class="s1">'disease'</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">eg</span>
-<span class="go">Graph(num_nodes={&#39;disease&#39;: 3, &#39;drug&#39;: 3},</span>
-<span class="go">      num_edges={(&#39;drug&#39;, &#39;interacts&#39;, &#39;drug&#39;): 2, (&#39;drug&#39;, &#39;treats&#39;, &#39;disease&#39;): 1},</span>
-<span class="go">      metagraph=[(&#39;drug&#39;, &#39;drug&#39;, &#39;interacts&#39;), (&#39;drug&#39;, &#39;disease&#39;, &#39;treats&#39;)])</span>
+<span class="go">Graph(num_nodes={'disease': 3, 'drug': 3},</span>
+<span class="go">      num_edges={('drug', 'interacts', 'drug'): 2, ('drug', 'treats', 'disease'): 1},</span>
+<span class="go">      metagraph=[('drug', 'drug', 'interacts'), ('drug', 'disease', 'treats')])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># The associated features will be copied as well</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">eg</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s1">&#39;drug&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;hv&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">eg</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s1">'drug'</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">'hv'</span><span class="p">]</span>
 <span class="go">tensor([[1.],</span>
 <span class="go">        [1.],</span>
 <span class="go">        [1.]])</span>
@@ -342,27 +331,27 @@ It proceeds as follows:</p>
 <li><p>Merges the features across node/edge types specified by the user.</p></li>
 </ol>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">heterograph</span><span class="p">({</span>
-<span class="gp">... </span>   <span class="p">(</span><span class="s1">&#39;drug&#39;</span><span class="p">,</span> <span class="s1">&#39;interacts&#39;</span><span class="p">,</span> <span class="s1">&#39;drug&#39;</span><span class="p">):</span> <span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])),</span>
-<span class="gp">... </span>   <span class="p">(</span><span class="s1">&#39;drug&#39;</span><span class="p">,</span> <span class="s1">&#39;treats&#39;</span><span class="p">,</span> <span class="s1">&#39;disease&#39;</span><span class="p">):</span> <span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">]),</span> <span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">2</span><span class="p">]))})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s1">&#39;drug&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;hv&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s1">&#39;disease&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;hv&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="s1">&#39;interacts&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;he&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="s1">&#39;treats&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;he&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">... </span>   <span class="p">(</span><span class="s1">'drug'</span><span class="p">,</span> <span class="s1">'interacts'</span><span class="p">,</span> <span class="s1">'drug'</span><span class="p">):</span> <span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])),</span>
+<span class="gp">... </span>   <span class="p">(</span><span class="s1">'drug'</span><span class="p">,</span> <span class="s1">'treats'</span><span class="p">,</span> <span class="s1">'disease'</span><span class="p">):</span> <span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">]),</span> <span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">2</span><span class="p">]))})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s1">'drug'</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">'hv'</span><span class="p">]</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s1">'disease'</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">'hv'</span><span class="p">]</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="s1">'interacts'</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">'he'</span><span class="p">]</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="s1">'treats'</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">'he'</span><span class="p">]</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># By default, it does not merge any features</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hg</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">to_homogeneous</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;hv&#39;</span> <span class="ow">in</span> <span class="n">hg</span><span class="o">.</span><span class="n">ndata</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">'hv'</span> <span class="ow">in</span> <span class="n">hg</span><span class="o">.</span><span class="n">ndata</span>
 <span class="go">False</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Copy edge features</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># For feature copy, it expects features to have</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># the same size and dtype across node/edge types</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">hg</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">to_homogeneous</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">edata</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;he&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hg</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">to_homogeneous</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">edata</span><span class="o">=</span><span class="p">[</span><span class="s1">'he'</span><span class="p">])</span>
 <span class="go">DGLError: Cannot concatenate column ‘he’ with shape Scheme(shape=(2,), dtype=torch.float32) and shape Scheme(shape=(1,), dtype=torch.float32)</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Copy node features</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">hg</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">to_homogeneous</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">ndata</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;hv&#39;</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">hg</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;hv&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hg</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">to_homogeneous</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">ndata</span><span class="o">=</span><span class="p">[</span><span class="s1">'hv'</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hg</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'hv'</span><span class="p">]</span>
 <span class="go">tensor([[1.],</span>
 <span class="go">        [1.],</span>
 <span class="go">        [1.],</span>
@@ -374,7 +363,7 @@ It proceeds as follows:</p>
 <p>The original node/edge types and type-specific IDs are stored in <a class="reference internal" href="../generated/dgl.DGLGraph.ndata.html#dgl.DGLGraph.ndata" title="dgl.DGLGraph.ndata"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ndata</span></code></a> and <a class="reference internal" href="../generated/dgl.DGLGraph.edata.html#dgl.DGLGraph.edata" title="dgl.DGLGraph.edata"><code class="xref py py-attr docutils literal notranslate"><span class="pre">edata</span></code></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Order of node types in the heterograph</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">ntypes</span>
-<span class="go">[&#39;disease&#39;, &#39;drug&#39;]</span>
+<span class="go">['disease', 'drug']</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Original node types</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hg</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">NTYPE</span><span class="p">]</span>
 <span class="go">tensor([0, 0, 0, 1, 1, 1])</span>
@@ -384,7 +373,7 @@ It proceeds as follows:</p>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Order of edge types in the heterograph</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">etypes</span>
-<span class="go">[&#39;interacts&#39;, &#39;treats&#39;]</span>
+<span class="go">['interacts', 'treats']</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Original edge types</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hg</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">ETYPE</span><span class="p">]</span>
 <span class="go">tensor([0, 0, 1])</span>
@@ -397,12 +386,12 @@ It proceeds as follows:</p>
 operation to them. To address this need, one can first take an edge type subgraph of the
 heterograph and then convert the subgraph to a homogeneous graph.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">heterograph</span><span class="p">({</span>
-<span class="gp">... </span>   <span class="p">(</span><span class="s1">&#39;drug&#39;</span><span class="p">,</span> <span class="s1">&#39;interacts&#39;</span><span class="p">,</span> <span class="s1">&#39;drug&#39;</span><span class="p">):</span> <span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])),</span>
-<span class="gp">... </span>   <span class="p">(</span><span class="s1">&#39;drug&#39;</span><span class="p">,</span> <span class="s1">&#39;interacts&#39;</span><span class="p">,</span> <span class="s1">&#39;gene&#39;</span><span class="p">):</span> <span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])),</span>
-<span class="gp">... </span>   <span class="p">(</span><span class="s1">&#39;drug&#39;</span><span class="p">,</span> <span class="s1">&#39;treats&#39;</span><span class="p">,</span> <span class="s1">&#39;disease&#39;</span><span class="p">):</span> <span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">]),</span> <span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">2</span><span class="p">]))</span>
+<span class="gp">... </span>   <span class="p">(</span><span class="s1">'drug'</span><span class="p">,</span> <span class="s1">'interacts'</span><span class="p">,</span> <span class="s1">'drug'</span><span class="p">):</span> <span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])),</span>
+<span class="gp">... </span>   <span class="p">(</span><span class="s1">'drug'</span><span class="p">,</span> <span class="s1">'interacts'</span><span class="p">,</span> <span class="s1">'gene'</span><span class="p">):</span> <span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])),</span>
+<span class="gp">... </span>   <span class="p">(</span><span class="s1">'drug'</span><span class="p">,</span> <span class="s1">'treats'</span><span class="p">,</span> <span class="s1">'disease'</span><span class="p">):</span> <span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">]),</span> <span class="n">th</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">2</span><span class="p">]))</span>
 <span class="gp">... </span><span class="p">})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sub_g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">edge_type_subgraph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="p">[(</span><span class="s1">&#39;drug&#39;</span><span class="p">,</span> <span class="s1">&#39;interacts&#39;</span><span class="p">,</span> <span class="s1">&#39;drug&#39;</span><span class="p">),</span>
-<span class="gp">... </span>                                   <span class="p">(</span><span class="s1">&#39;drug&#39;</span><span class="p">,</span> <span class="s1">&#39;interacts&#39;</span><span class="p">,</span> <span class="s1">&#39;gene&#39;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sub_g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">edge_type_subgraph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="p">[(</span><span class="s1">'drug'</span><span class="p">,</span> <span class="s1">'interacts'</span><span class="p">,</span> <span class="s1">'drug'</span><span class="p">),</span>
+<span class="gp">... </span>                                   <span class="p">(</span><span class="s1">'drug'</span><span class="p">,</span> <span class="s1">'interacts'</span><span class="p">,</span> <span class="s1">'gene'</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">h_sub_g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">to_homogeneous</span><span class="p">(</span><span class="n">sub_g</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">h_sub_g</span>
 <span class="go">Graph(num_nodes=7, num_edges=4,</span>
@@ -411,20 +400,16 @@ heterograph and then convert the subgraph to a homogeneous graph.</p>
 </div>
 </section>
 </section>
-
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="graph-external.html" class="btn btn-neutral float-left" title="1.4 Creating Graphs from External Sources" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="graph-gpu.html" class="btn btn-neutral float-right" title="1.6 Using DGLGraph on a GPU" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2018, DGL Team.</p>
-  </div>
+</div>
+</div>
+<footer><div aria-label="Footer" class="rst-footer-buttons" role="navigation">
+<a accesskey="p" class="btn btn-neutral float-left" href="graph-external.html" rel="prev" title="1.4 Creating Graphs from External Sources"><span aria-hidden="true" class="fa fa-arrow-circle-left"></span> Previous</a>
+<a accesskey="n" class="btn btn-neutral float-right" href="graph-gpu.html" rel="next" title="1.6 Using DGLGraph on a GPU">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
+</div>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
@@ -432,15 +417,58 @@ heterograph and then convert the subgraph to a homogeneous graph.</p>
    
 
 </footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+
+<script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
-
+  </script>
 </body>
 </html>

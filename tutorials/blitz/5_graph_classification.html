@@ -1,64 +1,57 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../../">
+
+<html class="writer-html5" data-content_root="../../" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Training a GNN for Graph Classification &mdash; DGL 2.4 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
-      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=0bf289b5" />
-
-  
-  <!--[if lt IE 9]>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Training a GNN for Graph Classification — DGL 2.3.1 documentation</title>
+<link href="../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script src="../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=9caaf7ed"></script>
-        <script src="../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../../_static/copybutton.js?v=ccdb6887"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-    <script src="../../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Make Your Own Dataset" href="6_load_data.html" />
-    <link rel="prev" title="Link Prediction using Graph Neural Networks" href="4_link_predict.html" /> 
+<script src="../../_static/jquery.js?v=5d32c60e"></script>
+<script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../../_static/doctools.js?v=9a2dae69"></script>
+<script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script src="../../_static/js/theme.js"></script>
+<link href="../../genindex.html" rel="index" title="Index"/>
+<link href="../../search.html" rel="search" title="Search"/>
+<link href="6_load_data.html" rel="next" title="Make Your Own Dataset"/>
+<link href="4_link_predict.html" rel="prev" title="Link Prediction using Graph Neural Networks"/>
 </head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../../index.html" class="icon icon-home">
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../../index.html">
             DGL
           </a>
-              <div class="version">
-                2.4
+<div class="version">
+                2.3.1
               </div>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+<form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Install and Setup</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">A Blitz Introduction to DGL</a><ul class="current">
@@ -125,33 +118,29 @@
 <li class="toctree-l1"><a class="reference internal" href="../../env_var.html">Environment Variables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../resources.html">Resources</a></li>
 </ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">DGL</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">A Blitz Introduction to DGL</a></li>
-      <li class="breadcrumb-item active">Training a GNN for Graph Classification</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/tutorials/blitz/5_graph_classification.rst.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <div class="sphx-glr-download-link-note admonition note">
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../../index.html"></a></li>
+<li class="breadcrumb-item"><a href="index.html">A Blitz Introduction to DGL</a></li>
+<li class="breadcrumb-item active">Training a GNN for Graph Classification</li>
+<li class="wy-breadcrumbs-aside">
+<a href="../../_sources/tutorials/blitz/5_graph_classification.rst.txt" rel="nofollow"> View page source</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
 <p><a class="reference internal" href="#sphx-glr-download-tutorials-blitz-5-graph-classification-py"><span class="std std-ref">Go to the end</span></a>
 to download the full example code.</p>
@@ -169,7 +158,7 @@ to download the full example code.</p>
 <p>(Time estimate: 18 minutes)</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 
-<a href="https://docs.python.org/3/library/os.html#os.environ" title="os.environ" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-data"><span class="n">os</span><span class="o">.</span><span class="n">environ</span></a><span class="p">[</span><span class="s2">&quot;DGLBACKEND&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pytorch&quot;</span>
+<a class="sphx-glr-backref-module-os sphx-glr-backref-type-py-data" href="https://docs.python.org/3/library/os.html#os.environ" title="os.environ"><span class="n">os</span><span class="o">.</span><span class="n">environ</span></a><span class="p">[</span><span class="s2">"DGLBACKEND"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"pytorch"</span>
 <span class="kn">import</span> <span class="nn">dgl</span>
 <span class="kn">import</span> <span class="nn">dgl.data</span>
 <span class="kn">import</span> <span class="nn">torch</span>
@@ -189,18 +178,18 @@ Networks</a>.</p>
 <section id="loading-data">
 <h2>Loading Data<a class="headerlink" href="#loading-data" title="Link to this heading"></a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate a synthetic dataset with 10000 graphs, ranging from 10 to 500 nodes.</span>
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">GINDataset</span><span class="p">(</span><span class="s2">&quot;PROTEINS&quot;</span><span class="p">,</span> <span class="n">self_loop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">GINDataset</span><span class="p">(</span><span class="s2">"PROTEINS"</span><span class="p">,</span> <span class="n">self_loop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The dataset is a set of graphs, each with node features and a single
 label. One can see the node feature dimensionality and the number of
 possible graph categories of <code class="docutils literal notranslate"><span class="pre">GINDataset</span></code> objects in <code class="docutils literal notranslate"><span class="pre">dim_nfeats</span></code>
 and <code class="docutils literal notranslate"><span class="pre">gclasses</span></code> attributes.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Node feature dimensionality:&quot;</span><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dataset</span><span class="o">.</span><span class="n">dim_nfeats</span></a><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of graph categories:&quot;</span><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dataset</span><span class="o">.</span><span class="n">gclasses</span></a><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"Node feature dimensionality:"</span><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">dataset</span><span class="o">.</span><span class="n">dim_nfeats</span></a><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Number of graph categories:"</span><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">dataset</span><span class="o">.</span><span class="n">gclasses</span></a><span class="p">)</span>
 
 
-<span class="kn">from</span> <span class="nn">dgl.dataloading</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic" class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class"><span class="n">GraphDataLoader</span></a>
+<span class="kn">from</span> <span class="nn">dgl.dataloading</span> <span class="kn">import</span> <a class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic"><span class="n">GraphDataLoader</span></a>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Node feature dimensionality: 3
@@ -221,18 +210,18 @@ dataset. In DGL, you can use the <code class="docutils literal notranslate"><spa
 For example, this tutorial creates a training <code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code> and
 test <code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code>, using <code class="docutils literal notranslate"><span class="pre">SubsetRandomSampler</span></code> to tell PyTorch
 to sample from only a subset of the dataset.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.data.sampler</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic" class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class"><span class="n">SubsetRandomSampler</span></a>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.data.sampler</span> <span class="kn">import</span> <a class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic"><span class="n">SubsetRandomSampler</span></a>
 
-<a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_examples</span></a> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
-<a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_train</span></a> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_examples</span></a> <span class="o">*</span> <span class="mf">0.8</span><span class="p">)</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_examples</span></a> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_train</span></a> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_examples</span></a> <span class="o">*</span> <span class="mf">0.8</span><span class="p">)</span>
 
-<span class="n">train_sampler</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic" class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class"><span class="n">SubsetRandomSampler</span></a><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_train</span></a><span class="p">))</span>
-<span class="n">test_sampler</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic" class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class"><span class="n">SubsetRandomSampler</span></a><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_train</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_examples</span></a><span class="p">))</span>
+<span class="n">train_sampler</span> <span class="o">=</span> <a class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic"><span class="n">SubsetRandomSampler</span></a><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_train</span></a><span class="p">))</span>
+<span class="n">test_sampler</span> <span class="o">=</span> <a class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic"><span class="n">SubsetRandomSampler</span></a><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_train</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_examples</span></a><span class="p">))</span>
 
-<span class="n">train_dataloader</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic" class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class"><span class="n">GraphDataLoader</span></a><span class="p">(</span>
+<span class="n">train_dataloader</span> <span class="o">=</span> <a class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic"><span class="n">GraphDataLoader</span></a><span class="p">(</span>
     <span class="n">dataset</span><span class="p">,</span> <span class="n">sampler</span><span class="o">=</span><span class="n">train_sampler</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">drop_last</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>
-<span class="n">test_dataloader</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic" class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class"><span class="n">GraphDataLoader</span></a><span class="p">(</span>
+<span class="n">test_dataloader</span> <span class="o">=</span> <a class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic"><span class="n">GraphDataLoader</span></a><span class="p">(</span>
     <span class="n">dataset</span><span class="p">,</span> <span class="n">sampler</span><span class="o">=</span><span class="n">test_sampler</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">drop_last</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>
 </pre></div>
@@ -240,13 +229,13 @@ to sample from only a subset of the dataset.</p>
 <p>You can try to iterate over the created <code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code> and see what it
 gives:</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">it</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">train_dataloader</span><span class="p">)</span>
-<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch</span></a> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch</span></a><span class="p">)</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">batch</span></a> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">batch</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[Graph(num_nodes=153, num_edges=781,
-      ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), tensor([1, 0, 0, 0, 0])]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[Graph(num_nodes=144, num_edges=702,
+      ndata_schemes={'attr': Scheme(shape=(3,), dtype=torch.float32), 'label': Scheme(shape=(), dtype=torch.int64)}
+      edata_schemes={}), tensor([0, 0, 0, 0, 0])]
 </pre></div>
 </div>
 <p>As each element in <code class="docutils literal notranslate"><span class="pre">dataset</span></code> has a graph and a label, the
@@ -266,35 +255,35 @@ still treat it as a normal <code class="docutils literal notranslate"><span clas
 <a class="reference internal" href="2_dglgraph.html"><span class="doc">here</span></a>). It however contains the information
 necessary for recovering the original graphs, such as the number of
 nodes and edges of each graph element.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">batched_graph</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch</span></a>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">batched_graph</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">batch</span></a>
 <span class="nb">print</span><span class="p">(</span>
-    <span class="s2">&quot;Number of nodes for each graph element in the batch:&quot;</span><span class="p">,</span>
+    <span class="s2">"Number of nodes for each graph element in the batch:"</span><span class="p">,</span>
     <span class="n">batched_graph</span><span class="o">.</span><span class="n">batch_num_nodes</span><span class="p">(),</span>
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span>
-    <span class="s2">&quot;Number of edges for each graph element in the batch:&quot;</span><span class="p">,</span>
+    <span class="s2">"Number of edges for each graph element in the batch:"</span><span class="p">,</span>
     <span class="n">batched_graph</span><span class="o">.</span><span class="n">batch_num_edges</span><span class="p">(),</span>
 <span class="p">)</span>
 
 <span class="c1"># Recover the original graph elements from the minibatch</span>
-<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">graphs</span></a> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">unbatch</span><span class="p">(</span><span class="n">batched_graph</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The original graphs in the minibatch:&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">graphs</span></a><span class="p">)</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">graphs</span></a> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">unbatch</span><span class="p">(</span><span class="n">batched_graph</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"The original graphs in the minibatch:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">graphs</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Number of nodes for each graph element in the batch: tensor([ 5, 14, 24, 66, 44])
-Number of edges for each graph element in the batch: tensor([ 23,  62, 102, 378, 216])
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Number of nodes for each graph element in the batch: tensor([26, 24, 25, 46, 23])
+Number of edges for each graph element in the batch: tensor([124, 112, 127, 228, 111])
 The original graphs in the minibatch:
-[Graph(num_nodes=5, num_edges=23,
-      ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), Graph(num_nodes=14, num_edges=62,
-      ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), Graph(num_nodes=24, num_edges=102,
-      ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), Graph(num_nodes=66, num_edges=378,
-      ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
-      edata_schemes={}), Graph(num_nodes=44, num_edges=216,
-      ndata_schemes={&#39;attr&#39;: Scheme(shape=(3,), dtype=torch.float32), &#39;label&#39;: Scheme(shape=(), dtype=torch.int64)}
+[Graph(num_nodes=26, num_edges=124,
+      ndata_schemes={'attr': Scheme(shape=(3,), dtype=torch.float32), 'label': Scheme(shape=(), dtype=torch.int64)}
+      edata_schemes={}), Graph(num_nodes=24, num_edges=112,
+      ndata_schemes={'attr': Scheme(shape=(3,), dtype=torch.float32), 'label': Scheme(shape=(), dtype=torch.int64)}
+      edata_schemes={}), Graph(num_nodes=25, num_edges=127,
+      ndata_schemes={'attr': Scheme(shape=(3,), dtype=torch.float32), 'label': Scheme(shape=(), dtype=torch.int64)}
+      edata_schemes={}), Graph(num_nodes=46, num_edges=228,
+      ndata_schemes={'attr': Scheme(shape=(3,), dtype=torch.float32), 'label': Scheme(shape=(), dtype=torch.int64)}
+      edata_schemes={}), Graph(num_nodes=23, num_edges=111,
+      ndata_schemes={'attr': Scheme(shape=(3,), dtype=torch.float32), 'label': Scheme(shape=(), dtype=torch.int64)}
       edata_schemes={})]
 </pre></div>
 </div>
@@ -332,8 +321,8 @@ minibatch element.</p></li>
         <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">in_feat</span><span class="p">)</span>
         <span class="n">h</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
         <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;h&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
-        <span class="k">return</span> <span class="n">dgl</span><span class="o">.</span><span class="n">mean_nodes</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="s2">&quot;h&quot;</span><span class="p">)</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"h"</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="k">return</span> <span class="n">dgl</span><span class="o">.</span><span class="n">mean_nodes</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -343,28 +332,28 @@ minibatch element.</p></li>
 <code class="docutils literal notranslate"><span class="pre">GraphDataLoader</span></code> object and computes the gradients, just like
 image classification or language modeling.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create the model with given dimensions</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">GCN</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dataset</span><span class="o">.</span><span class="n">dim_nfeats</span></a><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dataset</span><span class="o">.</span><span class="n">gclasses</span></a><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">GCN</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">dataset</span><span class="o">.</span><span class="n">dim_nfeats</span></a><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">dataset</span><span class="o">.</span><span class="n">gclasses</span></a><span class="p">)</span>
 <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
 
-<span class="k">for</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">epoch</span></a> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
+<span class="k">for</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">epoch</span></a> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">batched_graph</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">train_dataloader</span><span class="p">:</span>
-        <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">batched_graph</span><span class="p">,</span> <span class="n">batched_graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;attr&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">float</span><span class="p">())</span>
+        <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">batched_graph</span><span class="p">,</span> <span class="n">batched_graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"attr"</span><span class="p">]</span><span class="o">.</span><span class="n">float</span><span class="p">())</span>
         <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
         <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
         <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
         <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
 
-<a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_correct</span></a> <span class="o">=</span> <span class="mi">0</span>
-<a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_tests</span></a> <span class="o">=</span> <span class="mi">0</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_correct</span></a> <span class="o">=</span> <span class="mi">0</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_tests</span></a> <span class="o">=</span> <span class="mi">0</span>
 <span class="k">for</span> <span class="n">batched_graph</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">test_dataloader</span><span class="p">:</span>
-    <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">batched_graph</span><span class="p">,</span> <span class="n">batched_graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;attr&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">float</span><span class="p">())</span>
-    <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_correct</span></a> <span class="o">+=</span> <span class="p">(</span><span class="n">pred</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-    <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_tests</span></a> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+    <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">batched_graph</span><span class="p">,</span> <span class="n">batched_graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"attr"</span><span class="p">]</span><span class="o">.</span><span class="n">float</span><span class="p">())</span>
+    <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_correct</span></a> <span class="o">+=</span> <span class="p">(</span><span class="n">pred</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_tests</span></a> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Test accuracy:&quot;</span><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_correct</span></a> <span class="o">/</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_tests</span></a><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Test accuracy:"</span><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_correct</span></a> <span class="o">/</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_tests</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Test accuracy: 0.29596412556053814
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Test accuracy: 0.11659192825112108
 </pre></div>
 </div>
 </section>
@@ -376,10 +365,10 @@ example</a>
 for an end-to-end graph classification model.</p></li>
 </ul>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Thumbnail credits: DGL</span>
-<span class="c1"># sphinx_gallery_thumbnail_path = &#39;_static/blitz_5_graph_classification.png&#39;</span>
+<span class="c1"># sphinx_gallery_thumbnail_path = '_static/blitz_5_graph_classification.png'</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 20.330 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 38.636 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-blitz-5-graph-classification-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/4050a45fd5b85070ff144419307a88ac/5_graph_classification.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">5_graph_classification.ipynb</span></code></a></p>
@@ -394,20 +383,16 @@ for an end-to-end graph classification model.</p></li>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </section>
 </section>
-
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="4_link_predict.html" class="btn btn-neutral float-left" title="Link Prediction using Graph Neural Networks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="6_load_data.html" class="btn btn-neutral float-right" title="Make Your Own Dataset" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2018, DGL Team.</p>
-  </div>
+</div>
+</div>
+<footer><div aria-label="Footer" class="rst-footer-buttons" role="navigation">
+<a accesskey="p" class="btn btn-neutral float-left" href="4_link_predict.html" rel="prev" title="Link Prediction using Graph Neural Networks"><span aria-hidden="true" class="fa fa-arrow-circle-left"></span> Previous</a>
+<a accesskey="n" class="btn btn-neutral float-right" href="6_load_data.html" rel="next" title="Make Your Own Dataset">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
+</div>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
@@ -415,15 +400,58 @@ for an end-to-end graph classification model.</p></li>
    
 
 </footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+
+<script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
-
+  </script>
 </body>
 </html>

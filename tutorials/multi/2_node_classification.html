@@ -1,64 +1,57 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../../">
+
+<html class="writer-html5" data-content_root="../../" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Single Machine Multi-GPU Minibatch Node Classification &mdash; DGL 2.4 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
-      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=0bf289b5" />
-
-  
-  <!--[if lt IE 9]>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Single Machine Multi-GPU Minibatch Node Classification — DGL 2.3.1 documentation</title>
+<link href="../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script src="../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=9caaf7ed"></script>
-        <script src="../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../../_static/copybutton.js?v=ccdb6887"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-    <script src="../../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Distributed training" href="../dist/index.html" />
-    <link rel="prev" title="Single Machine Multi-GPU Minibatch Graph Classification" href="1_graph_classification.html" /> 
+<script src="../../_static/jquery.js?v=5d32c60e"></script>
+<script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../../_static/doctools.js?v=9a2dae69"></script>
+<script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script src="../../_static/js/theme.js"></script>
+<link href="../../genindex.html" rel="index" title="Index"/>
+<link href="../../search.html" rel="search" title="Search"/>
+<link href="../dist/index.html" rel="next" title="Distributed training"/>
+<link href="1_graph_classification.html" rel="prev" title="Single Machine Multi-GPU Minibatch Graph Classification"/>
 </head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../../index.html" class="icon icon-home">
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../../index.html">
             DGL
           </a>
-              <div class="version">
-                2.4
+<div class="version">
+                2.3.1
               </div>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+<form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Install and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../blitz/index.html">A Blitz Introduction to DGL</a></li>
@@ -112,33 +105,29 @@
 <li class="toctree-l1"><a class="reference internal" href="../../env_var.html">Environment Variables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../resources.html">Resources</a></li>
 </ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">DGL</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">Training on Multiple GPUs</a></li>
-      <li class="breadcrumb-item active">Single Machine Multi-GPU Minibatch Node Classification</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/tutorials/multi/2_node_classification.rst.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <div class="sphx-glr-download-link-note admonition note">
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../../index.html"></a></li>
+<li class="breadcrumb-item"><a href="index.html">Training on Multiple GPUs</a></li>
+<li class="breadcrumb-item active">Single Machine Multi-GPU Minibatch Node Classification</li>
+<li class="wy-breadcrumbs-aside">
+<a href="../../_sources/tutorials/multi/2_node_classification.rst.txt" rel="nofollow"> View page source</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
 <p><a class="reference internal" href="#sphx-glr-download-tutorials-multi-2-node-classification-py"><span class="std std-ref">Go to the end</span></a>
 to download the full example code.</p>
@@ -165,7 +154,7 @@ for an overview of using <code class="docutils literal notranslate"><span class=
 and <code class="docutils literal notranslate"><span class="pre">torch.multiprocessing</span></code> to spawn multiple processes for each GPU.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 
-<a href="https://docs.python.org/3/library/os.html#os.environ" title="os.environ" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-data"><span class="n">os</span><span class="o">.</span><span class="n">environ</span></a><span class="p">[</span><span class="s2">&quot;DGLBACKEND&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pytorch&quot;</span>
+<a class="sphx-glr-backref-module-os sphx-glr-backref-type-py-data" href="https://docs.python.org/3/library/os.html#os.environ" title="os.environ"><span class="n">os</span><span class="o">.</span><span class="n">environ</span></a><span class="p">[</span><span class="s2">"DGLBACKEND"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"pytorch"</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
 <span class="kn">import</span> <span class="nn">dgl.graphbolt</span> <span class="k">as</span> <span class="nn">gb</span>
@@ -177,7 +166,7 @@ and <code class="docutils literal notranslate"><span class="pre">torch.multiproc
 <span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
 <span class="kn">import</span> <span class="nn">torchmetrics.functional</span> <span class="k">as</span> <span class="nn">MF</span>
 <span class="kn">from</span> <span class="nn">torch.distributed.algorithms.join</span> <span class="kn">import</span> <span class="n">Join</span>
-<span class="kn">from</span> <span class="nn">torch.nn.parallel</span> <span class="kn">import</span> <span class="n">DistributedDataParallel</span> <span class="k">as</span> <a href="https://docs.python.org/3/library/abc.html#abc.ABC" title="abc.ABC" class="sphx-glr-backref-module-abc sphx-glr-backref-type-py-class"><span class="n">DDP</span></a>
+<span class="kn">from</span> <span class="nn">torch.nn.parallel</span> <span class="kn">import</span> <span class="n">DistributedDataParallel</span> <span class="k">as</span> <a class="sphx-glr-backref-module-abc sphx-glr-backref-type-py-class" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="abc.ABC"><span class="n">DDP</span></a>
 <span class="kn">from</span> <span class="nn">tqdm.auto</span> <span class="kn">import</span> <span class="n">tqdm</span>
 </pre></div>
 </div>
@@ -191,9 +180,9 @@ Classification in DGL</a>.</p>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">()</span>
         <span class="c1"># Three-layer GraphSAGE-mean.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dglnn</span><span class="o">.</span><span class="n">SAGEConv</span><span class="p">(</span><span class="n">in_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="s2">&quot;mean&quot;</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dglnn</span><span class="o">.</span><span class="n">SAGEConv</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="s2">&quot;mean&quot;</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dglnn</span><span class="o">.</span><span class="n">SAGEConv</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">out_size</span><span class="p">,</span> <span class="s2">&quot;mean&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dglnn</span><span class="o">.</span><span class="n">SAGEConv</span><span class="p">(</span><span class="n">in_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="s2">"mean"</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dglnn</span><span class="o">.</span><span class="n">SAGEConv</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="s2">"mean"</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dglnn</span><span class="o">.</span><span class="n">SAGEConv</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">out_size</span><span class="p">,</span> <span class="s2">"mean"</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span> <span class="o">=</span> <span class="n">hidden_size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">out_size</span> <span class="o">=</span> <span class="n">out_size</span>
@@ -228,7 +217,7 @@ minibatch to avoid the need for padding.</p>
     <span class="n">device</span><span class="p">,</span>
     <span class="n">is_train</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="n">datapipe</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic" class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class"><span class="n">gb</span><span class="o">.</span><span class="n">DistributedItemSampler</span></a><span class="p">(</span>
+    <span class="n">datapipe</span> <span class="o">=</span> <a class="sphx-glr-backref-module-collections-abc sphx-glr-backref-type-py-class" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="collections.abc.Iterable"><span class="n">gb</span><span class="o">.</span><span class="n">DistributedItemSampler</span></a><span class="p">(</span>
         <span class="n">item_set</span><span class="o">=</span><span class="n">itemset</span><span class="p">,</span>
         <span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
         <span class="n">drop_last</span><span class="o">=</span><span class="n">is_train</span><span class="p">,</span>
@@ -239,8 +228,8 @@ minibatch to avoid the need for padding.</p>
     <span class="c1"># Now that we have moved to device, sample_neighbor and fetch_feature steps</span>
     <span class="c1"># will be executed on GPUs.</span>
     <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">sample_neighbor</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
-    <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">fetch_feature</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">node_feature_keys</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;feat&quot;</span><span class="p">])</span>
-    <span class="k">return</span> <a href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic" class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class"><span class="n">gb</span><span class="o">.</span><span class="n">DataLoader</span></a><span class="p">(</span><span class="n">datapipe</span><span class="p">)</span>
+    <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">fetch_feature</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">node_feature_keys</span><span class="o">=</span><span class="p">[</span><span class="s2">"feat"</span><span class="p">])</span>
+    <span class="k">return</span> <a class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic"><span class="n">gb</span><span class="o">.</span><span class="n">DataLoader</span></a><span class="p">(</span><span class="n">datapipe</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">weighted_reduce</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
@@ -279,14 +268,14 @@ minibatch to avoid the need for padding.</p>
 
     <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">dataloader</span><span class="p">)</span> <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">dataloader</span><span class="p">:</span>
         <span class="n">blocks</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">blocks</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">node_features</span><span class="p">[</span><span class="s2">&quot;feat&quot;</span><span class="p">]</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">node_features</span><span class="p">[</span><span class="s2">"feat"</span><span class="p">]</span>
         <span class="n">y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">labels</span><span class="p">)</span>
         <span class="n">y_hats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">module</span><span class="p">(</span><span class="n">blocks</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
 
     <span class="n">res</span> <span class="o">=</span> <span class="n">MF</span><span class="o">.</span><span class="n">accuracy</span><span class="p">(</span>
         <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">y_hats</span><span class="p">),</span>
         <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">y</span><span class="p">),</span>
-        <span class="n">task</span><span class="o">=</span><span class="s2">&quot;multiclass&quot;</span><span class="p">,</span>
+        <span class="n">task</span><span class="o">=</span><span class="s2">"multiclass"</span><span class="p">,</span>
         <span class="n">num_classes</span><span class="o">=</span><span class="n">num_classes</span><span class="p">,</span>
     <span class="p">)</span>
 
@@ -324,7 +313,7 @@ for detailed information.</p>
     <span class="p">)</span>
 
     <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
-        <span class="n">epoch_start</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span>
+        <span class="n">epoch_start</span> <span class="o">=</span> <a class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function" href="https://docs.python.org/3/library/time.html#time.time" title="time.time"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span>
 
         <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
         <span class="n">total_loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
@@ -332,11 +321,11 @@ for detailed information.</p>
         <span class="k">with</span> <span class="n">Join</span><span class="p">([</span><span class="n">model</span><span class="p">]):</span>
             <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">dataloader</span><span class="p">)</span> <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">dataloader</span><span class="p">:</span>
                 <span class="c1"># The input features are from the source nodes in the first</span>
-                <span class="c1"># layer&#39;s computation graph.</span>
-                <span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">node_features</span><span class="p">[</span><span class="s2">&quot;feat&quot;</span><span class="p">]</span>
+                <span class="c1"># layer's computation graph.</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">node_features</span><span class="p">[</span><span class="s2">"feat"</span><span class="p">]</span>
 
                 <span class="c1"># The ground truth labels are from the destination nodes</span>
-                <span class="c1"># in the last layer&#39;s computation graph.</span>
+                <span class="c1"># in the last layer's computation graph.</span>
                 <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">labels</span>
 
                 <span class="n">blocks</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">blocks</span>
@@ -355,7 +344,7 @@ for detailed information.</p>
 
         <span class="c1"># Evaluate the model.</span>
         <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Validating...&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"Validating..."</span><span class="p">)</span>
         <span class="n">acc</span><span class="p">,</span> <span class="n">num_val_items</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span>
             <span class="n">rank</span><span class="p">,</span>
             <span class="n">model</span><span class="p">,</span>
@@ -370,13 +359,13 @@ for detailed information.</p>
 
         <span class="c1"># We synchronize before measuring the epoch time.</span>
         <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span>
-        <span class="n">epoch_end</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span>
+        <span class="n">epoch_end</span> <span class="o">=</span> <a class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function" href="https://docs.python.org/3/library/time.html#time.time" title="time.time"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span>
         <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="si">:</span><span class="s2">05d</span><span class="si">}</span><span class="s2"> | &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;Average Loss </span><span class="si">{</span><span class="n">total_loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> | &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;Accuracy </span><span class="si">{</span><span class="n">acc</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> | &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;Time </span><span class="si">{</span><span class="n">epoch_end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">epoch_start</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="si">:</span><span class="s2">05d</span><span class="si">}</span><span class="s2"> | "</span>
+                <span class="sa">f</span><span class="s2">"Average Loss </span><span class="si">{</span><span class="n">total_loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> | "</span>
+                <span class="sa">f</span><span class="s2">"Accuracy </span><span class="si">{</span><span class="n">acc</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> | "</span>
+                <span class="sa">f</span><span class="s2">"Time </span><span class="si">{</span><span class="n">epoch_end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">epoch_start</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
 </pre></div>
 </div>
@@ -392,8 +381,8 @@ with <code class="docutils literal notranslate"><span class="pre">torch.nn.paral
     <span class="n">device</span> <span class="o">=</span> <span class="n">devices</span><span class="p">[</span><span class="n">rank</span><span class="p">]</span>
     <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">set_device</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
     <span class="n">dist</span><span class="o">.</span><span class="n">init_process_group</span><span class="p">(</span>
-        <span class="n">backend</span><span class="o">=</span><span class="s2">&quot;nccl&quot;</span><span class="p">,</span>  <span class="c1"># Use NCCL backend for distributed GPU training</span>
-        <span class="n">init_method</span><span class="o">=</span><span class="s2">&quot;tcp://127.0.0.1:12345&quot;</span><span class="p">,</span>
+        <span class="n">backend</span><span class="o">=</span><span class="s2">"nccl"</span><span class="p">,</span>  <span class="c1"># Use NCCL backend for distributed GPU training</span>
+        <span class="n">init_method</span><span class="o">=</span><span class="s2">"tcp://127.0.0.1:12345"</span><span class="p">,</span>
         <span class="n">world_size</span><span class="o">=</span><span class="n">world_size</span><span class="p">,</span>
         <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span>
     <span class="p">)</span>
@@ -403,19 +392,19 @@ with <code class="docutils literal notranslate"><span class="pre">torch.nn.paral
     <span class="n">features</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">pin_memory_</span><span class="p">()</span>
     <span class="n">train_set</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">train_set</span>
     <span class="n">valid_set</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">validation_set</span>
-    <span class="n">num_classes</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;num_classes&quot;</span><span class="p">]</span>
+    <span class="n">num_classes</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">"num_classes"</span><span class="p">]</span>
 
-    <span class="n">in_size</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="s2">&quot;node&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;feat&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">in_size</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="s2">"node"</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">"feat"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">hidden_size</span> <span class="o">=</span> <span class="mi">256</span>
     <span class="n">out_size</span> <span class="o">=</span> <span class="n">num_classes</span>
 
     <span class="c1"># Create GraphSAGE model. It should be copied onto a GPU as a replica.</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">SAGE</span><span class="p">(</span><span class="n">in_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="n">out_size</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
-    <span class="n">model</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/abc.html#abc.ABC" title="abc.ABC" class="sphx-glr-backref-module-abc sphx-glr-backref-type-py-class"><span class="n">DDP</span></a><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <a class="sphx-glr-backref-module-abc sphx-glr-backref-type-py-class" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="abc.ABC"><span class="n">DDP</span></a><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 
     <span class="c1"># Model training.</span>
     <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Training...&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Training..."</span><span class="p">)</span>
     <span class="n">train</span><span class="p">(</span>
         <span class="n">rank</span><span class="p">,</span>
         <span class="n">graph</span><span class="p">,</span>
@@ -429,7 +418,7 @@ with <code class="docutils literal notranslate"><span class="pre">torch.nn.paral
 
     <span class="c1"># Test the model.</span>
     <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Testing...&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Testing..."</span><span class="p">)</span>
     <span class="n">test_set</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">test_set</span>
     <span class="n">test_acc</span><span class="p">,</span> <span class="n">num_test_items</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span>
         <span class="n">rank</span><span class="p">,</span>
@@ -443,7 +432,7 @@ with <code class="docutils literal notranslate"><span class="pre">torch.nn.paral
     <span class="n">test_acc</span> <span class="o">=</span> <span class="n">weighted_reduce</span><span class="p">(</span><span class="n">test_acc</span> <span class="o">*</span> <span class="n">num_test_items</span><span class="p">,</span> <span class="n">num_test_items</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test Accuracy </span><span class="si">{</span><span class="n">test_acc</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Test Accuracy </span><span class="si">{</span><span class="n">test_acc</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -453,23 +442,23 @@ with <code class="docutils literal notranslate"><span class="pre">torch.nn.paral
 function defined above.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No GPU found!&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"No GPU found!"</span><span class="p">)</span>
         <span class="k">return</span>
 
     <span class="n">devices</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cuda:</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">device_count</span><span class="p">())</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="sa">f</span><span class="s2">"cuda:</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">device_count</span><span class="p">())</span>
     <span class="p">]</span>
     <span class="n">world_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">devices</span><span class="p">)</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training with </span><span class="si">{</span><span class="n">world_size</span><span class="si">}</span><span class="s2"> gpus.&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Training with </span><span class="si">{</span><span class="n">world_size</span><span class="si">}</span><span class="s2"> gpus."</span><span class="p">)</span>
 
     <span class="c1"># Load and preprocess dataset.</span>
-    <span class="n">dataset</span> <span class="o">=</span> <span class="n">gb</span><span class="o">.</span><span class="n">BuiltinDataset</span><span class="p">(</span><span class="s2">&quot;ogbn-arxiv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">gb</span><span class="o">.</span><span class="n">BuiltinDataset</span><span class="p">(</span><span class="s2">"ogbn-arxiv"</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
 
     <span class="c1"># Thread limiting to avoid resource competition.</span>
-    <a href="https://docs.python.org/3/library/os.html#os.environ" title="os.environ" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-data"><span class="n">os</span><span class="o">.</span><span class="n">environ</span></a><span class="p">[</span><span class="s2">&quot;OMP_NUM_THREADS&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">mp</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">//</span> <span class="n">world_size</span><span class="p">)</span>
+    <a class="sphx-glr-backref-module-os sphx-glr-backref-type-py-data" href="https://docs.python.org/3/library/os.html#os.environ" title="os.environ"><span class="n">os</span><span class="o">.</span><span class="n">environ</span></a><span class="p">[</span><span class="s2">"OMP_NUM_THREADS"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">mp</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">//</span> <span class="n">world_size</span><span class="p">)</span>
 
-    <span class="n">mp</span><span class="o">.</span><span class="n">set_sharing_strategy</span><span class="p">(</span><span class="s2">&quot;file_system&quot;</span><span class="p">)</span>
+    <span class="n">mp</span><span class="o">.</span><span class="n">set_sharing_strategy</span><span class="p">(</span><span class="s2">"file_system"</span><span class="p">)</span>
     <span class="n">mp</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span>
         <span class="n">run</span><span class="p">,</span>
         <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">world_size</span><span class="p">,</span> <span class="n">devices</span><span class="p">,</span> <span class="n">dataset</span><span class="p">),</span>
@@ -478,7 +467,7 @@ function defined above.</p>
     <span class="p">)</span>
 
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -500,20 +489,16 @@ function defined above.</p>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </section>
 </section>
-
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="1_graph_classification.html" class="btn btn-neutral float-left" title="Single Machine Multi-GPU Minibatch Graph Classification" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../dist/index.html" class="btn btn-neutral float-right" title="Distributed training" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2018, DGL Team.</p>
-  </div>
+</div>
+</div>
+<footer><div aria-label="Footer" class="rst-footer-buttons" role="navigation">
+<a accesskey="p" class="btn btn-neutral float-left" href="1_graph_classification.html" rel="prev" title="Single Machine Multi-GPU Minibatch Graph Classification"><span aria-hidden="true" class="fa fa-arrow-circle-left"></span> Previous</a>
+<a accesskey="n" class="btn btn-neutral float-right" href="../dist/index.html" rel="next" title="Distributed training">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
+</div>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
@@ -521,15 +506,58 @@ function defined above.</p>
    
 
 </footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+
+<script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
-
+  </script>
 </body>
 </html>

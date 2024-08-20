@@ -1,64 +1,57 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../">
+
+<html class="writer-html5" data-content_root="../" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>7.1 분산 학습을 위한 전처리 &mdash; DGL 2.4 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
-      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=0bf289b5" />
-
-  
-  <!--[if lt IE 9]>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>7.1 분산 학습을 위한 전처리 — DGL 2.3.1 documentation</title>
+<link href="../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=9caaf7ed"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../_static/copybutton.js?v=ccdb6887"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-    <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="7.2 분산 APIs" href="distributed-apis.html" />
-    <link rel="prev" title="7장: 분산 학습" href="distributed.html" /> 
+<script src="../_static/jquery.js?v=5d32c60e"></script>
+<script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../_static/doctools.js?v=9a2dae69"></script>
+<script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script src="../_static/js/theme.js"></script>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="distributed-apis.html" rel="next" title="7.2 분산 APIs"/>
+<link href="distributed.html" rel="prev" title="7장: 분산 학습"/>
 </head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../index.html" class="icon icon-home">
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../index.html">
             DGL
           </a>
-              <div class="version">
-                2.4
+<div class="version">
+                2.3.1
               </div>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+<form action="../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../install/index.html">Install and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/blitz/index.html">A Blitz Introduction to DGL</a></li>
@@ -124,34 +117,30 @@
 <li class="toctree-l1"><a class="reference internal" href="../env_var.html">Environment Variables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../resources.html">Resources</a></li>
 </ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">DGL</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
-          <li class="breadcrumb-item"><a href="distributed.html">7장: 분산 학습</a></li>
-      <li class="breadcrumb-item active">7.1 분산 학습을 위한 전처리</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/guide_ko/distributed-preprocessing.rst.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="guide-ko-distributed-preprocessing">
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../index.html"></a></li>
+<li class="breadcrumb-item"><a href="index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
+<li class="breadcrumb-item"><a href="distributed.html">7장: 분산 학습</a></li>
+<li class="breadcrumb-item active">7.1 분산 학습을 위한 전처리</li>
+<li class="wy-breadcrumbs-aside">
+<a href="../_sources/guide_ko/distributed-preprocessing.rst.txt" rel="nofollow"> View page source</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<section id="guide-ko-distributed-preprocessing">
 <span id="id1"></span><h1>7.1 분산 학습을 위한 전처리<a class="headerlink" href="#guide-ko-distributed-preprocessing" title="Link to this heading"></a></h1>
 <p><a class="reference internal" href="../guide/distributed-preprocessing.html#guide-distributed-preprocessing"><span class="std std-ref">(English Version)</span></a></p>
 <p>DGL의 분산 학습을 사용하기 위해서는 그래프 데이터에 대한 전처리가 필요하다. 이 전처리는 두 단계로 구성된다: 1) 그래프를 서브 그래프들로 파티션하기, 2) 노드/에지들에 새로운 ID를 부여하기. 상대적으로 작은 그래프들의 경우, DGL이 제공하는 파티셔닝 API <a class="reference internal" href="../generated/dgl.distributed.partition_graph.html#dgl.distributed.partition_graph" title="dgl.distributed.partition_graph"><code class="xref py py-func docutils literal notranslate"><span class="pre">dgl.distributed.partition_graph()</span></code></a> 를 사용해서 위 두 단계를 수행할 수 있다. 이 API는 한 컴퓨터에서 수행된다. 따라서, 그래프가 큰 경우, 이 API를 사용하고 싶다면 큰 컴퓨터를 사용해야 한다. 이 API과 더불어, 여기서는 큰 그래프를 컴퓨터들의 클러스터에서 파티션을 하는 솔루션을 소개한다. (7.1.1 절을 보라)</p>
@@ -176,7 +165,7 @@
 <h2>로드 밸런싱<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
 <p>그래프를 파티셔닝할 때, Metis의 기본 설정은 각 파티션의 노드 수에 대해서 균형을 맞춘다. 그 결과 주어진 테스크에 따라서 최적이지 않은 구성(suboptimal configuration)이 될 수 있다. 예를 들어, semi-supervised 노드 분류의 경우, 트레이너는 로컬 파티션의 레이블이 있는 노들의 서브셋에 대해서 계산을 수행한다. 그래프의 노드들(레이블이 있는 것과 없는 모든 노드)에 균형을 맞추는 파티셔닝은 계산적인 로드(computational node)가 불균형하게 될 수 있다. 각 파티션에 균형잡힌 워크로드를 얻기 위해서 파티션 API는 각 노드 타입에 대한 노드 수를 고려해서 파티션들에 대한 균형을 만드는 것을 지원한다. 이는 <a class="reference internal" href="../generated/dgl.distributed.partition_graph.html#dgl.distributed.partition_graph" title="dgl.distributed.partition_graph"><code class="xref py py-func docutils literal notranslate"><span class="pre">dgl.distributed.partition_graph()</span></code></a> 에서 <code class="docutils literal notranslate"><span class="pre">balance_ntypes</span></code> 를 설정하는 것으로 가능하다. 사용자들은 이 기능을 활용해서, 학습 셋, 검증 셋, 그리고 테스트 셋에 다른 노드 타입들이 포함된 것을 고려하게 할 수 있다.</p>
 <p>아래 코드는 학습 셋 내에서 그리고 학습 셋 외에 두 가지 노드 타입이 있다는 것을 고려한 코드 예제이다.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">partition_graph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="s1">&#39;graph_name&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;/tmp/test&#39;</span><span class="p">,</span> <span class="n">balance_ntypes</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;train_mask&#39;</span><span class="p">])</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">partition_graph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="s1">'graph_name'</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">'/tmp/test'</span><span class="p">,</span> <span class="n">balance_ntypes</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'train_mask'</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>노드 타입 균형을 맞추는 것에 더해서, <a class="reference internal" href="../generated/dgl.distributed.partition_graph.html#dgl.distributed.partition_graph" title="dgl.distributed.partition_graph"><code class="xref py py-func docutils literal notranslate"><span class="pre">dgl.distributed.partition_graph()</span></code></a> 는 <code class="docutils literal notranslate"><span class="pre">balance_edges</span></code> 설정을 통해서 다른 노드 타입들의 노드들의 in-degree들 사이의 균형을 잡는 것을 지원한다. 이는 다른 타입의 노드들에 부속되는 에지들의 개수에 대한 균형을 만든다.</p>
@@ -186,10 +175,10 @@
 <h2>ID 매핑<a class="headerlink" href="#id" title="Link to this heading"></a></h2>
 <p><a class="reference internal" href="../generated/dgl.distributed.partition_graph.html#dgl.distributed.partition_graph" title="dgl.distributed.partition_graph"><code class="xref py py-func docutils literal notranslate"><span class="pre">dgl.distributed.partition_graph()</span></code></a> 는 파티셔닝을 하는 과정에서 노드 ID와 에지 ID를 섞고, 노드 데이터와 에지 데이터도 그에 따라서 섞어준다. 학습이 끝나면, 다운스트림 과제를 위해서 계산된 노드 임베딩들을 저장할 필요가 있다. 따라서, 저장된 노드 임베딩을 원본 ID에 따라서 다시 섞어야한다.</p>
 <p><cite>return_mapping=True</cite> 인 경우, <a class="reference internal" href="../generated/dgl.distributed.partition_graph.html#dgl.distributed.partition_graph" title="dgl.distributed.partition_graph"><code class="xref py py-func docutils literal notranslate"><span class="pre">dgl.distributed.partition_graph()</span></code></a> 는 섞인 노드/에지 ID와 그것들의 원본 ID 사이의 매핑을 리턴한다. Homogeneous 그래프의 경우, 두 벡터를 리턴한다. 첫번째 벡터는 모든 섞인 노드 ID와 그것의 원본 ID 메핑을, 두번째 벡터는 모든 섞인 에지 ID와 그것의 원본 ID 매핑이다. Heterogeneous 그래프의 경우에는 벡터들의 dictionary 두 개가 리턴된다. 첫번째 dictionary는 각 노드 타입에 대한 매핑을, 두번째 dictionary는 각 에지 타입에 대한 매핑이다.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">node_map</span><span class="p">,</span> <span class="n">edge_map</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">partition_graph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="s1">&#39;graph_name&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;/tmp/test&#39;</span><span class="p">,</span>
-                                                     <span class="n">balance_ntypes</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;train_mask&#39;</span><span class="p">],</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">node_map</span><span class="p">,</span> <span class="n">edge_map</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">partition_graph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="s1">'graph_name'</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">'/tmp/test'</span><span class="p">,</span>
+                                                     <span class="n">balance_ntypes</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'train_mask'</span><span class="p">],</span>
                                                      <span class="n">return_mapping</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="c1"># Let&#39;s assume that node_emb is saved from the distributed training.</span>
+<span class="c1"># Let's assume that node_emb is saved from the distributed training.</span>
 <span class="n">orig_node_emb</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">node_emb</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">node_emb</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
 <span class="n">orig_node_emb</span><span class="p">[</span><span class="n">node_map</span><span class="p">]</span> <span class="o">=</span> <span class="n">node_emb</span>
 </pre></div>
@@ -334,54 +323,54 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/local/lib/
 <p><strong>Note</strong>: 노드 속성 또는 에지 속성의 데이터 타입이 명시된다면, <cite>convert_partition.py</cite> 는 모든 타입의 모든 노드들 및 에지들이 꼭 이 속성들을 갖는다고 가정한다. 따라서, 다른 타입의 노드들이나 에지들이 서로 다른 개수의 속성을 갖는다면, 사용자는 이를 직접 만들어야 한다.</p>
 <p>다음은 <cite>convert_partition.py</cite> 를 위한 OGBN-MAG의 스키마 예제이다. 이는 두 필드를 갖는다: <cite>nid</cite> 와 <cite>eid</cite>. <cite>nid</cite> 안에는, 모든 노드 타입들이 나열되어 있고, 각 노드 타입에 대한 homogeneous ID 범위도 포함되어 있다; <cite>eid</cite> 안에는, 모든 에지 타입들이 나열되어 있고, 각 에지 타입에 대한 homogeneous ID 범위도 포함되어 있다.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{
-&quot;nid&quot;: {
-    &quot;author&quot;: [
+"nid": {
+    "author": [
         0,
         1134649
     ],
-    &quot;field_of_study&quot;: [
+    "field_of_study": [
         1134649,
         1194614
     ],
-    &quot;institution&quot;: [
+    "institution": [
         1194614,
         1203354
     ],
-    &quot;paper&quot;: [
+    "paper": [
         1203354,
         1939743
     ]
 },
-&quot;eid&quot;: {
-    &quot;affiliated_with&quot;: [
+"eid": {
+    "affiliated_with": [
         0,
         1043998
     ],
-    &quot;writes&quot;: [
+    "writes": [
         1043998,
         8189658
     ],
-    &quot;rev-has_topic&quot;: [
+    "rev-has_topic": [
         8189658,
         15694736
     ],
-    &quot;rev-affiliated_with&quot;: [
+    "rev-affiliated_with": [
         15694736,
         16738734
     ],
-    &quot;cites&quot;: [
+    "cites": [
         16738734,
         22155005
     ],
-    &quot;has_topic&quot;: [
+    "has_topic": [
         22155005,
         29660083
     ],
-    &quot;rev-cites&quot;: [
+    "rev-cites": [
         29660083,
         35076354
     ],
-    &quot;rev-writes&quot;: [
+    "rev-writes": [
         35076354,
         42222014
     ]
@@ -401,8 +390,8 @@ for etype in hg.etypes:
     etype_id = hg.get_etype_id(etype)
     eid = th.nonzero(g.edata[dgl.ETYPE] == etype_id, as_tuple=True)[0]
     eid_ranges[etype] = [int(eid[0]), int(eid[-1] + 1)]
-with open(&#39;mag.json&#39;, &#39;w&#39;) as outfile:
-    json.dump({&#39;nid&#39;: nid_ranges, &#39;eid&#39;: eid_ranges}, outfile, indent=4)
+with open('mag.json', 'w') as outfile:
+    json.dump({'nid': nid_ranges, 'eid': eid_ranges}, outfile, indent=4)
 </pre></div>
 </div>
 </section>
@@ -411,39 +400,35 @@ with open(&#39;mag.json&#39;, &#39;w&#39;) as outfile:
 <p><cite>convert_partition.py</cite> 이 만든 <a class="reference internal" href="../api/python/dgl.DGLGraph.html#dgl.DGLGraph" title="dgl.DGLGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">dgl.DGLGraph</span></code></a> 아웃풋은 heterogeneous 그래프 파티션들을 homogeneous 그래프로 저장한다. 노드 데이터는 <cite>orig_id</cite> 라는 필드를 갖는데, 이는 원본 heterogeneous 그래프의 특정 노드 타입의 노드 ID들을 저장하고, <cite>NTYPE</cite> 의 필드는 노드 타입을 저장한다. 추가로, 이는 <cite>inner_node</cite> 라는 노드 데이터를 저장하는데, 이는 그래프 파티션의 노드가 파티션이 할당되어 있는지 여부를 알려준다. 만약 어떤 노드가 파티션에 할당되었다면, <cite>inner_node</cite> 는 1을 갖고, 반대의 경우에는 0을 갖는다. <strong>Note</strong>: 그래프 파티션은 몇 개의 HALO 노드들을 포함하는데, 이는 다른 파티션에 할당된 것지만, 이 그래프 파티션의 몇 개의 에지와 연결되어 있는 것들이다. 이 정보를 사용해서, 우리는 별도로 각 노드 타입에 대한 노드 피쳐들을 구성할 수 있으며, 이들을 <cite>&lt;node_type&gt;/&lt;feature_name&gt;</cite> 를 키로 갖고 값은 노드 피쳐 벡터인 dictionary에 저장할 수 있다. 아래 코드는 노드 피쳐 dictionary를 구성하는 방법을 보여준다. 텐서들의 dictionary가 만들어지면, 이는 파일에 저장된다.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>node_data = {}
 for ntype in hg.ntypes:
-    local_node_idx = th.logical_and(part.ndata[&#39;inner_node&#39;].bool(),
+    local_node_idx = th.logical_and(part.ndata['inner_node'].bool(),
                                     part.ndata[dgl.NTYPE] == hg.get_ntype_id(ntype))
-    local_nodes = part.ndata[&#39;orig_id&#39;][local_node_idx].numpy()
+    local_nodes = part.ndata['orig_id'][local_node_idx].numpy()
     for name in hg.nodes[ntype].data:
-        node_data[ntype + &#39;/&#39; + name] = hg.nodes[ntype].data[name][local_nodes]
-dgl.data.utils.save_tensors(metadata[&#39;part-{}&#39;.format(part_id)][&#39;node_feats&#39;], node_data)
+        node_data[ntype + '/' + name] = hg.nodes[ntype].data[name][local_nodes]
+dgl.data.utils.save_tensors(metadata['part-{}'.format(part_id)]['node_feats'], node_data)
 </pre></div>
 </div>
 <p>에지 피쳐도 비슷한 방법으로 구성할 수 있다. 차이점은 <a class="reference internal" href="../api/python/dgl.DGLGraph.html#dgl.DGLGraph" title="dgl.DGLGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">dgl.DGLGraph</span></code></a> 의 모든 에지들이 파티션에 포함된다는 점이다. 그래서, 구성 방법은 더 간단하다.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>edge_data = {}
 for etype in hg.etypes:
-    local_edges = subg.edata[&#39;orig_id&#39;][subg.edata[dgl.ETYPE] == hg.get_etype_id(etype)]
+    local_edges = subg.edata['orig_id'][subg.edata[dgl.ETYPE] == hg.get_etype_id(etype)]
     for name in hg.edges[etype].data:
-        edge_data[etype + &#39;/&#39; + name] = hg.edges[etype].data[name][local_edges]
-dgl.data.utils.save_tensors(metadata[&#39;part-{}&#39;.format(part_id)][&#39;edge_feats&#39;], edge_data)
+        edge_data[etype + '/' + name] = hg.edges[etype].data[name][local_edges]
+dgl.data.utils.save_tensors(metadata['part-{}'.format(part_id)]['edge_feats'], edge_data)
 </pre></div>
 </div>
 </section>
 </section>
-
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="distributed.html" class="btn btn-neutral float-left" title="7장: 분산 학습" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="distributed-apis.html" class="btn btn-neutral float-right" title="7.2 분산 APIs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2018, DGL Team.</p>
-  </div>
+</div>
+</div>
+<footer><div aria-label="Footer" class="rst-footer-buttons" role="navigation">
+<a accesskey="p" class="btn btn-neutral float-left" href="distributed.html" rel="prev" title="7장: 분산 학습"><span aria-hidden="true" class="fa fa-arrow-circle-left"></span> Previous</a>
+<a accesskey="n" class="btn btn-neutral float-right" href="distributed-apis.html" rel="next" title="7.2 분산 APIs">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
+</div>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
@@ -451,15 +436,58 @@ dgl.data.utils.save_tensors(metadata[&#39;part-{}&#39;.format(part_id)][&#39;edg
    
 
 </footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+
+<script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
-
+  </script>
 </body>
 </html>

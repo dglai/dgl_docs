@@ -1,61 +1,55 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../../../">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dgl.data.movielens &mdash; DGL 2.4 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=0bf289b5" />
 
-  
-  <!--[if lt IE 9]>
+<html class="writer-html5" data-content_root="../../../" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>dgl.data.movielens — DGL 2.3.1 documentation</title>
+<link href="../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=9caaf7ed"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../../../_static/copybutton.js?v=ccdb6887"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-    <script src="../../../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
+<script src="../../../_static/jquery.js?v=5d32c60e"></script>
+<script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../../../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../../../_static/doctools.js?v=9a2dae69"></script>
+<script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../../../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script src="../../../_static/js/theme.js"></script>
+<link href="../../../genindex.html" rel="index" title="Index"/>
+<link href="../../../search.html" rel="search" title="Search"/>
 </head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../../../index.html" class="icon icon-home">
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../../../index.html">
             DGL
           </a>
-              <div class="version">
-                2.4
+<div class="version">
+                2.3.1
               </div>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+<form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Install and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/blitz/index.html">A Blitz Introduction to DGL</a></li>
@@ -105,33 +99,29 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../env_var.html">Environment Variables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../resources.html">Resources</a></li>
 </ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">DGL</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">dgl.data.movielens</li>
-      <li class="wy-breadcrumbs-aside">
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <h1>Source code for dgl.data.movielens</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;MovieLens dataset&quot;&quot;&quot;</span>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../../../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../../../index.html"></a></li>
+<li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+<li class="breadcrumb-item active">dgl.data.movielens</li>
+<li class="wy-breadcrumbs-aside">
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<h1>Source code for dgl.data.movielens</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""MovieLens dataset"""</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -155,28 +145,28 @@
 <span class="p">)</span>
 
 <span class="n">GENRES_ML_100K</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;unknown&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Action&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Adventure&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Animation&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Children&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Comedy&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Crime&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Documentary&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Drama&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Fantasy&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Film-Noir&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Horror&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Musical&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Mystery&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Romance&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Sci-Fi&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Thriller&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;War&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Western&quot;</span><span class="p">,</span>
+    <span class="s2">"unknown"</span><span class="p">,</span>
+    <span class="s2">"Action"</span><span class="p">,</span>
+    <span class="s2">"Adventure"</span><span class="p">,</span>
+    <span class="s2">"Animation"</span><span class="p">,</span>
+    <span class="s2">"Children"</span><span class="p">,</span>
+    <span class="s2">"Comedy"</span><span class="p">,</span>
+    <span class="s2">"Crime"</span><span class="p">,</span>
+    <span class="s2">"Documentary"</span><span class="p">,</span>
+    <span class="s2">"Drama"</span><span class="p">,</span>
+    <span class="s2">"Fantasy"</span><span class="p">,</span>
+    <span class="s2">"Film-Noir"</span><span class="p">,</span>
+    <span class="s2">"Horror"</span><span class="p">,</span>
+    <span class="s2">"Musical"</span><span class="p">,</span>
+    <span class="s2">"Mystery"</span><span class="p">,</span>
+    <span class="s2">"Romance"</span><span class="p">,</span>
+    <span class="s2">"Sci-Fi"</span><span class="p">,</span>
+    <span class="s2">"Thriller"</span><span class="p">,</span>
+    <span class="s2">"War"</span><span class="p">,</span>
+    <span class="s2">"Western"</span><span class="p">,</span>
 <span class="p">]</span>
 <span class="n">GENRES_ML_1M</span> <span class="o">=</span> <span class="n">GENRES_ML_100K</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
-<span class="n">GENRES_ML_10M</span> <span class="o">=</span> <span class="n">GENRES_ML_100K</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;IMAX&quot;</span><span class="p">]</span>
+<span class="n">GENRES_ML_10M</span> <span class="o">=</span> <span class="n">GENRES_ML_100K</span> <span class="o">+</span> <span class="p">[</span><span class="s2">"IMAX"</span><span class="p">]</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">torch</span>
@@ -187,17 +177,17 @@
 
 
 <span class="k">def</span> <span class="nf">check_pytorch</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if PyTorch is the backend.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Check if PyTorch is the backend."""</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">HAS_TORCH</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ModuleNotFoundError</span><span class="p">(</span>
-            <span class="s2">&quot;MovieLensDataset requires PyTorch to be the backend.&quot;</span>
+            <span class="s2">"MovieLensDataset requires PyTorch to be the backend."</span>
         <span class="p">)</span>
 
 
 <div class="viewcode-block" id="MovieLensDataset">
 <a class="viewcode-back" href="../../../generated/dgl.data.MovieLensDataset.html#dgl.data.MovieLensDataset">[docs]</a>
 <span class="k">class</span> <span class="nc">MovieLensDataset</span><span class="p">(</span><span class="n">DGLDataset</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;MovieLens dataset for edge prediction tasks. The raw datasets are extracted from</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""MovieLens dataset for edge prediction tasks. The raw datasets are extracted from</span>
 <span class="sd">    `MovieLens &lt;https://grouplens.org/datasets/movielens/&gt;`, introduced by</span>
 <span class="sd">    `Movielens unplugged: experiences with an occasionally connected recommender system &lt;https://dl.acm.org/doi/10.1145/604045.604094&gt;`.</span>
 
@@ -227,13 +217,13 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    name: str</span>
-<span class="sd">        Dataset name. (:obj:`&quot;ml-100k&quot;`, :obj:`&quot;ml-1m&quot;`, :obj:`&quot;ml-10m&quot;`).</span>
+<span class="sd">        Dataset name. (:obj:`"ml-100k"`, :obj:`"ml-1m"`, :obj:`"ml-10m"`).</span>
 <span class="sd">    valid_ratio: int</span>
 <span class="sd">        Ratio of validation samples out of the whole dataset. Should be in (0.0, 1.0).</span>
 <span class="sd">    test_ratio: int, optional</span>
 <span class="sd">        Ratio of testing samples out of the whole dataset. Should be in (0.0, 1.0). And its sum with</span>
 <span class="sd">        :obj:`valid_ratio` should be in (0.0, 1.0) as well. This parameter is invalid</span>
-<span class="sd">        when :obj:`name` is :obj:`&quot;ml-100k&quot;`, since its testing samples are pre-specified.</span>
+<span class="sd">        when :obj:`name` is :obj:`"ml-100k"`, since its testing samples are pre-specified.</span>
 <span class="sd">        Default: None</span>
 <span class="sd">    raw_dir : str, optional</span>
 <span class="sd">        Raw file directory to download/store the data.</span>
@@ -252,30 +242,30 @@
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    - When :obj:`name` is :obj:`&quot;ml-100k&quot;`, the :obj:`test_ratio` is invalid, and the training ratio is equal to 1-:obj:`valid_ratio`.</span>
-<span class="sd">    When :obj:`name` is :obj:`&quot;ml-1m&quot;` or :obj:`&quot;ml-10m&quot;`, the :obj:`test_ratio` is valid,</span>
+<span class="sd">    - When :obj:`name` is :obj:`"ml-100k"`, the :obj:`test_ratio` is invalid, and the training ratio is equal to 1-:obj:`valid_ratio`.</span>
+<span class="sd">    When :obj:`name` is :obj:`"ml-1m"` or :obj:`"ml-10m"`, the :obj:`test_ratio` is valid,</span>
 <span class="sd">    and the training ratio is equal to 1-:obj:`valid_ratio`-:obj:`test_ratio`.</span>
 <span class="sd">    - The number of edges is doubled to form an undirected(bidirected) graph structure.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt; from dgl.data import MovieLensDataset</span>
-<span class="sd">    &gt;&gt;&gt; dataset = MovieLensDataset(name=&#39;ml-100k&#39;, valid_ratio=0.2)</span>
+<span class="sd">    &gt;&gt;&gt; dataset = MovieLensDataset(name='ml-100k', valid_ratio=0.2)</span>
 <span class="sd">    &gt;&gt;&gt; g = dataset[0]</span>
 <span class="sd">    &gt;&gt;&gt; g</span>
-<span class="sd">    Graph(num_nodes={&#39;movie&#39;: 1682, &#39;user&#39;: 943},</span>
-<span class="sd">          num_edges={(&#39;movie&#39;, &#39;movie-user&#39;, &#39;user&#39;): 100000, (&#39;user&#39;, &#39;user-movie&#39;, &#39;movie&#39;): 100000},</span>
-<span class="sd">          metagraph=[(&#39;movie&#39;, &#39;user&#39;, &#39;movie-user&#39;), (&#39;user&#39;, &#39;movie&#39;, &#39;user-movie&#39;)])</span>
+<span class="sd">    Graph(num_nodes={'movie': 1682, 'user': 943},</span>
+<span class="sd">          num_edges={('movie', 'movie-user', 'user'): 100000, ('user', 'user-movie', 'movie'): 100000},</span>
+<span class="sd">          metagraph=[('movie', 'user', 'movie-user'), ('user', 'movie', 'user-movie')])</span>
 
 <span class="sd">    &gt;&gt;&gt; # get ratings of edges in the training graph.</span>
-<span class="sd">    &gt;&gt;&gt; rate = g.edges[&#39;user-movie&#39;].data[&#39;rate&#39;] # or rate = g.edges[&#39;movie-user&#39;].data[&#39;rate&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; rate = g.edges['user-movie'].data['rate'] # or rate = g.edges['movie-user'].data['rate']</span>
 <span class="sd">    &gt;&gt;&gt; rate</span>
 <span class="sd">    tensor([5., 5., 3.,  ..., 3., 3., 5.])</span>
 
 <span class="sd">    &gt;&gt;&gt; # get train, valid and test mask of edges</span>
-<span class="sd">    &gt;&gt;&gt; train_mask = g.edges[&#39;user-movie&#39;].data[&#39;train_mask&#39;]</span>
-<span class="sd">    &gt;&gt;&gt; valid_mask = g.edges[&#39;user-movie&#39;].data[&#39;valid_mask&#39;]</span>
-<span class="sd">    &gt;&gt;&gt; test_mask = g.edges[&#39;user-movie&#39;].data[&#39;test_mask&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; train_mask = g.edges['user-movie'].data['train_mask']</span>
+<span class="sd">    &gt;&gt;&gt; valid_mask = g.edges['user-movie'].data['valid_mask']</span>
+<span class="sd">    &gt;&gt;&gt; test_mask = g.edges['user-movie'].data['test_mask']</span>
 
 <span class="sd">    &gt;&gt;&gt; # get train, valid and test ratings</span>
 <span class="sd">    &gt;&gt;&gt; train_ratings = rate[train_mask]</span>
@@ -283,7 +273,7 @@
 <span class="sd">    &gt;&gt;&gt; test_ratings = rate[test_mask]</span>
 
 <span class="sd">    &gt;&gt;&gt; # get input features of users</span>
-<span class="sd">    &gt;&gt;&gt; g.nodes[&quot;user&quot;].data[&quot;feat&quot;] # or g.nodes[&quot;movie&quot;].data[&quot;feat&quot;] for movie nodes</span>
+<span class="sd">    &gt;&gt;&gt; g.nodes["user"].data["feat"] # or g.nodes["movie"].data["feat"] for movie nodes</span>
 <span class="sd">    tensor([[0.4800, 0.0000, 0.0000,  ..., 0.0000, 0.0000, 0.0000],</span>
 <span class="sd">            [1.0600, 1.0000, 0.0000,  ..., 0.0000, 0.0000, 0.0000],</span>
 <span class="sd">            [0.4600, 0.0000, 0.0000,  ..., 0.0000, 0.0000, 0.0000],</span>
@@ -292,12 +282,12 @@
 <span class="sd">            [0.9600, 1.0000, 0.0000,  ..., 0.0000, 0.0000, 0.0000],</span>
 <span class="sd">            [0.4400, 0.0000, 1.0000,  ..., 0.0000, 0.0000, 0.0000]])</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">_url</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;ml-100k&quot;</span><span class="p">:</span> <span class="s2">&quot;dataset/ml-100k.zip&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;ml-1m&quot;</span><span class="p">:</span> <span class="s2">&quot;dataset/ml-1m.zip&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;ml-10m&quot;</span><span class="p">:</span> <span class="s2">&quot;dataset/ml-10m.zip&quot;</span><span class="p">,</span>
+        <span class="s2">"ml-100k"</span><span class="p">:</span> <span class="s2">"dataset/ml-100k.zip"</span><span class="p">,</span>
+        <span class="s2">"ml-1m"</span><span class="p">:</span> <span class="s2">"dataset/ml-1m.zip"</span><span class="p">,</span>
+        <span class="s2">"ml-10m"</span><span class="p">:</span> <span class="s2">"dataset/ml-10m.zip"</span><span class="p">,</span>
     <span class="p">}</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -313,41 +303,41 @@
     <span class="p">):</span>
         <span class="n">check_pytorch</span><span class="p">()</span>
         <span class="k">assert</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">[</span>
-            <span class="s2">&quot;ml-100k&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;ml-1m&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;ml-10m&quot;</span><span class="p">,</span>
-        <span class="p">],</span> <span class="sa">f</span><span class="s2">&quot;currently movielens does not support </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="s2">"ml-100k"</span><span class="p">,</span>
+            <span class="s2">"ml-1m"</span><span class="p">,</span>
+            <span class="s2">"ml-10m"</span><span class="p">,</span>
+        <span class="p">],</span> <span class="sa">f</span><span class="s2">"currently movielens does not support </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span>
 
         <span class="c1"># test regarding valid and test split ratio</span>
         <span class="k">assert</span> <span class="p">(</span>
             <span class="n">valid_ratio</span> <span class="o">&gt;</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="n">valid_ratio</span> <span class="o">&lt;</span> <span class="mf">1.0</span>
-        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;valid_ratio </span><span class="si">{</span><span class="n">valid_ratio</span><span class="si">}</span><span class="s2"> must be in (0.0, 1.0)&quot;</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">"valid_ratio </span><span class="si">{</span><span class="n">valid_ratio</span><span class="si">}</span><span class="s2"> must be in (0.0, 1.0)"</span>
 
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;ml-1m&quot;</span><span class="p">,</span> <span class="s2">&quot;ml-10m&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"ml-1m"</span><span class="p">,</span> <span class="s2">"ml-10m"</span><span class="p">]:</span>
             <span class="k">assert</span> <span class="p">(</span>
                 <span class="n">test_ratio</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">test_ratio</span> <span class="o">&gt;</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="n">test_ratio</span> <span class="o">&lt;</span> <span class="mf">1.0</span>
-            <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;test_ratio(</span><span class="si">{</span><span class="n">test_ratio</span><span class="si">}</span><span class="s2">) must be set to a value in (0.0, 1.0) when using ml-1m and ml-10m&quot;</span>
+            <span class="p">),</span> <span class="sa">f</span><span class="s2">"test_ratio(</span><span class="si">{</span><span class="n">test_ratio</span><span class="si">}</span><span class="s2">) must be set to a value in (0.0, 1.0) when using ml-1m and ml-10m"</span>
             <span class="k">assert</span> <span class="p">(</span>
                 <span class="n">test_ratio</span> <span class="o">+</span> <span class="n">valid_ratio</span> <span class="o">&gt;</span> <span class="mf">0.0</span>
                 <span class="ow">and</span> <span class="n">test_ratio</span> <span class="o">+</span> <span class="n">valid_ratio</span> <span class="o">&lt;</span> <span class="mf">1.0</span>
-            <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;test_ratio(</span><span class="si">{</span><span class="n">test_ratio</span><span class="si">}</span><span class="s2">) + valid_ratio(</span><span class="si">{</span><span class="n">valid_ratio</span><span class="si">}</span><span class="s2">) must be set to (0.0, 1.0) when using ml-1m and ml-10m&quot;</span>
+            <span class="p">),</span> <span class="sa">f</span><span class="s2">"test_ratio(</span><span class="si">{</span><span class="n">test_ratio</span><span class="si">}</span><span class="s2">) + valid_ratio(</span><span class="si">{</span><span class="n">valid_ratio</span><span class="si">}</span><span class="s2">) must be set to (0.0, 1.0) when using ml-1m and ml-10m"</span>
 
-        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;ml-100k&quot;</span> <span class="ow">and</span> <span class="n">test_ratio</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"ml-100k"</span> <span class="ow">and</span> <span class="n">test_ratio</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">dgl_warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;test_ratio (</span><span class="si">{</span><span class="n">test_ratio</span><span class="si">}</span><span class="s2">) is not set to None for ml-100k. &quot;</span>
-                <span class="s2">&quot;Note that dataset split would not be affected by the test_ratio since &quot;</span>
-                <span class="s2">&quot;testing samples of ml-100k have been pre-specified.&quot;</span>
+                <span class="sa">f</span><span class="s2">"test_ratio (</span><span class="si">{</span><span class="n">test_ratio</span><span class="si">}</span><span class="s2">) is not set to None for ml-100k. "</span>
+                <span class="s2">"Note that dataset split would not be affected by the test_ratio since "</span>
+                <span class="s2">"testing samples of ml-100k have been pre-specified."</span>
             <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">valid_ratio</span> <span class="o">=</span> <span class="n">valid_ratio</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">test_ratio</span> <span class="o">=</span> <span class="n">test_ratio</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
 
-        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;ml-100k&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"ml-100k"</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">genres</span> <span class="o">=</span> <span class="n">GENRES_ML_100K</span>
-        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;ml-1m&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"ml-1m"</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">genres</span> <span class="o">=</span> <span class="n">GENRES_ML_1M</span>
-        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;ml-10m&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"ml-10m"</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">genres</span> <span class="o">=</span> <span class="n">GENRES_ML_10M</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span>
@@ -364,45 +354,45 @@
     <span class="k">def</span> <span class="nf">check_version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">valid_ratio</span><span class="p">,</span> <span class="n">test_ratio</span> <span class="o">=</span> <span class="n">load_info</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version_path</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid_ratio</span> <span class="o">==</span> <span class="n">valid_ratio</span> <span class="ow">and</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">test_ratio</span> <span class="o">==</span> <span class="n">test_ratio</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;ml-100k&quot;</span> <span class="k">else</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">test_ratio</span> <span class="o">==</span> <span class="n">test_ratio</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s2">"ml-100k"</span> <span class="k">else</span> <span class="kc">True</span>
         <span class="p">):</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;ml-100k&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"ml-100k"</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;The current valid ratio (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid_ratio</span><span class="si">}</span><span class="s2">) &quot;</span>
-                    <span class="s2">&quot;is not the same as the last setting &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;(valid: </span><span class="si">{</span><span class="n">valid_ratio</span><span class="si">}</span><span class="s2">). &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;MovieLens </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> will be re-processed with the new dataset split setting.&quot;</span>
+                    <span class="sa">f</span><span class="s2">"The current valid ratio (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid_ratio</span><span class="si">}</span><span class="s2">) "</span>
+                    <span class="s2">"is not the same as the last setting "</span>
+                    <span class="sa">f</span><span class="s2">"(valid: </span><span class="si">{</span><span class="n">valid_ratio</span><span class="si">}</span><span class="s2">). "</span>
+                    <span class="sa">f</span><span class="s2">"MovieLens </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> will be re-processed with the new dataset split setting."</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;At least one of current valid (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid_ratio</span><span class="si">}</span><span class="s2">) and test (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">test_ratio</span><span class="si">}</span><span class="s2">) ratio &quot;</span>
-                    <span class="s2">&quot;are not the same as the last setting &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;(valid: </span><span class="si">{</span><span class="n">valid_ratio</span><span class="si">}</span><span class="s2">, test: </span><span class="si">{</span><span class="n">test_ratio</span><span class="si">}</span><span class="s2">). &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;MovieLens </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> will be re-processed with the new dataset split setting.&quot;</span>
+                    <span class="sa">f</span><span class="s2">"At least one of current valid (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid_ratio</span><span class="si">}</span><span class="s2">) and test (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">test_ratio</span><span class="si">}</span><span class="s2">) ratio "</span>
+                    <span class="s2">"are not the same as the last setting "</span>
+                    <span class="sa">f</span><span class="s2">"(valid: </span><span class="si">{</span><span class="n">valid_ratio</span><span class="si">}</span><span class="s2">, test: </span><span class="si">{</span><span class="n">test_ratio</span><span class="si">}</span><span class="s2">). "</span>
+                    <span class="sa">f</span><span class="s2">"MovieLens </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> will be re-processed with the new dataset split setting."</span>
                 <span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">zip_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.zip&quot;</span><span class="p">)</span>
+        <span class="n">zip_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">".zip"</span><span class="p">)</span>
         <span class="n">download</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">zip_file_path</span><span class="p">)</span>
         <span class="n">extract_archive</span><span class="p">(</span><span class="n">zip_file_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw_dir</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Starting processing </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> ...&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Starting processing </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> ..."</span><span class="p">)</span>
 
         <span class="c1"># 0. loading movie features</span>
         <span class="n">movie_feat</span> <span class="o">=</span> <span class="n">load_info</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_path</span><span class="p">,</span> <span class="s2">&quot;movie_feat.pkl&quot;</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_path</span><span class="p">,</span> <span class="s2">"movie_feat.pkl"</span><span class="p">)</span>
         <span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
         <span class="c1"># 1. dataset split: train + (valid + ) test</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;ml-100k&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"ml-100k"</span><span class="p">:</span>
             <span class="n">train_rating_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_raw_rates</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_path</span><span class="p">,</span> <span class="s2">&quot;u1.base&quot;</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_path</span><span class="p">,</span> <span class="s2">"u1.base"</span><span class="p">),</span> <span class="s2">"</span><span class="se">\t</span><span class="s2">"</span>
             <span class="p">)</span>
             <span class="n">test_rating_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_raw_rates</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_path</span><span class="p">,</span> <span class="s2">&quot;u1.test&quot;</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_path</span><span class="p">,</span> <span class="s2">"u1.test"</span><span class="p">),</span> <span class="s2">"</span><span class="se">\t</span><span class="s2">"</span>
             <span class="p">)</span>
             <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">train_rating_data</span><span class="p">))</span>
             <span class="n">train</span><span class="p">,</span> <span class="n">valid</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">split_dataset</span><span class="p">(</span>
@@ -419,9 +409,9 @@
                 <span class="p">[</span><span class="n">train_rating_data</span><span class="p">,</span> <span class="n">valid_rating_data</span><span class="p">,</span> <span class="n">test_rating_data</span><span class="p">]</span>
             <span class="p">)</span>
 
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;ml-1m&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;ml-10m&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"ml-1m"</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"ml-10m"</span><span class="p">:</span>
             <span class="n">all_rating_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_raw_rates</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_path</span><span class="p">,</span> <span class="s2">&quot;ratings.dat&quot;</span><span class="p">),</span> <span class="s2">&quot;::&quot;</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_path</span><span class="p">,</span> <span class="s2">"ratings.dat"</span><span class="p">),</span> <span class="s2">"::"</span>
             <span class="p">)</span>
             <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_rating_data</span><span class="p">))</span>
             <span class="n">train</span><span class="p">,</span> <span class="n">valid</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">split_dataset</span><span class="p">(</span>
@@ -445,13 +435,13 @@
         <span class="n">movie_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_raw_movie_data</span><span class="p">()</span>
         <span class="n">user_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_drop_unseen_nodes</span><span class="p">(</span>
             <span class="n">data_df</span><span class="o">=</span><span class="n">user_data</span><span class="p">,</span>
-            <span class="n">col_name</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
-            <span class="n">reserved_ids_set</span><span class="o">=</span><span class="nb">set</span><span class="p">(</span><span class="n">all_rating_data</span><span class="p">[</span><span class="s2">&quot;user_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">),</span>
+            <span class="n">col_name</span><span class="o">=</span><span class="s2">"id"</span><span class="p">,</span>
+            <span class="n">reserved_ids_set</span><span class="o">=</span><span class="nb">set</span><span class="p">(</span><span class="n">all_rating_data</span><span class="p">[</span><span class="s2">"user_id"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">),</span>
         <span class="p">)</span>
         <span class="n">movie_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_drop_unseen_nodes</span><span class="p">(</span>
             <span class="n">data_df</span><span class="o">=</span><span class="n">movie_data</span><span class="p">,</span>
-            <span class="n">col_name</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
-            <span class="n">reserved_ids_set</span><span class="o">=</span><span class="nb">set</span><span class="p">(</span><span class="n">all_rating_data</span><span class="p">[</span><span class="s2">&quot;movie_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">),</span>
+            <span class="n">col_name</span><span class="o">=</span><span class="s2">"id"</span><span class="p">,</span>
+            <span class="n">reserved_ids_set</span><span class="o">=</span><span class="nb">set</span><span class="p">(</span><span class="n">all_rating_data</span><span class="p">[</span><span class="s2">"movie_id"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">),</span>
         <span class="p">)</span>
 
         <span class="n">user_feat</span> <span class="o">=</span> <span class="n">Tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_process_user_feat</span><span class="p">(</span><span class="n">user_data</span><span class="p">))</span>
@@ -459,10 +449,10 @@
         <span class="c1"># 3. generate rating pairs</span>
         <span class="c1"># Map user/movie to the global id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_global_user_id_map</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="n">ele</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ele</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">user_data</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">])</span>
+            <span class="n">ele</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ele</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">user_data</span><span class="p">[</span><span class="s2">"id"</span><span class="p">])</span>
         <span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_global_movie_id_map</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="n">ele</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ele</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">movie_data</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">])</span>
+            <span class="n">ele</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ele</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">movie_data</span><span class="p">[</span><span class="s2">"id"</span><span class="p">])</span>
         <span class="p">}</span>
 
         <span class="c1"># pair value is idx rather than id</span>
@@ -482,19 +472,19 @@
             <span class="n">graph</span><span class="p">,</span> <span class="n">train_rating_data</span><span class="p">,</span> <span class="n">valid_rating_data</span><span class="p">,</span> <span class="n">test_rating_data</span>
         <span class="p">)</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;End processing </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> ...&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"End processing </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> ..."</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">construct_g</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rate_pairs</span><span class="p">,</span> <span class="n">rate_values</span><span class="p">,</span> <span class="n">user_feat</span><span class="p">,</span> <span class="n">movie_feat</span><span class="p">):</span>
         <span class="n">g</span> <span class="o">=</span> <span class="n">heterograph</span><span class="p">(</span>
             <span class="p">{</span>
-                <span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;user-movie&quot;</span><span class="p">,</span> <span class="s2">&quot;movie&quot;</span><span class="p">):</span> <span class="p">(</span><span class="n">rate_pairs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rate_pairs</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
-                <span class="p">(</span><span class="s2">&quot;movie&quot;</span><span class="p">,</span> <span class="s2">&quot;movie-user&quot;</span><span class="p">,</span> <span class="s2">&quot;user&quot;</span><span class="p">):</span> <span class="p">(</span><span class="n">rate_pairs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">rate_pairs</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                <span class="p">(</span><span class="s2">"user"</span><span class="p">,</span> <span class="s2">"user-movie"</span><span class="p">,</span> <span class="s2">"movie"</span><span class="p">):</span> <span class="p">(</span><span class="n">rate_pairs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rate_pairs</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                <span class="p">(</span><span class="s2">"movie"</span><span class="p">,</span> <span class="s2">"movie-user"</span><span class="p">,</span> <span class="s2">"user"</span><span class="p">):</span> <span class="p">(</span><span class="n">rate_pairs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">rate_pairs</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
             <span class="p">}</span>
         <span class="p">)</span>
-        <span class="n">ndata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="n">user_feat</span><span class="p">,</span> <span class="s2">&quot;movie&quot;</span><span class="p">:</span> <span class="n">movie_feat</span><span class="p">}</span>
-        <span class="n">edata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;user-movie&quot;</span><span class="p">:</span> <span class="n">rate_values</span><span class="p">,</span> <span class="s2">&quot;movie-user&quot;</span><span class="p">:</span> <span class="n">rate_values</span><span class="p">}</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;feat&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ndata</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s2">&quot;rate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">edata</span>
+        <span class="n">ndata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"user"</span><span class="p">:</span> <span class="n">user_feat</span><span class="p">,</span> <span class="s2">"movie"</span><span class="p">:</span> <span class="n">movie_feat</span><span class="p">}</span>
+        <span class="n">edata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"user-movie"</span><span class="p">:</span> <span class="n">rate_values</span><span class="p">,</span> <span class="s2">"movie-user"</span><span class="p">:</span> <span class="n">rate_values</span><span class="p">}</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"feat"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ndata</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s2">"rate"</span><span class="p">]</span> <span class="o">=</span> <span class="n">edata</span>
         <span class="k">return</span> <span class="n">g</span>
 
     <span class="k">def</span> <span class="nf">add_masks</span><span class="p">(</span>
@@ -511,46 +501,46 @@
         <span class="p">)</span>
 
         <span class="c1"># user-movie</span>
-        <span class="n">train_mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">g</span><span class="o">.</span><span class="n">num_edges</span><span class="p">(</span><span class="s2">&quot;user-movie&quot;</span><span class="p">),),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
+        <span class="n">train_mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">g</span><span class="o">.</span><span class="n">num_edges</span><span class="p">(</span><span class="s2">"user-movie"</span><span class="p">),),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
         <span class="n">train_mask</span><span class="p">[</span>
-            <span class="n">g</span><span class="o">.</span><span class="n">edge_ids</span><span class="p">(</span><span class="n">train_u_indices</span><span class="p">,</span> <span class="n">train_v_indices</span><span class="p">,</span> <span class="n">etype</span><span class="o">=</span><span class="s2">&quot;user-movie&quot;</span><span class="p">)</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">edge_ids</span><span class="p">(</span><span class="n">train_u_indices</span><span class="p">,</span> <span class="n">train_v_indices</span><span class="p">,</span> <span class="n">etype</span><span class="o">=</span><span class="s2">"user-movie"</span><span class="p">)</span>
         <span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">valid_mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">g</span><span class="o">.</span><span class="n">num_edges</span><span class="p">(</span><span class="s2">&quot;user-movie&quot;</span><span class="p">),),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
+        <span class="n">valid_mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">g</span><span class="o">.</span><span class="n">num_edges</span><span class="p">(</span><span class="s2">"user-movie"</span><span class="p">),),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
         <span class="n">valid_mask</span><span class="p">[</span>
-            <span class="n">g</span><span class="o">.</span><span class="n">edge_ids</span><span class="p">(</span><span class="n">valid_u_indices</span><span class="p">,</span> <span class="n">valid_v_indices</span><span class="p">,</span> <span class="n">etype</span><span class="o">=</span><span class="s2">&quot;user-movie&quot;</span><span class="p">)</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">edge_ids</span><span class="p">(</span><span class="n">valid_u_indices</span><span class="p">,</span> <span class="n">valid_v_indices</span><span class="p">,</span> <span class="n">etype</span><span class="o">=</span><span class="s2">"user-movie"</span><span class="p">)</span>
         <span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">test_mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">g</span><span class="o">.</span><span class="n">num_edges</span><span class="p">(</span><span class="s2">&quot;user-movie&quot;</span><span class="p">),),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
+        <span class="n">test_mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">g</span><span class="o">.</span><span class="n">num_edges</span><span class="p">(</span><span class="s2">"user-movie"</span><span class="p">),),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
         <span class="n">test_mask</span><span class="p">[</span>
-            <span class="n">g</span><span class="o">.</span><span class="n">edge_ids</span><span class="p">(</span><span class="n">test_u_indices</span><span class="p">,</span> <span class="n">test_v_indices</span><span class="p">,</span> <span class="n">etype</span><span class="o">=</span><span class="s2">&quot;user-movie&quot;</span><span class="p">)</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">edge_ids</span><span class="p">(</span><span class="n">test_u_indices</span><span class="p">,</span> <span class="n">test_v_indices</span><span class="p">,</span> <span class="n">etype</span><span class="o">=</span><span class="s2">"user-movie"</span><span class="p">)</span>
         <span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
-        <span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="s2">&quot;user-movie&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;train_mask&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_mask</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="s2">&quot;user-movie&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;valid_mask&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">valid_mask</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="s2">&quot;user-movie&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;test_mask&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">test_mask</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="s2">"user-movie"</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"train_mask"</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_mask</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="s2">"user-movie"</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"valid_mask"</span><span class="p">]</span> <span class="o">=</span> <span class="n">valid_mask</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="s2">"user-movie"</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"test_mask"</span><span class="p">]</span> <span class="o">=</span> <span class="n">test_mask</span>
 
         <span class="c1"># movie-user</span>
         <span class="n">train_mask_rev</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">num_edges</span><span class="p">(</span><span class="s2">&quot;movie-user&quot;</span><span class="p">),),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span>
+            <span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">num_edges</span><span class="p">(</span><span class="s2">"movie-user"</span><span class="p">),),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span>
         <span class="p">)</span>
         <span class="n">train_mask_rev</span><span class="p">[</span>
-            <span class="n">g</span><span class="o">.</span><span class="n">edge_ids</span><span class="p">(</span><span class="n">train_v_indices</span><span class="p">,</span> <span class="n">train_u_indices</span><span class="p">,</span> <span class="n">etype</span><span class="o">=</span><span class="s2">&quot;movie-user&quot;</span><span class="p">)</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">edge_ids</span><span class="p">(</span><span class="n">train_v_indices</span><span class="p">,</span> <span class="n">train_u_indices</span><span class="p">,</span> <span class="n">etype</span><span class="o">=</span><span class="s2">"movie-user"</span><span class="p">)</span>
         <span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">valid_mask_rev</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">num_edges</span><span class="p">(</span><span class="s2">&quot;movie-user&quot;</span><span class="p">),),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span>
+            <span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">num_edges</span><span class="p">(</span><span class="s2">"movie-user"</span><span class="p">),),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span>
         <span class="p">)</span>
         <span class="n">valid_mask_rev</span><span class="p">[</span>
-            <span class="n">g</span><span class="o">.</span><span class="n">edge_ids</span><span class="p">(</span><span class="n">valid_v_indices</span><span class="p">,</span> <span class="n">valid_u_indices</span><span class="p">,</span> <span class="n">etype</span><span class="o">=</span><span class="s2">&quot;movie-user&quot;</span><span class="p">)</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">edge_ids</span><span class="p">(</span><span class="n">valid_v_indices</span><span class="p">,</span> <span class="n">valid_u_indices</span><span class="p">,</span> <span class="n">etype</span><span class="o">=</span><span class="s2">"movie-user"</span><span class="p">)</span>
         <span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">test_mask_rev</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">num_edges</span><span class="p">(</span><span class="s2">&quot;movie-user&quot;</span><span class="p">),),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span>
+            <span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">num_edges</span><span class="p">(</span><span class="s2">"movie-user"</span><span class="p">),),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span>
         <span class="p">)</span>
         <span class="n">test_mask_rev</span><span class="p">[</span>
-            <span class="n">g</span><span class="o">.</span><span class="n">edge_ids</span><span class="p">(</span><span class="n">test_v_indices</span><span class="p">,</span> <span class="n">test_u_indices</span><span class="p">,</span> <span class="n">etype</span><span class="o">=</span><span class="s2">&quot;movie-user&quot;</span><span class="p">)</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">edge_ids</span><span class="p">(</span><span class="n">test_v_indices</span><span class="p">,</span> <span class="n">test_u_indices</span><span class="p">,</span> <span class="n">etype</span><span class="o">=</span><span class="s2">"movie-user"</span><span class="p">)</span>
         <span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
-        <span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="s2">&quot;movie-user&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;train_mask&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_mask_rev</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="s2">&quot;movie-user&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;valid_mask&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">valid_mask_rev</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="s2">&quot;movie-user&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;test_mask&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">test_mask_rev</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="s2">"movie-user"</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"train_mask"</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_mask_rev</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="s2">"movie-user"</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"valid_mask"</span><span class="p">]</span> <span class="o">=</span> <span class="n">valid_mask_rev</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="s2">"movie-user"</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"test_mask"</span><span class="p">]</span> <span class="o">=</span> <span class="n">test_mask_rev</span>
 
         <span class="k">return</span> <span class="n">g</span>
 
@@ -567,26 +557,26 @@
         <span class="n">save_graphs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph_path</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">])</span>
         <span class="n">save_info</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version_path</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">valid_ratio</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_ratio</span><span class="p">])</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Done saving data into </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_path</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Done saving data into </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_path</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">g_list</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">load_graphs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph_path</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">g_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        To avoid the problem each time loading boolean tensor from the disk, boolean values</span>
 <span class="sd">        would be automatically converted into torch.uint8 types, and a deprecation warning would</span>
 <span class="sd">        be raised for using torch.uint8</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">etypes</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;train_mask&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;train_mask&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"train_mask"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"train_mask"</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
             <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;valid_mask&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;valid_mask&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"valid_mask"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"valid_mask"</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
             <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;test_mask&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;test_mask&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"test_mask"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"test_mask"</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
             <span class="p">)</span>
 
 <div class="viewcode-block" id="MovieLensDataset.__getitem__">
@@ -594,7 +584,7 @@
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
         <span class="k">assert</span> <span class="p">(</span>
             <span class="n">idx</span> <span class="o">==</span> <span class="mi">0</span>
-        <span class="p">),</span> <span class="s2">&quot;This dataset has only one set of training, validation and testing graph&quot;</span>
+        <span class="p">),</span> <span class="s2">"This dataset has only one set of training, validation and testing graph"</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span>
         <span class="k">else</span><span class="p">:</span>
@@ -613,17 +603,17 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">graph_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.bin&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">".bin"</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">version_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;_version.pkl&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">"_version.pkl"</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_process_user_feat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_data</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;ml-100k&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;ml-1m&quot;</span><span class="p">:</span>
-            <span class="n">ages</span> <span class="o">=</span> <span class="n">user_data</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-            <span class="n">gender</span> <span class="o">=</span> <span class="p">(</span><span class="n">user_data</span><span class="p">[</span><span class="s2">&quot;gender&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;F&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-            <span class="n">all_occupations</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">user_data</span><span class="p">[</span><span class="s2">&quot;occupation&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"ml-100k"</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"ml-1m"</span><span class="p">:</span>
+            <span class="n">ages</span> <span class="o">=</span> <span class="n">user_data</span><span class="p">[</span><span class="s2">"age"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="n">gender</span> <span class="o">=</span> <span class="p">(</span><span class="n">user_data</span><span class="p">[</span><span class="s2">"gender"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"F"</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="n">all_occupations</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">user_data</span><span class="p">[</span><span class="s2">"occupation"</span><span class="p">])</span>
             <span class="n">occupation_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">ele</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ele</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">all_occupations</span><span class="p">)}</span>
             <span class="n">occupation_one_hot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
                 <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">user_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_occupations</span><span class="p">)),</span>
@@ -632,7 +622,7 @@
             <span class="n">occupation_one_hot</span><span class="p">[</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">user_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-                    <span class="p">[</span><span class="n">occupation_map</span><span class="p">[</span><span class="n">ele</span><span class="p">]</span> <span class="k">for</span> <span class="n">ele</span> <span class="ow">in</span> <span class="n">user_data</span><span class="p">[</span><span class="s2">&quot;occupation&quot;</span><span class="p">]]</span>
+                    <span class="p">[</span><span class="n">occupation_map</span><span class="p">[</span><span class="n">ele</span><span class="p">]</span> <span class="k">for</span> <span class="n">ele</span> <span class="ow">in</span> <span class="n">user_data</span><span class="p">[</span><span class="s2">"occupation"</span><span class="p">]]</span>
                 <span class="p">),</span>
             <span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
             <span class="n">user_features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
@@ -643,7 +633,7 @@
                 <span class="p">],</span>
                 <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
             <span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;ml-10m&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"ml-10m"</span><span class="p">:</span>
             <span class="n">user_features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
                 <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">user_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span>
             <span class="p">)</span>
@@ -652,87 +642,87 @@
         <span class="k">return</span> <span class="n">user_features</span>
 
     <span class="k">def</span> <span class="nf">_load_raw_user_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;ml-100k&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"ml-100k"</span><span class="p">:</span>
             <span class="n">user_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_path</span><span class="p">,</span> <span class="s2">&quot;u.user&quot;</span><span class="p">),</span>
-                <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;|&quot;</span><span class="p">,</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_path</span><span class="p">,</span> <span class="s2">"u.user"</span><span class="p">),</span>
+                <span class="n">sep</span><span class="o">=</span><span class="s2">"|"</span><span class="p">,</span>
                 <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="s2">&quot;occupation&quot;</span><span class="p">,</span> <span class="s2">&quot;zip_code&quot;</span><span class="p">],</span>
-                <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;python&quot;</span><span class="p">,</span>
+                <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">"id"</span><span class="p">,</span> <span class="s2">"age"</span><span class="p">,</span> <span class="s2">"gender"</span><span class="p">,</span> <span class="s2">"occupation"</span><span class="p">,</span> <span class="s2">"zip_code"</span><span class="p">],</span>
+                <span class="n">engine</span><span class="o">=</span><span class="s2">"python"</span><span class="p">,</span>
             <span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;ml-1m&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"ml-1m"</span><span class="p">:</span>
             <span class="n">user_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_path</span><span class="p">,</span> <span class="s2">&quot;users.dat&quot;</span><span class="p">),</span>
-                <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;::&quot;</span><span class="p">,</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_path</span><span class="p">,</span> <span class="s2">"users.dat"</span><span class="p">),</span>
+                <span class="n">sep</span><span class="o">=</span><span class="s2">"::"</span><span class="p">,</span>
                 <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;occupation&quot;</span><span class="p">,</span> <span class="s2">&quot;zip_code&quot;</span><span class="p">],</span>
-                <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;python&quot;</span><span class="p">,</span>
+                <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">"id"</span><span class="p">,</span> <span class="s2">"gender"</span><span class="p">,</span> <span class="s2">"age"</span><span class="p">,</span> <span class="s2">"occupation"</span><span class="p">,</span> <span class="s2">"zip_code"</span><span class="p">],</span>
+                <span class="n">engine</span><span class="o">=</span><span class="s2">"python"</span><span class="p">,</span>
             <span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;ml-10m&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"ml-10m"</span><span class="p">:</span>
             <span class="n">rating_info</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_path</span><span class="p">,</span> <span class="s2">&quot;ratings.dat&quot;</span><span class="p">),</span>
-                <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;::&quot;</span><span class="p">,</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_path</span><span class="p">,</span> <span class="s2">"ratings.dat"</span><span class="p">),</span>
+                <span class="n">sep</span><span class="o">=</span><span class="s2">"::"</span><span class="p">,</span>
                 <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;user_id&quot;</span><span class="p">,</span> <span class="s2">&quot;movie_id&quot;</span><span class="p">,</span> <span class="s2">&quot;rating&quot;</span><span class="p">,</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">],</span>
+                <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">"user_id"</span><span class="p">,</span> <span class="s2">"movie_id"</span><span class="p">,</span> <span class="s2">"rating"</span><span class="p">,</span> <span class="s2">"timestamp"</span><span class="p">],</span>
                 <span class="n">dtype</span><span class="o">=</span><span class="p">{</span>
-                    <span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span>
-                    <span class="s2">&quot;movie_id&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span>
-                    <span class="s2">&quot;ratings&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
-                    <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span>
+                    <span class="s2">"user_id"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span>
+                    <span class="s2">"movie_id"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span>
+                    <span class="s2">"ratings"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
+                    <span class="s2">"timestamp"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span>
                 <span class="p">},</span>
-                <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;python&quot;</span><span class="p">,</span>
+                <span class="n">engine</span><span class="o">=</span><span class="s2">"python"</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">user_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">rating_info</span><span class="p">[</span><span class="s2">&quot;user_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)),</span>
-                <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">rating_info</span><span class="p">[</span><span class="s2">"user_id"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)),</span>
+                <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"id"</span><span class="p">],</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span>
         <span class="k">return</span> <span class="n">user_data</span>
 
     <span class="k">def</span> <span class="nf">_load_raw_movie_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_path</span><span class="p">,</span> <span class="s2">&quot;u.item&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;ml-100k&quot;</span><span class="p">:</span>
+        <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_path</span><span class="p">,</span> <span class="s2">"u.item"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"ml-100k"</span><span class="p">:</span>
             <span class="n">movie_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
                 <span class="n">file_path</span><span class="p">,</span>
-                <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;|&quot;</span><span class="p">,</span>
+                <span class="n">sep</span><span class="o">=</span><span class="s2">"|"</span><span class="p">,</span>
                 <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">names</span><span class="o">=</span><span class="p">[</span>
-                    <span class="s2">&quot;id&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;title&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;release_date&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;video_release_date&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;url&quot;</span><span class="p">,</span>
+                    <span class="s2">"id"</span><span class="p">,</span>
+                    <span class="s2">"title"</span><span class="p">,</span>
+                    <span class="s2">"release_date"</span><span class="p">,</span>
+                    <span class="s2">"video_release_date"</span><span class="p">,</span>
+                    <span class="s2">"url"</span><span class="p">,</span>
                 <span class="p">]</span>
                 <span class="o">+</span> <span class="n">GENRES_ML_100K</span><span class="p">,</span>
-                <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;python&quot;</span><span class="p">,</span>
-                <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;ISO-8859-1&quot;</span><span class="p">,</span>
+                <span class="n">engine</span><span class="o">=</span><span class="s2">"python"</span><span class="p">,</span>
+                <span class="n">encoding</span><span class="o">=</span><span class="s2">"ISO-8859-1"</span><span class="p">,</span>
             <span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;ml-1m&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;ml-10m&quot;</span><span class="p">:</span>
-            <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_path</span><span class="p">,</span> <span class="s2">&quot;movies.dat&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"ml-1m"</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"ml-10m"</span><span class="p">:</span>
+            <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_path</span><span class="p">,</span> <span class="s2">"movies.dat"</span><span class="p">)</span>
             <span class="n">movie_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
                 <span class="n">file_path</span><span class="p">,</span>
-                <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;::&quot;</span><span class="p">,</span>
+                <span class="n">sep</span><span class="o">=</span><span class="s2">"::"</span><span class="p">,</span>
                 <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;genres&quot;</span><span class="p">],</span>
-                <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;iso-8859-1&quot;</span><span class="p">,</span>
-                <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;python&quot;</span><span class="p">,</span>
+                <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">"id"</span><span class="p">,</span> <span class="s2">"title"</span><span class="p">,</span> <span class="s2">"genres"</span><span class="p">],</span>
+                <span class="n">encoding</span><span class="o">=</span><span class="s2">"iso-8859-1"</span><span class="p">,</span>
+                <span class="n">engine</span><span class="o">=</span><span class="s2">"python"</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">genre_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">ele</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ele</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">genres</span><span class="p">)}</span>
-            <span class="n">genre_map</span><span class="p">[</span><span class="s2">&quot;Children&#39;s&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">genre_map</span><span class="p">[</span><span class="s2">&quot;Children&quot;</span><span class="p">]</span>
-            <span class="n">genre_map</span><span class="p">[</span><span class="s2">&quot;Childrens&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">genre_map</span><span class="p">[</span><span class="s2">&quot;Children&quot;</span><span class="p">]</span>
+            <span class="n">genre_map</span><span class="p">[</span><span class="s2">"Children's"</span><span class="p">]</span> <span class="o">=</span> <span class="n">genre_map</span><span class="p">[</span><span class="s2">"Children"</span><span class="p">]</span>
+            <span class="n">genre_map</span><span class="p">[</span><span class="s2">"Childrens"</span><span class="p">]</span> <span class="o">=</span> <span class="n">genre_map</span><span class="p">[</span><span class="s2">"Children"</span><span class="p">]</span>
             <span class="n">movie_genres</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
                 <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">movie_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">genres</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span>
             <span class="p">)</span>
-            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">genres</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">movie_data</span><span class="p">[</span><span class="s2">&quot;genres&quot;</span><span class="p">]):</span>
-                <span class="k">for</span> <span class="n">ele</span> <span class="ow">in</span> <span class="n">genres</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">genres</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">movie_data</span><span class="p">[</span><span class="s2">"genres"</span><span class="p">]):</span>
+                <span class="k">for</span> <span class="n">ele</span> <span class="ow">in</span> <span class="n">genres</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"|"</span><span class="p">):</span>
                     <span class="k">if</span> <span class="n">ele</span> <span class="ow">in</span> <span class="n">genre_map</span><span class="p">:</span>
                         <span class="n">movie_genres</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">genre_map</span><span class="p">[</span><span class="n">ele</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">1.0</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">movie_genres</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">genre_map</span><span class="p">[</span><span class="s2">&quot;unknown&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">1.0</span>
+                        <span class="n">movie_genres</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">genre_map</span><span class="p">[</span><span class="s2">"unknown"</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">1.0</span>
             <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">genre_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">genres</span><span class="p">):</span>
                 <span class="n">movie_data</span><span class="p">[</span><span class="n">genre_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">movie_genres</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">]</span>
-            <span class="n">movie_data</span> <span class="o">=</span> <span class="n">movie_data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;genres&quot;</span><span class="p">])</span>
+            <span class="n">movie_data</span> <span class="o">=</span> <span class="n">movie_data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"genres"</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
@@ -743,14 +733,14 @@
             <span class="n">file_path</span><span class="p">,</span>
             <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">,</span>
             <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;user_id&quot;</span><span class="p">,</span> <span class="s2">&quot;movie_id&quot;</span><span class="p">,</span> <span class="s2">&quot;rating&quot;</span><span class="p">,</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">],</span>
+            <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">"user_id"</span><span class="p">,</span> <span class="s2">"movie_id"</span><span class="p">,</span> <span class="s2">"rating"</span><span class="p">,</span> <span class="s2">"timestamp"</span><span class="p">],</span>
             <span class="n">dtype</span><span class="o">=</span><span class="p">{</span>
-                <span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span>
-                <span class="s2">&quot;movie_id&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span>
-                <span class="s2">&quot;ratings&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
-                <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span>
+                <span class="s2">"user_id"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span>
+                <span class="s2">"movie_id"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span>
+                <span class="s2">"ratings"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
+                <span class="s2">"timestamp"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span>
             <span class="p">},</span>
-            <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;python&quot;</span><span class="p">,</span>
+            <span class="n">engine</span><span class="o">=</span><span class="s2">"python"</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">rating_data</span> <span class="o">=</span> <span class="n">rating_data</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">rating_data</span>
@@ -765,38 +755,35 @@
             <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
                 <span class="p">[</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_global_user_id_map</span><span class="p">[</span><span class="n">ele</span><span class="p">]</span>
-                    <span class="k">for</span> <span class="n">ele</span> <span class="ow">in</span> <span class="n">rating_data</span><span class="p">[</span><span class="s2">&quot;user_id&quot;</span><span class="p">]</span>
+                    <span class="k">for</span> <span class="n">ele</span> <span class="ow">in</span> <span class="n">rating_data</span><span class="p">[</span><span class="s2">"user_id"</span><span class="p">]</span>
                 <span class="p">],</span>
                 <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span>
             <span class="p">),</span>
             <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
                 <span class="p">[</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_global_movie_id_map</span><span class="p">[</span><span class="n">ele</span><span class="p">]</span>
-                    <span class="k">for</span> <span class="n">ele</span> <span class="ow">in</span> <span class="n">rating_data</span><span class="p">[</span><span class="s2">&quot;movie_id&quot;</span><span class="p">]</span>
+                    <span class="k">for</span> <span class="n">ele</span> <span class="ow">in</span> <span class="n">rating_data</span><span class="p">[</span><span class="s2">"movie_id"</span><span class="p">]</span>
                 <span class="p">],</span>
                 <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span>
             <span class="p">),</span>
         <span class="p">)</span>
-        <span class="n">rating_values</span> <span class="o">=</span> <span class="n">rating_data</span><span class="p">[</span><span class="s2">&quot;rating&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="n">rating_values</span> <span class="o">=</span> <span class="n">rating_data</span><span class="p">[</span><span class="s2">"rating"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">rating_pairs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rating_pairs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">rating_values</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s1">&#39;Dataset(&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot;, num_graphs=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s1">,&#39;</span>
-            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; save_path=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_path</span><span class="si">}</span><span class="s2">), valid_ratio=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid_ratio</span><span class="si">}</span><span class="s2">, test_ratio=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">test_ratio</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s1">'Dataset("</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">", num_graphs=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s1">,'</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">" save_path=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_path</span><span class="si">}</span><span class="s2">), valid_ratio=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid_ratio</span><span class="si">}</span><span class="s2">, test_ratio=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">test_ratio</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span></div>
 
 </pre></div>
-
-           </div>
-          </div>
-          <footer>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2018, DGL Team.</p>
-  </div>
+</div>
+</div>
+<footer>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
@@ -804,15 +791,58 @@
    
 
 </footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+
+<script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
-
+  </script>
 </body>
 </html>

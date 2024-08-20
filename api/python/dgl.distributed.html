@@ -1,66 +1,59 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../../">
+
+<html class="writer-html5" data-content_root="../../" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dgl.distributed &mdash; DGL 2.4 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
-      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=0bf289b5" />
-
-  
-  <!--[if lt IE 9]>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>dgl.distributed — DGL 2.3.1 documentation</title>
+<link href="../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script src="../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=9caaf7ed"></script>
-        <script src="../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../../_static/copybutton.js?v=ccdb6887"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="../../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="dgl.distributed.initialize" href="../../generated/dgl.distributed.initialize.html" />
-    <link rel="prev" title="dgl.DGLGraph.local_scope" href="../../generated/dgl.DGLGraph.local_scope.html" /> 
+<script src="../../_static/jquery.js?v=5d32c60e"></script>
+<script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../../_static/doctools.js?v=9a2dae69"></script>
+<script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+<script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../_static/js/theme.js"></script>
+<link href="../../genindex.html" rel="index" title="Index"/>
+<link href="../../search.html" rel="search" title="Search"/>
+<link href="../../generated/dgl.distributed.initialize.html" rel="next" title="dgl.distributed.initialize"/>
+<link href="../../generated/dgl.DGLGraph.local_scope.html" rel="prev" title="dgl.DGLGraph.local_scope"/>
 </head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../../index.html" class="icon icon-home">
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../../index.html">
             DGL
           </a>
-              <div class="version">
-                2.4
+<div class="version">
+                2.3.1
               </div>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+<form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Install and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/blitz/index.html">A Blitz Introduction to DGL</a></li>
@@ -211,32 +204,28 @@
 <li class="toctree-l1"><a class="reference internal" href="../../env_var.html">Environment Variables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../resources.html">Resources</a></li>
 </ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">DGL</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">dgl.distributed</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/api/python/dgl.distributed.rst.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="dgl-distributed">
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../../index.html"></a></li>
+<li class="breadcrumb-item active">dgl.distributed</li>
+<li class="wy-breadcrumbs-aside">
+<a href="../../_sources/api/python/dgl.distributed.rst.txt" rel="nofollow"> View page source</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<section id="dgl-distributed">
 <span id="api-distributed"></span><h1>dgl.distributed<a class="headerlink" href="#dgl-distributed" title="Link to this heading"></a></h1>
 <p>DGL distributed module contains classes and functions to support
 distributed Graph Neural Network training and inference on a cluster of
@@ -303,13 +292,13 @@ processes on different machines.</p></li>
 </dl>
 <p class="rubric">Examples</p>
 <p>The example shows the creation of <code class="docutils literal notranslate"><span class="pre">DistGraph</span></code> in the standalone mode.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">partition_graph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="s1">&#39;graph_name&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">num_hops</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">part_method</span><span class="o">=</span><span class="s1">&#39;metis&#39;</span><span class="p">,</span>
-<span class="gp">... </span>                                <span class="n">out_path</span><span class="o">=</span><span class="s1">&#39;output/&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">DistGraph</span><span class="p">(</span><span class="s1">&#39;graph_name&#39;</span><span class="p">,</span> <span class="n">part_config</span><span class="o">=</span><span class="s1">&#39;output/graph_name.json&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">partition_graph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="s1">'graph_name'</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">num_hops</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">part_method</span><span class="o">=</span><span class="s1">'metis'</span><span class="p">,</span>
+<span class="gp">... </span>                                <span class="n">out_path</span><span class="o">=</span><span class="s1">'output/'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">DistGraph</span><span class="p">(</span><span class="s1">'graph_name'</span><span class="p">,</span> <span class="n">part_config</span><span class="o">=</span><span class="s1">'output/graph_name.json'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The example shows the creation of <code class="docutils literal notranslate"><span class="pre">DistGraph</span></code> in the distributed mode.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">DistGraph</span><span class="p">(</span><span class="s1">&#39;graph-name&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">DistGraph</span><span class="p">(</span><span class="s1">'graph-name'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The code below shows the mini-batch training using <code class="docutils literal notranslate"><span class="pre">DistGraph</span></code>.</p>
@@ -320,8 +309,8 @@ processes on different machines.</p></li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataloader</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">DistDataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">nodes</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
 <span class="gp">... </span>                                            <span class="n">collate_fn</span><span class="o">=</span><span class="n">sample</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">feat</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;features&#39;</span><span class="p">][</span><span class="n">block</span><span class="o">.</span><span class="n">srcdata</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span><span class="p">]]</span>
-<span class="gp">... </span>    <span class="n">labels</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">][</span><span class="n">block</span><span class="o">.</span><span class="n">dstdata</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span><span class="p">]]</span>
+<span class="gp">... </span>    <span class="n">feat</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'features'</span><span class="p">][</span><span class="n">block</span><span class="o">.</span><span class="n">srcdata</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span><span class="p">]]</span>
+<span class="gp">... </span>    <span class="n">labels</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'labels'</span><span class="p">][</span><span class="n">block</span><span class="o">.</span><span class="n">dstdata</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span><span class="p">]]</span>
 <span class="gp">... </span>    <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">feat</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -338,7 +327,6 @@ manually setting up servers and trainers. The setup is not fully tested yet.</p>
 <p>This API blocks the current process untill all the clients invoke this API.
 Please use this API with caution.</p>
 </dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="dgl.distributed.DistGraph.device">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">device</span></span><a class="headerlink" href="#dgl.distributed.DistGraph.device" title="Link to this definition"></a></dt>
@@ -346,13 +334,13 @@ Please use this API with caution.</p>
 <p class="rubric">Examples</p>
 <p>The following example uses PyTorch backend.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">heterograph</span><span class="p">({</span>
-<span class="gp">... </span>    <span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;plays&#39;</span><span class="p">,</span> <span class="s1">&#39;game&#39;</span><span class="p">):</span> <span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="s1">'user'</span><span class="p">,</span> <span class="s1">'plays'</span><span class="p">,</span> <span class="s1">'game'</span><span class="p">):</span> <span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="gp">... </span><span class="p">})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
-<span class="go">device(type=&#39;cpu&#39;)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;cuda:0&#39;</span><span class="p">)</span>
+<span class="go">device(type='cpu')</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'cuda:0'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
-<span class="go">device(type=&#39;cuda&#39;, index=0)</span>
+<span class="go">device(type='cuda', index=0)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -361,7 +349,6 @@ Please use this API with caution.</p>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="dgl.distributed.DistGraph.edata">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">edata</span></span><a class="headerlink" href="#dgl.distributed.DistGraph.edata" title="Link to this definition"></a></dt>
@@ -375,7 +362,6 @@ Please use this API with caution.</p>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.DistGraph.edge_attr_schemes">
 <span class="sig-name descname"><span class="pre">edge_attr_schemes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/dist_graph.html#DistGraph.edge_attr_schemes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.DistGraph.edge_attr_schemes" title="Link to this definition"></a></dt>
@@ -393,7 +379,7 @@ of the edge feature.</p>
 <p class="rubric">Examples</p>
 <p>The following uses PyTorch backend.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">edge_attr_schemes</span><span class="p">()</span>
-<span class="go">{&#39;h&#39;: Scheme(shape=(4,), dtype=torch.float32)}</span>
+<span class="go">{'h': Scheme(shape=(4,), dtype=torch.float32)}</span>
 </pre></div>
 </div>
 <div class="admonition seealso">
@@ -401,13 +387,11 @@ of the edge feature.</p>
 <p><a class="reference internal" href="#dgl.distributed.DistGraph.node_attr_schemes" title="dgl.distributed.DistGraph.node_attr_schemes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">node_attr_schemes</span></code></a></p>
 </div>
 </dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="dgl.distributed.DistGraph.edges">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">edges</span></span><a class="headerlink" href="#dgl.distributed.DistGraph.edges" title="Link to this definition"></a></dt>
 <dd><p>Return an edge view</p>
 </dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="dgl.distributed.DistGraph.etypes">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">etypes</span></span><a class="headerlink" href="#dgl.distributed.DistGraph.etypes" title="Link to this definition"></a></dt>
@@ -418,13 +402,12 @@ of the edge feature.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">DistGraph</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">DistGraph</span><span class="p">(</span><span class="s2">"test"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">etypes</span>
-<span class="go">[&#39;_E&#39;]</span>
+<span class="go">['_E']</span>
 </pre></div>
 </div>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.DistGraph.find_edges">
 <span class="sig-name descname"><span class="pre">find_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">etype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/dist_graph.html#DistGraph.find_edges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.DistGraph.find_edges" title="Link to this definition"></a></dt>
@@ -458,7 +441,6 @@ triplet format in the graph.</p></li>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.DistGraph.get_edge_partition_policy">
 <span class="sig-name descname"><span class="pre">get_edge_partition_policy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">etype</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/dist_graph.html#DistGraph.get_edge_partition_policy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.DistGraph.get_edge_partition_policy" title="Link to this definition"></a></dt>
@@ -480,7 +462,6 @@ the edge type, we can reference to the pre-defined partition policy for the edge
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.DistGraph.get_etype_id">
 <span class="sig-name descname"><span class="pre">get_etype_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">etype</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/dist_graph.html#DistGraph.get_etype_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.DistGraph.get_etype_id" title="Link to this definition"></a></dt>
@@ -496,7 +477,6 @@ graph.</p>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.DistGraph.get_node_partition_policy">
 <span class="sig-name descname"><span class="pre">get_node_partition_policy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ntype</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/dist_graph.html#DistGraph.get_node_partition_policy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.DistGraph.get_node_partition_policy" title="Link to this definition"></a></dt>
@@ -518,7 +498,6 @@ the node type, we can reference to the pre-defined partition policy for the node
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.DistGraph.get_ntype_id">
 <span class="sig-name descname"><span class="pre">get_ntype_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ntype</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/dist_graph.html#DistGraph.get_ntype_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.DistGraph.get_ntype_id" title="Link to this definition"></a></dt>
@@ -534,7 +513,6 @@ graph.</p>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.DistGraph.get_partition_book">
 <span class="sig-name descname"><span class="pre">get_partition_book</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/dist_graph.html#DistGraph.get_partition_book"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.DistGraph.get_partition_book" title="Link to this definition"></a></dt>
@@ -548,7 +526,6 @@ graph.</p>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="dgl.distributed.DistGraph.idtype">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">idtype</span></span><a class="headerlink" href="#dgl.distributed.DistGraph.idtype" title="Link to this definition"></a></dt>
@@ -566,7 +543,6 @@ graph.</p>
 <p><code class="xref py py-obj docutils literal notranslate"><span class="pre">long</span></code>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a></p>
 </div>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.DistGraph.in_degrees">
 <span class="sig-name descname"><span class="pre">in_degrees</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'__ALL__'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/dist_graph.html#DistGraph.in_degrees"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.DistGraph.in_degrees" title="Link to this definition"></a></dt>
@@ -614,7 +590,6 @@ of the i-th input node. If <code class="xref py py-attr docutils literal notrans
 <p><a class="reference internal" href="#dgl.distributed.DistGraph.out_degrees" title="dgl.distributed.DistGraph.out_degrees"><code class="xref py py-obj docutils literal notranslate"><span class="pre">out_degrees</span></code></a></p>
 </div>
 </dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="dgl.distributed.DistGraph.local_partition">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">local_partition</span></span><a class="headerlink" href="#dgl.distributed.DistGraph.local_partition" title="Link to this definition"></a></dt>
@@ -632,7 +607,6 @@ this returns None.</p>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="dgl.distributed.DistGraph.ndata">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ndata</span></span><a class="headerlink" href="#dgl.distributed.DistGraph.ndata" title="Link to this definition"></a></dt>
@@ -646,7 +620,6 @@ this returns None.</p>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.DistGraph.node_attr_schemes">
 <span class="sig-name descname"><span class="pre">node_attr_schemes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/dist_graph.html#DistGraph.node_attr_schemes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.DistGraph.node_attr_schemes" title="Link to this definition"></a></dt>
@@ -664,7 +637,7 @@ of the node feature.</p>
 <p class="rubric">Examples</p>
 <p>The following uses PyTorch backend.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">node_attr_schemes</span><span class="p">()</span>
-<span class="go">{&#39;h&#39;: Scheme(shape=(4,), dtype=torch.float32)}</span>
+<span class="go">{'h': Scheme(shape=(4,), dtype=torch.float32)}</span>
 </pre></div>
 </div>
 <div class="admonition seealso">
@@ -672,13 +645,11 @@ of the node feature.</p>
 <p><a class="reference internal" href="#dgl.distributed.DistGraph.edge_attr_schemes" title="dgl.distributed.DistGraph.edge_attr_schemes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_attr_schemes</span></code></a></p>
 </div>
 </dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="dgl.distributed.DistGraph.nodes">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nodes</span></span><a class="headerlink" href="#dgl.distributed.DistGraph.nodes" title="Link to this definition"></a></dt>
 <dd><p>Return a node view</p>
 </dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="dgl.distributed.DistGraph.ntypes">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ntypes</span></span><a class="headerlink" href="#dgl.distributed.DistGraph.ntypes" title="Link to this definition"></a></dt>
@@ -689,13 +660,12 @@ of the node feature.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">DistGraph</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">DistGraph</span><span class="p">(</span><span class="s2">"test"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">ntypes</span>
-<span class="go">[&#39;_U&#39;]</span>
+<span class="go">['_U']</span>
 </pre></div>
 </div>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.DistGraph.num_edges">
 <span class="sig-name descname"><span class="pre">num_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">etype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/dist_graph.html#DistGraph.num_edges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.DistGraph.num_edges" title="Link to this definition"></a></dt>
@@ -720,13 +690,12 @@ in the graph.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">DistGraph</span><span class="p">(</span><span class="s1">&#39;ogb-product&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">DistGraph</span><span class="p">(</span><span class="s1">'ogb-product'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">num_edges</span><span class="p">())</span>
 <span class="go">123718280</span>
 </pre></div>
 </div>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.DistGraph.num_nodes">
 <span class="sig-name descname"><span class="pre">num_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ntype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/dist_graph.html#DistGraph.num_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.DistGraph.num_nodes" title="Link to this definition"></a></dt>
@@ -744,25 +713,22 @@ type. If not given (default), it returns the total number of nodes of all types.
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">DistGraph</span><span class="p">(</span><span class="s1">&#39;ogb-product&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">DistGraph</span><span class="p">(</span><span class="s1">'ogb-product'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">())</span>
 <span class="go">2449029</span>
 </pre></div>
 </div>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.DistGraph.number_of_edges">
 <span class="sig-name descname"><span class="pre">number_of_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">etype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/dist_graph.html#DistGraph.number_of_edges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.DistGraph.number_of_edges" title="Link to this definition"></a></dt>
 <dd><p>Alias of <a class="reference internal" href="#dgl.distributed.DistGraph.num_edges" title="dgl.distributed.DistGraph.num_edges"><code class="xref py py-func docutils literal notranslate"><span class="pre">num_edges()</span></code></a></p>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.DistGraph.number_of_nodes">
 <span class="sig-name descname"><span class="pre">number_of_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ntype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/dist_graph.html#DistGraph.number_of_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.DistGraph.number_of_nodes" title="Link to this definition"></a></dt>
 <dd><p>Alias of <a class="reference internal" href="#dgl.distributed.DistGraph.num_nodes" title="dgl.distributed.DistGraph.num_nodes"><code class="xref py py-func docutils literal notranslate"><span class="pre">num_nodes()</span></code></a></p>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.DistGraph.out_degrees">
 <span class="sig-name descname"><span class="pre">out_degrees</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'__ALL__'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/dist_graph.html#DistGraph.out_degrees"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.DistGraph.out_degrees" title="Link to this definition"></a></dt>
@@ -810,7 +776,6 @@ of the i-th input node. If <code class="xref py py-attr docutils literal notrans
 <p><a class="reference internal" href="#dgl.distributed.DistGraph.in_degrees" title="dgl.distributed.DistGraph.in_degrees"><code class="xref py py-obj docutils literal notranslate"><span class="pre">in_degrees</span></code></a></p>
 </div>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.DistGraph.rank">
 <span class="sig-name descname"><span class="pre">rank</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/dist_graph.html#DistGraph.rank"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.DistGraph.rank" title="Link to this definition"></a></dt>
@@ -826,9 +791,7 @@ the client processes.</p>
 </dd>
 </dl>
 </dd></dl>
-
 </dd></dl>
-
 </section>
 <section id="distributed-tensor">
 <h2>Distributed Tensor<a class="headerlink" href="#distributed-tensor" title="Link to this heading"></a></h2>
@@ -923,7 +886,6 @@ do the same.</p>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="dgl.distributed.DistTensor.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#dgl.distributed.DistTensor.name" title="Link to this definition"></a></dt>
@@ -937,7 +899,6 @@ do the same.</p>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="dgl.distributed.DistTensor.part_policy">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">part_policy</span></span><a class="headerlink" href="#dgl.distributed.DistTensor.part_policy" title="Link to this definition"></a></dt>
@@ -951,7 +912,6 @@ do the same.</p>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="dgl.distributed.DistTensor.shape">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shape</span></span><a class="headerlink" href="#dgl.distributed.DistTensor.shape" title="Link to this definition"></a></dt>
@@ -965,9 +925,7 @@ do the same.</p>
 </dd>
 </dl>
 </dd></dl>
-
 </dd></dl>
-
 </section>
 <section id="distributed-node-embedding">
 <h2>Distributed Node Embedding<a class="headerlink" href="#distributed-node-embedding" title="Link to this heading"></a></h2>
@@ -1026,7 +984,6 @@ have to invoke
 there will be some memory leak.</p>
 </div>
 </dd></dl>
-
 </section>
 <section id="distributed-embedding-optimizer">
 <h2>Distributed embedding optimizer<a class="headerlink" href="#distributed-embedding-optimizer" title="Link to this heading"></a></h2>
@@ -1067,7 +1024,6 @@ Default: 1e-10</p></li>
 <p><a class="reference internal" href="#dgl.distributed.optim.SparseAdagrad.save" title="dgl.distributed.optim.SparseAdagrad.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a></p>
 </div>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.optim.SparseAdagrad.save">
 <span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgl.distributed.optim.SparseAdagrad.save" title="Link to this definition"></a></dt>
@@ -1095,7 +1051,6 @@ Default: 1e-10</p></li>
 <p><a class="reference internal" href="#dgl.distributed.optim.SparseAdagrad.load" title="dgl.distributed.optim.SparseAdagrad.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a></p>
 </div>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.optim.SparseAdagrad.step">
 <span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dgl.distributed.optim.SparseAdagrad.step" title="Link to this definition"></a></dt>
@@ -1103,9 +1058,7 @@ Default: 1e-10</p></li>
 <p>The step function is invoked at the end of every batch to push the gradients
 of the embeddings involved in a mini-batch to DGL’s servers and update the embeddings.</p>
 </dd></dl>
-
 </dd></dl>
-
 <dl class="py class">
 <dt class="sig sig-object py" id="dgl.distributed.optim.SparseAdam">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgl.distributed.optim.</span></span><span class="sig-name descname"><span class="pre">SparseAdam</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">betas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0.9,</span> <span class="pre">0.999)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/optim/pytorch/sparse_optim.html#SparseAdam"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.optim.SparseAdam" title="Link to this definition"></a></dt>
@@ -1149,7 +1102,6 @@ Default: 1e-8</p></li>
 <p><a class="reference internal" href="#dgl.distributed.optim.SparseAdam.save" title="dgl.distributed.optim.SparseAdam.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a></p>
 </div>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.optim.SparseAdam.save">
 <span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgl.distributed.optim.SparseAdam.save" title="Link to this definition"></a></dt>
@@ -1177,7 +1129,6 @@ Default: 1e-8</p></li>
 <p><a class="reference internal" href="#dgl.distributed.optim.SparseAdam.load" title="dgl.distributed.optim.SparseAdam.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a></p>
 </div>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.optim.SparseAdam.step">
 <span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dgl.distributed.optim.SparseAdam.step" title="Link to this definition"></a></dt>
@@ -1185,9 +1136,7 @@ Default: 1e-8</p></li>
 <p>The step function is invoked at the end of every batch to push the gradients
 of the embeddings involved in a mini-batch to DGL’s servers and update the embeddings.</p>
 </dd></dl>
-
 </dd></dl>
-
 </section>
 <section id="distributed-workload-split">
 <h2>Distributed workload split<a class="headerlink" href="#distributed-workload-split" title="Link to this heading"></a></h2>
@@ -1229,7 +1178,7 @@ by the batch size, then the last batch will be smaller. (default: <code class="d
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">DistGraph</span><span class="p">(</span><span class="s1">&#39;graph-name&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">DistGraph</span><span class="p">(</span><span class="s1">'graph-name'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="n">seeds</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="n">seeds</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">seeds</span><span class="p">))</span>
 <span class="gp">... </span>    <span class="n">frontier</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">sample_neighbors</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">seeds</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
@@ -1237,8 +1186,8 @@ by the batch size, then the last batch will be smaller. (default: <code class="d
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataloader</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">DistDataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">nodes</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
 <span class="go">                                                collate_fn=sample, shuffle=True)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">feat</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;features&#39;</span><span class="p">][</span><span class="n">block</span><span class="o">.</span><span class="n">srcdata</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span><span class="p">]]</span>
-<span class="gp">... </span>    <span class="n">labels</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">][</span><span class="n">block</span><span class="o">.</span><span class="n">dstdata</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span><span class="p">]]</span>
+<span class="gp">... </span>    <span class="n">feat</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'features'</span><span class="p">][</span><span class="n">block</span><span class="o">.</span><span class="n">srcdata</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span><span class="p">]]</span>
+<span class="gp">... </span>    <span class="n">labels</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'labels'</span><span class="p">][</span><span class="n">block</span><span class="o">.</span><span class="n">dstdata</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span><span class="p">]]</span>
 <span class="gp">... </span>    <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">feat</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1256,7 +1205,6 @@ if dataset = [1, 2, 3, 4], batch_size = 2 and shuffle = False, the order of [1, 
 and [3, 4] is not guaranteed.</p>
 </div>
 </dd></dl>
-
 </section>
 <section id="distributed-graph-sampling-operators">
 <span id="api-distributed-sampling-ops"></span><h3>Distributed Graph Sampling Operators<a class="headerlink" href="#distributed-graph-sampling-operators" title="Link to this heading"></a></h3>
@@ -1318,7 +1266,6 @@ Please see <code class="xref py py-meth docutils literal notranslate"><span clas
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.GraphPartitionBook.eid2localeid">
 <span class="sig-name descname"><span class="pre">eid2localeid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">partid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">etype</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/graph_partition_book.html#GraphPartitionBook.eid2localeid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.GraphPartitionBook.eid2localeid" title="Link to this definition"></a></dt>
@@ -1339,7 +1286,6 @@ Please see <code class="xref py py-meth docutils literal notranslate"><span clas
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.GraphPartitionBook.eid2partid">
 <span class="sig-name descname"><span class="pre">eid2partid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">etype</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/graph_partition_book.html#GraphPartitionBook.eid2partid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.GraphPartitionBook.eid2partid" title="Link to this definition"></a></dt>
@@ -1359,7 +1305,6 @@ Please see <code class="xref py py-meth docutils literal notranslate"><span clas
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.GraphPartitionBook.map_to_homo_eid">
 <span class="sig-name descname"><span class="pre">map_to_homo_eid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">etype</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/graph_partition_book.html#GraphPartitionBook.map_to_homo_eid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.GraphPartitionBook.map_to_homo_eid" title="Link to this definition"></a></dt>
@@ -1379,7 +1324,6 @@ Please see <code class="xref py py-meth docutils literal notranslate"><span clas
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.GraphPartitionBook.map_to_homo_nid">
 <span class="sig-name descname"><span class="pre">map_to_homo_nid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ntype</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/graph_partition_book.html#GraphPartitionBook.map_to_homo_nid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.GraphPartitionBook.map_to_homo_nid" title="Link to this definition"></a></dt>
@@ -1399,7 +1343,6 @@ Please see <code class="xref py py-meth docutils literal notranslate"><span clas
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.GraphPartitionBook.map_to_per_etype">
 <span class="sig-name descname"><span class="pre">map_to_per_etype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/graph_partition_book.html#GraphPartitionBook.map_to_per_etype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.GraphPartitionBook.map_to_per_etype" title="Link to this definition"></a></dt>
@@ -1416,7 +1359,6 @@ Please see <code class="xref py py-meth docutils literal notranslate"><span clas
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.GraphPartitionBook.map_to_per_ntype">
 <span class="sig-name descname"><span class="pre">map_to_per_ntype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/graph_partition_book.html#GraphPartitionBook.map_to_per_ntype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.GraphPartitionBook.map_to_per_ntype" title="Link to this definition"></a></dt>
@@ -1433,7 +1375,6 @@ Please see <code class="xref py py-meth docutils literal notranslate"><span clas
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.GraphPartitionBook.metadata">
 <span class="sig-name descname"><span class="pre">metadata</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/graph_partition_book.html#GraphPartitionBook.metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.GraphPartitionBook.metadata" title="Link to this definition"></a></dt>
@@ -1445,8 +1386,8 @@ Please see <code class="xref py py-meth docutils literal notranslate"><span clas
 </ul>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_partition_book</span><span class="p">()</span><span class="o">.</span><span class="n">metadata</span><span class="p">())</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">[{</span><span class="s1">&#39;machine_id&#39;</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;num_nodes&#39;</span> <span class="p">:</span> <span class="mi">3000</span><span class="p">,</span> <span class="s1">&#39;num_edges&#39;</span> <span class="p">:</span> <span class="mi">5000</span><span class="p">},</span>
-<span class="gp">... </span> <span class="p">{</span><span class="s1">&#39;machine_id&#39;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;num_nodes&#39;</span> <span class="p">:</span> <span class="mi">2000</span><span class="p">,</span> <span class="s1">&#39;num_edges&#39;</span> <span class="p">:</span> <span class="mi">4888</span><span class="p">},</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[{</span><span class="s1">'machine_id'</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'num_nodes'</span> <span class="p">:</span> <span class="mi">3000</span><span class="p">,</span> <span class="s1">'num_edges'</span> <span class="p">:</span> <span class="mi">5000</span><span class="p">},</span>
+<span class="gp">... </span> <span class="p">{</span><span class="s1">'machine_id'</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'num_nodes'</span> <span class="p">:</span> <span class="mi">2000</span><span class="p">,</span> <span class="s1">'num_edges'</span> <span class="p">:</span> <span class="mi">4888</span><span class="p">},</span>
 <span class="gp">... </span> <span class="o">...</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -1459,7 +1400,6 @@ Please see <code class="xref py py-meth docutils literal notranslate"><span clas
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.GraphPartitionBook.nid2localnid">
 <span class="sig-name descname"><span class="pre">nid2localnid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">partid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ntype</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/graph_partition_book.html#GraphPartitionBook.nid2localnid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.GraphPartitionBook.nid2localnid" title="Link to this definition"></a></dt>
@@ -1480,7 +1420,6 @@ Please see <code class="xref py py-meth docutils literal notranslate"><span clas
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.GraphPartitionBook.nid2partid">
 <span class="sig-name descname"><span class="pre">nid2partid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ntype</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/graph_partition_book.html#GraphPartitionBook.nid2partid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.GraphPartitionBook.nid2partid" title="Link to this definition"></a></dt>
@@ -1500,7 +1439,6 @@ Please see <code class="xref py py-meth docutils literal notranslate"><span clas
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.GraphPartitionBook.num_partitions">
 <span class="sig-name descname"><span class="pre">num_partitions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/graph_partition_book.html#GraphPartitionBook.num_partitions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.GraphPartitionBook.num_partitions" title="Link to this definition"></a></dt>
@@ -1514,7 +1452,6 @@ Please see <code class="xref py py-meth docutils literal notranslate"><span clas
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="dgl.distributed.GraphPartitionBook.partid">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">partid</span></span><a class="headerlink" href="#dgl.distributed.GraphPartitionBook.partid" title="Link to this definition"></a></dt>
@@ -1528,7 +1465,6 @@ Please see <code class="xref py py-meth docutils literal notranslate"><span clas
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.GraphPartitionBook.partid2eids">
 <span class="sig-name descname"><span class="pre">partid2eids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">partid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">etype</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/graph_partition_book.html#GraphPartitionBook.partid2eids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.GraphPartitionBook.partid2eids" title="Link to this definition"></a></dt>
@@ -1548,7 +1484,6 @@ Please see <code class="xref py py-meth docutils literal notranslate"><span clas
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.GraphPartitionBook.partid2nids">
 <span class="sig-name descname"><span class="pre">partid2nids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">partid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ntype</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/graph_partition_book.html#GraphPartitionBook.partid2nids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.GraphPartitionBook.partid2nids" title="Link to this definition"></a></dt>
@@ -1568,7 +1503,6 @@ Please see <code class="xref py py-meth docutils literal notranslate"><span clas
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.GraphPartitionBook.shared_memory">
 <span class="sig-name descname"><span class="pre">shared_memory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/graph_partition_book.html#GraphPartitionBook.shared_memory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.GraphPartitionBook.shared_memory" title="Link to this definition"></a></dt>
@@ -1580,9 +1514,7 @@ memory in another process.</p>
 </dd>
 </dl>
 </dd></dl>
-
 </dd></dl>
-
 <dl class="py class">
 <dt class="sig sig-object py" id="dgl.distributed.PartitionPolicy">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgl.distributed.</span></span><span class="sig-name descname"><span class="pre">PartitionPolicy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">policy_str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">partition_book</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/graph_partition_book.html#PartitionPolicy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.PartitionPolicy" title="Link to this definition"></a></dt>
@@ -1613,7 +1545,6 @@ policy from a graph partition book, users need to specify the policy name (‘no
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.PartitionPolicy.get_size">
 <span class="sig-name descname"><span class="pre">get_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/graph_partition_book.html#PartitionPolicy.get_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.PartitionPolicy.get_size" title="Link to this definition"></a></dt>
@@ -1627,7 +1558,6 @@ policy from a graph partition book, users need to specify the policy name (‘no
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="dgl.distributed.PartitionPolicy.part_id">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">part_id</span></span><a class="headerlink" href="#dgl.distributed.PartitionPolicy.part_id" title="Link to this definition"></a></dt>
@@ -1641,7 +1571,6 @@ policy from a graph partition book, users need to specify the policy name (‘no
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="dgl.distributed.PartitionPolicy.partition_book">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">partition_book</span></span><a class="headerlink" href="#dgl.distributed.PartitionPolicy.partition_book" title="Link to this definition"></a></dt>
@@ -1655,7 +1584,6 @@ policy from a graph partition book, users need to specify the policy name (‘no
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="dgl.distributed.PartitionPolicy.policy_str">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">policy_str</span></span><a class="headerlink" href="#dgl.distributed.PartitionPolicy.policy_str" title="Link to this definition"></a></dt>
@@ -1669,7 +1597,6 @@ policy from a graph partition book, users need to specify the policy name (‘no
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.PartitionPolicy.to_local">
 <span class="sig-name descname"><span class="pre">to_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/graph_partition_book.html#PartitionPolicy.to_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.PartitionPolicy.to_local" title="Link to this definition"></a></dt>
@@ -1686,7 +1613,6 @@ policy from a graph partition book, users need to specify the policy name (‘no
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.distributed.PartitionPolicy.to_partid">
 <span class="sig-name descname"><span class="pre">to_partid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/graph_partition_book.html#PartitionPolicy.to_partid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.PartitionPolicy.to_partid" title="Link to this definition"></a></dt>
@@ -1703,9 +1629,7 @@ policy from a graph partition book, users need to specify the policy name (‘no
 </dd>
 </dl>
 </dd></dl>
-
 </dd></dl>
-
 </section>
 <section id="split-and-load-partitions">
 <h3>Split and Load Partitions<a class="headerlink" href="#split-and-load-partitions" title="Link to this heading"></a></h3>
@@ -1731,20 +1655,16 @@ policy from a graph partition book, users need to specify the policy name (‘no
 </section>
 </section>
 </section>
-
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../../generated/dgl.DGLGraph.local_scope.html" class="btn btn-neutral float-left" title="dgl.DGLGraph.local_scope" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../../generated/dgl.distributed.initialize.html" class="btn btn-neutral float-right" title="dgl.distributed.initialize" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2018, DGL Team.</p>
-  </div>
+</div>
+</div>
+<footer><div aria-label="Footer" class="rst-footer-buttons" role="navigation">
+<a accesskey="p" class="btn btn-neutral float-left" href="../../generated/dgl.DGLGraph.local_scope.html" rel="prev" title="dgl.DGLGraph.local_scope"><span aria-hidden="true" class="fa fa-arrow-circle-left"></span> Previous</a>
+<a accesskey="n" class="btn btn-neutral float-right" href="../../generated/dgl.distributed.initialize.html" rel="next" title="dgl.distributed.initialize">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
+</div>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
@@ -1752,15 +1672,58 @@ policy from a graph partition book, users need to specify the policy name (‘no
    
 
 </footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+
+<script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
-
+  </script>
 </body>
 </html>

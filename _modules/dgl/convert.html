@@ -1,61 +1,55 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../../">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dgl.convert &mdash; DGL 2.4 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
-      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=0bf289b5" />
 
-  
-  <!--[if lt IE 9]>
+<html class="writer-html5" data-content_root="../../" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>dgl.convert — DGL 2.3.1 documentation</title>
+<link href="../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script src="../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=9caaf7ed"></script>
-        <script src="../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../../_static/copybutton.js?v=ccdb6887"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-    <script src="../../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
+<script src="../../_static/jquery.js?v=5d32c60e"></script>
+<script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../../_static/doctools.js?v=9a2dae69"></script>
+<script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script src="../../_static/js/theme.js"></script>
+<link href="../../genindex.html" rel="index" title="Index"/>
+<link href="../../search.html" rel="search" title="Search"/>
 </head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../../index.html" class="icon icon-home">
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../../index.html">
             DGL
           </a>
-              <div class="version">
-                2.4
+<div class="version">
+                2.3.1
               </div>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+<form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Install and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/blitz/index.html">A Blitz Introduction to DGL</a></li>
@@ -105,33 +99,29 @@
 <li class="toctree-l1"><a class="reference internal" href="../../env_var.html">Environment Variables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../resources.html">Resources</a></li>
 </ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">DGL</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">dgl.convert</li>
-      <li class="wy-breadcrumbs-aside">
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <h1>Source code for dgl.convert</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Module for converting graph from/to other object.&quot;&quot;&quot;</span>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../../index.html"></a></li>
+<li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+<li class="breadcrumb-item active">dgl.convert</li>
+<li class="wy-breadcrumbs-aside">
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<h1>Source code for dgl.convert</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Module for converting graph from/to other object."""</span>
 
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Mapping</span>
@@ -145,20 +135,20 @@
 <span class="kn">from</span> <span class="nn">.heterograph</span> <span class="kn">import</span> <span class="n">combine_frames</span><span class="p">,</span> <span class="n">DGLBlock</span><span class="p">,</span> <span class="n">DGLGraph</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;graph&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;hetero_from_shared_memory&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;heterograph&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;create_block&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;block_to_graph&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;to_heterogeneous&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;to_homogeneous&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;from_scipy&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;bipartite_from_scipy&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;from_networkx&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;bipartite_from_networkx&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;to_networkx&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;from_cugraph&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;to_cugraph&quot;</span><span class="p">,</span>
+    <span class="s2">"graph"</span><span class="p">,</span>
+    <span class="s2">"hetero_from_shared_memory"</span><span class="p">,</span>
+    <span class="s2">"heterograph"</span><span class="p">,</span>
+    <span class="s2">"create_block"</span><span class="p">,</span>
+    <span class="s2">"block_to_graph"</span><span class="p">,</span>
+    <span class="s2">"to_heterogeneous"</span><span class="p">,</span>
+    <span class="s2">"to_homogeneous"</span><span class="p">,</span>
+    <span class="s2">"from_scipy"</span><span class="p">,</span>
+    <span class="s2">"bipartite_from_scipy"</span><span class="p">,</span>
+    <span class="s2">"from_networkx"</span><span class="p">,</span>
+    <span class="s2">"bipartite_from_networkx"</span><span class="p">,</span>
+    <span class="s2">"to_networkx"</span><span class="p">,</span>
+    <span class="s2">"from_cugraph"</span><span class="p">,</span>
+    <span class="s2">"to_cugraph"</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -173,7 +163,7 @@
     <span class="n">row_sorted</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">col_sorted</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a graph and return.</span>
+<span class="w">    </span><span class="sd">"""Create a graph and return.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -183,16 +173,16 @@
 <span class="sd">        The allowed data formats are:</span>
 
 <span class="sd">        - ``(Tensor, Tensor)``: Each tensor must be a 1D tensor containing node IDs.</span>
-<span class="sd">          DGL calls this format &quot;tuple of node-tensors&quot;. The tensors should have the same</span>
+<span class="sd">          DGL calls this format "tuple of node-tensors". The tensors should have the same</span>
 <span class="sd">          data type of int32/int64 and device context (see below the descriptions of</span>
 <span class="sd">          :attr:`idtype` and :attr:`device`).</span>
-<span class="sd">        - ``(&#39;coo&#39;, (Tensor, Tensor))``: Same as ``(Tensor, Tensor)``.</span>
-<span class="sd">        - ``(&#39;csr&#39;, (Tensor, Tensor, Tensor))``: The three tensors form the CSR representation</span>
-<span class="sd">          of the graph&#39;s adjacency matrix.  The first one is the row index pointer.  The</span>
+<span class="sd">        - ``('coo', (Tensor, Tensor))``: Same as ``(Tensor, Tensor)``.</span>
+<span class="sd">        - ``('csr', (Tensor, Tensor, Tensor))``: The three tensors form the CSR representation</span>
+<span class="sd">          of the graph's adjacency matrix.  The first one is the row index pointer.  The</span>
 <span class="sd">          second one is the column indices.  The third one is the edge IDs, which can be empty</span>
 <span class="sd">          to represent consecutive integer IDs starting from 0.</span>
-<span class="sd">        - ``(&#39;csc&#39;, (Tensor, Tensor, Tensor))``: The three tensors form the CSC representation</span>
-<span class="sd">          of the graph&#39;s adjacency matrix.  The first one is the column index pointer.  The</span>
+<span class="sd">        - ``('csc', (Tensor, Tensor, Tensor))``: The three tensors form the CSC representation</span>
+<span class="sd">          of the graph's adjacency matrix.  The first one is the column index pointer.  The</span>
 <span class="sd">          second one is the row indices.  The third one is the edge IDs, which can be empty</span>
 <span class="sd">          to represent consecutive integer IDs starting from 0.</span>
 
@@ -206,7 +196,7 @@
 <span class="sd">        The data type for storing the structure-related graph information such as node and</span>
 <span class="sd">        edge IDs. It should be a framework-specific data type object (e.g., ``torch.int32``).</span>
 <span class="sd">        If ``None`` (default), DGL infers the ID type from the :attr:`data` argument.</span>
-<span class="sd">        See &quot;Notes&quot; for more details.</span>
+<span class="sd">        See "Notes" for more details.</span>
 <span class="sd">    device : device context, optional</span>
 <span class="sd">        The device of the returned graph, which should be a framework-specific device object</span>
 <span class="sd">        (e.g., ``torch.device``). If ``None`` (default), DGL uses the device of the tensors of</span>
@@ -268,48 +258,48 @@
 
 <span class="sd">    Create a graph on the first GPU with data type int32.</span>
 
-<span class="sd">    &gt;&gt;&gt; g = dgl.graph((src_ids, dst_ids), idtype=torch.int32, device=&#39;cuda:0&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; g = dgl.graph((src_ids, dst_ids), idtype=torch.int32, device='cuda:0')</span>
 
 <span class="sd">    Creating a graph with CSR representation:</span>
 
-<span class="sd">    &gt;&gt;&gt; g = dgl.graph((&#39;csr&#39;, ([0, 0, 0, 1, 2, 3], [1, 2, 3], [])))</span>
+<span class="sd">    &gt;&gt;&gt; g = dgl.graph(('csr', ([0, 0, 0, 1, 2, 3], [1, 2, 3], [])))</span>
 
 <span class="sd">    Create the same graph with CSR representation and edge IDs.</span>
 
-<span class="sd">    &gt;&gt;&gt; g = dgl.graph((&#39;csr&#39;, ([0, 0, 0, 1, 2, 3], [1, 2, 3], [0, 1, 2])))</span>
+<span class="sd">    &gt;&gt;&gt; g = dgl.graph(('csr', ([0, 0, 0, 1, 2, 3], [1, 2, 3], [0, 1, 2])))</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    from_scipy</span>
 <span class="sd">    from_networkx</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">DGLError</span><span class="p">(</span>
-            <span class="s2">&quot;dgl.graph no longer supports graph construction from a SciPy &quot;</span>
-            <span class="s2">&quot;sparse matrix, use dgl.from_scipy instead.&quot;</span>
+            <span class="s2">"dgl.graph no longer supports graph construction from a SciPy "</span>
+            <span class="s2">"sparse matrix, use dgl.from_scipy instead."</span>
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">DGLError</span><span class="p">(</span>
-            <span class="s2">&quot;dgl.graph no longer supports graph construction from a NetworkX &quot;</span>
-            <span class="s2">&quot;graph, use dgl.from_networkx instead.&quot;</span>
+            <span class="s2">"dgl.graph no longer supports graph construction from a NetworkX "</span>
+            <span class="s2">"graph, use dgl.from_networkx instead."</span>
         <span class="p">)</span>
 
     <span class="p">(</span><span class="n">sparse_fmt</span><span class="p">,</span> <span class="n">arrays</span><span class="p">),</span> <span class="n">urange</span><span class="p">,</span> <span class="n">vrange</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">graphdata2tensors</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">idtype</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">num_nodes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># override the number of nodes</span>
         <span class="k">if</span> <span class="n">num_nodes</span> <span class="o">&lt;</span> <span class="nb">max</span><span class="p">(</span><span class="n">urange</span><span class="p">,</span> <span class="n">vrange</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">DGLError</span><span class="p">(</span>
-                <span class="s2">&quot;The num_nodes argument must be larger than the max ID in the data,&quot;</span>
-                <span class="s2">&quot; but got </span><span class="si">{}</span><span class="s2"> and </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_nodes</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">urange</span><span class="p">,</span> <span class="n">vrange</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="s2">"The num_nodes argument must be larger than the max ID in the data,"</span>
+                <span class="s2">" but got </span><span class="si">{}</span><span class="s2"> and </span><span class="si">{}</span><span class="s2">."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_nodes</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">urange</span><span class="p">,</span> <span class="n">vrange</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
             <span class="p">)</span>
         <span class="n">urange</span><span class="p">,</span> <span class="n">vrange</span> <span class="o">=</span> <span class="n">num_nodes</span><span class="p">,</span> <span class="n">num_nodes</span>
 
     <span class="n">g</span> <span class="o">=</span> <span class="n">create_from_edges</span><span class="p">(</span>
         <span class="n">sparse_fmt</span><span class="p">,</span>
         <span class="n">arrays</span><span class="p">,</span>
-        <span class="s2">&quot;_N&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_E&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_N&quot;</span><span class="p">,</span>
+        <span class="s2">"_N"</span><span class="p">,</span>
+        <span class="s2">"_E"</span><span class="p">,</span>
+        <span class="s2">"_N"</span><span class="p">,</span>
         <span class="n">urange</span><span class="p">,</span>
         <span class="n">vrange</span><span class="p">,</span>
         <span class="n">row_sorted</span><span class="o">=</span><span class="n">row_sorted</span><span class="p">,</span>
@@ -321,7 +311,7 @@
 
 
 <span class="k">def</span> <span class="nf">hetero_from_shared_memory</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a heterograph from shared memory with the given name.</span>
+<span class="w">    </span><span class="sd">"""Create a heterograph from shared memory with the given name.</span>
 
 <span class="sd">    The newly created graph will have the same node types and edge types as the original graph.</span>
 <span class="sd">    But it does not have node features or edges features.</span>
@@ -334,7 +324,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    HeteroGraph (in shared memory)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">g</span><span class="p">,</span> <span class="n">ntypes</span><span class="p">,</span> <span class="n">etypes</span> <span class="o">=</span> <span class="n">heterograph_index</span><span class="o">.</span><span class="n">create_heterograph_from_shared_memory</span><span class="p">(</span>
         <span class="n">name</span>
     <span class="p">)</span>
@@ -344,7 +334,7 @@
 <div class="viewcode-block" id="heterograph">
 <a class="viewcode-back" href="../../generated/dgl.heterograph.html#dgl.heterograph">[docs]</a>
 <span class="k">def</span> <span class="nf">heterograph</span><span class="p">(</span><span class="n">data_dict</span><span class="p">,</span> <span class="n">num_nodes_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">idtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a heterogeneous graph and return.</span>
+<span class="w">    </span><span class="sd">"""Create a heterogeneous graph and return.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -356,16 +346,16 @@
 <span class="sd">        The allowed graph data formats are:</span>
 
 <span class="sd">        - ``(Tensor, Tensor)``: Each tensor must be a 1D tensor containing node IDs. DGL calls</span>
-<span class="sd">          this format &quot;tuple of node-tensors&quot;. The tensors should have the same data type,</span>
+<span class="sd">          this format "tuple of node-tensors". The tensors should have the same data type,</span>
 <span class="sd">          which must be either int32 or int64. They should also have the same device context</span>
 <span class="sd">          (see below the descriptions of :attr:`idtype` and :attr:`device`).</span>
-<span class="sd">        - ``(&#39;coo&#39;, (Tensor, Tensor))``: Same as ``(Tensor, Tensor)``.</span>
-<span class="sd">        - ``(&#39;csr&#39;, (Tensor, Tensor, Tensor))``: The three tensors form the CSR representation</span>
-<span class="sd">          of the graph&#39;s adjacency matrix.  The first one is the row index pointer.  The</span>
+<span class="sd">        - ``('coo', (Tensor, Tensor))``: Same as ``(Tensor, Tensor)``.</span>
+<span class="sd">        - ``('csr', (Tensor, Tensor, Tensor))``: The three tensors form the CSR representation</span>
+<span class="sd">          of the graph's adjacency matrix.  The first one is the row index pointer.  The</span>
 <span class="sd">          second one is the column indices.  The third one is the edge IDs, which can be empty</span>
 <span class="sd">          (i.e. with 0 elements) to represent consecutive integer IDs starting from 0.</span>
-<span class="sd">        - ``(&#39;csc&#39;, (Tensor, Tensor, Tensor))``: The three tensors form the CSC representation</span>
-<span class="sd">          of the graph&#39;s adjacency matrix.  The first one is the column index pointer.  The</span>
+<span class="sd">        - ``('csc', (Tensor, Tensor, Tensor))``: The three tensors form the CSC representation</span>
+<span class="sd">          of the graph's adjacency matrix.  The first one is the column index pointer.  The</span>
 <span class="sd">          second one is the row indices.  The third one is the edge IDs, which can be empty</span>
 <span class="sd">          to represent consecutive integer IDs starting from 0.</span>
 
@@ -428,27 +418,27 @@
 <span class="sd">    Create a heterograph with three canonical edge types.</span>
 
 <span class="sd">    &gt;&gt;&gt; data_dict = {</span>
-<span class="sd">    ...     (&#39;user&#39;, &#39;follows&#39;, &#39;user&#39;): (torch.tensor([0, 1]), torch.tensor([1, 2])),</span>
-<span class="sd">    ...     (&#39;user&#39;, &#39;follows&#39;, &#39;topic&#39;): (torch.tensor([1, 1]), torch.tensor([1, 2])),</span>
-<span class="sd">    ...     (&#39;user&#39;, &#39;plays&#39;, &#39;game&#39;): (torch.tensor([0, 3]), torch.tensor([3, 4]))</span>
+<span class="sd">    ...     ('user', 'follows', 'user'): (torch.tensor([0, 1]), torch.tensor([1, 2])),</span>
+<span class="sd">    ...     ('user', 'follows', 'topic'): (torch.tensor([1, 1]), torch.tensor([1, 2])),</span>
+<span class="sd">    ...     ('user', 'plays', 'game'): (torch.tensor([0, 3]), torch.tensor([3, 4]))</span>
 <span class="sd">    ... }</span>
 <span class="sd">    &gt;&gt;&gt; g = dgl.heterograph(data_dict)</span>
 <span class="sd">    &gt;&gt;&gt; g</span>
-<span class="sd">    Graph(num_nodes={&#39;game&#39;: 5, &#39;topic&#39;: 3, &#39;user&#39;: 4},</span>
-<span class="sd">          num_edges={(&#39;user&#39;, &#39;follows&#39;, &#39;topic&#39;): 2, (&#39;user&#39;, &#39;follows&#39;, &#39;user&#39;): 2,</span>
-<span class="sd">                     (&#39;user&#39;, &#39;plays&#39;, &#39;game&#39;): 2},</span>
-<span class="sd">          metagraph=[(&#39;user&#39;, &#39;topic&#39;, &#39;follows&#39;), (&#39;user&#39;, &#39;user&#39;, &#39;follows&#39;),</span>
-<span class="sd">                     (&#39;user&#39;, &#39;game&#39;, &#39;plays&#39;)])</span>
+<span class="sd">    Graph(num_nodes={'game': 5, 'topic': 3, 'user': 4},</span>
+<span class="sd">          num_edges={('user', 'follows', 'topic'): 2, ('user', 'follows', 'user'): 2,</span>
+<span class="sd">                     ('user', 'plays', 'game'): 2},</span>
+<span class="sd">          metagraph=[('user', 'topic', 'follows'), ('user', 'user', 'follows'),</span>
+<span class="sd">                     ('user', 'game', 'plays')])</span>
 
 <span class="sd">    Explicitly specify the number of nodes for each node type in the graph.</span>
 
-<span class="sd">    &gt;&gt;&gt; num_nodes_dict = {&#39;user&#39;: 4, &#39;topic&#39;: 4, &#39;game&#39;: 6}</span>
+<span class="sd">    &gt;&gt;&gt; num_nodes_dict = {'user': 4, 'topic': 4, 'game': 6}</span>
 <span class="sd">    &gt;&gt;&gt; g = dgl.heterograph(data_dict, num_nodes_dict=num_nodes_dict)</span>
 
 <span class="sd">    Create a graph on the first GPU with data type int32.</span>
 
-<span class="sd">    &gt;&gt;&gt; g = dgl.heterograph(data_dict, idtype=torch.int32, device=&#39;cuda:0&#39;)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &gt;&gt;&gt; g = dgl.heterograph(data_dict, idtype=torch.int32, device='cuda:0')</span>
+<span class="sd">    """</span>
     <span class="c1"># Convert all data to node tensors first</span>
     <span class="n">node_tensor_dict</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">need_infer</span> <span class="o">=</span> <span class="n">num_nodes_dict</span> <span class="ow">is</span> <span class="kc">None</span>
@@ -457,14 +447,14 @@
     <span class="k">for</span> <span class="p">(</span><span class="n">sty</span><span class="p">,</span> <span class="n">ety</span><span class="p">,</span> <span class="n">dty</span><span class="p">),</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">DGLError</span><span class="p">(</span>
-                <span class="s2">&quot;dgl.heterograph no longer supports graph construction from a SciPy &quot;</span>
-                <span class="s2">&quot;sparse matrix, use dgl.from_scipy instead.&quot;</span>
+                <span class="s2">"dgl.heterograph no longer supports graph construction from a SciPy "</span>
+                <span class="s2">"sparse matrix, use dgl.from_scipy instead."</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">DGLError</span><span class="p">(</span>
-                <span class="s2">&quot;dgl.heterograph no longer supports graph construction from a NetworkX &quot;</span>
-                <span class="s2">&quot;graph, use dgl.from_networkx instead.&quot;</span>
+                <span class="s2">"dgl.heterograph no longer supports graph construction from a NetworkX "</span>
+                <span class="s2">"graph, use dgl.from_networkx instead."</span>
             <span class="p">)</span>
         <span class="n">is_bipartite</span> <span class="o">=</span> <span class="n">sty</span> <span class="o">!=</span> <span class="n">dty</span>
         <span class="p">(</span><span class="n">sparse_fmt</span><span class="p">,</span> <span class="n">arrays</span><span class="p">),</span> <span class="n">urange</span><span class="p">,</span> <span class="n">vrange</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">graphdata2tensors</span><span class="p">(</span>
@@ -477,15 +467,15 @@
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># sanity check</span>
             <span class="k">if</span> <span class="n">num_nodes_dict</span><span class="p">[</span><span class="n">sty</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">urange</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">DGLError</span><span class="p">(</span>
-                    <span class="s2">&quot;The given number of nodes of node type </span><span class="si">{}</span><span class="s2"> must be larger than&quot;</span>
-                    <span class="s2">&quot; the max ID in the data, but got </span><span class="si">{}</span><span class="s2"> and </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="s2">"The given number of nodes of node type </span><span class="si">{}</span><span class="s2"> must be larger than"</span>
+                    <span class="s2">" the max ID in the data, but got </span><span class="si">{}</span><span class="s2"> and </span><span class="si">{}</span><span class="s2">."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                         <span class="n">sty</span><span class="p">,</span> <span class="n">num_nodes_dict</span><span class="p">[</span><span class="n">sty</span><span class="p">],</span> <span class="n">urange</span> <span class="o">-</span> <span class="mi">1</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
             <span class="k">if</span> <span class="n">num_nodes_dict</span><span class="p">[</span><span class="n">dty</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">vrange</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">DGLError</span><span class="p">(</span>
-                    <span class="s2">&quot;The given number of nodes of node type </span><span class="si">{}</span><span class="s2"> must be larger than&quot;</span>
-                    <span class="s2">&quot; the max ID in the data, but got </span><span class="si">{}</span><span class="s2"> and </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="s2">"The given number of nodes of node type </span><span class="si">{}</span><span class="s2"> must be larger than"</span>
+                    <span class="s2">" the max ID in the data, but got </span><span class="si">{}</span><span class="s2"> and </span><span class="si">{}</span><span class="s2">."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                         <span class="n">dty</span><span class="p">,</span> <span class="n">num_nodes_dict</span><span class="p">[</span><span class="n">dty</span><span class="p">],</span> <span class="n">vrange</span> <span class="o">-</span> <span class="mi">1</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
@@ -499,7 +489,7 @@
         <span class="n">num_nodes_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">node_tensor_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
     <span class="p">)</span>
     <span class="n">num_nodes_per_type</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">toindex</span><span class="p">(</span>
-        <span class="p">[</span><span class="n">num_nodes_dict</span><span class="p">[</span><span class="n">ntype</span><span class="p">]</span> <span class="k">for</span> <span class="n">ntype</span> <span class="ow">in</span> <span class="n">ntypes</span><span class="p">],</span> <span class="s2">&quot;int64&quot;</span>
+        <span class="p">[</span><span class="n">num_nodes_dict</span><span class="p">[</span><span class="n">ntype</span><span class="p">]</span> <span class="k">for</span> <span class="n">ntype</span> <span class="ow">in</span> <span class="n">ntypes</span><span class="p">],</span> <span class="s2">"int64"</span>
     <span class="p">)</span>
     <span class="n">rel_graphs</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">srctype</span><span class="p">,</span> <span class="n">etype</span><span class="p">,</span> <span class="n">dsttype</span> <span class="ow">in</span> <span class="n">relations</span><span class="p">:</span>
@@ -535,7 +525,7 @@
     <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">node_count_check</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a message flow graph (MFG) as a :class:`DGLBlock` object.</span>
+<span class="w">    </span><span class="sd">"""Create a message flow graph (MFG) as a :class:`DGLBlock` object.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -547,16 +537,16 @@
 <span class="sd">        The allowed graph data formats are:</span>
 
 <span class="sd">        - ``(Tensor, Tensor)``: Each tensor must be a 1D tensor containing node IDs. DGL calls</span>
-<span class="sd">          this format &quot;tuple of node-tensors&quot;. The tensors should have the same data type,</span>
+<span class="sd">          this format "tuple of node-tensors". The tensors should have the same data type,</span>
 <span class="sd">          which must be either int32 or int64. They should also have the same device context</span>
 <span class="sd">          (see below the descriptions of :attr:`idtype` and :attr:`device`).</span>
-<span class="sd">        - ``(&#39;coo&#39;, (Tensor, Tensor))``: Same as ``(Tensor, Tensor)``.</span>
-<span class="sd">        - ``(&#39;csr&#39;, (Tensor, Tensor, Tensor))``: The three tensors form the CSR representation</span>
-<span class="sd">          of the graph&#39;s adjacency matrix.  The first one is the row index pointer.  The</span>
+<span class="sd">        - ``('coo', (Tensor, Tensor))``: Same as ``(Tensor, Tensor)``.</span>
+<span class="sd">        - ``('csr', (Tensor, Tensor, Tensor))``: The three tensors form the CSR representation</span>
+<span class="sd">          of the graph's adjacency matrix.  The first one is the row index pointer.  The</span>
 <span class="sd">          second one is the column indices.  The third one is the edge IDs, which can be empty</span>
 <span class="sd">          to represent consecutive integer IDs starting from 0.</span>
-<span class="sd">        - ``(&#39;csc&#39;, (Tensor, Tensor, Tensor))``: The three tensors form the CSC representation</span>
-<span class="sd">          of the graph&#39;s adjacency matrix.  The first one is the column index pointer.  The</span>
+<span class="sd">        - ``('csc', (Tensor, Tensor, Tensor))``: The three tensors form the CSC representation</span>
+<span class="sd">          of the graph's adjacency matrix.  The first one is the column index pointer.  The</span>
 <span class="sd">          second one is the row indices.  The third one is the edge IDs, which can be empty</span>
 <span class="sd">          to represent consecutive integer IDs starting from 0.</span>
 
@@ -645,41 +635,41 @@
 <span class="sd">    Block(num_src_nodes=3, num_dst_nodes=4, num_edges=3)</span>
 
 <span class="sd">    &gt;&gt;&gt; block = dgl.create_block({</span>
-<span class="sd">    ...     (&#39;A&#39;, &#39;AB&#39;, &#39;B&#39;): ([1, 2, 3], [2, 1, 0]),</span>
-<span class="sd">    ...     (&#39;B&#39;, &#39;BA&#39;, &#39;A&#39;): ([2, 1], [2, 3])},</span>
-<span class="sd">    ...     num_src_nodes={&#39;A&#39;: 6, &#39;B&#39;: 5},</span>
-<span class="sd">    ...     num_dst_nodes={&#39;A&#39;: 4, &#39;B&#39;: 3})</span>
+<span class="sd">    ...     ('A', 'AB', 'B'): ([1, 2, 3], [2, 1, 0]),</span>
+<span class="sd">    ...     ('B', 'BA', 'A'): ([2, 1], [2, 3])},</span>
+<span class="sd">    ...     num_src_nodes={'A': 6, 'B': 5},</span>
+<span class="sd">    ...     num_dst_nodes={'A': 4, 'B': 3})</span>
 <span class="sd">    &gt;&gt;&gt; block</span>
-<span class="sd">    Block(num_src_nodes={&#39;A&#39;: 6, &#39;B&#39;: 5},</span>
-<span class="sd">          num_dst_nodes={&#39;A&#39;: 4, &#39;B&#39;: 3},</span>
-<span class="sd">          num_edges={(&#39;A&#39;, &#39;AB&#39;, &#39;B&#39;): 3, (&#39;B&#39;, &#39;BA&#39;, &#39;A&#39;): 2},</span>
-<span class="sd">          metagraph=[(&#39;A&#39;, &#39;B&#39;, &#39;AB&#39;), (&#39;B&#39;, &#39;A&#39;, &#39;BA&#39;)])</span>
+<span class="sd">    Block(num_src_nodes={'A': 6, 'B': 5},</span>
+<span class="sd">          num_dst_nodes={'A': 4, 'B': 3},</span>
+<span class="sd">          num_edges={('A', 'AB', 'B'): 3, ('B', 'BA', 'A'): 2},</span>
+<span class="sd">          metagraph=[('A', 'B', 'AB'), ('B', 'A', 'BA')])</span>
 
 <span class="sd">    See also</span>
 <span class="sd">    --------</span>
 <span class="sd">    to_block</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">need_infer</span> <span class="o">=</span> <span class="n">num_src_nodes</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">num_dst_nodes</span> <span class="ow">is</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data_dict</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
-        <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{(</span><span class="s2">&quot;_N&quot;</span><span class="p">,</span> <span class="s2">&quot;_E&quot;</span><span class="p">,</span> <span class="s2">&quot;_N&quot;</span><span class="p">):</span> <span class="n">data_dict</span><span class="p">}</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{(</span><span class="s2">"_N"</span><span class="p">,</span> <span class="s2">"_E"</span><span class="p">,</span> <span class="s2">"_N"</span><span class="p">):</span> <span class="n">data_dict</span><span class="p">}</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">need_infer</span><span class="p">:</span>
             <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
                 <span class="n">num_src_nodes</span><span class="p">,</span> <span class="nb">int</span>
-            <span class="p">),</span> <span class="s2">&quot;num_src_nodes must be a pair of integers if data_dict is not a dict&quot;</span>
+            <span class="p">),</span> <span class="s2">"num_src_nodes must be a pair of integers if data_dict is not a dict"</span>
             <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
                 <span class="n">num_dst_nodes</span><span class="p">,</span> <span class="nb">int</span>
-            <span class="p">),</span> <span class="s2">&quot;num_dst_nodes must be a pair of integers if data_dict is not a dict&quot;</span>
-            <span class="n">num_src_nodes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;_N&quot;</span><span class="p">:</span> <span class="n">num_src_nodes</span><span class="p">}</span>
-            <span class="n">num_dst_nodes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;_N&quot;</span><span class="p">:</span> <span class="n">num_dst_nodes</span><span class="p">}</span>
+            <span class="p">),</span> <span class="s2">"num_dst_nodes must be a pair of integers if data_dict is not a dict"</span>
+            <span class="n">num_src_nodes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"_N"</span><span class="p">:</span> <span class="n">num_src_nodes</span><span class="p">}</span>
+            <span class="n">num_dst_nodes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"_N"</span><span class="p">:</span> <span class="n">num_dst_nodes</span><span class="p">}</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">need_infer</span><span class="p">:</span>
             <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
                 <span class="n">num_src_nodes</span><span class="p">,</span> <span class="n">Mapping</span>
-            <span class="p">),</span> <span class="s2">&quot;num_src_nodes must be a dict if data_dict is a dict&quot;</span>
+            <span class="p">),</span> <span class="s2">"num_src_nodes must be a dict if data_dict is a dict"</span>
             <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
                 <span class="n">num_dst_nodes</span><span class="p">,</span> <span class="n">Mapping</span>
-            <span class="p">),</span> <span class="s2">&quot;num_dst_nodes must be a dict if data_dict is a dict&quot;</span>
+            <span class="p">),</span> <span class="s2">"num_dst_nodes must be a dict if data_dict is a dict"</span>
 
     <span class="k">if</span> <span class="n">need_infer</span><span class="p">:</span>
         <span class="n">num_src_nodes</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
@@ -701,15 +691,15 @@
         <span class="k">elif</span> <span class="n">node_count_check</span><span class="p">:</span>  <span class="c1"># sanity check</span>
             <span class="k">if</span> <span class="n">num_src_nodes</span><span class="p">[</span><span class="n">sty</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">urange</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">DGLError</span><span class="p">(</span>
-                    <span class="s2">&quot;The given number of nodes of source node type </span><span class="si">{}</span><span class="s2"> must be larger&quot;</span>
-                    <span class="s2">&quot; than the max ID in the data, but got </span><span class="si">{}</span><span class="s2"> and </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="s2">"The given number of nodes of source node type </span><span class="si">{}</span><span class="s2"> must be larger"</span>
+                    <span class="s2">" than the max ID in the data, but got </span><span class="si">{}</span><span class="s2"> and </span><span class="si">{}</span><span class="s2">."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                         <span class="n">sty</span><span class="p">,</span> <span class="n">num_src_nodes</span><span class="p">[</span><span class="n">sty</span><span class="p">],</span> <span class="n">urange</span> <span class="o">-</span> <span class="mi">1</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
             <span class="k">if</span> <span class="n">num_dst_nodes</span><span class="p">[</span><span class="n">dty</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">vrange</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">DGLError</span><span class="p">(</span>
-                    <span class="s2">&quot;The given number of nodes of destination node type </span><span class="si">{}</span><span class="s2"> must be&quot;</span>
-                    <span class="s2">&quot; larger than the max ID in the data, but got </span><span class="si">{}</span><span class="s2"> and </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="s2">"The given number of nodes of destination node type </span><span class="si">{}</span><span class="s2"> must be"</span>
+                    <span class="s2">" larger than the max ID in the data, but got </span><span class="si">{}</span><span class="s2"> and </span><span class="si">{}</span><span class="s2">."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                         <span class="n">dty</span><span class="p">,</span> <span class="n">num_dst_nodes</span><span class="p">[</span><span class="n">dty</span><span class="p">],</span> <span class="n">vrange</span> <span class="o">-</span> <span class="mi">1</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
@@ -724,7 +714,7 @@
     <span class="n">num_nodes_per_type</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">toindex</span><span class="p">(</span>
         <span class="p">[</span><span class="n">num_src_nodes</span><span class="p">[</span><span class="n">ntype</span><span class="p">]</span> <span class="k">for</span> <span class="n">ntype</span> <span class="ow">in</span> <span class="n">srctypes</span><span class="p">]</span>
         <span class="o">+</span> <span class="p">[</span><span class="n">num_dst_nodes</span><span class="p">[</span><span class="n">ntype</span><span class="p">]</span> <span class="k">for</span> <span class="n">ntype</span> <span class="ow">in</span> <span class="n">dsttypes</span><span class="p">],</span>
-        <span class="s2">&quot;int64&quot;</span><span class="p">,</span>
+        <span class="s2">"int64"</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">srctype_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">ntype</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ntype</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">srctypes</span><span class="p">)}</span>
     <span class="n">dsttype_dict</span> <span class="o">=</span> <span class="p">{</span>
@@ -743,9 +733,9 @@
         <span class="n">g</span> <span class="o">=</span> <span class="n">create_from_edges</span><span class="p">(</span>
             <span class="n">sparse_fmt</span><span class="p">,</span>
             <span class="n">arrays</span><span class="p">,</span>
-            <span class="s2">&quot;SRC/&quot;</span> <span class="o">+</span> <span class="n">srctype</span><span class="p">,</span>
+            <span class="s2">"SRC/"</span> <span class="o">+</span> <span class="n">srctype</span><span class="p">,</span>
             <span class="n">etype</span><span class="p">,</span>
-            <span class="s2">&quot;DST/&quot;</span> <span class="o">+</span> <span class="n">dsttype</span><span class="p">,</span>
+            <span class="s2">"DST/"</span> <span class="o">+</span> <span class="n">dsttype</span><span class="p">,</span>
             <span class="n">num_src_nodes</span><span class="p">[</span><span class="n">srctype</span><span class="p">],</span>
             <span class="n">num_dst_nodes</span><span class="p">[</span><span class="n">dsttype</span><span class="p">],</span>
         <span class="p">)</span>
@@ -768,7 +758,7 @@
 <div class="viewcode-block" id="block_to_graph">
 <a class="viewcode-back" href="../../generated/dgl.block_to_graph.html#dgl.block_to_graph">[docs]</a>
 <span class="k">def</span> <span class="nf">block_to_graph</span><span class="p">(</span><span class="n">block</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a message flow graph (MFG) as a :class:`DGLBlock` object to a :class:`DGLGraph`.</span>
+<span class="w">    </span><span class="sd">"""Convert a message flow graph (MFG) as a :class:`DGLBlock` object to a :class:`DGLGraph`.</span>
 
 <span class="sd">    DGL will rename all the source node types by suffixing with ``_src``, and</span>
 <span class="sd">    all the destination node types by suffixing with ``_dst``.</span>
@@ -788,25 +778,25 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt; block = dgl.create_block({</span>
-<span class="sd">    ...     (&#39;A&#39;, &#39;AB&#39;, &#39;B&#39;): ([1, 2, 3], [2, 1, 0]),</span>
-<span class="sd">    ...     (&#39;B&#39;, &#39;BA&#39;, &#39;A&#39;): ([2, 1], [2, 3])})</span>
+<span class="sd">    ...     ('A', 'AB', 'B'): ([1, 2, 3], [2, 1, 0]),</span>
+<span class="sd">    ...     ('B', 'BA', 'A'): ([2, 1], [2, 3])})</span>
 <span class="sd">    &gt;&gt;&gt; g = dgl.block_to_graph(block)</span>
 <span class="sd">    &gt;&gt;&gt; g</span>
-<span class="sd">    Graph(num_nodes={&#39;A_src&#39;: 4, &#39;B_src&#39;: 3, &#39;A_dst&#39;: 4, &#39;B_dst&#39;: 3},</span>
-<span class="sd">          num_edges={(&#39;A_src&#39;, &#39;AB&#39;, &#39;B_dst&#39;): 3, (&#39;B_src&#39;, &#39;BA&#39;, &#39;A_dst&#39;): 2},</span>
-<span class="sd">          metagraph=[(&#39;A_src&#39;, &#39;B_dst&#39;, &#39;AB&#39;), (&#39;B_src&#39;, &#39;A_dst&#39;, &#39;BA&#39;)])</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">new_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">ntype</span> <span class="o">+</span> <span class="s2">&quot;_src&quot;</span> <span class="k">for</span> <span class="n">ntype</span> <span class="ow">in</span> <span class="n">block</span><span class="o">.</span><span class="n">srctypes</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span>
-        <span class="n">ntype</span> <span class="o">+</span> <span class="s2">&quot;_dst&quot;</span> <span class="k">for</span> <span class="n">ntype</span> <span class="ow">in</span> <span class="n">block</span><span class="o">.</span><span class="n">dsttypes</span>
+<span class="sd">    Graph(num_nodes={'A_src': 4, 'B_src': 3, 'A_dst': 4, 'B_dst': 3},</span>
+<span class="sd">          num_edges={('A_src', 'AB', 'B_dst'): 3, ('B_src', 'BA', 'A_dst'): 2},</span>
+<span class="sd">          metagraph=[('A_src', 'B_dst', 'AB'), ('B_src', 'A_dst', 'BA')])</span>
+<span class="sd">    """</span>
+    <span class="n">new_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">ntype</span> <span class="o">+</span> <span class="s2">"_src"</span> <span class="k">for</span> <span class="n">ntype</span> <span class="ow">in</span> <span class="n">block</span><span class="o">.</span><span class="n">srctypes</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span>
+        <span class="n">ntype</span> <span class="o">+</span> <span class="s2">"_dst"</span> <span class="k">for</span> <span class="n">ntype</span> <span class="ow">in</span> <span class="n">block</span><span class="o">.</span><span class="n">dsttypes</span>
     <span class="p">]</span>
     <span class="n">retg</span> <span class="o">=</span> <span class="n">DGLGraph</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">_graph</span><span class="p">,</span> <span class="n">new_types</span><span class="p">,</span> <span class="n">block</span><span class="o">.</span><span class="n">etypes</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">srctype</span> <span class="ow">in</span> <span class="n">block</span><span class="o">.</span><span class="n">srctypes</span><span class="p">:</span>
-        <span class="n">retg</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">srctype</span> <span class="o">+</span> <span class="s2">&quot;_src&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">srcnodes</span><span class="p">[</span><span class="n">srctype</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">retg</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">srctype</span> <span class="o">+</span> <span class="s2">"_src"</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">srcnodes</span><span class="p">[</span><span class="n">srctype</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">dsttype</span> <span class="ow">in</span> <span class="n">block</span><span class="o">.</span><span class="n">dsttypes</span><span class="p">:</span>
-        <span class="n">retg</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">dsttype</span> <span class="o">+</span> <span class="s2">&quot;_dst&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">dstnodes</span><span class="p">[</span><span class="n">dsttype</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">retg</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">dsttype</span> <span class="o">+</span> <span class="s2">"_dst"</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">dstnodes</span><span class="p">[</span><span class="n">dsttype</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">srctype</span><span class="p">,</span> <span class="n">etype</span><span class="p">,</span> <span class="n">dsttype</span> <span class="ow">in</span> <span class="n">block</span><span class="o">.</span><span class="n">canonical_etypes</span><span class="p">:</span>
-        <span class="n">retg</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">srctype</span> <span class="o">+</span> <span class="s2">&quot;_src&quot;</span><span class="p">,</span> <span class="n">etype</span><span class="p">,</span> <span class="n">dsttype</span> <span class="o">+</span> <span class="s2">&quot;_dst&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+        <span class="n">retg</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">srctype</span> <span class="o">+</span> <span class="s2">"_src"</span><span class="p">,</span> <span class="n">etype</span><span class="p">,</span> <span class="n">dsttype</span> <span class="o">+</span> <span class="s2">"_dst"</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
             <span class="n">block</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">srctype</span><span class="p">,</span> <span class="n">etype</span><span class="p">,</span> <span class="n">dsttype</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
         <span class="p">)</span>
 
@@ -819,7 +809,7 @@
 <span class="k">def</span> <span class="nf">to_heterogeneous</span><span class="p">(</span>
     <span class="n">G</span><span class="p">,</span> <span class="n">ntypes</span><span class="p">,</span> <span class="n">etypes</span><span class="p">,</span> <span class="n">ntype_field</span><span class="o">=</span><span class="n">NTYPE</span><span class="p">,</span> <span class="n">etype_field</span><span class="o">=</span><span class="n">ETYPE</span><span class="p">,</span> <span class="n">metagraph</span><span class="o">=</span><span class="kc">None</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a homogeneous graph to a heterogeneous graph and return.</span>
+<span class="w">    </span><span class="sd">"""Convert a homogeneous graph to a heterogeneous graph and return.</span>
 
 <span class="sd">    The input graph should have only one type of nodes and edges. Each node and edge</span>
 <span class="sd">    stores an integer feature as its type ID</span>
@@ -830,7 +820,7 @@
 <span class="sd">    The function will automatically distinguish edge types that have the same given</span>
 <span class="sd">    type IDs but different src and dst type IDs. For example, it allows both edges A and B</span>
 <span class="sd">    to have the same type ID 0, but one has (0, 1) and the other as (2, 3) as the</span>
-<span class="sd">    (src, dst) type IDs. In this case, the function will &quot;split&quot; edge type 0 into two types:</span>
+<span class="sd">    (src, dst) type IDs. In this case, the function will "split" edge type 0 into two types:</span>
 <span class="sd">    (0, ty_A, 1) and (2, ty_B, 3). In another word, these two edges share the same edge</span>
 <span class="sd">    type name, but can be distinguished by an edge type triplet.</span>
 
@@ -879,62 +869,62 @@
 <span class="sd">    &gt;&gt;&gt; import torch</span>
 
 <span class="sd">    &gt;&gt;&gt; hg = dgl.heterograph({</span>
-<span class="sd">    ...     (&#39;user&#39;, &#39;develops&#39;, &#39;activity&#39;): (torch.tensor([0, 1]), torch.tensor([1, 2])),</span>
-<span class="sd">    ...     (&#39;developer&#39;, &#39;develops&#39;, &#39;game&#39;): (torch.tensor([0, 1]), torch.tensor([0, 1]))</span>
+<span class="sd">    ...     ('user', 'develops', 'activity'): (torch.tensor([0, 1]), torch.tensor([1, 2])),</span>
+<span class="sd">    ...     ('developer', 'develops', 'game'): (torch.tensor([0, 1]), torch.tensor([0, 1]))</span>
 <span class="sd">    ... })</span>
 <span class="sd">    &gt;&gt;&gt; print(hg)</span>
-<span class="sd">    Graph(num_nodes={&#39;activity&#39;: 3, &#39;developer&#39;: 2, &#39;game&#39;: 2, &#39;user&#39;: 2},</span>
-<span class="sd">          num_edges={(&#39;developer&#39;, &#39;develops&#39;, &#39;game&#39;): 2, (&#39;user&#39;, &#39;develops&#39;, &#39;activity&#39;): 2},</span>
-<span class="sd">          metagraph=[(&#39;developer&#39;, &#39;game&#39;, &#39;develops&#39;), (&#39;user&#39;, &#39;activity&#39;, &#39;develops&#39;)])</span>
+<span class="sd">    Graph(num_nodes={'activity': 3, 'developer': 2, 'game': 2, 'user': 2},</span>
+<span class="sd">          num_edges={('developer', 'develops', 'game'): 2, ('user', 'develops', 'activity'): 2},</span>
+<span class="sd">          metagraph=[('developer', 'game', 'develops'), ('user', 'activity', 'develops')])</span>
 
 <span class="sd">    We first convert the heterogeneous graph to a homogeneous graph.</span>
 
 <span class="sd">    &gt;&gt;&gt; g = dgl.to_homogeneous(hg)</span>
 <span class="sd">    &gt;&gt;&gt; print(g)</span>
 <span class="sd">    Graph(num_nodes=9, num_edges=4,</span>
-<span class="sd">          ndata_schemes={&#39;_TYPE&#39;: Scheme(shape=(), dtype=torch.int64),</span>
-<span class="sd">                         &#39;_ID&#39;: Scheme(shape=(), dtype=torch.int64)}</span>
-<span class="sd">          edata_schemes={&#39;_TYPE&#39;: Scheme(shape=(), dtype=torch.int64),</span>
-<span class="sd">                         &#39;_ID&#39;: Scheme(shape=(), dtype=torch.int64)})</span>
+<span class="sd">          ndata_schemes={'_TYPE': Scheme(shape=(), dtype=torch.int64),</span>
+<span class="sd">                         '_ID': Scheme(shape=(), dtype=torch.int64)}</span>
+<span class="sd">          edata_schemes={'_TYPE': Scheme(shape=(), dtype=torch.int64),</span>
+<span class="sd">                         '_ID': Scheme(shape=(), dtype=torch.int64)})</span>
 <span class="sd">    &gt;&gt;&gt; g.ndata</span>
-<span class="sd">    {&#39;_TYPE&#39;: tensor([0, 0, 0, 1, 1, 2, 2, 3, 3]), &#39;_ID&#39;: tensor([0, 1, 2, 0, 1, 0, 1, 0, 1])}</span>
-<span class="sd">    Nodes 0, 1, 2 for &#39;activity&#39;, 3, 4 for &#39;developer&#39;, 5, 6 for &#39;game&#39;, 7, 8 for &#39;user&#39;</span>
+<span class="sd">    {'_TYPE': tensor([0, 0, 0, 1, 1, 2, 2, 3, 3]), '_ID': tensor([0, 1, 2, 0, 1, 0, 1, 0, 1])}</span>
+<span class="sd">    Nodes 0, 1, 2 for 'activity', 3, 4 for 'developer', 5, 6 for 'game', 7, 8 for 'user'</span>
 <span class="sd">    &gt;&gt;&gt; g.edata</span>
-<span class="sd">    {&#39;_TYPE&#39;: tensor([0, 0, 1, 1]), &#39;_ID&#39;: tensor([0, 1, 0, 1])}</span>
-<span class="sd">    Edges 0, 1 for (&#39;developer&#39;, &#39;develops&#39;, &#39;game&#39;), 2, 3 for (&#39;user&#39;, &#39;develops&#39;, &#39;activity&#39;)</span>
+<span class="sd">    {'_TYPE': tensor([0, 0, 1, 1]), '_ID': tensor([0, 1, 0, 1])}</span>
+<span class="sd">    Edges 0, 1 for ('developer', 'develops', 'game'), 2, 3 for ('user', 'develops', 'activity')</span>
 
 <span class="sd">    Now convert the homogeneous graph back to a heterogeneous graph.</span>
 
 <span class="sd">    &gt;&gt;&gt; hg_2 = dgl.to_heterogeneous(g, hg.ntypes, hg.etypes)</span>
 <span class="sd">    &gt;&gt;&gt; print(hg_2)</span>
-<span class="sd">    Graph(num_nodes={&#39;activity&#39;: 3, &#39;developer&#39;: 2, &#39;game&#39;: 2, &#39;user&#39;: 2},</span>
-<span class="sd">          num_edges={(&#39;developer&#39;, &#39;develops&#39;, &#39;game&#39;): 2, (&#39;user&#39;, &#39;develops&#39;, &#39;activity&#39;): 2},</span>
-<span class="sd">          metagraph=[(&#39;developer&#39;, &#39;game&#39;, &#39;develops&#39;), (&#39;user&#39;, &#39;activity&#39;, &#39;develops&#39;)])</span>
+<span class="sd">    Graph(num_nodes={'activity': 3, 'developer': 2, 'game': 2, 'user': 2},</span>
+<span class="sd">          num_edges={('developer', 'develops', 'game'): 2, ('user', 'develops', 'activity'): 2},</span>
+<span class="sd">          metagraph=[('developer', 'game', 'develops'), ('user', 'activity', 'develops')])</span>
 
 <span class="sd">    Retrieve the original node/edge IDs.</span>
 
 <span class="sd">    &gt;&gt;&gt; hg_2.ndata[dgl.NID]</span>
-<span class="sd">    {&#39;activity&#39;: tensor([0, 1, 2]),</span>
-<span class="sd">     &#39;developer&#39;: tensor([3, 4]),</span>
-<span class="sd">     &#39;game&#39;: tensor([5, 6]),</span>
-<span class="sd">     &#39;user&#39;: tensor([7, 8])}</span>
+<span class="sd">    {'activity': tensor([0, 1, 2]),</span>
+<span class="sd">     'developer': tensor([3, 4]),</span>
+<span class="sd">     'game': tensor([5, 6]),</span>
+<span class="sd">     'user': tensor([7, 8])}</span>
 <span class="sd">    &gt;&gt;&gt; hg_2.edata[dgl.EID]</span>
-<span class="sd">    {(&#39;developer&#39;, &#39;develops&#39;, &#39;game&#39;): tensor([0, 1]),</span>
-<span class="sd">     (&#39;user&#39;, &#39;develops&#39;, &#39;activity&#39;): tensor([2, 3])}</span>
+<span class="sd">    {('developer', 'develops', 'game'): tensor([0, 1]),</span>
+<span class="sd">     ('user', 'develops', 'activity'): tensor([2, 3])}</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    to_homogeneous</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="p">(</span>
-        <span class="nb">hasattr</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="s2">&quot;ntypes&quot;</span><span class="p">)</span>
+        <span class="nb">hasattr</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="s2">"ntypes"</span><span class="p">)</span>
         <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">ntypes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span>
-        <span class="ow">or</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="s2">&quot;etypes&quot;</span><span class="p">)</span>
+        <span class="ow">or</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="s2">"etypes"</span><span class="p">)</span>
         <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">etypes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span>
     <span class="p">):</span>
         <span class="k">raise</span> <span class="n">DGLError</span><span class="p">(</span>
-            <span class="s2">&quot;The input graph should be homogeneous and have only one &quot;</span>
-            <span class="s2">&quot; type of nodes and edges.&quot;</span>
+            <span class="s2">"The input graph should be homogeneous and have only one "</span>
+            <span class="s2">" type of nodes and edges."</span>
         <span class="p">)</span>
 
     <span class="n">num_ntypes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ntypes</span><span class="p">)</span>
@@ -947,7 +937,7 @@
     <span class="c1"># relabel nodes to per-type local IDs</span>
     <span class="n">ntype_count</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">ntype_ids</span><span class="p">,</span> <span class="n">minlength</span><span class="o">=</span><span class="n">num_ntypes</span><span class="p">)</span>
     <span class="n">ntype_offset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">ntype_count</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="n">ntype_ids_sortidx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">ntype_ids</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;stable&quot;</span><span class="p">)</span>
+    <span class="n">ntype_ids_sortidx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">ntype_ids</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">"stable"</span><span class="p">)</span>
     <span class="n">ntype_local_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">ntype_ids</span><span class="p">)</span>
     <span class="n">node_groups</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_ntypes</span><span class="p">):</span>
@@ -955,7 +945,7 @@
         <span class="n">node_groups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node_group</span><span class="p">)</span>
         <span class="n">ntype_local_ids</span><span class="p">[</span><span class="n">node_group</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">ntype_count</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 
-    <span class="n">src</span><span class="p">,</span> <span class="n">dst</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">all_edges</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="s2">&quot;eid&quot;</span><span class="p">)</span>
+    <span class="n">src</span><span class="p">,</span> <span class="n">dst</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">all_edges</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="s2">"eid"</span><span class="p">)</span>
     <span class="n">src</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
     <span class="n">dst</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span>
     <span class="n">src_local</span> <span class="o">=</span> <span class="n">ntype_local_ids</span><span class="p">[</span><span class="n">src</span><span class="p">]</span>
@@ -1042,7 +1032,7 @@
 <span class="k">def</span> <span class="nf">to_homogeneous</span><span class="p">(</span>
     <span class="n">G</span><span class="p">,</span> <span class="n">ndata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">store_type</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_count</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a heterogeneous graph to a homogeneous graph and return.</span>
+<span class="w">    </span><span class="sd">"""Convert a heterogeneous graph to a homogeneous graph and return.</span>
 
 <span class="sd">    By default, the function stores the node and edge types of the input graph as</span>
 <span class="sd">    the ``dgl.NTYPE`` and ``dgl.ETYPE`` features in the returned graph.</span>
@@ -1108,31 +1098,31 @@
 <span class="sd">    &gt;&gt;&gt; import torch</span>
 
 <span class="sd">    &gt;&gt;&gt; hg = dgl.heterograph({</span>
-<span class="sd">    ...     (&#39;user&#39;, &#39;follows&#39;, &#39;user&#39;): ([0, 1], [1, 2]),</span>
-<span class="sd">    ...     (&#39;developer&#39;, &#39;develops&#39;, &#39;game&#39;): ([0, 1], [0, 1])</span>
+<span class="sd">    ...     ('user', 'follows', 'user'): ([0, 1], [1, 2]),</span>
+<span class="sd">    ...     ('developer', 'develops', 'game'): ([0, 1], [0, 1])</span>
 <span class="sd">    ...     })</span>
-<span class="sd">    &gt;&gt;&gt; hg.nodes[&#39;user&#39;].data[&#39;h&#39;] = torch.ones(3, 1)</span>
-<span class="sd">    &gt;&gt;&gt; hg.nodes[&#39;developer&#39;].data[&#39;h&#39;] = torch.zeros(2, 1)</span>
-<span class="sd">    &gt;&gt;&gt; hg.nodes[&#39;game&#39;].data[&#39;h&#39;] = torch.ones(2, 1)</span>
+<span class="sd">    &gt;&gt;&gt; hg.nodes['user'].data['h'] = torch.ones(3, 1)</span>
+<span class="sd">    &gt;&gt;&gt; hg.nodes['developer'].data['h'] = torch.zeros(2, 1)</span>
+<span class="sd">    &gt;&gt;&gt; hg.nodes['game'].data['h'] = torch.ones(2, 1)</span>
 <span class="sd">    &gt;&gt;&gt; g = dgl.to_homogeneous(hg)</span>
-<span class="sd">    &gt;&gt;&gt; # The first three nodes are for &#39;user&#39;, the next two are for &#39;developer&#39;,</span>
-<span class="sd">    &gt;&gt;&gt; # and the last two are for &#39;game&#39;</span>
+<span class="sd">    &gt;&gt;&gt; # The first three nodes are for 'user', the next two are for 'developer',</span>
+<span class="sd">    &gt;&gt;&gt; # and the last two are for 'game'</span>
 <span class="sd">    &gt;&gt;&gt; g.ndata</span>
-<span class="sd">    {&#39;_TYPE&#39;: tensor([0, 0, 0, 1, 1, 2, 2]), &#39;_ID&#39;: tensor([0, 1, 2, 0, 1, 0, 1])}</span>
-<span class="sd">    &gt;&gt;&gt; # The first two edges are for &#39;follows&#39;, and the next two are for &#39;develops&#39; edges.</span>
+<span class="sd">    {'_TYPE': tensor([0, 0, 0, 1, 1, 2, 2]), '_ID': tensor([0, 1, 2, 0, 1, 0, 1])}</span>
+<span class="sd">    &gt;&gt;&gt; # The first two edges are for 'follows', and the next two are for 'develops' edges.</span>
 <span class="sd">    &gt;&gt;&gt; g.edata</span>
-<span class="sd">    {&#39;_TYPE&#39;: tensor([0, 0, 1, 1]), &#39;_ID&#39;: tensor([0, 1, 0, 1])}</span>
+<span class="sd">    {'_TYPE': tensor([0, 0, 1, 1]), '_ID': tensor([0, 1, 0, 1])}</span>
 
-<span class="sd">    Combine feature &#39;h&#39; across all node types in the conversion.</span>
+<span class="sd">    Combine feature 'h' across all node types in the conversion.</span>
 
-<span class="sd">    &gt;&gt;&gt; g = dgl.to_homogeneous(hg, ndata=[&#39;h&#39;])</span>
-<span class="sd">    &gt;&gt;&gt; g.ndata[&#39;h&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; g = dgl.to_homogeneous(hg, ndata=['h'])</span>
+<span class="sd">    &gt;&gt;&gt; g.ndata['h']</span>
 <span class="sd">    tensor([[1.], [1.], [1.], [0.], [0.], [1.], [1.]])</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    to_heterogeneous</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">num_nodes_per_ntype</span> <span class="o">=</span> <span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">(</span><span class="n">ntype</span><span class="p">)</span> <span class="k">for</span> <span class="n">ntype</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">ntypes</span><span class="p">]</span>
     <span class="n">offset_per_ntype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">num_nodes_per_ntype</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
     <span class="n">srcs</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1159,7 +1149,7 @@
 
     <span class="k">for</span> <span class="n">etype_id</span><span class="p">,</span> <span class="n">etype</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">canonical_etypes</span><span class="p">):</span>
         <span class="n">srctype</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">dsttype</span> <span class="o">=</span> <span class="n">etype</span>
-        <span class="n">src</span><span class="p">,</span> <span class="n">dst</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">all_edges</span><span class="p">(</span><span class="n">etype</span><span class="o">=</span><span class="n">etype</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;eid&quot;</span><span class="p">)</span>
+        <span class="n">src</span><span class="p">,</span> <span class="n">dst</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">all_edges</span><span class="p">(</span><span class="n">etype</span><span class="o">=</span><span class="n">etype</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">"eid"</span><span class="p">)</span>
         <span class="n">num_edges</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
         <span class="n">srcs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">src</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">offset_per_ntype</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">get_ntype_id</span><span class="p">(</span><span class="n">srctype</span><span class="p">)]))</span>
         <span class="n">dsts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dst</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">offset_per_ntype</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">get_ntype_id</span><span class="p">(</span><span class="n">dsttype</span><span class="p">)]))</span>
@@ -1209,7 +1199,7 @@
 <div class="viewcode-block" id="from_scipy">
 <a class="viewcode-back" href="../../generated/dgl.from_scipy.html#dgl.from_scipy">[docs]</a>
 <span class="k">def</span> <span class="nf">from_scipy</span><span class="p">(</span><span class="n">sp_mat</span><span class="p">,</span> <span class="n">eweight_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">idtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a graph from a SciPy sparse matrix and return.</span>
+<span class="w">    </span><span class="sd">"""Create a graph from a SciPy sparse matrix and return.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1268,32 +1258,32 @@
 
 <span class="sd">    Retrieve the edge weights.</span>
 
-<span class="sd">    &gt;&gt;&gt; g = dgl.from_scipy(sp_mat, eweight_name=&#39;w&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; g.edata[&#39;w&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; g = dgl.from_scipy(sp_mat, eweight_name='w')</span>
+<span class="sd">    &gt;&gt;&gt; g.edata['w']</span>
 <span class="sd">    tensor([0.2000, 0.3000, 0.5000], dtype=torch.float64)</span>
 
 <span class="sd">    Create a graph on the first GPU with data type int32.</span>
 
-<span class="sd">    &gt;&gt;&gt; g = dgl.from_scipy(sp_mat, idtype=torch.int32, device=&#39;cuda:0&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; g = dgl.from_scipy(sp_mat, idtype=torch.int32, device='cuda:0')</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    graph</span>
 <span class="sd">    from_networkx</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Sanity check</span>
     <span class="n">num_rows</span> <span class="o">=</span> <span class="n">sp_mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">num_cols</span> <span class="o">=</span> <span class="n">sp_mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">num_rows</span> <span class="o">!=</span> <span class="n">num_cols</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">DGLError</span><span class="p">(</span>
-            <span class="s2">&quot;Expect the number of rows to be the same as the number of columns for &quot;</span>
-            <span class="s2">&quot;sp_mat, got </span><span class="si">{:d}</span><span class="s2"> and </span><span class="si">{:d}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_rows</span><span class="p">,</span> <span class="n">num_cols</span><span class="p">)</span>
+            <span class="s2">"Expect the number of rows to be the same as the number of columns for "</span>
+            <span class="s2">"sp_mat, got </span><span class="si">{:d}</span><span class="s2"> and </span><span class="si">{:d}</span><span class="s2">."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_rows</span><span class="p">,</span> <span class="n">num_cols</span><span class="p">)</span>
         <span class="p">)</span>
 
     <span class="p">(</span><span class="n">sparse_fmt</span><span class="p">,</span> <span class="n">arrays</span><span class="p">),</span> <span class="n">urange</span><span class="p">,</span> <span class="n">vrange</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">graphdata2tensors</span><span class="p">(</span>
         <span class="n">sp_mat</span><span class="p">,</span> <span class="n">idtype</span>
     <span class="p">)</span>
-    <span class="n">g</span> <span class="o">=</span> <span class="n">create_from_edges</span><span class="p">(</span><span class="n">sparse_fmt</span><span class="p">,</span> <span class="n">arrays</span><span class="p">,</span> <span class="s2">&quot;_N&quot;</span><span class="p">,</span> <span class="s2">&quot;_E&quot;</span><span class="p">,</span> <span class="s2">&quot;_N&quot;</span><span class="p">,</span> <span class="n">urange</span><span class="p">,</span> <span class="n">vrange</span><span class="p">)</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">create_from_edges</span><span class="p">(</span><span class="n">sparse_fmt</span><span class="p">,</span> <span class="n">arrays</span><span class="p">,</span> <span class="s2">"_N"</span><span class="p">,</span> <span class="s2">"_E"</span><span class="p">,</span> <span class="s2">"_N"</span><span class="p">,</span> <span class="n">urange</span><span class="p">,</span> <span class="n">vrange</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">eweight_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">g</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">eweight_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">sp_mat</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span></div>
@@ -1305,7 +1295,7 @@
 <span class="k">def</span> <span class="nf">bipartite_from_scipy</span><span class="p">(</span>
     <span class="n">sp_mat</span><span class="p">,</span> <span class="n">utype</span><span class="p">,</span> <span class="n">etype</span><span class="p">,</span> <span class="n">vtype</span><span class="p">,</span> <span class="n">eweight_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">idtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a uni-directional bipartite graph from a SciPy sparse matrix and return.</span>
+<span class="w">    </span><span class="sd">"""Create a uni-directional bipartite graph from a SciPy sparse matrix and return.</span>
 
 <span class="sd">    The created graph will have two types of nodes ``utype`` and ``vtype`` as well as one</span>
 <span class="sd">    edge type ``etype`` whose edges are from ``utype`` to ``vtype``.</span>
@@ -1370,24 +1360,24 @@
 <span class="sd">    &gt;&gt;&gt; # Weight for edges (2, 1), (3, 2), (4, 3)</span>
 <span class="sd">    &gt;&gt;&gt; eweight = np.array([0.2, 0.3, 0.5])</span>
 <span class="sd">    &gt;&gt;&gt; sp_mat = coo_matrix((eweight, (src_ids, dst_ids)))</span>
-<span class="sd">    &gt;&gt;&gt; g = dgl.bipartite_from_scipy(sp_mat, utype=&#39;_U&#39;, etype=&#39;_E&#39;, vtype=&#39;_V&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; g = dgl.bipartite_from_scipy(sp_mat, utype='_U', etype='_E', vtype='_V')</span>
 
 <span class="sd">    Retrieve the edge weights.</span>
 
-<span class="sd">    &gt;&gt;&gt; g = dgl.bipartite_from_scipy(sp_mat, utype=&#39;_U&#39;, etype=&#39;_E&#39;, vtype=&#39;_V&#39;, eweight_name=&#39;w&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; g.edata[&#39;w&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; g = dgl.bipartite_from_scipy(sp_mat, utype='_U', etype='_E', vtype='_V', eweight_name='w')</span>
+<span class="sd">    &gt;&gt;&gt; g.edata['w']</span>
 <span class="sd">    tensor([0.2000, 0.3000, 0.5000], dtype=torch.float64)</span>
 
 <span class="sd">    Create a graph on the first GPU with data type int32.</span>
 
-<span class="sd">    &gt;&gt;&gt; g = dgl.bipartite_from_scipy(sp_mat, utype=&#39;_U&#39;, etype=&#39;_E&#39;, vtype=&#39;_V&#39;,</span>
-<span class="sd">    ...                              idtype=torch.int32, device=&#39;cuda:0&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; g = dgl.bipartite_from_scipy(sp_mat, utype='_U', etype='_E', vtype='_V',</span>
+<span class="sd">    ...                              idtype=torch.int32, device='cuda:0')</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    heterograph</span>
 <span class="sd">    bipartite_from_networkx</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="p">(</span><span class="n">sparse_fmt</span><span class="p">,</span> <span class="n">arrays</span><span class="p">),</span> <span class="n">urange</span><span class="p">,</span> <span class="n">vrange</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">graphdata2tensors</span><span class="p">(</span>
         <span class="n">sp_mat</span><span class="p">,</span> <span class="n">idtype</span><span class="p">,</span> <span class="n">bipartite</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">)</span>
@@ -1420,7 +1410,7 @@
     <span class="n">idtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a graph from a NetworkX graph and return.</span>
+<span class="w">    </span><span class="sd">"""Create a graph from a NetworkX graph and return.</span>
 
 <span class="sd">    .. note::</span>
 <span class="sd">        Creating a DGLGraph from a NetworkX graph is not fast especially for large scales.</span>
@@ -1494,44 +1484,44 @@
 
 <span class="sd">    Retrieve the node/edge features of the graph.</span>
 
-<span class="sd">    &gt;&gt;&gt; g = dgl.from_networkx(nx_g, node_attrs=[&#39;feat1&#39;, &#39;feat2&#39;], edge_attrs=[&#39;weight&#39;])</span>
+<span class="sd">    &gt;&gt;&gt; g = dgl.from_networkx(nx_g, node_attrs=['feat1', 'feat2'], edge_attrs=['weight'])</span>
 
 <span class="sd">    Use a pre-specified ordering of the edges.</span>
 
 <span class="sd">    &gt;&gt;&gt; g.edges()</span>
 <span class="sd">    (tensor([1, 2]), tensor([2, 1]))</span>
-<span class="sd">    &gt;&gt;&gt; g = dgl.from_networkx(nx_g, edge_id_attr_name=&#39;eid&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; g = dgl.from_networkx(nx_g, edge_id_attr_name='eid')</span>
 <span class="sd">    (tensor([2, 1]), tensor([1, 2]))</span>
 
 <span class="sd">    Create a graph on the first GPU with data type int32.</span>
 
-<span class="sd">    &gt;&gt;&gt; g = dgl.from_networkx(nx_g, idtype=torch.int32, device=&#39;cuda:0&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; g = dgl.from_networkx(nx_g, idtype=torch.int32, device='cuda:0')</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    graph</span>
 <span class="sd">    from_scipy</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Sanity check</span>
     <span class="k">if</span> <span class="p">(</span>
         <span class="n">edge_id_attr_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="ow">and</span> <span class="n">edge_id_attr_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">nx_graph</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">)))[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
     <span class="p">):</span>
         <span class="k">raise</span> <span class="n">DGLError</span><span class="p">(</span>
-            <span class="s2">&quot;Failed to find the pre-specified edge IDs in the edge features of &quot;</span>
-            <span class="s2">&quot;the NetworkX graph with name </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">edge_id_attr_name</span><span class="p">)</span>
+            <span class="s2">"Failed to find the pre-specified edge IDs in the edge features of "</span>
+            <span class="s2">"the NetworkX graph with name </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">edge_id_attr_name</span><span class="p">)</span>
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">nx_graph</span><span class="o">.</span><span class="n">is_directed</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span>
         <span class="n">edge_id_attr_name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">edge_attrs</span> <span class="ow">is</span> <span class="kc">None</span>
     <span class="p">):</span>
         <span class="k">raise</span> <span class="n">DGLError</span><span class="p">(</span>
-            <span class="s2">&quot;Expect edge_id_attr_name and edge_attrs to be None when nx_graph is &quot;</span>
-            <span class="s2">&quot;undirected, got </span><span class="si">{}</span><span class="s2"> and </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">edge_id_attr_name</span><span class="p">,</span> <span class="n">edge_attrs</span><span class="p">)</span>
+            <span class="s2">"Expect edge_id_attr_name and edge_attrs to be None when nx_graph is "</span>
+            <span class="s2">"undirected, got </span><span class="si">{}</span><span class="s2"> and </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">edge_id_attr_name</span><span class="p">,</span> <span class="n">edge_attrs</span><span class="p">)</span>
         <span class="p">)</span>
 
     <span class="c1"># Relabel nodes using consecutive integers starting from 0</span>
-    <span class="n">nx_graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">convert_node_labels_to_integers</span><span class="p">(</span><span class="n">nx_graph</span><span class="p">,</span> <span class="n">ordering</span><span class="o">=</span><span class="s2">&quot;sorted&quot;</span><span class="p">)</span>
+    <span class="n">nx_graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">convert_node_labels_to_integers</span><span class="p">(</span><span class="n">nx_graph</span><span class="p">,</span> <span class="n">ordering</span><span class="o">=</span><span class="s2">"sorted"</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">nx_graph</span><span class="o">.</span><span class="n">is_directed</span><span class="p">():</span>
         <span class="n">nx_graph</span> <span class="o">=</span> <span class="n">nx_graph</span><span class="o">.</span><span class="n">to_directed</span><span class="p">()</span>
 
@@ -1539,7 +1529,7 @@
         <span class="n">nx_graph</span><span class="p">,</span> <span class="n">idtype</span><span class="p">,</span> <span class="n">edge_id_attr_name</span><span class="o">=</span><span class="n">edge_id_attr_name</span>
     <span class="p">)</span>
 
-    <span class="n">g</span> <span class="o">=</span> <span class="n">create_from_edges</span><span class="p">(</span><span class="n">sparse_fmt</span><span class="p">,</span> <span class="n">arrays</span><span class="p">,</span> <span class="s2">&quot;_N&quot;</span><span class="p">,</span> <span class="s2">&quot;_E&quot;</span><span class="p">,</span> <span class="s2">&quot;_N&quot;</span><span class="p">,</span> <span class="n">urange</span><span class="p">,</span> <span class="n">vrange</span><span class="p">)</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">create_from_edges</span><span class="p">(</span><span class="n">sparse_fmt</span><span class="p">,</span> <span class="n">arrays</span><span class="p">,</span> <span class="s2">"_N"</span><span class="p">,</span> <span class="s2">"_E"</span><span class="p">,</span> <span class="s2">"_N"</span><span class="p">,</span> <span class="n">urange</span><span class="p">,</span> <span class="n">vrange</span><span class="p">)</span>
 
     <span class="c1"># nx_graph.edges(data=True) returns src, dst, attr_dict</span>
     <span class="n">has_edge_id</span> <span class="o">=</span> <span class="p">(</span>
@@ -1568,9 +1558,9 @@
             <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">attrs</span> <span class="ow">in</span> <span class="n">nx_graph</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">attrs</span><span class="p">[</span><span class="n">edge_id_attr_name</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">num_edges</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="n">DGLError</span><span class="p">(</span>
-                        <span class="s2">&quot;Expect the pre-specified edge ids to be&quot;</span>
-                        <span class="s2">&quot; smaller than the number of edges --&quot;</span>
-                        <span class="s2">&quot; </span><span class="si">{}</span><span class="s2">, got </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_edges</span><span class="p">,</span> <span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">])</span>
+                        <span class="s2">"Expect the pre-specified edge ids to be"</span>
+                        <span class="s2">" smaller than the number of edges --"</span>
+                        <span class="s2">" </span><span class="si">{}</span><span class="s2">, got </span><span class="si">{}</span><span class="s2">."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_edges</span><span class="p">,</span> <span class="n">attrs</span><span class="p">[</span><span class="s2">"id"</span><span class="p">])</span>
                     <span class="p">)</span>
                 <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">edge_attrs</span><span class="p">:</span>
                     <span class="n">attr_dict</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">attrs</span><span class="p">[</span><span class="n">edge_id_attr_name</span><span class="p">]]</span> <span class="o">=</span> <span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
@@ -1584,7 +1574,7 @@
             <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">attr_dict</span><span class="p">[</span><span class="n">attr</span><span class="p">]:</span>
                 <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="n">DGLError</span><span class="p">(</span>
-                        <span class="s2">&quot;Not all edges have attribute </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
+                        <span class="s2">"Not all edges have attribute </span><span class="si">{}</span><span class="s2">."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
                     <span class="p">)</span>
             <span class="n">g</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">copy_to</span><span class="p">(</span><span class="n">_batcher</span><span class="p">(</span><span class="n">attr_dict</span><span class="p">[</span><span class="n">attr</span><span class="p">]),</span> <span class="n">g</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
 
@@ -1606,7 +1596,7 @@
     <span class="n">idtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a unidirectional bipartite graph from a NetworkX graph and return.</span>
+<span class="w">    </span><span class="sd">"""Create a unidirectional bipartite graph from a NetworkX graph and return.</span>
 
 <span class="sd">    The created graph will have two types of nodes ``utype`` and ``vtype`` as well as one</span>
 <span class="sd">    edge type ``etype`` whose edges are from ``utype`` to ``vtype``.</span>
@@ -1621,7 +1611,7 @@
 <span class="sd">    nx_graph : networkx.DiGraph</span>
 <span class="sd">        The NetworkX graph holding the graph structure and the node/edge attributes.</span>
 <span class="sd">        DGL will relabel the nodes using consecutive integers starting from zero if it is</span>
-<span class="sd">        not the case. The graph must follow `NetworkX&#39;s bipartite graph convention</span>
+<span class="sd">        not the case. The graph must follow `NetworkX's bipartite graph convention</span>
 <span class="sd">        &lt;https://networkx.github.io/documentation/stable/reference/algorithms/bipartite.html&gt;`_,</span>
 <span class="sd">        and furthermore the edges must be from nodes with attribute ``bipartite=0`` to nodes</span>
 <span class="sd">        with attribute ``bipartite=1``.</span>
@@ -1686,61 +1676,61 @@
 
 <span class="sd">    Convert it into a DGLGraph with structure only.</span>
 
-<span class="sd">    &gt;&gt;&gt; g = dgl.bipartite_from_networkx(nx_g, utype=&#39;_U&#39;, etype=&#39;_E&#39;, vtype=&#39;_V&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; g = dgl.bipartite_from_networkx(nx_g, utype='_U', etype='_E', vtype='_V')</span>
 
 <span class="sd">    Retrieve the node/edge features of the graph.</span>
 
-<span class="sd">    &gt;&gt;&gt; g = dgl.bipartite_from_networkx(nx_g, utype=&#39;_U&#39;, etype=&#39;_E&#39;, vtype=&#39;_V&#39;,</span>
-<span class="sd">    ...                                 u_attrs=[&#39;feat1&#39;, &#39;feat2&#39;],</span>
-<span class="sd">    ...                                 e_attrs=[&#39;weight&#39;],</span>
-<span class="sd">    ...                                 v_attrs=[&#39;feat3&#39;])</span>
+<span class="sd">    &gt;&gt;&gt; g = dgl.bipartite_from_networkx(nx_g, utype='_U', etype='_E', vtype='_V',</span>
+<span class="sd">    ...                                 u_attrs=['feat1', 'feat2'],</span>
+<span class="sd">    ...                                 e_attrs=['weight'],</span>
+<span class="sd">    ...                                 v_attrs=['feat3'])</span>
 
 <span class="sd">    Use a pre-specified ordering of the edges.</span>
 
 <span class="sd">    &gt;&gt;&gt; g.edges()</span>
 <span class="sd">    (tensor([0, 1]), tensor([1, 2]))</span>
 <span class="sd">    &gt;&gt;&gt; g = dgl.bipartite_from_networkx(nx_g,</span>
-<span class="sd">    ...                                 utype=&#39;_U&#39;, etype=&#39;_E&#39;, vtype=&#39;_V&#39;,</span>
-<span class="sd">    ...                                 edge_id_attr_name=&#39;eid&#39;)</span>
+<span class="sd">    ...                                 utype='_U', etype='_E', vtype='_V',</span>
+<span class="sd">    ...                                 edge_id_attr_name='eid')</span>
 <span class="sd">    (tensor([1, 0]), tensor([2, 1]))</span>
 
 <span class="sd">    Create a graph on the first GPU with data type int32.</span>
 
-<span class="sd">    &gt;&gt;&gt; g = dgl.bipartite_from_networkx(nx_g, utype=&#39;_U&#39;, etype=&#39;_E&#39;, vtype=&#39;_V&#39;,</span>
-<span class="sd">    ...                                 idtype=torch.int32, device=&#39;cuda:0&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; g = dgl.bipartite_from_networkx(nx_g, utype='_U', etype='_E', vtype='_V',</span>
+<span class="sd">    ...                                 idtype=torch.int32, device='cuda:0')</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    heterograph</span>
 <span class="sd">    bipartite_from_scipy</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">nx_graph</span><span class="o">.</span><span class="n">is_directed</span><span class="p">():</span>
-        <span class="k">raise</span> <span class="n">DGLError</span><span class="p">(</span><span class="s2">&quot;Expect nx_graph to be a directed NetworkX graph.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">DGLError</span><span class="p">(</span><span class="s2">"Expect nx_graph to be a directed NetworkX graph."</span><span class="p">)</span>
     <span class="k">if</span> <span class="p">(</span>
         <span class="n">edge_id_attr_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="ow">and</span> <span class="ow">not</span> <span class="n">edge_id_attr_name</span> <span class="ow">in</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">nx_graph</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">)))[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
     <span class="p">):</span>
         <span class="k">raise</span> <span class="n">DGLError</span><span class="p">(</span>
-            <span class="s2">&quot;Failed to find the pre-specified edge IDs in the edge features &quot;</span>
-            <span class="s2">&quot;of the NetworkX graph with name </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">edge_id_attr_name</span><span class="p">)</span>
+            <span class="s2">"Failed to find the pre-specified edge IDs in the edge features "</span>
+            <span class="s2">"of the NetworkX graph with name </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">edge_id_attr_name</span><span class="p">)</span>
         <span class="p">)</span>
 
     <span class="c1"># Get the source and destination node sets</span>
     <span class="n">top_nodes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
     <span class="n">bottom_nodes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">ndata</span> <span class="ow">in</span> <span class="n">nx_graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="k">if</span> <span class="s2">&quot;bipartite&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ndata</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">"bipartite"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ndata</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">DGLError</span><span class="p">(</span>
-                <span class="s2">&quot;Expect the node </span><span class="si">{}</span><span class="s2"> to have attribute bipartite&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+                <span class="s2">"Expect the node </span><span class="si">{}</span><span class="s2"> to have attribute bipartite"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
             <span class="p">)</span>
-        <span class="k">if</span> <span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;bipartite&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ndata</span><span class="p">[</span><span class="s2">"bipartite"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">top_nodes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;bipartite&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">ndata</span><span class="p">[</span><span class="s2">"bipartite"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">bottom_nodes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Expect the bipartite attribute of the node </span><span class="si">{}</span><span class="s2"> to be 0 or 1, &quot;</span>
-                <span class="s2">&quot;got </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;bipartite&quot;</span><span class="p">])</span>
+                <span class="s2">"Expect the bipartite attribute of the node </span><span class="si">{}</span><span class="s2"> to be 0 or 1, "</span>
+                <span class="s2">"got </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">ndata</span><span class="p">[</span><span class="s2">"bipartite"</span><span class="p">])</span>
             <span class="p">)</span>
 
     <span class="c1"># Separately relabel the source and destination nodes.</span>
@@ -1808,7 +1798,7 @@
             <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">attr_dict</span><span class="p">[</span><span class="n">attr</span><span class="p">]:</span>
                 <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="n">DGLError</span><span class="p">(</span>
-                        <span class="s2">&quot;Not all edges have attribute </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
+                        <span class="s2">"Not all edges have attribute </span><span class="si">{}</span><span class="s2">."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
                     <span class="p">)</span>
             <span class="n">g</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">copy_to</span><span class="p">(</span><span class="n">_batcher</span><span class="p">(</span><span class="n">attr_dict</span><span class="p">[</span><span class="n">attr</span><span class="p">]),</span> <span class="n">g</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
 
@@ -1837,7 +1827,7 @@
             <span class="p">)</span>
     <span class="k">if</span> <span class="n">edge_attrs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">nx_graph</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-            <span class="n">eid</span> <span class="o">=</span> <span class="n">attr</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+            <span class="n">eid</span> <span class="o">=</span> <span class="n">attr</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span>
             <span class="n">feat_dict</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">_get_e_repr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">eid</span><span class="p">)</span>
             <span class="n">attr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
                 <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">F</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">feat_dict</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">edge_attrs</span><span class="p">}</span>
@@ -1865,8 +1855,8 @@
 
         <span class="k">if</span> <span class="n">node_attrs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">assert</span> <span class="n">ntype_attr</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">node_attrs</span><span class="p">,</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">ntype_attr</span><span class="si">}</span><span class="s2">&#39; already used as node type attribute, &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;please provide a different value for ntype_attr&quot;</span>
+                <span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">ntype_attr</span><span class="si">}</span><span class="s2">' already used as node type attribute, "</span>
+                <span class="sa">f</span><span class="s2">"please provide a different value for ntype_attr"</span>
             <span class="p">)</span>
 
             <span class="n">feat_dict</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">_get_n_repr</span><span class="p">(</span><span class="n">ntype</span><span class="p">,</span> <span class="n">orig_nid</span><span class="p">)</span>
@@ -1886,12 +1876,12 @@
 
         <span class="k">if</span> <span class="n">edge_attrs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">assert</span> <span class="n">etype_attr</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">edge_attrs</span><span class="p">,</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">etype_attr</span><span class="si">}</span><span class="s2">&#39; already used as edge type attribute, &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;please provide a different value for etype_attr&quot;</span>
+                <span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">etype_attr</span><span class="si">}</span><span class="s2">' already used as edge type attribute, "</span>
+                <span class="sa">f</span><span class="s2">"please provide a different value for etype_attr"</span>
             <span class="p">)</span>
             <span class="k">assert</span> <span class="n">eid_attr</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">edge_attrs</span><span class="p">,</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">eid_attr</span><span class="si">}</span><span class="s2">&#39; already used as edge ID attribute, &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;please provide a different value for eid_attr&quot;</span>
+                <span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">eid_attr</span><span class="si">}</span><span class="s2">' already used as edge ID attribute, "</span>
+                <span class="sa">f</span><span class="s2">"please provide a different value for eid_attr"</span>
             <span class="p">)</span>
 
             <span class="n">feat_dict</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">_get_e_repr</span><span class="p">(</span><span class="n">etype</span><span class="p">,</span> <span class="n">orig_eid</span><span class="p">)</span>
@@ -1915,14 +1905,14 @@
     <span class="n">g</span><span class="p">,</span>
     <span class="n">node_attrs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">edge_attrs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">ntype_attr</span><span class="o">=</span><span class="s2">&quot;ntype&quot;</span><span class="p">,</span>
-    <span class="n">etype_attr</span><span class="o">=</span><span class="s2">&quot;etype&quot;</span><span class="p">,</span>
-    <span class="n">eid_attr</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
+    <span class="n">ntype_attr</span><span class="o">=</span><span class="s2">"ntype"</span><span class="p">,</span>
+    <span class="n">etype_attr</span><span class="o">=</span><span class="s2">"etype"</span><span class="p">,</span>
+    <span class="n">eid_attr</span><span class="o">=</span><span class="s2">"id"</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a graph to a NetworkX graph and return.</span>
+<span class="w">    </span><span class="sd">"""Convert a graph to a NetworkX graph and return.</span>
 
 <span class="sd">    The resulting NetworkX graph also contains the node/edge features of the input graph.</span>
-<span class="sd">    Additionally, DGL saves the edge IDs as the ``&#39;id&#39;`` edge attribute in the</span>
+<span class="sd">    Additionally, DGL saves the edge IDs as the ``'id'`` edge attribute in the</span>
 <span class="sd">    returned NetworkX graph.</span>
 
 <span class="sd">    Parameters</span>
@@ -1936,13 +1926,13 @@
 <span class="sd">        (Default: None)</span>
 <span class="sd">    ntype_attr : str, optional</span>
 <span class="sd">        The name of the node attribute to store the node types in the NetworkX object.</span>
-<span class="sd">        (Default: &quot;ntype&quot;)</span>
+<span class="sd">        (Default: "ntype")</span>
 <span class="sd">    etype_attr : str, optional</span>
 <span class="sd">        The name of the edge attribute to store the edge canonical types in the NetworkX object.</span>
-<span class="sd">        (Default: &quot;etype&quot;)</span>
+<span class="sd">        (Default: "etype")</span>
 <span class="sd">    eid_attr : str, optional</span>
 <span class="sd">        The name of the edge attribute to store the original edge ID in the NetworkX object.</span>
-<span class="sd">        (Default: &quot;id&quot;)</span>
+<span class="sd">        (Default: "id")</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -1963,67 +1953,67 @@
 <span class="sd">    With a homogeneous graph:</span>
 
 <span class="sd">    &gt;&gt;&gt; g = dgl.graph((torch.tensor([1, 2]), torch.tensor([1, 3])))</span>
-<span class="sd">    &gt;&gt;&gt; g.ndata[&#39;h&#39;] = torch.zeros(4, 1)</span>
-<span class="sd">    &gt;&gt;&gt; g.edata[&#39;h1&#39;] = torch.ones(2, 1)</span>
-<span class="sd">    &gt;&gt;&gt; g.edata[&#39;h2&#39;] = torch.zeros(2, 2)</span>
-<span class="sd">    &gt;&gt;&gt; nx_g = dgl.to_networkx(g, node_attrs=[&#39;h&#39;], edge_attrs=[&#39;h1&#39;, &#39;h2&#39;])</span>
+<span class="sd">    &gt;&gt;&gt; g.ndata['h'] = torch.zeros(4, 1)</span>
+<span class="sd">    &gt;&gt;&gt; g.edata['h1'] = torch.ones(2, 1)</span>
+<span class="sd">    &gt;&gt;&gt; g.edata['h2'] = torch.zeros(2, 2)</span>
+<span class="sd">    &gt;&gt;&gt; nx_g = dgl.to_networkx(g, node_attrs=['h'], edge_attrs=['h1', 'h2'])</span>
 <span class="sd">    &gt;&gt;&gt; nx_g.nodes(data=True)</span>
 <span class="sd">    NodeDataView({</span>
-<span class="sd">        0: {&#39;h&#39;: tensor([0.])},</span>
-<span class="sd">        1: {&#39;h&#39;: tensor([0.])},</span>
-<span class="sd">        2: {&#39;h&#39;: tensor([0.])},</span>
-<span class="sd">        3: {&#39;h&#39;: tensor([0.])}</span>
+<span class="sd">        0: {'h': tensor([0.])},</span>
+<span class="sd">        1: {'h': tensor([0.])},</span>
+<span class="sd">        2: {'h': tensor([0.])},</span>
+<span class="sd">        3: {'h': tensor([0.])}</span>
 <span class="sd">    })</span>
 <span class="sd">    &gt;&gt;&gt; nx_g.edges(data=True)</span>
 <span class="sd">    OutMultiEdgeDataView([</span>
-<span class="sd">        (1, 1, {&#39;id&#39;: 0, &#39;h1&#39;: tensor([1.]), &#39;h2&#39;: tensor([0., 0.])}),</span>
-<span class="sd">        (2, 3, {&#39;id&#39;: 1, &#39;h1&#39;: tensor([1.]), &#39;h2&#39;: tensor([0., 0.])})</span>
+<span class="sd">        (1, 1, {'id': 0, 'h1': tensor([1.]), 'h2': tensor([0., 0.])}),</span>
+<span class="sd">        (2, 3, {'id': 1, 'h1': tensor([1.]), 'h2': tensor([0., 0.])})</span>
 <span class="sd">    ])</span>
 
 <span class="sd">    With a heterogeneous graph:</span>
 
 <span class="sd">    &gt;&gt;&gt; g = dgl.heterograph({</span>
-<span class="sd">    ...     (&#39;user&#39;, &#39;follows&#39;, &#39;user&#39;): (torch.tensor([0, 1]), torch.tensor([1, 2])),</span>
-<span class="sd">    ...     (&#39;user&#39;, &#39;follows&#39;, &#39;topic&#39;): (torch.tensor([1, 1]), torch.tensor([1, 2])),</span>
-<span class="sd">    ...     (&#39;user&#39;, &#39;plays&#39;, &#39;game&#39;): (torch.tensor([0, 3]), torch.tensor([3, 4]))</span>
+<span class="sd">    ...     ('user', 'follows', 'user'): (torch.tensor([0, 1]), torch.tensor([1, 2])),</span>
+<span class="sd">    ...     ('user', 'follows', 'topic'): (torch.tensor([1, 1]), torch.tensor([1, 2])),</span>
+<span class="sd">    ...     ('user', 'plays', 'game'): (torch.tensor([0, 3]), torch.tensor([3, 4]))</span>
 <span class="sd">    ... })</span>
-<span class="sd">    &gt;&gt;&gt; g.ndata[&#39;n&#39;] = {</span>
-<span class="sd">    ...     &#39;game&#39;: torch.zeros(5, 1),</span>
-<span class="sd">    ...     &#39;user&#39;: torch.ones(4, 1)</span>
+<span class="sd">    &gt;&gt;&gt; g.ndata['n'] = {</span>
+<span class="sd">    ...     'game': torch.zeros(5, 1),</span>
+<span class="sd">    ...     'user': torch.ones(4, 1)</span>
 <span class="sd">    ... }</span>
-<span class="sd">    &gt;&gt;&gt; g.edata[&#39;e&#39;] = {</span>
-<span class="sd">    ...     (&#39;user&#39;, &#39;follows&#39;, &#39;user&#39;): torch.zeros(2, 1),</span>
-<span class="sd">    ...     &#39;plays&#39;: torch.ones(2, 1)</span>
+<span class="sd">    &gt;&gt;&gt; g.edata['e'] = {</span>
+<span class="sd">    ...     ('user', 'follows', 'user'): torch.zeros(2, 1),</span>
+<span class="sd">    ...     'plays': torch.ones(2, 1)</span>
 <span class="sd">    ... }</span>
-<span class="sd">    &gt;&gt;&gt; nx_g = dgl.to_networkx(g, node_attrs=[&#39;n&#39;], edge_attrs=[&#39;e&#39;])</span>
+<span class="sd">    &gt;&gt;&gt; nx_g = dgl.to_networkx(g, node_attrs=['n'], edge_attrs=['e'])</span>
 <span class="sd">    &gt;&gt;&gt; nx_g.nodes(data=True)</span>
 <span class="sd">    NodeDataView({</span>
-<span class="sd">        0: {&#39;ntype&#39;: &#39;game&#39;, &#39;n&#39;: tensor([0.])},</span>
-<span class="sd">        1: {&#39;ntype&#39;: &#39;game&#39;, &#39;n&#39;: tensor([0.])},</span>
-<span class="sd">        2: {&#39;ntype&#39;: &#39;game&#39;, &#39;n&#39;: tensor([0.])},</span>
-<span class="sd">        3: {&#39;ntype&#39;: &#39;game&#39;, &#39;n&#39;: tensor([0.])},</span>
-<span class="sd">        4: {&#39;ntype&#39;: &#39;game&#39;, &#39;n&#39;: tensor([0.])},</span>
-<span class="sd">        5: {&#39;ntype&#39;: &#39;topic&#39;},</span>
-<span class="sd">        6: {&#39;ntype&#39;: &#39;topic&#39;},</span>
-<span class="sd">        7: {&#39;ntype&#39;: &#39;topic&#39;},</span>
-<span class="sd">        8: {&#39;ntype&#39;: &#39;user&#39;, &#39;n&#39;: tensor([1.])},</span>
-<span class="sd">        9: {&#39;ntype&#39;: &#39;user&#39;, &#39;n&#39;: tensor([1.])},</span>
-<span class="sd">        10: {&#39;ntype&#39;: &#39;user&#39;, &#39;n&#39;: tensor([1.])},</span>
-<span class="sd">        11: {&#39;ntype&#39;: &#39;user&#39;, &#39;n&#39;: tensor([1.])}</span>
+<span class="sd">        0: {'ntype': 'game', 'n': tensor([0.])},</span>
+<span class="sd">        1: {'ntype': 'game', 'n': tensor([0.])},</span>
+<span class="sd">        2: {'ntype': 'game', 'n': tensor([0.])},</span>
+<span class="sd">        3: {'ntype': 'game', 'n': tensor([0.])},</span>
+<span class="sd">        4: {'ntype': 'game', 'n': tensor([0.])},</span>
+<span class="sd">        5: {'ntype': 'topic'},</span>
+<span class="sd">        6: {'ntype': 'topic'},</span>
+<span class="sd">        7: {'ntype': 'topic'},</span>
+<span class="sd">        8: {'ntype': 'user', 'n': tensor([1.])},</span>
+<span class="sd">        9: {'ntype': 'user', 'n': tensor([1.])},</span>
+<span class="sd">        10: {'ntype': 'user', 'n': tensor([1.])},</span>
+<span class="sd">        11: {'ntype': 'user', 'n': tensor([1.])}</span>
 <span class="sd">    })</span>
 <span class="sd">    &gt;&gt;&gt; nx_g.edges(data=True)</span>
 <span class="sd">    OutMultiEdgeDataView([</span>
-<span class="sd">        (8, 9, {&#39;id&#39;: 2, &#39;etype&#39;: (&#39;user&#39;, &#39;follows&#39;, &#39;user&#39;), &#39;e&#39;: tensor([0.])}),</span>
-<span class="sd">        (8, 3, {&#39;id&#39;: 4, &#39;etype&#39;: (&#39;user&#39;, &#39;plays&#39;, &#39;game&#39;), &#39;e&#39;: tensor([1.])}),</span>
-<span class="sd">        (9, 6, {&#39;id&#39;: 0, &#39;etype&#39;: (&#39;user&#39;, &#39;follows&#39;, &#39;topic&#39;)}),</span>
-<span class="sd">        (9, 7, {&#39;id&#39;: 1, &#39;etype&#39;: (&#39;user&#39;, &#39;follows&#39;, &#39;topic&#39;)}),</span>
-<span class="sd">        (9, 10, {&#39;id&#39;: 3, &#39;etype&#39;: (&#39;user&#39;, &#39;follows&#39;, &#39;user&#39;), &#39;e&#39;: tensor([0.])}),</span>
-<span class="sd">        (11, 4, {&#39;id&#39;: 5, &#39;etype&#39;: (&#39;user&#39;, &#39;plays&#39;, &#39;game&#39;), &#39;e&#39;: tensor([1.])})</span>
+<span class="sd">        (8, 9, {'id': 2, 'etype': ('user', 'follows', 'user'), 'e': tensor([0.])}),</span>
+<span class="sd">        (8, 3, {'id': 4, 'etype': ('user', 'plays', 'game'), 'e': tensor([1.])}),</span>
+<span class="sd">        (9, 6, {'id': 0, 'etype': ('user', 'follows', 'topic')}),</span>
+<span class="sd">        (9, 7, {'id': 1, 'etype': ('user', 'follows', 'topic')}),</span>
+<span class="sd">        (9, 10, {'id': 3, 'etype': ('user', 'follows', 'user'), 'e': tensor([0.])}),</span>
+<span class="sd">        (11, 4, {'id': 5, 'etype': ('user', 'plays', 'game'), 'e': tensor([1.])})</span>
 <span class="sd">    ])</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">device</span> <span class="o">!=</span> <span class="n">F</span><span class="o">.</span><span class="n">cpu</span><span class="p">():</span>
         <span class="k">raise</span> <span class="n">DGLError</span><span class="p">(</span>
-            <span class="s2">&quot;Cannot convert a CUDA graph to networkx. Call g.cpu() first.&quot;</span>
+            <span class="s2">"Cannot convert a CUDA graph to networkx. Call g.cpu() first."</span>
         <span class="p">)</span>
     <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">is_homogeneous</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">_to_networkx_homogeneous</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">node_attrs</span><span class="p">,</span> <span class="n">edge_attrs</span><span class="p">)</span>
@@ -2040,7 +2030,7 @@
 <div class="viewcode-block" id="to_cugraph">
 <a class="viewcode-back" href="../../generated/dgl.to_cugraph.html#dgl.to_cugraph">[docs]</a>
 <span class="k">def</span> <span class="nf">to_cugraph</span><span class="p">(</span><span class="n">g</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a DGL graph to a :class:`cugraph.Graph` and return.</span>
+<span class="w">    </span><span class="sd">"""Convert a DGL graph to a :class:`cugraph.Graph` and return.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -2064,37 +2054,37 @@
 <span class="sd">    &gt;&gt;&gt; import cugraph</span>
 <span class="sd">    &gt;&gt;&gt; import torch</span>
 
-<span class="sd">    &gt;&gt;&gt; g = dgl.graph((torch.tensor([1, 2]), torch.tensor([1, 3]))).to(&#39;cuda&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; g = dgl.graph((torch.tensor([1, 2]), torch.tensor([1, 3]))).to('cuda')</span>
 <span class="sd">    &gt;&gt;&gt; cugraph_g = g.to_cugraph()</span>
 <span class="sd">    &gt;&gt;&gt; cugraph_g.edges()</span>
 <span class="sd">        src  dst</span>
 <span class="sd">    0    2    3</span>
 <span class="sd">    1    1    1</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s2">&quot;cuda&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s2">"cuda"</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">DGLError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Cannot convert a </span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2"> graph to cugraph.&quot;</span>
-            <span class="o">+</span> <span class="s2">&quot;Call g.to(&#39;cuda&#39;) first.&quot;</span>
+            <span class="sa">f</span><span class="s2">"Cannot convert a </span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2"> graph to cugraph."</span>
+            <span class="o">+</span> <span class="s2">"Call g.to('cuda') first."</span>
         <span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">is_homogeneous</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">DGLError</span><span class="p">(</span><span class="s2">&quot;dgl.to_cugraph only supports homogeneous graphs.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">DGLError</span><span class="p">(</span><span class="s2">"dgl.to_cugraph only supports homogeneous graphs."</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="kn">import</span> <span class="nn">cudf</span>
         <span class="kn">import</span> <span class="nn">cugraph</span>
     <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ModuleNotFoundError</span><span class="p">(</span>
-            <span class="s2">&quot;to_cugraph requires cugraph which could not be imported&quot;</span>
+            <span class="s2">"to_cugraph requires cugraph which could not be imported"</span>
         <span class="p">)</span>
 
     <span class="n">edgelist</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span>
     <span class="n">src_ser</span> <span class="o">=</span> <span class="n">cudf</span><span class="o">.</span><span class="n">from_dlpack</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">zerocopy_to_dlpack</span><span class="p">(</span><span class="n">edgelist</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
     <span class="n">dst_ser</span> <span class="o">=</span> <span class="n">cudf</span><span class="o">.</span><span class="n">from_dlpack</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">zerocopy_to_dlpack</span><span class="p">(</span><span class="n">edgelist</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-    <span class="n">cudf_data</span> <span class="o">=</span> <span class="n">cudf</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">src_ser</span><span class="p">,</span> <span class="s2">&quot;destination&quot;</span><span class="p">:</span> <span class="n">dst_ser</span><span class="p">})</span>
+    <span class="n">cudf_data</span> <span class="o">=</span> <span class="n">cudf</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">"source"</span><span class="p">:</span> <span class="n">src_ser</span><span class="p">,</span> <span class="s2">"destination"</span><span class="p">:</span> <span class="n">dst_ser</span><span class="p">})</span>
     <span class="n">g_cugraph</span> <span class="o">=</span> <span class="n">cugraph</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">directed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">g_cugraph</span><span class="o">.</span><span class="n">from_cudf_edgelist</span><span class="p">(</span>
-        <span class="n">cudf_data</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s2">&quot;source&quot;</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="s2">&quot;destination&quot;</span>
+        <span class="n">cudf_data</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s2">"source"</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="s2">"destination"</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">g_cugraph</span></div>
 
@@ -2106,7 +2096,7 @@
 <div class="viewcode-block" id="from_cugraph">
 <a class="viewcode-back" href="../../generated/dgl.from_cugraph.html#dgl.from_cugraph">[docs]</a>
 <span class="k">def</span> <span class="nf">from_cugraph</span><span class="p">(</span><span class="n">cugraph_graph</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a graph from a :class:`cugraph.Graph` object.</span>
+<span class="w">    </span><span class="sd">"""Create a graph from a :class:`cugraph.Graph` object.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -2133,21 +2123,21 @@
 
 <span class="sd">    Create a cugraph graph.</span>
 <span class="sd">    &gt;&gt;&gt; cugraph_g = cugraph.Graph(directed=True)</span>
-<span class="sd">    &gt;&gt;&gt; df = cudf.DataFrame({&quot;source&quot;:[0, 1, 2, 3],</span>
-<span class="sd">                     &quot;destination&quot;:[1, 2, 3, 0]})</span>
+<span class="sd">    &gt;&gt;&gt; df = cudf.DataFrame({"source":[0, 1, 2, 3],</span>
+<span class="sd">                     "destination":[1, 2, 3, 0]})</span>
 <span class="sd">    &gt;&gt;&gt; cugraph_g.from_cudf_edgelist(df)</span>
 
 <span class="sd">    Convert it into a DGLGraph</span>
 <span class="sd">    &gt;&gt;&gt; g = dgl.from_cugraph(cugraph_g)</span>
 <span class="sd">    &gt;&gt;&gt; g.edges()</span>
-<span class="sd">    (tensor([1, 2, 3, 0], device=&#39;cuda:0&#39;), tensor([2, 3, 0, 1], device=&#39;cuda:0&#39;))</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    (tensor([1, 2, 3, 0], device='cuda:0'), tensor([2, 3, 0, 1], device='cuda:0'))</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">cugraph_graph</span><span class="o">.</span><span class="n">is_directed</span><span class="p">():</span>
         <span class="n">cugraph_graph</span> <span class="o">=</span> <span class="n">cugraph_graph</span><span class="o">.</span><span class="n">to_directed</span><span class="p">()</span>
 
     <span class="n">edges</span> <span class="o">=</span> <span class="n">cugraph_graph</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span>
-    <span class="n">src_t</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">zerocopy_from_dlpack</span><span class="p">(</span><span class="n">edges</span><span class="p">[</span><span class="s2">&quot;src&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_dlpack</span><span class="p">())</span>
-    <span class="n">dst_t</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">zerocopy_from_dlpack</span><span class="p">(</span><span class="n">edges</span><span class="p">[</span><span class="s2">&quot;dst&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_dlpack</span><span class="p">())</span>
+    <span class="n">src_t</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">zerocopy_from_dlpack</span><span class="p">(</span><span class="n">edges</span><span class="p">[</span><span class="s2">"src"</span><span class="p">]</span><span class="o">.</span><span class="n">to_dlpack</span><span class="p">())</span>
+    <span class="n">dst_t</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">zerocopy_from_dlpack</span><span class="p">(</span><span class="n">edges</span><span class="p">[</span><span class="s2">"dst"</span><span class="p">]</span><span class="o">.</span><span class="n">to_dlpack</span><span class="p">())</span>
     <span class="n">g</span> <span class="o">=</span> <span class="n">graph</span><span class="p">((</span><span class="n">src_t</span><span class="p">,</span> <span class="n">dst_t</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">g</span></div>
@@ -2170,7 +2160,7 @@
     <span class="n">row_sorted</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">col_sorted</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Internal function to create a graph from incident nodes with types.</span>
+<span class="w">    </span><span class="sd">"""Internal function to create a graph from incident nodes with types.</span>
 
 <span class="sd">    utype could be equal to vtype</span>
 
@@ -2202,13 +2192,13 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    DGLGraph</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">utype</span> <span class="o">==</span> <span class="n">vtype</span><span class="p">:</span>
         <span class="n">num_ntypes</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">num_ntypes</span> <span class="o">=</span> <span class="mi">2</span>
 
-    <span class="k">if</span> <span class="n">sparse_fmt</span> <span class="o">==</span> <span class="s2">&quot;coo&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">sparse_fmt</span> <span class="o">==</span> <span class="s2">"coo"</span><span class="p">:</span>
         <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">arrays</span>
         <span class="n">hgidx</span> <span class="o">=</span> <span class="n">heterograph_index</span><span class="o">.</span><span class="n">create_unitgraph_from_coo</span><span class="p">(</span>
             <span class="n">num_ntypes</span><span class="p">,</span>
@@ -2216,11 +2206,11 @@
             <span class="n">vrange</span><span class="p">,</span>
             <span class="n">u</span><span class="p">,</span>
             <span class="n">v</span><span class="p">,</span>
-            <span class="p">[</span><span class="s2">&quot;coo&quot;</span><span class="p">,</span> <span class="s2">&quot;csr&quot;</span><span class="p">,</span> <span class="s2">&quot;csc&quot;</span><span class="p">],</span>
+            <span class="p">[</span><span class="s2">"coo"</span><span class="p">,</span> <span class="s2">"csr"</span><span class="p">,</span> <span class="s2">"csc"</span><span class="p">],</span>
             <span class="n">row_sorted</span><span class="p">,</span>
             <span class="n">col_sorted</span><span class="p">,</span>
         <span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>  <span class="c1"># &#39;csr&#39; or &#39;csc&#39;</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># 'csr' or 'csc'</span>
         <span class="n">indptr</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">eids</span> <span class="o">=</span> <span class="n">arrays</span>
         <span class="n">hgidx</span> <span class="o">=</span> <span class="n">heterograph_index</span><span class="o">.</span><span class="n">create_unitgraph_from_csr</span><span class="p">(</span>
             <span class="n">num_ntypes</span><span class="p">,</span>
@@ -2229,24 +2219,21 @@
             <span class="n">indptr</span><span class="p">,</span>
             <span class="n">indices</span><span class="p">,</span>
             <span class="n">eids</span><span class="p">,</span>
-            <span class="p">[</span><span class="s2">&quot;coo&quot;</span><span class="p">,</span> <span class="s2">&quot;csr&quot;</span><span class="p">,</span> <span class="s2">&quot;csc&quot;</span><span class="p">],</span>
-            <span class="n">sparse_fmt</span> <span class="o">==</span> <span class="s2">&quot;csc&quot;</span><span class="p">,</span>
+            <span class="p">[</span><span class="s2">"coo"</span><span class="p">,</span> <span class="s2">"csr"</span><span class="p">,</span> <span class="s2">"csc"</span><span class="p">],</span>
+            <span class="n">sparse_fmt</span> <span class="o">==</span> <span class="s2">"csc"</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">if</span> <span class="n">utype</span> <span class="o">==</span> <span class="n">vtype</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">DGLGraph</span><span class="p">(</span><span class="n">hgidx</span><span class="p">,</span> <span class="p">[</span><span class="n">utype</span><span class="p">],</span> <span class="p">[</span><span class="n">etype</span><span class="p">])</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">DGLGraph</span><span class="p">(</span><span class="n">hgidx</span><span class="p">,</span> <span class="p">[</span><span class="n">utype</span><span class="p">,</span> <span class="n">vtype</span><span class="p">],</span> <span class="p">[</span><span class="n">etype</span><span class="p">])</span>
 </pre></div>
-
-           </div>
-          </div>
-          <footer>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2018, DGL Team.</p>
-  </div>
+</div>
+</div>
+<footer>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
@@ -2254,15 +2241,58 @@
    
 
 </footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+
+<script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
-
+  </script>
 </body>
 </html>

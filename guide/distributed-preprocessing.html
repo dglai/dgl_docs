@@ -1,66 +1,59 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../">
+
+<html class="writer-html5" data-content_root="../" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>7.1 Data Preprocessing &mdash; DGL 2.4 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
-      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=0bf289b5" />
-
-  
-  <!--[if lt IE 9]>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>7.1 Data Preprocessing — DGL 2.3.1 documentation</title>
+<link href="../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=9caaf7ed"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../_static/copybutton.js?v=ccdb6887"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="7.2 Tools for launching distributed training/inference" href="distributed-tools.html" />
-    <link rel="prev" title="Chapter 7: Distributed Training" href="distributed.html" /> 
+<script src="../_static/jquery.js?v=5d32c60e"></script>
+<script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../_static/doctools.js?v=9a2dae69"></script>
+<script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+<script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../_static/js/theme.js"></script>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="distributed-tools.html" rel="next" title="7.2 Tools for launching distributed training/inference"/>
+<link href="distributed.html" rel="prev" title="Chapter 7: Distributed Training"/>
 </head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../index.html" class="icon icon-home">
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../index.html">
             DGL
           </a>
-              <div class="version">
-                2.4
+<div class="version">
+                2.3.1
               </div>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+<form action="../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../install/index.html">Install and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/blitz/index.html">A Blitz Introduction to DGL</a></li>
@@ -127,34 +120,30 @@
 <li class="toctree-l1"><a class="reference internal" href="../env_var.html">Environment Variables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../resources.html">Resources</a></li>
 </ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">DGL</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">User Guide</a></li>
-          <li class="breadcrumb-item"><a href="distributed.html">Chapter 7: Distributed Training</a></li>
-      <li class="breadcrumb-item active">7.1 Data Preprocessing</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/guide/distributed-preprocessing.rst.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="data-preprocessing">
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../index.html"></a></li>
+<li class="breadcrumb-item"><a href="index.html">User Guide</a></li>
+<li class="breadcrumb-item"><a href="distributed.html">Chapter 7: Distributed Training</a></li>
+<li class="breadcrumb-item active">7.1 Data Preprocessing</li>
+<li class="wy-breadcrumbs-aside">
+<a href="../_sources/guide/distributed-preprocessing.rst.txt" rel="nofollow"> View page source</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<section id="data-preprocessing">
 <span id="guide-distributed-preprocessing"></span><h1>7.1 Data Preprocessing<a class="headerlink" href="#data-preprocessing" title="Link to this heading"></a></h1>
 <p>Before launching training jobs, DGL requires the input data to be partitioned
 and distributed to the target machines. In order to handle different scales
@@ -179,7 +168,7 @@ training. For example,</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dgl</span>
 
 <span class="n">g</span> <span class="o">=</span> <span class="o">...</span>  <span class="c1"># create or load a DGLGraph object</span>
-<span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">partition_graph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="s1">&#39;mygraph&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;data_root_dir&#39;</span><span class="p">)</span>
+<span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">partition_graph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="s1">'mygraph'</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'data_root_dir'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>will outputs the following data file.</p>
@@ -219,7 +208,7 @@ advantage of this and consider nodes in the training set, validation set and
 test set are of different node types.</p>
 <p>The following example considers nodes inside the training set and outside the
 training set are two types of nodes:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">partition_graph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="s1">&#39;graph_name&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;/tmp/test&#39;</span><span class="p">,</span> <span class="n">balance_ntypes</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;train_mask&#39;</span><span class="p">])</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">partition_graph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="s1">'graph_name'</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">'/tmp/test'</span><span class="p">,</span> <span class="n">balance_ntypes</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'train_mask'</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>In addition to balancing the node types,
@@ -243,10 +232,10 @@ node ID to its original ID; the second vector maps every new edge ID to
 its original ID. For a heterogeneous graph, it returns two dictionaries of
 vectors. The first dictionary contains the mapping for each node type; the
 second dictionary contains the mapping for each edge type.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">node_map</span><span class="p">,</span> <span class="n">edge_map</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">partition_graph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="s1">&#39;graph_name&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;/tmp/test&#39;</span><span class="p">,</span>
-                                                     <span class="n">balance_ntypes</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;train_mask&#39;</span><span class="p">],</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">node_map</span><span class="p">,</span> <span class="n">edge_map</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">partition_graph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="s1">'graph_name'</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">'/tmp/test'</span><span class="p">,</span>
+                                                     <span class="n">balance_ntypes</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'train_mask'</span><span class="p">],</span>
                                                      <span class="n">return_mapping</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="c1"># Let&#39;s assume that node_emb is saved from the distributed training.</span>
+<span class="c1"># Let's assume that node_emb is saved from the distributed training.</span>
 <span class="n">orig_node_emb</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">node_emb</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">node_emb</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
 <span class="n">orig_node_emb</span><span class="p">[</span><span class="n">node_map</span><span class="p">]</span> <span class="o">=</span> <span class="n">node_emb</span>
 </pre></div>
@@ -259,17 +248,17 @@ second dictionary contains the mapping for each edge type.</p>
 for inspection.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dgl</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># load partition 0</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">part_data</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">load_partition</span><span class="p">(</span><span class="s1">&#39;data_root_dir/graph_name.json&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">part_data</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">load_partition</span><span class="p">(</span><span class="s1">'data_root_dir/graph_name.json'</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="p">,</span> <span class="n">nfeat</span><span class="p">,</span> <span class="n">efeat</span><span class="p">,</span> <span class="n">partition_book</span><span class="p">,</span> <span class="n">graph_name</span><span class="p">,</span> <span class="n">ntypes</span><span class="p">,</span> <span class="n">etypes</span> <span class="o">=</span> <span class="n">part_data</span>  <span class="c1"># unpack</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
 <span class="go">Graph(num_nodes=966043, num_edges=34270118,</span>
-<span class="go">      ndata_schemes={&#39;orig_id&#39;: Scheme(shape=(), dtype=torch.int64),</span>
-<span class="go">                     &#39;part_id&#39;: Scheme(shape=(), dtype=torch.int64),</span>
-<span class="go">                     &#39;_ID&#39;: Scheme(shape=(), dtype=torch.int64),</span>
-<span class="go">                     &#39;inner_node&#39;: Scheme(shape=(), dtype=torch.int32)}</span>
-<span class="go">      edata_schemes={&#39;_ID&#39;: Scheme(shape=(), dtype=torch.int64),</span>
-<span class="go">                     &#39;inner_edge&#39;: Scheme(shape=(), dtype=torch.int8),</span>
-<span class="go">                     &#39;orig_id&#39;: Scheme(shape=(), dtype=torch.int64)})</span>
+<span class="go">      ndata_schemes={'orig_id': Scheme(shape=(), dtype=torch.int64),</span>
+<span class="go">                     'part_id': Scheme(shape=(), dtype=torch.int64),</span>
+<span class="go">                     '_ID': Scheme(shape=(), dtype=torch.int64),</span>
+<span class="go">                     'inner_node': Scheme(shape=(), dtype=torch.int32)}</span>
+<span class="go">      edata_schemes={'_ID': Scheme(shape=(), dtype=torch.int64),</span>
+<span class="go">                     'inner_edge': Scheme(shape=(), dtype=torch.int8),</span>
+<span class="go">                     'orig_id': Scheme(shape=(), dtype=torch.int64)})</span>
 </pre></div>
 </div>
 <p>As mentioned in the <a class="reference internal" href="#id-mapping">ID mapping</a> section, each partition carries auxiliary information
@@ -289,7 +278,7 @@ single machine, DGL utilizes data chunking and parallel processing to reduce
 memory footprint and running time. The figure below illustrates the
 pipeline:</p>
 <figure class="align-default">
-<img alt="https://data.dgl.ai/asset/image/guide_7_distdataprep.png" src="https://data.dgl.ai/asset/image/guide_7_distdataprep.png" />
+<img alt="https://data.dgl.ai/asset/image/guide_7_distdataprep.png" src="https://data.dgl.ai/asset/image/guide_7_distdataprep.png"/>
 </figure>
 <ul class="simple">
 <li><p>The pipeline takes input data stored in <em>Chunked Graph Format</em> and
@@ -322,7 +311,7 @@ tips for creating data in such format.</p>
 extracted from the Microsoft Academic Graph (MAG), whose schema diagram is
 illustrated below:</p>
 <figure class="align-default">
-<img alt="https://data.dgl.ai/asset/image/guide_7_mag240m.png" src="https://data.dgl.ai/asset/image/guide_7_mag240m.png" />
+<img alt="https://data.dgl.ai/asset/image/guide_7_mag240m.png" src="https://data.dgl.ai/asset/image/guide_7_mag240m.png"/>
 </figure>
 <p>Its raw data files are organized as follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>/mydata/MAG240M-LSC/
@@ -344,9 +333,9 @@ illustrated below:</p>
        |-- edge_index.npy            # graph, 6GB
 </pre></div>
 </div>
-<p>The graph has three node types (<code class="docutils literal notranslate"><span class="pre">&quot;paper&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;author&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;institution&quot;</span></code>),
-three edge types/relations (<code class="docutils literal notranslate"><span class="pre">&quot;cites&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;writes&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;affiliated_with&quot;</span></code>). The
-<code class="docutils literal notranslate"><span class="pre">&quot;paper&quot;</span></code> nodes have three attributes (<code class="docutils literal notranslate"><span class="pre">&quot;feat&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;label&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;year&quot;'</span></code>), while
+<p>The graph has three node types (<code class="docutils literal notranslate"><span class="pre">"paper"</span></code>, <code class="docutils literal notranslate"><span class="pre">"author"</span></code> and <code class="docutils literal notranslate"><span class="pre">"institution"</span></code>),
+three edge types/relations (<code class="docutils literal notranslate"><span class="pre">"cites"</span></code>, <code class="docutils literal notranslate"><span class="pre">"writes"</span></code> and <code class="docutils literal notranslate"><span class="pre">"affiliated_with"</span></code>). The
+<code class="docutils literal notranslate"><span class="pre">"paper"</span></code> nodes have three attributes (<code class="docutils literal notranslate"><span class="pre">"feat"</span></code>, <code class="docutils literal notranslate"><span class="pre">"label"</span></code>, <code class="docutils literal notranslate"><span class="pre">"year"'</span></code>), while
 other types of nodes and edges are featureless. Below shows the data files when
 it is stored in DGL Chunked Graph Format:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>/mydata/MAG240M-LSC_chunked/
@@ -376,64 +365,64 @@ numpy arrays.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">metadata.json</span></code> stores all the metadata information such as file names
 and chunk sizes (e.g., number of nodes, number of edges).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-   <span class="s2">&quot;graph_name&quot;</span> <span class="p">:</span> <span class="s2">&quot;MAG240M-LSC&quot;</span><span class="p">,</span>  <span class="c1"># given graph name</span>
-   <span class="s2">&quot;node_type&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">,</span> <span class="s2">&quot;paper&quot;</span><span class="p">,</span> <span class="s2">&quot;institution&quot;</span><span class="p">],</span>
-   <span class="s2">&quot;num_nodes_per_chunk&quot;</span><span class="p">:</span> <span class="p">[</span>
+   <span class="s2">"graph_name"</span> <span class="p">:</span> <span class="s2">"MAG240M-LSC"</span><span class="p">,</span>  <span class="c1"># given graph name</span>
+   <span class="s2">"node_type"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"author"</span><span class="p">,</span> <span class="s2">"paper"</span><span class="p">,</span> <span class="s2">"institution"</span><span class="p">],</span>
+   <span class="s2">"num_nodes_per_chunk"</span><span class="p">:</span> <span class="p">[</span>
        <span class="p">[</span><span class="mi">61191556</span><span class="p">,</span> <span class="mi">61191556</span><span class="p">],</span>      <span class="c1"># number of author nodes per chunk</span>
        <span class="p">[</span><span class="mi">61191553</span><span class="p">,</span> <span class="mi">61191552</span><span class="p">],</span>      <span class="c1"># number of paper nodes per chunk</span>
        <span class="p">[</span><span class="mi">12861</span><span class="p">,</span> <span class="mi">12860</span><span class="p">]</span>             <span class="c1"># number of institution nodes per chunk</span>
    <span class="p">],</span>
    <span class="c1"># The edge type name is a colon-joined string of source, edge, and destination type.</span>
-   <span class="s2">&quot;edge_type&quot;</span><span class="p">:</span> <span class="p">[</span>
-       <span class="s2">&quot;author:writes:paper&quot;</span><span class="p">,</span>
-       <span class="s2">&quot;author:affiliated_with:institution&quot;</span><span class="p">,</span>
-       <span class="s2">&quot;paper:cites:paper&quot;</span>
+   <span class="s2">"edge_type"</span><span class="p">:</span> <span class="p">[</span>
+       <span class="s2">"author:writes:paper"</span><span class="p">,</span>
+       <span class="s2">"author:affiliated_with:institution"</span><span class="p">,</span>
+       <span class="s2">"paper:cites:paper"</span>
    <span class="p">],</span>
-   <span class="s2">&quot;num_edges_per_chunk&quot;</span><span class="p">:</span> <span class="p">[</span>
+   <span class="s2">"num_edges_per_chunk"</span><span class="p">:</span> <span class="p">[</span>
        <span class="p">[</span><span class="mi">193011360</span><span class="p">,</span> <span class="mi">193011360</span><span class="p">],</span>    <span class="c1"># number of author:writes:paper edges per chunk</span>
        <span class="p">[</span><span class="mi">22296293</span><span class="p">,</span> <span class="mi">22296293</span><span class="p">],</span>      <span class="c1"># number of author:affiliated_with:institution edges per chunk</span>
        <span class="p">[</span><span class="mi">648874463</span><span class="p">,</span> <span class="mi">648874463</span><span class="p">]</span>     <span class="c1"># number of paper:cites:paper edges per chunk</span>
    <span class="p">],</span>
-   <span class="s2">&quot;edges&quot;</span> <span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;author:writes:paper&quot;</span> <span class="p">:</span> <span class="p">{</span>  <span class="c1"># edge type</span>
-             <span class="s2">&quot;format&quot;</span> <span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;csv&quot;</span><span class="p">,</span> <span class="s2">&quot;delimiter&quot;</span><span class="p">:</span> <span class="s2">&quot; &quot;</span><span class="p">},</span>
+   <span class="s2">"edges"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"author:writes:paper"</span> <span class="p">:</span> <span class="p">{</span>  <span class="c1"># edge type</span>
+             <span class="s2">"format"</span> <span class="p">:</span> <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"csv"</span><span class="p">,</span> <span class="s2">"delimiter"</span><span class="p">:</span> <span class="s2">" "</span><span class="p">},</span>
              <span class="c1"># The list of paths. Can be relative or absolute.</span>
-             <span class="s2">&quot;data&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;edges/writes-part1.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;edges/writes-part2.csv&quot;</span><span class="p">]</span>
+             <span class="s2">"data"</span> <span class="p">:</span> <span class="p">[</span><span class="s2">"edges/writes-part1.csv"</span><span class="p">,</span> <span class="s2">"edges/writes-part2.csv"</span><span class="p">]</span>
         <span class="p">},</span>
-        <span class="s2">&quot;author:affiliated_with:institution&quot;</span> <span class="p">:</span> <span class="p">{</span>
-             <span class="s2">&quot;format&quot;</span> <span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;csv&quot;</span><span class="p">,</span> <span class="s2">&quot;delimiter&quot;</span><span class="p">:</span> <span class="s2">&quot; &quot;</span><span class="p">},</span>
-             <span class="s2">&quot;data&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;edges/affiliated_with-part1.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;edges/affiliated_with-part2.csv&quot;</span><span class="p">]</span>
+        <span class="s2">"author:affiliated_with:institution"</span> <span class="p">:</span> <span class="p">{</span>
+             <span class="s2">"format"</span> <span class="p">:</span> <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"csv"</span><span class="p">,</span> <span class="s2">"delimiter"</span><span class="p">:</span> <span class="s2">" "</span><span class="p">},</span>
+             <span class="s2">"data"</span> <span class="p">:</span> <span class="p">[</span><span class="s2">"edges/affiliated_with-part1.csv"</span><span class="p">,</span> <span class="s2">"edges/affiliated_with-part2.csv"</span><span class="p">]</span>
         <span class="p">},</span>
-        <span class="s2">&quot;paper:cites:paper&quot;</span> <span class="p">:</span> <span class="p">{</span>
-             <span class="s2">&quot;format&quot;</span> <span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;csv&quot;</span><span class="p">,</span> <span class="s2">&quot;delimiter&quot;</span><span class="p">:</span> <span class="s2">&quot; &quot;</span><span class="p">},</span>
-             <span class="s2">&quot;data&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;edges/cites-part1.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;edges/cites-part2.csv&quot;</span><span class="p">]</span>
+        <span class="s2">"paper:cites:paper"</span> <span class="p">:</span> <span class="p">{</span>
+             <span class="s2">"format"</span> <span class="p">:</span> <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"csv"</span><span class="p">,</span> <span class="s2">"delimiter"</span><span class="p">:</span> <span class="s2">" "</span><span class="p">},</span>
+             <span class="s2">"data"</span> <span class="p">:</span> <span class="p">[</span><span class="s2">"edges/cites-part1.csv"</span><span class="p">,</span> <span class="s2">"edges/cites-part2.csv"</span><span class="p">]</span>
         <span class="p">}</span>
    <span class="p">},</span>
-   <span class="s2">&quot;node_data&quot;</span> <span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;paper&quot;</span><span class="p">:</span> <span class="p">{</span>       <span class="c1"># node type</span>
-             <span class="s2">&quot;feat&quot;</span><span class="p">:</span> <span class="p">{</span>   <span class="c1"># feature key</span>
-                 <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;numpy&quot;</span><span class="p">},</span>
-                 <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;node_data/paper-feat-part1.npy&quot;</span><span class="p">,</span> <span class="s2">&quot;node_data/paper-feat-part2.npy&quot;</span><span class="p">]</span>
+   <span class="s2">"node_data"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"paper"</span><span class="p">:</span> <span class="p">{</span>       <span class="c1"># node type</span>
+             <span class="s2">"feat"</span><span class="p">:</span> <span class="p">{</span>   <span class="c1"># feature key</span>
+                 <span class="s2">"format"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"numpy"</span><span class="p">},</span>
+                 <span class="s2">"data"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"node_data/paper-feat-part1.npy"</span><span class="p">,</span> <span class="s2">"node_data/paper-feat-part2.npy"</span><span class="p">]</span>
              <span class="p">},</span>
-             <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="p">{</span>   <span class="c1"># feature key</span>
-                 <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;numpy&quot;</span><span class="p">},</span>
-                 <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;node_data/paper-label-part1.npy&quot;</span><span class="p">,</span> <span class="s2">&quot;node_data/paper-label-part2.npy&quot;</span><span class="p">]</span>
+             <span class="s2">"label"</span><span class="p">:</span> <span class="p">{</span>   <span class="c1"># feature key</span>
+                 <span class="s2">"format"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"numpy"</span><span class="p">},</span>
+                 <span class="s2">"data"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"node_data/paper-label-part1.npy"</span><span class="p">,</span> <span class="s2">"node_data/paper-label-part2.npy"</span><span class="p">]</span>
              <span class="p">},</span>
-             <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="p">{</span>   <span class="c1"># feature key</span>
-                 <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;numpy&quot;</span><span class="p">},</span>
-                 <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;node_data/paper-year-part1.npy&quot;</span><span class="p">,</span> <span class="s2">&quot;node_data/paper-year-part2.npy&quot;</span><span class="p">]</span>
+             <span class="s2">"year"</span><span class="p">:</span> <span class="p">{</span>   <span class="c1"># feature key</span>
+                 <span class="s2">"format"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"numpy"</span><span class="p">},</span>
+                 <span class="s2">"data"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"node_data/paper-year-part1.npy"</span><span class="p">,</span> <span class="s2">"node_data/paper-year-part2.npy"</span><span class="p">]</span>
              <span class="p">}</span>
         <span class="p">}</span>
    <span class="p">},</span>
-   <span class="s2">&quot;edge_data&quot;</span> <span class="p">:</span> <span class="p">{}</span>  <span class="c1"># MAG240M-LSC does not have edge features</span>
+   <span class="s2">"edge_data"</span> <span class="p">:</span> <span class="p">{}</span>  <span class="c1"># MAG240M-LSC does not have edge features</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>There are three parts in <code class="docutils literal notranslate"><span class="pre">metadata.json</span></code>:</p>
 <ul class="simple">
-<li><p>Graph schema information and chunk sizes, e.g., <code class="docutils literal notranslate"><span class="pre">&quot;node_type&quot;</span></code> , <code class="docutils literal notranslate"><span class="pre">&quot;num_nodes_per_chunk&quot;</span></code>, etc.</p></li>
-<li><p>Edge index data under key <code class="docutils literal notranslate"><span class="pre">&quot;edges&quot;</span></code>.</p></li>
-<li><p>Node/edge feature data under keys <code class="docutils literal notranslate"><span class="pre">&quot;node_data&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;edge_data&quot;</span></code>.</p></li>
+<li><p>Graph schema information and chunk sizes, e.g., <code class="docutils literal notranslate"><span class="pre">"node_type"</span></code> , <code class="docutils literal notranslate"><span class="pre">"num_nodes_per_chunk"</span></code>, etc.</p></li>
+<li><p>Edge index data under key <code class="docutils literal notranslate"><span class="pre">"edges"</span></code>.</p></li>
+<li><p>Node/edge feature data under keys <code class="docutils literal notranslate"><span class="pre">"node_data"</span></code> and <code class="docutils literal notranslate"><span class="pre">"edge_data"</span></code>.</p></li>
 </ul>
 <p>The edge index files contain edges in the form of node ID pairs:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># writes-part1.csv</span>
@@ -483,9 +472,9 @@ keys are edge type names in the form of
 details about how to parse each data file.</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">&quot;csv&quot;</span></code>: CSV file. Use the <code class="docutils literal notranslate"><span class="pre">delimiter</span></code> key to specify delimiter in use.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">&quot;numpy&quot;</span></code>: NumPy array binary file created by <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.save.html#numpy.save" title="(in NumPy v2.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.save()</span></code></a>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">&quot;parquet&quot;</span></code>: parquet table binary file created by <code class="xref py py-func docutils literal notranslate"><span class="pre">pyarrow.parquet.write_table()</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">"csv"</span></code>: CSV file. Use the <code class="docutils literal notranslate"><span class="pre">delimiter</span></code> key to specify delimiter in use.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">"numpy"</span></code>: NumPy array binary file created by <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.save.html#numpy.save" title="(in NumPy v2.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.save()</span></code></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">"parquet"</span></code>: parquet table binary file created by <code class="xref py py-func docutils literal notranslate"><span class="pre">pyarrow.parquet.write_table()</span></code>.</p></li>
 </ul>
 </div></blockquote>
 </li>
@@ -507,7 +496,7 @@ structures and feature data separately. Processing one chunk at a time can also
 reduce the maximal runtime memory footprint. As an example, DGL provides a
 <a class="reference external" href="https://github.com/dmlc/dgl/blob/master/tools/chunk_graph.py">tools/chunk_graph.py</a> script that
 chunks an in-memory feature-less <a class="reference internal" href="../api/python/dgl.DGLGraph.html#dgl.DGLGraph" title="dgl.DGLGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">DGLGraph</span></code></a> and feature tensors
-stored in <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.memmap.html#numpy.memmap" title="(in NumPy v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.memmap</span></code></a>.</p>
+stored in <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.memmap.html#numpy.memmap" title="(in NumPy v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.memmap</span></code></a>.</p>
 </section>
 </section>
 <section id="step-1-graph-partitioning">
@@ -599,14 +588,14 @@ under each partition folder.</p>
 type names and values are ID tensors. Users can use the <code class="xref py py-func docutils literal notranslate"><span class="pre">dgl.data.load_tensors()</span></code>
 utility to load them:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the original IDs for the nodes in partition 0.</span>
-<span class="n">orig_nids_0</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">load_tensors</span><span class="p">(</span><span class="s1">&#39;/path/to/data/part0/orig_nids.dgl&#39;</span><span class="p">)</span>
-<span class="c1"># Get the original node IDs for node type &#39;user&#39;</span>
-<span class="n">user_orig_nids_0</span> <span class="o">=</span> <span class="n">orig_nids_0</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span>
+<span class="n">orig_nids_0</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">load_tensors</span><span class="p">(</span><span class="s1">'/path/to/data/part0/orig_nids.dgl'</span><span class="p">)</span>
+<span class="c1"># Get the original node IDs for node type 'user'</span>
+<span class="n">user_orig_nids_0</span> <span class="o">=</span> <span class="n">orig_nids_0</span><span class="p">[</span><span class="s1">'user'</span><span class="p">]</span>
 
 <span class="c1"># Load the original IDs for the edges in partition 0.</span>
-<span class="n">orig_eids_0</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">load_tensors</span><span class="p">(</span><span class="s1">&#39;/path/to/data/part0/orig_eids.dgl&#39;</span><span class="p">)</span>
-<span class="c1"># Get the original edge IDs for edge type &#39;like&#39;</span>
-<span class="n">like_orig_eids_0</span> <span class="o">=</span> <span class="n">orig_nids_0</span><span class="p">[</span><span class="s1">&#39;like&#39;</span><span class="p">]</span>
+<span class="n">orig_eids_0</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">load_tensors</span><span class="p">(</span><span class="s1">'/path/to/data/part0/orig_eids.dgl'</span><span class="p">)</span>
+<span class="c1"># Get the original edge IDs for edge type 'like'</span>
+<span class="n">like_orig_eids_0</span> <span class="o">=</span> <span class="n">orig_nids_0</span><span class="p">[</span><span class="s1">'like'</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>During data dispatching, DGL assumes that the combined CPU RAM of the cluster
@@ -615,20 +604,16 @@ of partitioning algorithm where as for edges the owner of the destination node
 also owns the edge as well.</p>
 </section>
 </section>
-
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="distributed.html" class="btn btn-neutral float-left" title="Chapter 7: Distributed Training" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="distributed-tools.html" class="btn btn-neutral float-right" title="7.2 Tools for launching distributed training/inference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2018, DGL Team.</p>
-  </div>
+</div>
+</div>
+<footer><div aria-label="Footer" class="rst-footer-buttons" role="navigation">
+<a accesskey="p" class="btn btn-neutral float-left" href="distributed.html" rel="prev" title="Chapter 7: Distributed Training"><span aria-hidden="true" class="fa fa-arrow-circle-left"></span> Previous</a>
+<a accesskey="n" class="btn btn-neutral float-right" href="distributed-tools.html" rel="next" title="7.2 Tools for launching distributed training/inference">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
+</div>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
@@ -636,15 +621,58 @@ also owns the edge as well.</p>
    
 
 </footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+
+<script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
-
+  </script>
 </body>
 </html>

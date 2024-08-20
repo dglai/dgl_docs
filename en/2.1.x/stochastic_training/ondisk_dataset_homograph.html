@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+
+<html class="writer-html5" data-content_root="../" lang="en">
+<head>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OnDiskDataset for Homogeneous Graph — DGL 2.1.0 documentation</title>
+<link href="../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../_static/nbsphinx-code-cells.css?v=2aa19091" rel="stylesheet" type="text/css"/>
+<link href="../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+<script src="../_static/jquery.js?v=5d32c60e"></script>
+<script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../_static/documentation_options.js?v=20623aea"></script>
+<script src="../_static/doctools.js?v=9a2dae69"></script>
+<script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+<script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../_static/js/theme.js"></script>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="ondisk_dataset_heterograph.html" rel="next" title="OnDiskDataset for Heterogeneous Graph"/>
+<link href="ondisk-dataset.html" rel="prev" title="Composing OnDiskDataset from raw data"/>
+</head>
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../index.html">
+            DGL
+          </a>
+<div class="version">
+                2.1.0
+              </div>
+<div role="search">
+<form action="../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
+</div>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Install and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/blitz/index.html">A Blitz Introduction to DGL</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Materials</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">🆕 Stochastic Training of GNNs with GraphBolt</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="neighbor_sampling_overview.html">Neighbor Sampling Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="node_classification.html">Node Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_prediction.html">Link Prediction</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="ondisk-dataset.html">Composing OnDiskDataset from raw data</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">OnDiskDataset for Homogeneous Graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ondisk_dataset_heterograph.html">OnDiskDataset for Heterogeneous Graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ondisk-dataset-specification.html">YAML specification</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide_cn/index.html">用户指南【包含过时信息】</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide_ko/index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphtransformer/index.html">🆕 Tutorial: Graph Transformer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/sparse/index.html">Tutorials: dgl.sparse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/cpu/index.html">Training on CPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/multi/index.html">Training on Multiple GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/dist/index.html">Distributed training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/models/index.html">Paper Study with DGL</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.html">dgl</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.data.html">dgl.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.dataloading.html">dgl.dataloading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.DGLGraph.html">dgl.DGLGraph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.distributed.html">dgl.distributed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.function.html">dgl.function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.geometry.html">dgl.geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.graphbolt.html">🆕 dgl.graphbolt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/nn.functional.html">dgl.nn.functional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.ops.html">dgl.ops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.optim.html">dgl.optim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.sampling.html">dgl.sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.sparse_v0.html">dgl.sparse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.multiprocessing.html">dgl.multiprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/transforms.html">dgl.transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/udf.html">User-defined Functions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contribute.html">Contribute to DGL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/ffi.html">DGL Foreign Function Interface (FFI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance.html">Performance Benchmarks</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Misc</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../env_var.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources.html">Resources</a></li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../index.html"></a></li>
+<li class="breadcrumb-item"><a href="index.html">🆕 Stochastic Training of GNNs with GraphBolt</a></li>
+<li class="breadcrumb-item"><a href="ondisk-dataset.html">Composing OnDiskDataset from raw data</a></li>
+<li class="breadcrumb-item active">OnDiskDataset for Homogeneous Graph</li>
+<li class="wy-breadcrumbs-aside">
+<a href="../_sources/stochastic_training/ondisk_dataset_homograph.nblink.txt" rel="nofollow"> View page source</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<section id="OnDiskDataset-for-Homogeneous-Graph">
+<h1>OnDiskDataset for Homogeneous Graph<a class="headerlink" href="#OnDiskDataset-for-Homogeneous-Graph" title="Link to this heading"></a></h1>
+<p><a class="reference external" href="https://colab.research.google.com/github/dmlc/dgl/blob/master/notebooks/stochastic_training/ondisk_dataset_homograph.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg"/></a> <a class="reference external" href="https://github.com/dmlc/dgl/blob/master/notebooks/stochastic_training/ondisk_dataset_homograph.ipynb"><img alt="GitHub" src="https://img.shields.io/badge/-View%20on%20GitHub-181717?logo=github&amp;logoColor=ffffff"/></a></p>
+<p>This tutorial shows how to create <code class="docutils literal notranslate"><span class="pre">OnDiskDataset</span></code> for homogeneous graph that could be used in <strong>GraphBolt</strong> framework.</p>
+<p>By the end of this tutorial, you will be able to</p>
+<ul class="simple">
+<li><p>organize graph structure data.</p></li>
+<li><p>organize feature data.</p></li>
+<li><p>organize training/validation/test set for specific tasks.</p></li>
+</ul>
+<p>To create an <code class="docutils literal notranslate"><span class="pre">OnDiskDataset</span></code> object, you need to organize all the data including graph structure, feature data and tasks into a directory. The directory should contain a <code class="docutils literal notranslate"><span class="pre">metadata.yaml</span></code> file that describes the metadata of the dataset.</p>
+<p>Now let’s generate various data step by step and organize them together to instantiate <code class="docutils literal notranslate"><span class="pre">OnDiskDataset</span></code> finally.</p>
+<section id="Install-DGL-package">
+<h2>Install DGL package<a class="headerlink" href="#Install-DGL-package" title="Link to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install required packages.</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">'TORCH'</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">__version__</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">'DGLBACKEND'</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"pytorch"</span>
+
+<span class="c1"># Install the CPU version.</span>
+<span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"cpu"</span><span class="p">)</span>
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>--pre<span class="w"> </span>dgl<span class="w"> </span>-f<span class="w"> </span>https://data.dgl.ai/wheels-test/repo.html
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">dgl</span>
+    <span class="kn">import</span> <span class="nn">dgl.graphbolt</span> <span class="k">as</span> <span class="nn">gb</span>
+    <span class="n">installed</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+    <span class="n">installed</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"DGL installed!"</span> <span class="k">if</span> <span class="n">installed</span> <span class="k">else</span> <span class="s2">"DGL not found!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Looking in links: https://data.dgl.ai/wheels-test/repo.html
+Requirement already satisfied: dgl in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (2.2a240410)
+Requirement already satisfied: numpy&gt;=1.14.0 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from dgl) (1.26.4)
+Requirement already satisfied: scipy&gt;=1.1.0 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from dgl) (1.14.0)
+Requirement already satisfied: networkx&gt;=2.1 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from dgl) (3.3)
+Requirement already satisfied: requests&gt;=2.19.0 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from dgl) (2.32.3)
+Requirement already satisfied: tqdm in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from dgl) (4.66.5)
+Requirement already satisfied: psutil&gt;=5.8.0 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from dgl) (6.0.0)
+Requirement already satisfied: torchdata&gt;=0.5.0 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from dgl) (0.7.1+6427ed9)
+Requirement already satisfied: pandas in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from dgl) (2.2.2)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from requests&gt;=2.19.0-&gt;dgl) (3.3.2)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from requests&gt;=2.19.0-&gt;dgl) (3.7)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from requests&gt;=2.19.0-&gt;dgl) (2.2.2)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from requests&gt;=2.19.0-&gt;dgl) (2024.7.4)
+Requirement already satisfied: torch&gt;=2 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from torchdata&gt;=0.5.0-&gt;dgl) (2.1.0+cpu)
+Requirement already satisfied: python-dateutil&gt;=2.8.2 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from pandas-&gt;dgl) (2.9.0.post0)
+Requirement already satisfied: pytz&gt;=2020.1 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from pandas-&gt;dgl) (2024.1)
+Requirement already satisfied: tzdata&gt;=2022.7 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from pandas-&gt;dgl) (2024.1)
+Requirement already satisfied: six&gt;=1.5 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from python-dateutil&gt;=2.8.2-&gt;pandas-&gt;dgl) (1.16.0)
+Requirement already satisfied: filelock in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from torch&gt;=2-&gt;torchdata&gt;=0.5.0-&gt;dgl) (3.15.4)
+Requirement already satisfied: typing-extensions in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from torch&gt;=2-&gt;torchdata&gt;=0.5.0-&gt;dgl) (4.12.2)
+Requirement already satisfied: sympy in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from torch&gt;=2-&gt;torchdata&gt;=0.5.0-&gt;dgl) (1.13.2)
+Requirement already satisfied: jinja2 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from torch&gt;=2-&gt;torchdata&gt;=0.5.0-&gt;dgl) (3.1.4)
+Requirement already satisfied: fsspec in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from torch&gt;=2-&gt;torchdata&gt;=0.5.0-&gt;dgl) (2024.6.1)
+Requirement already satisfied: MarkupSafe&gt;=2.0 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from jinja2-&gt;torch&gt;=2-&gt;torchdata&gt;=0.5.0-&gt;dgl) (2.1.5)
+Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from sympy-&gt;torch&gt;=2-&gt;torchdata&gt;=0.5.0-&gt;dgl) (1.3.0)
+DGL installed!
+</pre></div></div>
+</div>
+</section>
+<section id="Data-preparation">
+<h2>Data preparation<a class="headerlink" href="#Data-preparation" title="Link to this heading"></a></h2>
+<p>In order to demonstrate how to organize various data, let’s create a base directory first.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">base_dir</span> <span class="o">=</span> <span class="s1">'./ondisk_dataset_homograph'</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Created base directory: </span><span class="si">{</span><span class="n">base_dir</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Created base directory: ./ondisk_dataset_homograph
+</pre></div></div>
+</div>
+<section id="Generate-graph-structure-data">
+<h3>Generate graph structure data<a class="headerlink" href="#Generate-graph-structure-data" title="Link to this heading"></a></h3>
+<p>For homogeneous graph, we just need to save edges(namely node pairs) into <strong>Numpy</strong> or <strong>CSV</strong> file.</p>
+<p>Note: - when saving to <strong>Numpy</strong>, the array requires to be in shape of <code class="docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">N)</span></code>. This format is recommended as constructing graph from it is much faster than <strong>CSV</strong> file. - when saving to <strong>CSV</strong> file, do not save index and header.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">num_nodes</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">num_edges</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">num_nodes</span>
+<span class="n">edges_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s2">"edges.csv"</span><span class="p">)</span>
+<span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_nodes</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">num_edges</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Part of edges: </span><span class="si">{</span><span class="n">edges</span><span class="p">[:</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="p">:]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">edges_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Edges are saved into </span><span class="si">{</span><span class="n">edges_path</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Part of edges: [[865 367]
+ [269  51]
+ [614 511]
+ [815 223]
+ [495  52]]
+Edges are saved into ./ondisk_dataset_homograph/edges.csv
+</pre></div></div>
+</div>
+</section>
+<section id="Generate-feature-data-for-graph">
+<h3>Generate feature data for graph<a class="headerlink" href="#Generate-feature-data-for-graph" title="Link to this heading"></a></h3>
+<p>For feature data, numpy arrays and torch tensors are supported for now.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate node feature in numpy array.</span>
+<span class="n">node_feat_0_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s2">"node-feat-0.npy"</span><span class="p">)</span>
+<span class="n">node_feat_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">num_nodes</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Part of node feature [feat_0]: </span><span class="si">{</span><span class="n">node_feat_0</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="p">:]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">node_feat_0_path</span><span class="p">,</span> <span class="n">node_feat_0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Node feature [feat_0] is saved to </span><span class="si">{</span><span class="n">node_feat_0_path</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Generate another node feature in torch tensor</span>
+<span class="n">node_feat_1_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s2">"node-feat-1.pt"</span><span class="p">)</span>
+<span class="n">node_feat_1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">num_nodes</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Part of node feature [feat_1]: </span><span class="si">{</span><span class="n">node_feat_1</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="p">:]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">node_feat_1</span><span class="p">,</span> <span class="n">node_feat_1_path</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Node feature [feat_1] is saved to </span><span class="si">{</span><span class="n">node_feat_1_path</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Generate edge feature in numpy array.</span>
+<span class="n">edge_feat_0_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s2">"edge-feat-0.npy"</span><span class="p">)</span>
+<span class="n">edge_feat_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">num_edges</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Part of edge feature [feat_0]: </span><span class="si">{</span><span class="n">edge_feat_0</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="p">:]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">edge_feat_0_path</span><span class="p">,</span> <span class="n">edge_feat_0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Edge feature [feat_0] is saved to </span><span class="si">{</span><span class="n">edge_feat_0_path</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Generate another edge feature in torch tensor</span>
+<span class="n">edge_feat_1_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s2">"edge-feat-1.pt"</span><span class="p">)</span>
+<span class="n">edge_feat_1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">num_edges</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Part of edge feature [feat_1]: </span><span class="si">{</span><span class="n">edge_feat_1</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="p">:]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">edge_feat_1</span><span class="p">,</span> <span class="n">edge_feat_1_path</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Edge feature [feat_1] is saved to </span><span class="si">{</span><span class="n">edge_feat_1_path</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Part of node feature [feat_0]: [[0.75931467 0.7318927  0.08217763 0.0265683  0.78600739]
+ [0.42331563 0.38798812 0.16979628 0.14279069 0.94202183]
+ [0.48549119 0.26126457 0.88377342 0.47000385 0.45874381]]
+Node feature [feat_0] is saved to ./ondisk_dataset_homograph/node-feat-0.npy
+
+Part of node feature [feat_1]: tensor([[0.2987, 0.7486, 0.1131, 0.8913, 0.6023],
+        [0.6584, 0.7301, 0.1583, 0.2282, 0.4031],
+        [0.3257, 0.8276, 0.8957, 0.3273, 0.8765]])
+Node feature [feat_1] is saved to ./ondisk_dataset_homograph/node-feat-1.pt
+
+Part of edge feature [feat_0]: [[0.92551287 0.31006992 0.63679229 0.6641499  0.77014699]
+ [0.15023471 0.17344908 0.46766647 0.87885504 0.96549716]
+ [0.85415583 0.79656693 0.422763   0.89455789 0.75212552]]
+Edge feature [feat_0] is saved to ./ondisk_dataset_homograph/edge-feat-0.npy
+
+Part of edge feature [feat_1]: tensor([[0.5083, 0.9202, 0.1053, 0.6893, 0.7520],
+        [0.1244, 0.4630, 0.6851, 0.5042, 0.7307],
+        [0.6228, 0.6144, 0.1598, 0.2032, 0.9450]])
+Edge feature [feat_1] is saved to ./ondisk_dataset_homograph/edge-feat-1.pt
+
+</pre></div></div>
+</div>
+</section>
+<section id="Generate-tasks">
+<h3>Generate tasks<a class="headerlink" href="#Generate-tasks" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">OnDiskDataset</span></code> supports multiple tasks. For each task, we need to prepare training/validation/test sets respectively. Such sets usually vary among different tasks. In this tutorial, let’s create a <strong>Node Classification</strong> task and <strong>Link Prediction</strong> task.</p>
+<section id="Node-Classification-Task">
+<h4>Node Classification Task<a class="headerlink" href="#Node-Classification-Task" title="Link to this heading"></a></h4>
+<p>For node classification task, we need <strong>node IDs</strong> and corresponding <strong>labels</strong> for each training/validation/test set. Like feature data, numpy arrays and torch tensors are supported for these sets.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_trains</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_nodes</span> <span class="o">*</span> <span class="mf">0.6</span><span class="p">)</span>
+<span class="n">num_vals</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_nodes</span> <span class="o">*</span> <span class="mf">0.2</span><span class="p">)</span>
+<span class="n">num_tests</span> <span class="o">=</span> <span class="n">num_nodes</span> <span class="o">-</span> <span class="n">num_trains</span> <span class="o">-</span> <span class="n">num_vals</span>
+
+<span class="n">ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">num_nodes</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
+
+<span class="n">nc_train_ids_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s2">"nc-train-ids.npy"</span><span class="p">)</span>
+<span class="n">nc_train_ids</span> <span class="o">=</span> <span class="n">ids</span><span class="p">[:</span><span class="n">num_trains</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Part of train ids for node classification: </span><span class="si">{</span><span class="n">nc_train_ids</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">nc_train_ids_path</span><span class="p">,</span> <span class="n">nc_train_ids</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"NC train ids are saved to </span><span class="si">{</span><span class="n">nc_train_ids_path</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">nc_train_labels_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s2">"nc-train-labels.pt"</span><span class="p">)</span>
+<span class="n">nc_train_labels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="n">num_trains</span><span class="p">,))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Part of train labels for node classification: </span><span class="si">{</span><span class="n">nc_train_labels</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">nc_train_labels</span><span class="p">,</span> <span class="n">nc_train_labels_path</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"NC train labels are saved to </span><span class="si">{</span><span class="n">nc_train_labels_path</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">nc_val_ids_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s2">"nc-val-ids.npy"</span><span class="p">)</span>
+<span class="n">nc_val_ids</span> <span class="o">=</span> <span class="n">ids</span><span class="p">[</span><span class="n">num_trains</span><span class="p">:</span><span class="n">num_trains</span><span class="o">+</span><span class="n">num_vals</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Part of val ids for node classification: </span><span class="si">{</span><span class="n">nc_val_ids</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">nc_val_ids_path</span><span class="p">,</span> <span class="n">nc_val_ids</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"NC val ids are saved to </span><span class="si">{</span><span class="n">nc_val_ids_path</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">nc_val_labels_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s2">"nc-val-labels.pt"</span><span class="p">)</span>
+<span class="n">nc_val_labels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="n">num_vals</span><span class="p">,))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Part of val labels for node classification: </span><span class="si">{</span><span class="n">nc_val_labels</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">nc_val_labels</span><span class="p">,</span> <span class="n">nc_val_labels_path</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"NC val labels are saved to </span><span class="si">{</span><span class="n">nc_val_labels_path</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">nc_test_ids_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s2">"nc-test-ids.npy"</span><span class="p">)</span>
+<span class="n">nc_test_ids</span> <span class="o">=</span> <span class="n">ids</span><span class="p">[</span><span class="o">-</span><span class="n">num_tests</span><span class="p">:]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Part of test ids for node classification: </span><span class="si">{</span><span class="n">nc_test_ids</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">nc_test_ids_path</span><span class="p">,</span> <span class="n">nc_test_ids</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"NC test ids are saved to </span><span class="si">{</span><span class="n">nc_test_ids_path</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">nc_test_labels_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s2">"nc-test-labels.pt"</span><span class="p">)</span>
+<span class="n">nc_test_labels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="n">num_tests</span><span class="p">,))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Part of test labels for node classification: </span><span class="si">{</span><span class="n">nc_test_labels</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">nc_test_labels</span><span class="p">,</span> <span class="n">nc_test_labels_path</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"NC test labels are saved to </span><span class="si">{</span><span class="n">nc_test_labels_path</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Part of train ids for node classification: [295 823 946]
+NC train ids are saved to ./ondisk_dataset_homograph/nc-train-ids.npy
+
+Part of train labels for node classification: tensor([1, 8, 6])
+NC train labels are saved to ./ondisk_dataset_homograph/nc-train-labels.pt
+
+Part of val ids for node classification: [631   6 403]
+NC val ids are saved to ./ondisk_dataset_homograph/nc-val-ids.npy
+
+Part of val labels for node classification: tensor([8, 3, 9])
+NC val labels are saved to ./ondisk_dataset_homograph/nc-val-labels.pt
+
+Part of test ids for node classification: [ 69 928 134]
+NC test ids are saved to ./ondisk_dataset_homograph/nc-test-ids.npy
+
+Part of test labels for node classification: tensor([1, 1, 2])
+NC test labels are saved to ./ondisk_dataset_homograph/nc-test-labels.pt
+
+</pre></div></div>
+</div>
+</section>
+<section id="Link-Prediction-Task">
+<h4>Link Prediction Task<a class="headerlink" href="#Link-Prediction-Task" title="Link to this heading"></a></h4>
+<p>For link prediction task, we need <strong>node pairs</strong> or <strong>negative src/dsts</strong> for each training/validation/test set. Like feature data, numpy arrays and torch tensors are supported for these sets.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_trains</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_edges</span> <span class="o">*</span> <span class="mf">0.6</span><span class="p">)</span>
+<span class="n">num_vals</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_edges</span> <span class="o">*</span> <span class="mf">0.2</span><span class="p">)</span>
+<span class="n">num_tests</span> <span class="o">=</span> <span class="n">num_edges</span> <span class="o">-</span> <span class="n">num_trains</span> <span class="o">-</span> <span class="n">num_vals</span>
+
+<span class="n">lp_train_node_pairs_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s2">"lp-train-node-pairs.npy"</span><span class="p">)</span>
+<span class="n">lp_train_node_pairs</span> <span class="o">=</span> <span class="n">edges</span><span class="p">[:</span><span class="n">num_trains</span><span class="p">,</span> <span class="p">:]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Part of train node pairs for link prediction: </span><span class="si">{</span><span class="n">lp_train_node_pairs</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">lp_train_node_pairs_path</span><span class="p">,</span> <span class="n">lp_train_node_pairs</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"LP train node pairs are saved to </span><span class="si">{</span><span class="n">lp_train_node_pairs_path</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">lp_val_node_pairs_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s2">"lp-val-node-pairs.npy"</span><span class="p">)</span>
+<span class="n">lp_val_node_pairs</span> <span class="o">=</span> <span class="n">edges</span><span class="p">[</span><span class="n">num_trains</span><span class="p">:</span><span class="n">num_trains</span><span class="o">+</span><span class="n">num_vals</span><span class="p">,</span> <span class="p">:]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Part of val node pairs for link prediction: </span><span class="si">{</span><span class="n">lp_val_node_pairs</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">lp_val_node_pairs_path</span><span class="p">,</span> <span class="n">lp_val_node_pairs</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"LP val node pairs are saved to </span><span class="si">{</span><span class="n">lp_val_node_pairs_path</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">lp_val_neg_dsts_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s2">"lp-val-neg-dsts.pt"</span><span class="p">)</span>
+<span class="n">lp_val_neg_dsts</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_nodes</span><span class="p">,</span> <span class="p">(</span><span class="n">num_vals</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Part of val negative dsts for link prediction: </span><span class="si">{</span><span class="n">lp_val_neg_dsts</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">lp_val_neg_dsts</span><span class="p">,</span> <span class="n">lp_val_neg_dsts_path</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"LP val negative dsts are saved to </span><span class="si">{</span><span class="n">lp_val_neg_dsts_path</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">lp_test_node_pairs_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s2">"lp-test-node-pairs.npy"</span><span class="p">)</span>
+<span class="n">lp_test_node_pairs</span> <span class="o">=</span> <span class="n">edges</span><span class="p">[</span><span class="o">-</span><span class="n">num_tests</span><span class="p">,</span> <span class="p">:]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Part of test node pairs for link prediction: </span><span class="si">{</span><span class="n">lp_test_node_pairs</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">lp_test_node_pairs_path</span><span class="p">,</span> <span class="n">lp_test_node_pairs</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"LP test node pairs are saved to </span><span class="si">{</span><span class="n">lp_test_node_pairs_path</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">lp_test_neg_dsts_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s2">"lp-test-neg-dsts.pt"</span><span class="p">)</span>
+<span class="n">lp_test_neg_dsts</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_nodes</span><span class="p">,</span> <span class="p">(</span><span class="n">num_tests</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Part of test negative dsts for link prediction: </span><span class="si">{</span><span class="n">lp_test_neg_dsts</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">lp_test_neg_dsts</span><span class="p">,</span> <span class="n">lp_test_neg_dsts_path</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"LP test negative dsts are saved to </span><span class="si">{</span><span class="n">lp_test_neg_dsts_path</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Part of train node pairs for link prediction: [[865 367]
+ [269  51]
+ [614 511]]
+LP train node pairs are saved to ./ondisk_dataset_homograph/lp-train-node-pairs.npy
+
+Part of val node pairs for link prediction: [[457  42]
+ [127 865]
+ [779 229]]
+LP val node pairs are saved to ./ondisk_dataset_homograph/lp-val-node-pairs.npy
+
+Part of val negative dsts for link prediction: tensor([[435, 292, 304, 147, 241, 170, 132, 199, 981, 103],
+        [381, 970, 888,  74, 249, 112, 681, 623, 911, 529],
+        [562, 270, 964, 635, 571, 221, 318, 985, 645, 846]])
+LP val negative dsts are saved to ./ondisk_dataset_homograph/lp-val-neg-dsts.pt
+
+Part of test node pairs for link prediction: [696 905]
+LP test node pairs are saved to ./ondisk_dataset_homograph/lp-test-node-pairs.npy
+
+Part of test negative dsts for link prediction: tensor([[620, 581, 615, 415, 571,  51, 973, 814,  97, 326],
+        [249, 924, 744, 809, 492, 132, 225, 260, 204,  30],
+        [624, 375, 349, 363, 183, 646, 645, 818, 190, 342]])
+LP test negative dsts are saved to ./ondisk_dataset_homograph/lp-test-neg-dsts.pt
+
+</pre></div></div>
+</div>
+</section>
+</section>
+</section>
+<section id="Organize-Data-into-YAML-File">
+<h2>Organize Data into YAML File<a class="headerlink" href="#Organize-Data-into-YAML-File" title="Link to this heading"></a></h2>
+<p>Now we need to create a <code class="docutils literal notranslate"><span class="pre">metadata.yaml</span></code> file which contains the paths, dadta types of graph structure, feature data, training/validation/test sets.</p>
+<p>Notes: - all path should be relative to <code class="docutils literal notranslate"><span class="pre">metadata.yaml</span></code>. - Below fields are optional and not specified in below example. - <code class="docutils literal notranslate"><span class="pre">in_memory</span></code>: indicates whether to load dada into memory or <code class="docutils literal notranslate"><span class="pre">mmap</span></code>. Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<p>Please refer to <a class="reference external" href="https://github.com/dmlc/dgl/blob/master/docs/source/stochastic_training/ondisk-dataset-specification.rst">YAML specification</a> for more details.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">yaml_content</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""</span>
+<span class="s2">    dataset_name: homogeneous_graph_nc_lp</span>
+<span class="s2">    graph:</span>
+<span class="s2">      nodes:</span>
+<span class="s2">        - num: </span><span class="si">{</span><span class="n">num_nodes</span><span class="si">}</span>
+<span class="s2">      edges:</span>
+<span class="s2">        - format: csv</span>
+<span class="s2">          path: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">edges_path</span><span class="p">)</span><span class="si">}</span>
+<span class="s2">    feature_data:</span>
+<span class="s2">      - domain: node</span>
+<span class="s2">        name: feat_0</span>
+<span class="s2">        format: numpy</span>
+<span class="s2">        path: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">node_feat_0_path</span><span class="p">)</span><span class="si">}</span>
+<span class="s2">      - domain: node</span>
+<span class="s2">        name: feat_1</span>
+<span class="s2">        format: torch</span>
+<span class="s2">        path: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">node_feat_1_path</span><span class="p">)</span><span class="si">}</span>
+<span class="s2">      - domain: edge</span>
+<span class="s2">        name: feat_0</span>
+<span class="s2">        format: numpy</span>
+<span class="s2">        path: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">edge_feat_0_path</span><span class="p">)</span><span class="si">}</span>
+<span class="s2">      - domain: edge</span>
+<span class="s2">        name: feat_1</span>
+<span class="s2">        format: torch</span>
+<span class="s2">        path: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">edge_feat_1_path</span><span class="p">)</span><span class="si">}</span>
+<span class="s2">    tasks:</span>
+<span class="s2">      - name: node_classification</span>
+<span class="s2">        num_classes: 10</span>
+<span class="s2">        train_set:</span>
+<span class="s2">          - data:</span>
+<span class="s2">              - name: seed_nodes</span>
+<span class="s2">                format: numpy</span>
+<span class="s2">                path: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">nc_train_ids_path</span><span class="p">)</span><span class="si">}</span>
+<span class="s2">              - name: labels</span>
+<span class="s2">                format: torch</span>
+<span class="s2">                path: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">nc_train_labels_path</span><span class="p">)</span><span class="si">}</span>
+<span class="s2">        validation_set:</span>
+<span class="s2">          - data:</span>
+<span class="s2">              - name: seed_nodes</span>
+<span class="s2">                format: numpy</span>
+<span class="s2">                path: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">nc_val_ids_path</span><span class="p">)</span><span class="si">}</span>
+<span class="s2">              - name: labels</span>
+<span class="s2">                format: torch</span>
+<span class="s2">                path: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">nc_val_labels_path</span><span class="p">)</span><span class="si">}</span>
+<span class="s2">        test_set:</span>
+<span class="s2">          - data:</span>
+<span class="s2">              - name: seed_nodes</span>
+<span class="s2">                format: numpy</span>
+<span class="s2">                path: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">nc_test_ids_path</span><span class="p">)</span><span class="si">}</span>
+<span class="s2">              - name: labels</span>
+<span class="s2">                format: torch</span>
+<span class="s2">                path: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">nc_test_labels_path</span><span class="p">)</span><span class="si">}</span>
+<span class="s2">      - name: link_prediction</span>
+<span class="s2">        num_classes: 10</span>
+<span class="s2">        train_set:</span>
+<span class="s2">          - data:</span>
+<span class="s2">              - name: node_pairs</span>
+<span class="s2">                format: numpy</span>
+<span class="s2">                path: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">lp_train_node_pairs_path</span><span class="p">)</span><span class="si">}</span>
+<span class="s2">        validation_set:</span>
+<span class="s2">          - data:</span>
+<span class="s2">              - name: node_pairs</span>
+<span class="s2">                format: numpy</span>
+<span class="s2">                path: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">lp_val_node_pairs_path</span><span class="p">)</span><span class="si">}</span>
+<span class="s2">              - name: negative_dsts</span>
+<span class="s2">                format: torch</span>
+<span class="s2">                path: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">lp_val_neg_dsts_path</span><span class="p">)</span><span class="si">}</span>
+<span class="s2">        test_set:</span>
+<span class="s2">          - data:</span>
+<span class="s2">              - name: node_pairs</span>
+<span class="s2">                format: numpy</span>
+<span class="s2">                path: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">lp_test_node_pairs_path</span><span class="p">)</span><span class="si">}</span>
+<span class="s2">              - name: negative_dsts</span>
+<span class="s2">                format: torch</span>
+<span class="s2">                path: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">lp_test_neg_dsts_path</span><span class="p">)</span><span class="si">}</span>
+<span class="s2">"""</span>
+<span class="n">metadata_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s2">"metadata.yaml"</span><span class="p">)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">metadata_path</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+  <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">yaml_content</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Instantiate-OnDiskDataset">
+<h2>Instantiate <code class="docutils literal notranslate"><span class="pre">OnDiskDataset</span></code><a class="headerlink" href="#Instantiate-OnDiskDataset" title="Link to this heading"></a></h2>
+<p>Now we’re ready to load dataset via <code class="docutils literal notranslate"><span class="pre">dgl.graphbolt.OnDiskDataset</span></code>. When instantiating, we just pass in the base directory where <code class="docutils literal notranslate"><span class="pre">metadata.yaml</span></code> file lies.</p>
+<p>During first instantiation, GraphBolt preprocesses the raw data such as constructing <code class="docutils literal notranslate"><span class="pre">FusedCSCSamplingGraph</span></code> from edges. All data including graph, feature data, training/validation/test sets are put into <code class="docutils literal notranslate"><span class="pre">preprocessed</span></code> directory after preprocessing. Any following dataset loading will skip the preprocess stage.</p>
+<p>After preprocessing, <code class="docutils literal notranslate"><span class="pre">load()</span></code> is required to be called explicitly in order to load graph, feature data and tasks.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span> <span class="o">=</span> <span class="n">gb</span><span class="o">.</span><span class="n">OnDiskDataset</span><span class="p">(</span><span class="n">base_dir</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+<span class="n">graph</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">graph</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Loaded graph: </span><span class="si">{</span><span class="n">graph</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">feature</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">feature</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Loaded feature store: </span><span class="si">{</span><span class="n">feature</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">tasks</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">tasks</span>
+<span class="n">nc_task</span> <span class="o">=</span> <span class="n">tasks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Loaded node classification task: </span><span class="si">{</span><span class="n">nc_task</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">lp_task</span> <span class="o">=</span> <span class="n">tasks</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Loaded link prediction task: </span><span class="si">{</span><span class="n">lp_task</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+The on-disk dataset is re-preprocessing, so the existing preprocessed dataset has been removed.
+Start to preprocess the on-disk dataset.
+Finish preprocessing the on-disk dataset.
+Loaded graph: FusedCSCSamplingGraph(csc_indptr=tensor([    0,    14,    25,  ...,  9982,  9990, 10000], dtype=torch.int32),
+                      indices=tensor([292, 118,   9,  ..., 889, 402, 429], dtype=torch.int32),
+                      total_num_nodes=1000, num_edges=10000,)
+
+Loaded feature store: TorchBasedFeatureStore(
+    {(&lt;OnDiskFeatureDataDomain.NODE: 'node'&gt;, None, 'feat_0'): TorchBasedFeature(
+        feature=tensor([[0.7593, 0.7319, 0.0822, 0.0266, 0.7860],
+                        [0.4233, 0.3880, 0.1698, 0.1428, 0.9420],
+                        [0.4855, 0.2613, 0.8838, 0.4700, 0.4587],
+                        ...,
+                        [0.0867, 0.3270, 0.4432, 0.4946, 0.2342],
+                        [0.0573, 0.4283, 0.1348, 0.0213, 0.1442],
+                        [0.3780, 0.7249, 0.0401, 0.2241, 0.2427]], dtype=torch.float64),
+        metadata={},
+    ), (&lt;OnDiskFeatureDataDomain.NODE: 'node'&gt;, None, 'feat_1'): TorchBasedFeature(
+        feature=tensor([[0.2987, 0.7486, 0.1131, 0.8913, 0.6023],
+                        [0.6584, 0.7301, 0.1583, 0.2282, 0.4031],
+                        [0.3257, 0.8276, 0.8957, 0.3273, 0.8765],
+                        ...,
+                        [0.4843, 0.3006, 0.9517, 0.4642, 0.5545],
+                        [0.8206, 0.8933, 0.4072, 0.5987, 0.0621],
+                        [0.9560, 0.0968, 0.1808, 0.5771, 0.8692]]),
+        metadata={},
+    ), (&lt;OnDiskFeatureDataDomain.EDGE: 'edge'&gt;, None, 'feat_0'): TorchBasedFeature(
+        feature=tensor([[0.9255, 0.3101, 0.6368, 0.6641, 0.7701],
+                        [0.1502, 0.1734, 0.4677, 0.8789, 0.9655],
+                        [0.8542, 0.7966, 0.4228, 0.8946, 0.7521],
+                        ...,
+                        [0.8852, 0.2585, 0.1064, 0.7305, 0.3198],
+                        [0.5706, 0.5759, 0.0455, 0.6937, 0.4312],
+                        [0.9834, 0.7354, 0.6024, 0.9656, 0.8008]], dtype=torch.float64),
+        metadata={},
+    ), (&lt;OnDiskFeatureDataDomain.EDGE: 'edge'&gt;, None, 'feat_1'): TorchBasedFeature(
+        feature=tensor([[0.5083, 0.9202, 0.1053, 0.6893, 0.7520],
+                        [0.1244, 0.4630, 0.6851, 0.5042, 0.7307],
+                        [0.6228, 0.6144, 0.1598, 0.2032, 0.9450],
+                        ...,
+                        [0.8873, 0.3167, 0.1652, 0.9465, 0.2347],
+                        [0.8749, 0.0569, 0.5038, 0.1539, 0.4703],
+                        [0.5074, 0.7263, 0.7959, 0.5286, 0.4835]]),
+        metadata={},
+    )}
+)
+
+Loaded node classification task: OnDiskTask(validation_set=ItemSet(
+               items=(tensor([631,   6, 403, 952, 442, 869, 183, 803, 433, 574,  39, 722, 825, 625,
+                   571, 715,  86, 374, 705, 302, 421, 248, 802, 730,  64, 851, 224, 741,
+                   293,  51, 434, 764, 139, 956, 511, 398,  49,  59, 354, 616,  93, 307,
+                   681, 839, 468, 170, 287, 352, 396, 723, 699, 876, 978, 937, 687, 108,
+                   441, 704, 481, 531, 969, 774,  75,  97, 714, 228, 203, 965, 110, 447,
+                   526,  56, 154, 534, 915, 886, 709, 497, 214, 610, 535, 924, 338, 500,
+                   346, 274, 598,  63, 413, 731, 840, 355, 369, 882,  66, 718, 692, 523,
+                   630, 313, 367, 148, 332, 686, 641,  14, 682, 390, 137, 601, 989, 556,
+                   482, 438, 285, 555, 917, 790, 735, 693,  55, 310, 167, 914, 805, 529,
+                   279, 445, 813, 336, 961,  47, 528, 363, 314, 219, 849,   7, 717, 868,
+                   368, 133, 854, 465, 209, 694, 420, 411, 210, 337, 697, 981, 237, 304,
+                   251, 848, 138, 412, 607, 182, 262, 339,  81, 486, 254,  13, 997,  42,
+                   446,  96, 834, 815, 408, 673, 907, 684, 458, 588,   3, 991, 123, 206,
+                   982, 975, 545, 233, 376, 810, 967, 174, 750, 859, 765, 211, 672, 330,
+                   261, 231, 527, 669], dtype=torch.int32), tensor([8, 3, 9, 9, 2, 1, 4, 1, 3, 2, 1, 4, 0, 6, 7, 1, 4, 5, 8, 8, 0, 9, 9, 5,
+                   0, 3, 1, 3, 7, 6, 0, 7, 2, 5, 7, 0, 5, 0, 1, 8, 3, 4, 6, 8, 2, 0, 7, 9,
+                   0, 0, 0, 3, 5, 2, 9, 7, 2, 9, 5, 9, 3, 8, 4, 8, 4, 5, 8, 3, 1, 1, 3, 2,
+                   9, 7, 6, 1, 3, 0, 5, 8, 6, 7, 7, 4, 3, 1, 3, 9, 9, 6, 2, 6, 1, 0, 4, 3,
+                   4, 0, 1, 5, 7, 7, 0, 4, 9, 3, 2, 4, 6, 8, 8, 8, 9, 7, 3, 3, 0, 3, 8, 5,
+                   7, 3, 8, 5, 5, 2, 4, 4, 4, 7, 2, 4, 4, 3, 9, 4, 0, 6, 9, 5, 9, 9, 4, 5,
+                   8, 1, 2, 3, 0, 5, 5, 0, 2, 2, 9, 0, 6, 9, 0, 9, 1, 2, 5, 8, 5, 7, 3, 7,
+                   3, 2, 7, 0, 4, 3, 1, 4, 0, 5, 5, 1, 1, 7, 7, 1, 2, 2, 9, 4, 5, 0, 4, 2,
+                   2, 6, 4, 3, 4, 4, 2, 3])),
+               names=('seed_nodes', 'labels'),
+           ),
+           train_set=ItemSet(
+               items=(tensor([295, 823, 946,  40, 776, 430, 833, 204, 105, 788, 867,  62, 830, 582,
+                   259, 883, 283, 271, 752, 156, 903, 850, 416, 713, 393, 429, 239, 608,
+                   397, 518, 814, 578,  67, 452, 584, 144, 983, 732, 710, 255, 265, 499,
+                   797, 690, 128, 827, 800,  46, 171, 325, 856, 361, 893, 158, 940, 147,
+                   695, 383, 638, 418, 272, 973, 190, 298, 902, 656, 744, 587, 570, 898,
+                   115, 909, 386, 232, 653, 772, 696,  41, 540, 670, 980, 549, 514, 919,
+                   335, 700, 157, 164, 516, 387, 593, 201, 294, 242, 191, 711, 380, 258,
+                   140, 246, 300, 316, 382, 748, 539, 469, 761, 878, 546, 532, 877, 654,
+                    10, 852, 863, 122, 858, 822, 957, 738,  26, 506,   8, 911, 685, 740,
+                   763, 862, 828, 198, 636, 509, 932, 177, 551, 801, 538, 220, 773, 543,
+                   913, 621, 633,  78,  57, 422, 103, 837, 324, 437, 513, 651, 949, 603,
+                   377, 745, 599, 282, 366, 552, 680, 988, 972, 678, 646, 727, 936, 311,
+                   708, 775, 193, 737, 866, 264, 661, 404, 229, 615, 459, 998, 132, 370,
+                   918, 439, 121, 770,  65, 284, 223,  95, 921,  45, 153, 505, 930, 905,
+                   326, 666, 151, 202, 427, 312, 470, 517,  79, 485, 818, 249, 960, 897,
+                     9, 589, 553, 568,  98, 665, 999, 359, 471, 334, 951, 962, 931, 303,
+                   525, 920, 777, 186, 649, 642, 742, 477, 426,  29, 558, 707, 554, 609,
+                   199, 817, 463, 604,  22, 213, 579,  43, 143, 188, 331, 113,  33, 679,
+                   362, 217, 623, 645, 563, 475, 257, 855,  61, 125, 280, 388,  70, 605,
+                   250, 456, 320, 350, 942, 444, 365, 150, 290, 358, 819, 215, 565, 944,
+                   677,  83, 948, 600, 375, 472, 301,  23, 996, 950,  15, 594, 743, 321,
+                   496, 659, 406, 880, 381, 347, 970,  20, 798, 524, 492, 236, 643, 146,
+                   478, 440, 111,  17, 943, 650,  53, 712, 824, 990, 327, 726, 244, 318,
+                   923, 343, 341, 315, 842, 410, 291, 266, 135, 958, 460, 841, 971, 583,
+                   857, 597, 288, 925, 627, 267, 394, 663, 289, 160, 720, 751, 766, 502,
+                    99, 507, 197, 530, 566, 230, 721,  74, 120, 912, 614, 959, 739, 342,
+                   340, 870, 273, 954, 668, 733, 995, 145, 874, 269, 372, 292, 306, 243,
+                    77, 241, 373, 149,  37, 494, 966, 698, 155, 637, 602, 644, 994, 865,
+                   491, 875, 674, 212, 941, 348, 793, 591, 784, 364, 275, 689, 268, 884,
+                   559, 263, 495, 106, 899, 757, 768, 166, 838, 619, 976, 890, 756, 100,
+                   544, 473, 333, 938, 613, 345, 504,  38, 664, 836, 767, 626, 101, 109,
+                    72, 488, 308, 487, 831, 245, 846, 904, 791, 501, 399, 389, 816, 821,
+                   136, 216, 575, 176, 779, 414,  25,  44, 480, 647, 483,  85, 417, 317,
+                   379, 796, 435, 194, 432, 984, 929, 384, 612, 778, 141, 759, 401, 395,
+                   297, 635, 896, 425, 221, 993, 409,  36, 353, 807, 351,  88,  27, 162,
+                   592, 476, 537, 569, 519, 887, 235, 286, 820, 493, 963, 639,  58, 117,
+                   130, 945, 585, 879, 152, 466, 424, 927, 782, 901, 809,  91, 734,  68,
+                    28, 860, 357, 192, 521, 129, 455, 112,  35, 252, 691,  87, 277,  82,
+                    92, 550, 889, 278, 510,  19, 746, 131, 953, 515, 173, 240, 299, 906,
+                   596,  12, 419,  80,  94, 894, 322, 253, 725, 329, 561, 461, 987, 655,
+                   400, 142, 785, 349, 227, 662, 795, 548, 356, 861, 474, 648, 189, 724,
+                    90, 371, 247, 508, 453, 428, 573, 124, 888, 628, 799, 296,  73, 701,
+                   547, 754, 119,  89, 238, 309, 939, 226, 168, 450, 567, 892],
+                  dtype=torch.int32), tensor([1, 8, 6, 2, 6, 0, 8, 4, 5, 7, 2, 2, 4, 7, 7, 5, 1, 5, 3, 2, 9, 0, 1, 5,
+                   1, 5, 1, 2, 4, 2, 4, 2, 3, 5, 7, 5, 6, 9, 6, 2, 2, 8, 4, 7, 3, 2, 4, 7,
+                   0, 2, 0, 8, 3, 4, 3, 6, 8, 5, 9, 2, 5, 2, 8, 9, 1, 5, 1, 0, 4, 0, 8, 2,
+                   2, 6, 0, 3, 0, 8, 8, 7, 6, 7, 7, 8, 8, 6, 8, 8, 6, 5, 0, 9, 0, 8, 1, 6,
+                   5, 6, 0, 9, 1, 6, 6, 5, 0, 2, 4, 5, 6, 6, 3, 6, 3, 7, 1, 8, 7, 6, 7, 3,
+                   8, 5, 3, 3, 5, 5, 2, 5, 6, 1, 3, 7, 4, 2, 1, 8, 0, 9, 2, 5, 8, 5, 4, 2,
+                   8, 3, 3, 2, 4, 2, 2, 8, 8, 5, 6, 5, 4, 6, 6, 7, 7, 0, 3, 5, 7, 5, 7, 7,
+                   2, 2, 8, 5, 2, 0, 2, 1, 4, 2, 5, 4, 2, 8, 8, 4, 0, 9, 8, 5, 8, 5, 6, 4,
+                   0, 8, 8, 8, 4, 7, 3, 5, 0, 8, 3, 3, 2, 0, 5, 2, 3, 5, 7, 9, 0, 3, 8, 8,
+                   3, 2, 5, 4, 8, 6, 6, 5, 4, 8, 4, 6, 7, 8, 8, 6, 9, 9, 7, 3, 2, 4, 8, 6,
+                   2, 2, 8, 4, 7, 3, 4, 3, 0, 3, 8, 2, 0, 1, 0, 8, 8, 8, 8, 5, 4, 1, 1, 4,
+                   6, 0, 5, 7, 7, 3, 1, 3, 7, 3, 0, 8, 9, 7, 9, 5, 7, 6, 5, 4, 9, 7, 5, 1,
+                   8, 5, 4, 5, 4, 3, 8, 1, 1, 2, 2, 6, 7, 9, 5, 4, 6, 5, 3, 3, 6, 5, 5, 9,
+                   2, 6, 4, 6, 2, 4, 2, 7, 2, 3, 8, 5, 3, 9, 4, 6, 0, 3, 1, 8, 4, 9, 7, 1,
+                   1, 3, 4, 3, 6, 1, 1, 6, 0, 3, 6, 9, 2, 1, 4, 3, 1, 0, 5, 0, 1, 1, 2, 8,
+                   7, 3, 1, 2, 1, 9, 1, 3, 8, 5, 3, 1, 5, 8, 7, 5, 8, 0, 1, 5, 9, 7, 4, 7,
+                   0, 2, 9, 1, 0, 7, 6, 8, 1, 7, 7, 1, 8, 6, 7, 3, 5, 1, 9, 3, 7, 0, 2, 8,
+                   7, 4, 0, 3, 8, 1, 1, 1, 3, 8, 8, 1, 4, 5, 4, 5, 7, 2, 3, 5, 1, 1, 1, 7,
+                   9, 7, 1, 7, 2, 0, 5, 2, 6, 1, 5, 3, 8, 8, 2, 9, 0, 6, 2, 3, 1, 6, 5, 7,
+                   8, 9, 1, 5, 1, 7, 0, 6, 2, 5, 5, 9, 9, 3, 0, 8, 1, 9, 0, 1, 5, 4, 3, 0,
+                   2, 8, 2, 3, 4, 0, 2, 3, 6, 3, 3, 4, 5, 1, 5, 5, 7, 0, 7, 3, 2, 3, 2, 1,
+                   3, 9, 3, 1, 2, 3, 6, 7, 1, 6, 7, 8, 8, 2, 6, 4, 8, 4, 0, 9, 1, 7, 2, 4,
+                   1, 8, 3, 7, 9, 6, 6, 4, 1, 1, 0, 4, 0, 7, 6, 8, 5, 8, 2, 8, 0, 5, 1, 5,
+                   0, 5, 5, 9, 1, 3, 1, 7, 5, 9, 5, 0, 1, 1, 9, 4, 6, 2, 0, 0, 8, 6, 4, 0,
+                   7, 7, 9, 6, 0, 9, 0, 7, 1, 5, 9, 2, 3, 9, 8, 8, 6, 7, 8, 5, 1, 2, 4, 8])),
+               names=('seed_nodes', 'labels'),
+           ),
+           test_set=ItemSet(
+               items=(tensor([ 69, 928, 134, 200, 102, 688,  48,  32, 769, 175,  50, 617, 541, 586,
+                   964, 484, 719, 462, 812, 640,  16, 900, 736, 992, 205,   4, 172, 891,
+                    60, 620, 319, 503,  21, 771, 533, 974, 107, 781, 758, 479, 657,  24,
+                   222, 114, 792, 512, 423, 169, 864, 178, 658, 195, 634, 753, 260, 667,
+                   786, 853, 622, 760, 660, 977, 436, 448, 811, 489,  76, 933, 755, 378,
+                   126, 328, 407, 835, 581, 895,  71, 806, 871, 590, 676, 794, 464, 789,
+                   747, 847, 979, 391, 402, 926, 580, 910, 716,   1, 542, 618, 451, 804,
+                   606, 624, 185, 908, 652, 808, 116, 783, 118, 564, 179, 457, 729, 520,
+                   629, 881,  34, 305, 161,   0, 595, 560, 385, 225, 165,  18,  54, 104,
+                   196, 955, 181,  52, 490, 256, 675, 572, 323, 467, 344, 632, 562, 703,
+                   163,   2, 671, 270, 683, 934, 780, 947, 405, 281, 762, 184, 844,  30,
+                   843, 557, 749, 443, 829, 611,   5, 968, 522, 180, 415, 935, 360, 127,
+                   498, 431, 392, 218, 873,  84, 845, 449, 187, 826, 986,  11, 207, 702,
+                   577, 576, 159, 728, 234, 787, 454, 985, 885, 706, 208, 276,  31, 922,
+                   872, 916, 536, 832], dtype=torch.int32), tensor([1, 1, 2, 0, 5, 7, 1, 3, 3, 7, 1, 9, 4, 6, 2, 2, 5, 2, 9, 2, 3, 7, 5, 8,
+                   2, 5, 2, 9, 3, 0, 6, 6, 1, 2, 1, 5, 7, 8, 0, 4, 8, 2, 2, 8, 9, 8, 2, 9,
+                   6, 9, 6, 5, 5, 2, 5, 1, 2, 8, 5, 9, 1, 4, 7, 4, 3, 6, 3, 3, 0, 8, 5, 2,
+                   0, 6, 8, 6, 4, 5, 0, 3, 3, 6, 7, 8, 4, 8, 6, 8, 5, 7, 3, 0, 0, 6, 0, 1,
+                   1, 3, 0, 9, 6, 7, 3, 2, 6, 2, 4, 6, 3, 9, 9, 4, 3, 9, 9, 2, 4, 7, 8, 3,
+                   6, 6, 9, 0, 0, 8, 8, 6, 5, 0, 6, 6, 3, 2, 9, 6, 1, 9, 5, 7, 8, 3, 3, 3,
+                   3, 9, 3, 0, 3, 1, 9, 5, 5, 5, 3, 1, 5, 8, 7, 6, 0, 1, 6, 5, 7, 9, 3, 6,
+                   6, 4, 9, 8, 4, 0, 2, 1, 1, 8, 3, 7, 5, 2, 9, 7, 2, 6, 7, 1, 6, 8, 0, 0,
+                   6, 3, 2, 8, 2, 5, 1, 2])),
+               names=('seed_nodes', 'labels'),
+           ),
+           metadata={'name': 'node_classification', 'num_classes': 10},)
+
+Loaded link prediction task: OnDiskTask(validation_set=ItemSet(
+               items=(tensor([[457,  42],
+                   [127, 865],
+                   [779, 229],
+                   ...,
+                   [406,  92],
+                   [851, 468],
+                   [ 42, 789]], dtype=torch.int32), tensor([[435, 292, 304,  ..., 199, 981, 103],
+                   [381, 970, 888,  ..., 623, 911, 529],
+                   [562, 270, 964,  ..., 985, 645, 846],
+                   ...,
+                   [512, 928, 350,  ..., 608,   0, 735],
+                   [426, 409, 134,  ..., 811, 317, 621],
+                   [657, 108, 137,  ..., 788, 247, 562]], dtype=torch.int32)),
+               names=('node_pairs', 'negative_dsts'),
+           ),
+           train_set=ItemSet(
+               items=(tensor([[865, 367],
+                   [269,  51],
+                   [614, 511],
+                   ...,
+                   [684, 754],
+                   [530, 854],
+                   [373, 996]], dtype=torch.int32),),
+               names=('node_pairs',),
+           ),
+           test_set=ItemSet(
+               items=(tensor([696, 905], dtype=torch.int32), tensor([[620, 581, 615,  ..., 814,  97, 326],
+                   [249, 924, 744,  ..., 260, 204,  30],
+                   [624, 375, 349,  ..., 818, 190, 342],
+                   ...,
+                   [979, 665,  91,  ..., 435, 780, 464],
+                   [539, 922, 927,  ..., 691, 585,  79],
+                   [542,  12, 186,  ..., 195, 745, 743]], dtype=torch.int32)),
+               names=('node_pairs', 'negative_dsts'),
+           ),
+           metadata={'name': 'link_prediction', 'num_classes': 10},)
+
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/ubuntu/dgl_doc_dev/dgl/python/dgl/graphbolt/impl/ondisk_dataset.py:464: DGLWarning: Edge feature is stored, but edge IDs are not saved.
+  dgl_warning("Edge feature is stored, but edge IDs are not saved.")
+</pre></div></div>
+</div>
+</section>
+</section>
+</div>
+</div>
+<footer><div aria-label="Footer" class="rst-footer-buttons" role="navigation">
+<a accesskey="p" class="btn btn-neutral float-left" href="ondisk-dataset.html" rel="prev" title="Composing OnDiskDataset from raw data"><span aria-hidden="true" class="fa fa-arrow-circle-left"></span> Previous</a>
+<a accesskey="n" class="btn btn-neutral float-right" href="ondisk_dataset_heterograph.html" rel="next" title="OnDiskDataset for Heterogeneous Graph">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
+</div>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+</body>
+</html>

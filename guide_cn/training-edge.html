@@ -1,64 +1,57 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../">
+
+<html class="writer-html5" data-content_root="../" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>5.2 边分类/回归 &mdash; DGL 2.4 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
-      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=0bf289b5" />
-
-  
-  <!--[if lt IE 9]>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>5.2 边分类/回归 — DGL 2.3.1 documentation</title>
+<link href="../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=9caaf7ed"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../_static/copybutton.js?v=ccdb6887"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-    <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="5.3 链接预测" href="training-link.html" />
-    <link rel="prev" title="5.1 节点分类/回归" href="training-node.html" /> 
+<script src="../_static/jquery.js?v=5d32c60e"></script>
+<script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../_static/doctools.js?v=9a2dae69"></script>
+<script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script src="../_static/js/theme.js"></script>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="training-link.html" rel="next" title="5.3 链接预测"/>
+<link href="training-node.html" rel="prev" title="5.1 节点分类/回归"/>
 </head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../index.html" class="icon icon-home">
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../index.html">
             DGL
           </a>
-              <div class="version">
-                2.4
+<div class="version">
+                2.3.1
               </div>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+<form action="../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../install/index.html">Install and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/blitz/index.html">A Blitz Introduction to DGL</a></li>
@@ -123,34 +116,30 @@
 <li class="toctree-l1"><a class="reference internal" href="../env_var.html">Environment Variables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../resources.html">Resources</a></li>
 </ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">DGL</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">用户指南【包含过时信息】</a></li>
-          <li class="breadcrumb-item"><a href="training.html">第5章：训练图神经网络</a></li>
-      <li class="breadcrumb-item active">5.2 边分类/回归</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/guide_cn/training-edge.rst.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="guide-cn-training-edge-classification">
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../index.html"></a></li>
+<li class="breadcrumb-item"><a href="index.html">用户指南【包含过时信息】</a></li>
+<li class="breadcrumb-item"><a href="training.html">第5章：训练图神经网络</a></li>
+<li class="breadcrumb-item active">5.2 边分类/回归</li>
+<li class="wy-breadcrumbs-aside">
+<a href="../_sources/guide_cn/training-edge.rst.txt" rel="nofollow"> View page source</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<section id="guide-cn-training-edge-classification">
 <span id="id1"></span><h1>5.2 边分类/回归<a class="headerlink" href="#guide-cn-training-edge-classification" title="Link to this heading"></a></h1>
 <p><a class="reference internal" href="../guide/training-edge.html#guide-training-edge-classification"><span class="std std-ref">(English Version)</span></a></p>
 <p>有时用户希望预测图中边的属性值，这种情况下，用户需要构建一个边分类/回归的模型。</p>
@@ -160,11 +149,11 @@
 <span class="c1"># 同时建立反向边</span>
 <span class="n">edge_pred_graph</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">graph</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">dst</span><span class="p">,</span> <span class="n">src</span><span class="p">])))</span>
 <span class="c1"># 建立点和边特征，以及边的标签</span>
-<span class="n">edge_pred_graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;feature&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-<span class="n">edge_pred_graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s1">&#39;feature&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-<span class="n">edge_pred_graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">edge_pred_graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'feature'</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">edge_pred_graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s1">'feature'</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">edge_pred_graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s1">'label'</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
 <span class="c1"># 进行训练、验证和测试集划分</span>
-<span class="n">edge_pred_graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s1">&#39;train_mask&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span><span class="o">.</span><span class="n">bernoulli</span><span class="p">(</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">edge_pred_graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s1">'train_mask'</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span><span class="o">.</span><span class="n">bernoulli</span><span class="p">(</span><span class="mf">0.6</span><span class="p">)</span>
 </pre></div>
 </div>
 <section id="id2">
@@ -184,9 +173,9 @@
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
         <span class="c1"># h是从5.1节的GNN模型中计算出的节点表示</span>
         <span class="k">with</span> <span class="n">graph</span><span class="o">.</span><span class="n">local_scope</span><span class="p">():</span>
-            <span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
-            <span class="n">graph</span><span class="o">.</span><span class="n">apply_edges</span><span class="p">(</span><span class="n">fn</span><span class="o">.</span><span class="n">u_dot_v</span><span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">))</span>
-            <span class="k">return</span> <span class="n">graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span>
+            <span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'h'</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
+            <span class="n">graph</span><span class="o">.</span><span class="n">apply_edges</span><span class="p">(</span><span class="n">fn</span><span class="o">.</span><span class="n">u_dot_v</span><span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="s1">'h'</span><span class="p">,</span> <span class="s1">'score'</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s1">'score'</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>用户也可以使用MLP(多层感知机)对每条边生成一个向量表示(例如，作为一个未经过归一化的类别的分布)，
@@ -197,17 +186,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">out_classes</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">apply_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edges</span><span class="p">):</span>
-        <span class="n">h_u</span> <span class="o">=</span> <span class="n">edges</span><span class="o">.</span><span class="n">src</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]</span>
-        <span class="n">h_v</span> <span class="o">=</span> <span class="n">edges</span><span class="o">.</span><span class="n">dst</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]</span>
+        <span class="n">h_u</span> <span class="o">=</span> <span class="n">edges</span><span class="o">.</span><span class="n">src</span><span class="p">[</span><span class="s1">'h'</span><span class="p">]</span>
+        <span class="n">h_v</span> <span class="o">=</span> <span class="n">edges</span><span class="o">.</span><span class="n">dst</span><span class="p">[</span><span class="s1">'h'</span><span class="p">]</span>
         <span class="n">score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">h_u</span><span class="p">,</span> <span class="n">h_v</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="n">score</span><span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">'score'</span><span class="p">:</span> <span class="n">score</span><span class="p">}</span>
 
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
         <span class="c1"># h是从5.1节的GNN模型中计算出的节点表示</span>
         <span class="k">with</span> <span class="n">graph</span><span class="o">.</span><span class="n">local_scope</span><span class="p">():</span>
-            <span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
+            <span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'h'</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
             <span class="n">graph</span><span class="o">.</span><span class="n">apply_edges</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">apply_edges</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s1">'score'</span><span class="p">]</span>
 </pre></div>
 </div>
 </section>
@@ -227,9 +216,9 @@
 </pre></div>
 </div>
 <p>在训练模型时可以使用布尔掩码区分训练、验证和测试数据集。该例子里省略了训练早停和模型保存部分的代码。</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">node_features</span> <span class="o">=</span> <span class="n">edge_pred_graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;feature&#39;</span><span class="p">]</span>
-<span class="n">edge_label</span> <span class="o">=</span> <span class="n">edge_pred_graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span>
-<span class="n">train_mask</span> <span class="o">=</span> <span class="n">edge_pred_graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s1">&#39;train_mask&#39;</span><span class="p">]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">node_features</span> <span class="o">=</span> <span class="n">edge_pred_graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'feature'</span><span class="p">]</span>
+<span class="n">edge_label</span> <span class="o">=</span> <span class="n">edge_pred_graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s1">'label'</span><span class="p">]</span>
+<span class="n">train_mask</span> <span class="o">=</span> <span class="n">edge_pred_graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s1">'train_mask'</span><span class="p">]</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 <span class="n">opt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
 <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
@@ -251,9 +240,9 @@
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">etype</span><span class="p">):</span>
         <span class="c1"># h是从5.1节中对每种类型的边所计算的节点表示</span>
         <span class="k">with</span> <span class="n">graph</span><span class="o">.</span><span class="n">local_scope</span><span class="p">():</span>
-            <span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>   <span class="c1">#一次性为所有节点类型的 &#39;h&#39;赋值</span>
-            <span class="n">graph</span><span class="o">.</span><span class="n">apply_edges</span><span class="p">(</span><span class="n">fn</span><span class="o">.</span><span class="n">u_dot_v</span><span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">),</span> <span class="n">etype</span><span class="o">=</span><span class="n">etype</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">etype</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span>
+            <span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'h'</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>   <span class="c1">#一次性为所有节点类型的 'h'赋值</span>
+            <span class="n">graph</span><span class="o">.</span><span class="n">apply_edges</span><span class="p">(</span><span class="n">fn</span><span class="o">.</span><span class="n">u_dot_v</span><span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="s1">'h'</span><span class="p">,</span> <span class="s1">'score'</span><span class="p">),</span> <span class="n">etype</span><span class="o">=</span><span class="n">etype</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">etype</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">'score'</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>同样地，用户也可以编写一个 <code class="docutils literal notranslate"><span class="pre">HeteroMLPPredictor</span></code>。</p>
@@ -263,17 +252,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">out_classes</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">apply_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edges</span><span class="p">):</span>
-        <span class="n">h_u</span> <span class="o">=</span> <span class="n">edges</span><span class="o">.</span><span class="n">src</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]</span>
-        <span class="n">h_v</span> <span class="o">=</span> <span class="n">edges</span><span class="o">.</span><span class="n">dst</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]</span>
+        <span class="n">h_u</span> <span class="o">=</span> <span class="n">edges</span><span class="o">.</span><span class="n">src</span><span class="p">[</span><span class="s1">'h'</span><span class="p">]</span>
+        <span class="n">h_v</span> <span class="o">=</span> <span class="n">edges</span><span class="o">.</span><span class="n">dst</span><span class="p">[</span><span class="s1">'h'</span><span class="p">]</span>
         <span class="n">score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">h_u</span><span class="p">,</span> <span class="n">h_v</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="n">score</span><span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">'score'</span><span class="p">:</span> <span class="n">score</span><span class="p">}</span>
 
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">etype</span><span class="p">):</span>
         <span class="c1"># h是从5.1节中对异构图的每种类型的边所计算的节点表示</span>
         <span class="k">with</span> <span class="n">graph</span><span class="o">.</span><span class="n">local_scope</span><span class="p">():</span>
-            <span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>   <span class="c1">#一次性为所有节点类型的 &#39;h&#39;赋值</span>
+            <span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'h'</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>   <span class="c1">#一次性为所有节点类型的 'h'赋值</span>
             <span class="n">graph</span><span class="o">.</span><span class="n">apply_edges</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">apply_edges</span><span class="p">,</span> <span class="n">etype</span><span class="o">=</span><span class="n">etype</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">etype</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">etype</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">'score'</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>在某种类型的边上为每一条边预测的端到端模型的定义如下所示：</p>
@@ -289,17 +278,17 @@
 </div>
 <p>使用模型时只需要简单地向模型提供一个包含节点类型和数据特征的字典。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">hetero_graph</span><span class="o">.</span><span class="n">etypes</span><span class="p">)</span>
-<span class="n">user_feats</span> <span class="o">=</span> <span class="n">hetero_graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;feature&#39;</span><span class="p">]</span>
-<span class="n">item_feats</span> <span class="o">=</span> <span class="n">hetero_graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s1">&#39;item&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;feature&#39;</span><span class="p">]</span>
-<span class="n">label</span> <span class="o">=</span> <span class="n">hetero_graph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="s1">&#39;click&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span>
-<span class="n">train_mask</span> <span class="o">=</span> <span class="n">hetero_graph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="s1">&#39;click&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;train_mask&#39;</span><span class="p">]</span>
-<span class="n">node_features</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="n">user_feats</span><span class="p">,</span> <span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="n">item_feats</span><span class="p">}</span>
+<span class="n">user_feats</span> <span class="o">=</span> <span class="n">hetero_graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s1">'user'</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">'feature'</span><span class="p">]</span>
+<span class="n">item_feats</span> <span class="o">=</span> <span class="n">hetero_graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s1">'item'</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">'feature'</span><span class="p">]</span>
+<span class="n">label</span> <span class="o">=</span> <span class="n">hetero_graph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="s1">'click'</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">'label'</span><span class="p">]</span>
+<span class="n">train_mask</span> <span class="o">=</span> <span class="n">hetero_graph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="s1">'click'</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">'train_mask'</span><span class="p">]</span>
+<span class="n">node_features</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'user'</span><span class="p">:</span> <span class="n">user_feats</span><span class="p">,</span> <span class="s1">'item'</span><span class="p">:</span> <span class="n">item_feats</span><span class="p">}</span>
 </pre></div>
 </div>
 <p>训练部分和同构图的训练基本一致。例如，如果用户想预测边类型为 <code class="docutils literal notranslate"><span class="pre">click</span></code> 的边的标签，只需要按下例编写代码。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">opt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
 <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
-    <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">hetero_graph</span><span class="p">,</span> <span class="n">node_features</span><span class="p">,</span> <span class="s1">&#39;click&#39;</span><span class="p">)</span>
+    <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">hetero_graph</span><span class="p">,</span> <span class="n">node_features</span><span class="p">,</span> <span class="s1">'click'</span><span class="p">)</span>
     <span class="n">loss</span> <span class="o">=</span> <span class="p">((</span><span class="n">pred</span><span class="p">[</span><span class="n">train_mask</span><span class="p">]</span> <span class="o">-</span> <span class="n">label</span><span class="p">[</span><span class="n">train_mask</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
     <span class="n">opt</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
     <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
@@ -324,7 +313,7 @@
 和 <code class="docutils literal notranslate"><span class="pre">item</span></code> 两种节点类型和一种边类型的图。该边类型是通过合并所有从 <code class="docutils literal notranslate"><span class="pre">user</span></code>
 到 <code class="docutils literal notranslate"><span class="pre">item</span></code> 的边类型(如 <code class="docutils literal notranslate"><span class="pre">like</span></code> 和 <code class="docutils literal notranslate"><span class="pre">dislike</span></code>)得到。
 用户可以很方便地用关系切片的方式创建这个图。</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dec_graph</span> <span class="o">=</span> <span class="n">hetero_graph</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="p">:,</span> <span class="s1">&#39;item&#39;</span><span class="p">]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dec_graph</span> <span class="o">=</span> <span class="n">hetero_graph</span><span class="p">[</span><span class="s1">'user'</span><span class="p">,</span> <span class="p">:,</span> <span class="s1">'item'</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>这个方法会返回一个异构图，它具有 <code class="docutils literal notranslate"><span class="pre">user</span></code> 和 <code class="docutils literal notranslate"><span class="pre">item</span></code> 两种节点类型，
@@ -340,16 +329,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_dims</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">apply_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edges</span><span class="p">):</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">edges</span><span class="o">.</span><span class="n">src</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">],</span> <span class="n">edges</span><span class="o">.</span><span class="n">dst</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]],</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">edges</span><span class="o">.</span><span class="n">src</span><span class="p">[</span><span class="s1">'h'</span><span class="p">],</span> <span class="n">edges</span><span class="o">.</span><span class="n">dst</span><span class="p">[</span><span class="s1">'h'</span><span class="p">]],</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">'score'</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span>
 
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
         <span class="c1"># h是从5.1节中对异构图的每种类型的边所计算的节点表示</span>
         <span class="k">with</span> <span class="n">graph</span><span class="o">.</span><span class="n">local_scope</span><span class="p">():</span>
-            <span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>   <span class="c1">#一次性为所有节点类型的 &#39;h&#39;赋值</span>
+            <span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'h'</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>   <span class="c1">#一次性为所有节点类型的 'h'赋值</span>
             <span class="n">graph</span><span class="o">.</span><span class="n">apply_edges</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">apply_edges</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s1">'score'</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>结合了节点表示模块和边类型预测模块的模型如下所示：</p>
@@ -365,9 +354,9 @@
 </div>
 <p>训练部分如下所示：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">hetero_graph</span><span class="o">.</span><span class="n">etypes</span><span class="p">)</span>
-<span class="n">user_feats</span> <span class="o">=</span> <span class="n">hetero_graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;feature&#39;</span><span class="p">]</span>
-<span class="n">item_feats</span> <span class="o">=</span> <span class="n">hetero_graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s1">&#39;item&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;feature&#39;</span><span class="p">]</span>
-<span class="n">node_features</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="n">user_feats</span><span class="p">,</span> <span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="n">item_feats</span><span class="p">}</span>
+<span class="n">user_feats</span> <span class="o">=</span> <span class="n">hetero_graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s1">'user'</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">'feature'</span><span class="p">]</span>
+<span class="n">item_feats</span> <span class="o">=</span> <span class="n">hetero_graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s1">'item'</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">'feature'</span><span class="p">]</span>
+<span class="n">node_features</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'user'</span><span class="p">:</span> <span class="n">user_feats</span><span class="p">,</span> <span class="s1">'item'</span><span class="p">:</span> <span class="n">item_feats</span><span class="p">}</span>
 
 <span class="n">opt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
 <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
@@ -388,20 +377,16 @@ Completion</a>
 虽然这两个模块都比上述的示例代码要复杂，但其基本思想和本章描述的流程是一致的。</p>
 </section>
 </section>
-
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="training-node.html" class="btn btn-neutral float-left" title="5.1 节点分类/回归" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="training-link.html" class="btn btn-neutral float-right" title="5.3 链接预测" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2018, DGL Team.</p>
-  </div>
+</div>
+</div>
+<footer><div aria-label="Footer" class="rst-footer-buttons" role="navigation">
+<a accesskey="p" class="btn btn-neutral float-left" href="training-node.html" rel="prev" title="5.1 节点分类/回归"><span aria-hidden="true" class="fa fa-arrow-circle-left"></span> Previous</a>
+<a accesskey="n" class="btn btn-neutral float-right" href="training-link.html" rel="next" title="5.3 链接预测">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
+</div>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
@@ -409,15 +394,58 @@ Completion</a>
    
 
 </footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+
+<script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
-
+  </script>
 </body>
 </html>

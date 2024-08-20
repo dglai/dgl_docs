@@ -1,66 +1,59 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../">
+
+<html class="writer-html5" data-content_root="../" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>6.4 이웃 샘플러 커스터마이징하기 &mdash; DGL 2.4 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
-      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=0bf289b5" />
-
-  
-  <!--[if lt IE 9]>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>6.4 이웃 샘플러 커스터마이징하기 — DGL 2.3.1 documentation</title>
+<link href="../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=9caaf7ed"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../_static/copybutton.js?v=ccdb6887"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="6.5 미니-배치 학습을 위한 커스텀 GNN 모듈 구현하기" href="minibatch-nn.html" />
-    <link rel="prev" title="6.3 이웃 샘플링을 사용한 링크 예측 GNN 모델 학습하기" href="minibatch-link.html" /> 
+<script src="../_static/jquery.js?v=5d32c60e"></script>
+<script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../_static/doctools.js?v=9a2dae69"></script>
+<script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+<script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../_static/js/theme.js"></script>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="minibatch-nn.html" rel="next" title="6.5 미니-배치 학습을 위한 커스텀 GNN 모듈 구현하기"/>
+<link href="minibatch-link.html" rel="prev" title="6.3 이웃 샘플링을 사용한 링크 예측 GNN 모델 학습하기"/>
 </head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../index.html" class="icon icon-home">
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../index.html">
             DGL
           </a>
-              <div class="version">
-                2.4
+<div class="version">
+                2.3.1
               </div>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+<form action="../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../install/index.html">Install and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/blitz/index.html">A Blitz Introduction to DGL</a></li>
@@ -129,34 +122,30 @@
 <li class="toctree-l1"><a class="reference internal" href="../env_var.html">Environment Variables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../resources.html">Resources</a></li>
 </ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">DGL</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
-          <li class="breadcrumb-item"><a href="minibatch.html">6장: 큰 그래프에 대한 stochastic 학습</a></li>
-      <li class="breadcrumb-item active">6.4 이웃 샘플러 커스터마이징하기</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/guide_ko/minibatch-custom-sampler.rst.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="guide-ko-minibatch-customizing-neighborhood-sampler">
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../index.html"></a></li>
+<li class="breadcrumb-item"><a href="index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
+<li class="breadcrumb-item"><a href="minibatch.html">6장: 큰 그래프에 대한 stochastic 학습</a></li>
+<li class="breadcrumb-item active">6.4 이웃 샘플러 커스터마이징하기</li>
+<li class="wy-breadcrumbs-aside">
+<a href="../_sources/guide_ko/minibatch-custom-sampler.rst.txt" rel="nofollow"> View page source</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<section id="guide-ko-minibatch-customizing-neighborhood-sampler">
 <span id="id1"></span><h1>6.4 이웃 샘플러 커스터마이징하기<a class="headerlink" href="#guide-ko-minibatch-customizing-neighborhood-sampler" title="Link to this heading"></a></h1>
 <p><a class="reference internal" href="../guide/minibatch-custom-sampler.html#guide-minibatch-customizing-neighborhood-sampler"><span class="std std-ref">(English Version)</span></a></p>
 <p>DGL이 여러 이웃 샘플링 방법들을 제공하지만, 샘플링 방법을 직접 만들어야할 경우도 있다. 이 절에서는 샘플링 방법을 직접 만드는 방법과 stochastic GNN 학습 프레임워크에서 사용하는 방법을 설명한다.</p>
@@ -176,11 +165,11 @@
 <p>여기서, <span class="math notranslate nohighlight">\(\rho^{(l)}\)</span> 와 <span class="math notranslate nohighlight">\(\phi^{(l)}\)</span> 는 파라메터를 갖는 함수이고, <span class="math notranslate nohighlight">\(\mathcal{N}(v)`는 그래프 :math:\)</span>mathcal{G}` 에 속한 노드 <span class="math notranslate nohighlight">\(v\)</span> 의 선행 노드(predecessor)들 (또는 방향성 그래프의 경우 <em>이웃 노드들</em>)의 집합을 의미한다.</p>
 <p>아래 그래프의 빨간색 노드를 업데이트하는 메시지 전달을 수행하기 위해서는,</p>
 <figure class="align-default">
-<img alt="Imgur" src="https://data.dgl.ai/asset/image/guide_6_4_0.png" />
+<img alt="Imgur" src="https://data.dgl.ai/asset/image/guide_6_4_0.png"/>
 </figure>
 <p>아래 그림의 녹색으로 표시된 이웃 노드들의 노드 피쳐들을 합쳐야한다(aggregate).</p>
 <figure class="align-default">
-<img alt="Imgur" src="https://data.dgl.ai/asset/image/guide_6_4_1.png" />
+<img alt="Imgur" src="https://data.dgl.ai/asset/image/guide_6_4_1.png"/>
 </figure>
 <section id="id2">
 <h2>이웃 샘플링 직접 해보기<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
@@ -202,7 +191,7 @@
 <h3>메시지 전달 의존성 찾기<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
 <p>아래 그래프에서 2-레이어 GNN을 사용해서 시드 노드 8의 결과를 계산하는 것을 생각해보자.</p>
 <figure class="align-default">
-<img alt="Imgur" src="https://data.dgl.ai/asset/image/guide_6_4_2.png" />
+<img alt="Imgur" src="https://data.dgl.ai/asset/image/guide_6_4_2.png"/>
 </figure>
 <p>공식은 다음과 같다.</p>
 <div class="math notranslate nohighlight">
@@ -224,7 +213,7 @@
 \end{gathered}\end{split}\]</div>
 <p>이 공식에 따르면, <span class="math notranslate nohighlight">\(\boldsymbol{h}_8^{(2)}\)</span> 을 계산하기 위해서는 아래 그림에서와 같이 (녹색으로 표시된) 노드 4,5,7 그리고 11번에서 에지을 따라서 메시지를 수집하는 것이 필요하다.</p>
 <figure class="align-default">
-<img alt="Imgur" src="https://data.dgl.ai/asset/image/guide_6_4_3.png" />
+<img alt="Imgur" src="https://data.dgl.ai/asset/image/guide_6_4_3.png"/>
 </figure>
 <p>이 그래프는 원본 그래프의 모든 노드들을 포함하고 있지만, 특정 출력 노드들에 메시지를 전달할 에지들만을 포함하고 있다. 이런 그래프를 빨간색 노드 8에 대한 두번째 GNN 레이어에 대한 <em>프론티어(frontier)</em> 라고 부른다.</p>
 <p>프론티어들을 생성하는데 여러 함수들이 사용된다. 예를 들어, <a class="reference internal" href="../generated/dgl.in_subgraph.html#dgl.in_subgraph" title="dgl.in_subgraph"><code class="xref py py-func docutils literal notranslate"><span class="pre">dgl.in_subgraph()</span></code></a> 는 원본 그래프의 모든 노드를 포함하지만, 특정 노드의 진입 에지(incoming edge)들만 포함하는 서브 그래프를 유도하는 함수이다.</p>
@@ -240,7 +229,7 @@
 <p>하지만, <span class="math notranslate nohighlight">\(\boldsymbol{h}_\cdot^{(1)}\)</span> 로부터 단순히 <span class="math notranslate nohighlight">\(\boldsymbol{h}_8^{(2)}\)</span> 를 계산하는 것은 프론티어에서 메시지 전달을 계산하는 방식으로 할 수 없다. 그 이유는, 여전히 프론티어가 원본 그래프의 모든 노드를 포함하고 있기 때문이다. 이 그래프의 경우, (녹색과 빨간색 노드들) 4, 5, 7, 8, 11 노드들만이 입력으로 필요하고, 출력으로는 (빨간색 노드) 노드 8번이 필요하다. 입력과 출력의 노드 개수가 다르기 때문에, 작은 이분-구조(bipartite-structured) 그래프에서 메시지 전달을 수행할 필요가 있다.</p>
 <p>아래 그림은 노드 8에 대해서 2번째 GNN 레이어의 MFG를 보여준다.</p>
 <figure class="align-default">
-<img alt="Imgur" src="https://data.dgl.ai/asset/image/guide_6_4_4.png" />
+<img alt="Imgur" src="https://data.dgl.ai/asset/image/guide_6_4_4.png"/>
 </figure>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -259,13 +248,13 @@
 </pre></div>
 </div>
 <p><a class="reference internal" href="../generated/dgl.DGLGraph.srcdata.html#dgl.DGLGraph.srcdata" title="dgl.DGLGraph.srcdata"><code class="xref py py-attr docutils literal notranslate"><span class="pre">dgl.DGLGraph.srcdata</span></code></a> 와 <a class="reference internal" href="../generated/dgl.DGLGraph.srcnodes.html#dgl.DGLGraph.srcnodes" title="dgl.DGLGraph.srcnodes"><code class="xref py py-attr docutils literal notranslate"><span class="pre">dgl.DGLGraph.srcnodes</span></code></a> 같은 멤머를 통해서 MFG의 소스 노드 피쳐들을 접근할 수 있고, <a class="reference internal" href="../generated/dgl.DGLGraph.dstdata.html#dgl.DGLGraph.dstdata" title="dgl.DGLGraph.dstdata"><code class="xref py py-attr docutils literal notranslate"><span class="pre">dgl.DGLGraph.dstdata</span></code></a> 와 <a class="reference internal" href="../generated/dgl.DGLGraph.dstnodes.html#dgl.DGLGraph.dstnodes" title="dgl.DGLGraph.dstnodes"><code class="xref py py-attr docutils literal notranslate"><span class="pre">dgl.DGLGraph.dstnodes</span></code></a> 를 통해서는 목적지 노드의 피쳐들을 접근할 수 있다. <code class="docutils literal notranslate"><span class="pre">srcdata</span></code> / <code class="docutils literal notranslate"><span class="pre">dstdata</span></code> 와 <code class="docutils literal notranslate"><span class="pre">srcnodes</span></code> / <code class="docutils literal notranslate"><span class="pre">dstnodes</span></code> 의 사용법은 일반 그래프에 사용하는 <a class="reference internal" href="../generated/dgl.DGLGraph.ndata.html#dgl.DGLGraph.ndata" title="dgl.DGLGraph.ndata"><code class="xref py py-attr docutils literal notranslate"><span class="pre">dgl.DGLGraph.ndata</span></code></a> 와 <a class="reference internal" href="../generated/dgl.DGLGraph.nodes.html#dgl.DGLGraph.nodes" title="dgl.DGLGraph.nodes"><code class="xref py py-attr docutils literal notranslate"><span class="pre">dgl.DGLGraph.nodes</span></code></a> 와 동일하다.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">block</span><span class="o">.</span><span class="n">srcdata</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_src_nodes</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="n">block</span><span class="o">.</span><span class="n">dstdata</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_dst_nodes</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">block</span><span class="o">.</span><span class="n">srcdata</span><span class="p">[</span><span class="s1">'h'</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_src_nodes</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">block</span><span class="o">.</span><span class="n">dstdata</span><span class="p">[</span><span class="s1">'h'</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_dst_nodes</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>만약 MFG가 프론티어에서 만들어졌다면, 즉 프래프에서 만들어졌다면, MFG의 소스 및 목적지 노드의 피쳐는 다음과 같이 직접 읽을 수 있다.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">srcdata</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">dstdata</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">])</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">srcdata</span><span class="p">[</span><span class="s1">'x'</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">dstdata</span><span class="p">[</span><span class="s1">'y'</span><span class="p">])</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -281,7 +270,7 @@
 <p>그 결과, 목적지 노드들은 프론티어의 에지들의 목적지인 모든 노들들을 포함해야 한다.</p>
 <p>예를 들어, 아래 프론티어를 생각해 보자.</p>
 <figure class="align-default">
-<img alt="Imgur" src="https://data.dgl.ai/asset/image/guide_6_4_5.png" />
+<img alt="Imgur" src="https://data.dgl.ai/asset/image/guide_6_4_5.png"/>
 </figure>
 <p>여기서 빨간 노드와 녹색 노드들 (즉, 4, 5, 7, 8 그리고 11번 노드)는 에지의 목적지가 되는 노드들이다. 이 경우, 아래 코드는 에러를 발생시키는데, 이유는 목적지 노드 목록이 이들 노드를 모두 포함하지 않기 때문이다.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dgl</span><span class="o">.</span><span class="n">to_block</span><span class="p">(</span><span class="n">frontier2</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]))</span>   <span class="c1"># ERROR</span>
@@ -299,21 +288,21 @@
 <h3>Heterogeneous 그래프들<a class="headerlink" href="#heterogeneous" title="Link to this heading"></a></h3>
 <p>MFG들은 heterogeneous 그래프에도 적용됩니다. 다음 프론티어를 예로 들어보자.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hetero_frontier</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">heterograph</span><span class="p">({</span>
-    <span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;follow&#39;</span><span class="p">,</span> <span class="s1">&#39;user&#39;</span><span class="p">):</span> <span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">]),</span>
-    <span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;play&#39;</span><span class="p">,</span> <span class="s1">&#39;game&#39;</span><span class="p">):</span> <span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),</span>
-    <span class="p">(</span><span class="s1">&#39;game&#39;</span><span class="p">,</span> <span class="s1">&#39;played-by&#39;</span><span class="p">,</span> <span class="s1">&#39;user&#39;</span><span class="p">):</span> <span class="p">([</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">])</span>
-<span class="p">},</span> <span class="n">num_nodes_dict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;game&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">})</span>
+    <span class="p">(</span><span class="s1">'user'</span><span class="p">,</span> <span class="s1">'follow'</span><span class="p">,</span> <span class="s1">'user'</span><span class="p">):</span> <span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">]),</span>
+    <span class="p">(</span><span class="s1">'user'</span><span class="p">,</span> <span class="s1">'play'</span><span class="p">,</span> <span class="s1">'game'</span><span class="p">):</span> <span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),</span>
+    <span class="p">(</span><span class="s1">'game'</span><span class="p">,</span> <span class="s1">'played-by'</span><span class="p">,</span> <span class="s1">'user'</span><span class="p">):</span> <span class="p">([</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">])</span>
+<span class="p">},</span> <span class="n">num_nodes_dict</span><span class="o">=</span><span class="p">{</span><span class="s1">'user'</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">'game'</span><span class="p">:</span> <span class="mi">10</span><span class="p">})</span>
 </pre></div>
 </div>
 <p>목적지 노드들 User #3, #4, #8 그리고 Game #2, #6을 포함한 MFG를 생성한다.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hetero_block</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">to_block</span><span class="p">(</span><span class="n">hetero_frontier</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="s1">&#39;game&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">]})</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hetero_block</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">to_block</span><span class="p">(</span><span class="n">hetero_frontier</span><span class="p">,</span> <span class="p">{</span><span class="s1">'user'</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="s1">'game'</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">]})</span>
 </pre></div>
 </div>
 <p>소스 노드들과 목적지 노드들의 타입별로 얻을 수 있다.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># source users and games</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">hetero_block</span><span class="o">.</span><span class="n">srcnodes</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span><span class="p">],</span> <span class="n">hetero_block</span><span class="o">.</span><span class="n">srcnodes</span><span class="p">[</span><span class="s1">&#39;game&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hetero_block</span><span class="o">.</span><span class="n">srcnodes</span><span class="p">[</span><span class="s1">'user'</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span><span class="p">],</span> <span class="n">hetero_block</span><span class="o">.</span><span class="n">srcnodes</span><span class="p">[</span><span class="s1">'game'</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span><span class="p">])</span>
 <span class="c1"># destination users and games</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">hetero_block</span><span class="o">.</span><span class="n">dstnodes</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span><span class="p">],</span> <span class="n">hetero_block</span><span class="o">.</span><span class="n">dstnodes</span><span class="p">[</span><span class="s1">&#39;game&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hetero_block</span><span class="o">.</span><span class="n">dstnodes</span><span class="p">[</span><span class="s1">'user'</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span><span class="p">],</span> <span class="n">hetero_block</span><span class="o">.</span><span class="n">dstnodes</span><span class="p">[</span><span class="s1">'game'</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span><span class="p">])</span>
 </pre></div>
 </div>
 </section>
@@ -392,7 +381,7 @@
 <span class="n">opt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
 
 <span class="k">for</span> <span class="n">input_nodes</span><span class="p">,</span> <span class="n">blocks</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
-    <span class="n">blocks</span> <span class="o">=</span> <span class="p">[</span><span class="n">b</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span><span class="p">))</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">blocks</span><span class="p">]</span>
+    <span class="n">blocks</span> <span class="o">=</span> <span class="p">[</span><span class="n">b</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">'cuda'</span><span class="p">))</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">blocks</span><span class="p">]</span>
     <span class="n">input_features</span> <span class="o">=</span> <span class="n">blocks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">srcdata</span>     <span class="c1"># returns a dict</span>
     <span class="n">output_labels</span> <span class="o">=</span> <span class="n">blocks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">dstdata</span>     <span class="c1"># returns a dict</span>
     <span class="n">output_predictions</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">blocks</span><span class="p">,</span> <span class="n">input_features</span><span class="p">)</span>
@@ -434,20 +423,16 @@
 </section>
 </section>
 </section>
-
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="minibatch-link.html" class="btn btn-neutral float-left" title="6.3 이웃 샘플링을 사용한 링크 예측 GNN 모델 학습하기" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="minibatch-nn.html" class="btn btn-neutral float-right" title="6.5 미니-배치 학습을 위한 커스텀 GNN 모듈 구현하기" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2018, DGL Team.</p>
-  </div>
+</div>
+</div>
+<footer><div aria-label="Footer" class="rst-footer-buttons" role="navigation">
+<a accesskey="p" class="btn btn-neutral float-left" href="minibatch-link.html" rel="prev" title="6.3 이웃 샘플링을 사용한 링크 예측 GNN 모델 학습하기"><span aria-hidden="true" class="fa fa-arrow-circle-left"></span> Previous</a>
+<a accesskey="n" class="btn btn-neutral float-right" href="minibatch-nn.html" rel="next" title="6.5 미니-배치 학습을 위한 커스텀 GNN 모듈 구현하기">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
+</div>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
@@ -455,15 +440,58 @@
    
 
 </footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+
+<script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
-
+  </script>
 </body>
 </html>

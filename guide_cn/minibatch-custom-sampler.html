@@ -1,66 +1,59 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../">
+
+<html class="writer-html5" data-content_root="../" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>6.4 定制用户自己的邻居采样器 &mdash; DGL 2.4 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
-      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=0bf289b5" />
-
-  
-  <!--[if lt IE 9]>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>6.4 定制用户自己的邻居采样器 — DGL 2.3.1 documentation</title>
+<link href="../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=9caaf7ed"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../_static/copybutton.js?v=ccdb6887"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="6.5 为小批次训练实现定制化的GNN模块" href="minibatch-nn.html" />
-    <link rel="prev" title="6.3 针对链接预测任务的邻居采样训练方法" href="minibatch-link.html" /> 
+<script src="../_static/jquery.js?v=5d32c60e"></script>
+<script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../_static/doctools.js?v=9a2dae69"></script>
+<script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+<script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../_static/js/theme.js"></script>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="minibatch-nn.html" rel="next" title="6.5 为小批次训练实现定制化的GNN模块"/>
+<link href="minibatch-link.html" rel="prev" title="6.3 针对链接预测任务的邻居采样训练方法"/>
 </head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../index.html" class="icon icon-home">
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../index.html">
             DGL
           </a>
-              <div class="version">
-                2.4
+<div class="version">
+                2.3.1
               </div>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+<form action="../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../install/index.html">Install and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/blitz/index.html">A Blitz Introduction to DGL</a></li>
@@ -127,34 +120,30 @@
 <li class="toctree-l1"><a class="reference internal" href="../env_var.html">Environment Variables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../resources.html">Resources</a></li>
 </ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">DGL</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">用户指南【包含过时信息】</a></li>
-          <li class="breadcrumb-item"><a href="minibatch.html">第6章：在大图上的随机（批次）训练</a></li>
-      <li class="breadcrumb-item active">6.4 定制用户自己的邻居采样器</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/guide_cn/minibatch-custom-sampler.rst.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="guide-cn-minibatch-customizing-neighborhood-sampler">
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../index.html"></a></li>
+<li class="breadcrumb-item"><a href="index.html">用户指南【包含过时信息】</a></li>
+<li class="breadcrumb-item"><a href="minibatch.html">第6章：在大图上的随机（批次）训练</a></li>
+<li class="breadcrumb-item active">6.4 定制用户自己的邻居采样器</li>
+<li class="wy-breadcrumbs-aside">
+<a href="../_sources/guide_cn/minibatch-custom-sampler.rst.txt" rel="nofollow"> View page source</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<section id="guide-cn-minibatch-customizing-neighborhood-sampler">
 <span id="id1"></span><h1>6.4 定制用户自己的邻居采样器<a class="headerlink" href="#guide-cn-minibatch-customizing-neighborhood-sampler" title="Link to this heading"></a></h1>
 <p><a class="reference internal" href="../guide/minibatch-custom-sampler.html#guide-minibatch-customizing-neighborhood-sampler"><span class="std std-ref">(English Version)</span></a></p>
 <p>虽然DGL提供了一些邻居采样器，但有时用户还是希望编写自己的采样器。
@@ -178,11 +167,11 @@
 <span class="math notranslate nohighlight">\(\mathcal{N}(v)\)</span> 为有向图 <span class="math notranslate nohighlight">\(\mathcal{G}\)</span> 上的节点 <span class="math notranslate nohighlight">\(v\)</span> 的前驱节点(或无向图中的邻居)。</p>
 <p>以下图为例，假设红色节点为需要更新的目标节点：</p>
 <figure class="align-default">
-<img alt="Imgur" src="https://data.dgl.ai/asset/image/guide_6_4_0.png" />
+<img alt="Imgur" src="https://data.dgl.ai/asset/image/guide_6_4_0.png"/>
 </figure>
 <p>消息传递需要聚集其邻居(绿色节点)的节点特征，如下图所示：</p>
 <figure class="align-default">
-<img alt="Imgur" src="https://data.dgl.ai/asset/image/guide_6_4_1.png" />
+<img alt="Imgur" src="https://data.dgl.ai/asset/image/guide_6_4_1.png"/>
 </figure>
 <section id="id2">
 <h2>理解邻居采样的工作原理<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
@@ -205,7 +194,7 @@
 <h3>找出消息传递的依赖<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
 <p>假设要使用2层GNN计算种子节点8(红色点)的输出：</p>
 <figure class="align-default">
-<img alt="Imgur" src="https://data.dgl.ai/asset/image/guide_6_4_2.png" />
+<img alt="Imgur" src="https://data.dgl.ai/asset/image/guide_6_4_2.png"/>
 </figure>
 <p>其消息传递的计算公式如下：</p>
 <div class="math notranslate nohighlight">
@@ -227,7 +216,7 @@
 \end{gathered}\end{split}\]</div>
 <p>从公式中可以看出，要计算 <span class="math notranslate nohighlight">\(\boldsymbol{h}_8^{(2)}\)</span>，需要下图中的来自节点4、5、7和11(绿色点)的消息。</p>
 <figure class="align-default">
-<img alt="Imgur" src="https://data.dgl.ai/asset/image/guide_6_4_3.png" />
+<img alt="Imgur" src="https://data.dgl.ai/asset/image/guide_6_4_3.png"/>
 </figure>
 <p>上图中隐去了和计算不相关的边，仅仅保留了输出节点所需要收集消息的边。DGL称它们为红色节点8在第二个GNN层的 <em>边界子图</em>。</p>
 <p>DGL实现了多个可用于生成边界的函数。例如，
@@ -251,7 +240,7 @@
 DGL称这种仅包含必要的输入节点和输出节点的二分图为一个 <em>块</em> (block)。
 下图显示了以节点8为种子节点时第二个GNN层所需的块。</p>
 <figure class="align-default">
-<img alt="Imgur" src="https://data.dgl.ai/asset/image/guide_6_4_4.png" />
+<img alt="Imgur" src="https://data.dgl.ai/asset/image/guide_6_4_4.png"/>
 </figure>
 <p>请注意，输出节点也出现在输入节点中。原因是消息传递后的特征组合需要前一层的输出节点表示
 (即 <span class="math notranslate nohighlight">\(\phi^{(2)}\)</span>)。</p>
@@ -274,13 +263,13 @@ DGL称这种仅包含必要的输入节点和输出节点的二分图为一个 <
 <a class="reference internal" href="../generated/dgl.DGLGraph.dstnodes.html#dgl.DGLGraph.dstnodes" title="dgl.DGLGraph.dstnodes"><code class="xref py py-attr docutils literal notranslate"><span class="pre">dgl.DGLGraph.dstnodes</span></code></a> 访问其输出节点特征。
 <code class="docutils literal notranslate"><span class="pre">srcdata</span></code>/<code class="docutils literal notranslate"><span class="pre">dstdata</span></code> 和 <code class="docutils literal notranslate"><span class="pre">srcnodes</span></code>/<code class="docutils literal notranslate"><span class="pre">dstnodes</span></code>
 的语法与常规图中的 <a class="reference internal" href="../generated/dgl.DGLGraph.ndata.html#dgl.DGLGraph.ndata" title="dgl.DGLGraph.ndata"><code class="xref py py-attr docutils literal notranslate"><span class="pre">dgl.DGLGraph.ndata</span></code></a> 和 <a class="reference internal" href="../generated/dgl.DGLGraph.nodes.html#dgl.DGLGraph.nodes" title="dgl.DGLGraph.nodes"><code class="xref py py-attr docutils literal notranslate"><span class="pre">dgl.DGLGraph.nodes</span></code></a> 相同。</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">block</span><span class="o">.</span><span class="n">srcdata</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_input_nodes</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="n">block</span><span class="o">.</span><span class="n">dstdata</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_output_nodes</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">block</span><span class="o">.</span><span class="n">srcdata</span><span class="p">[</span><span class="s1">'h'</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_input_nodes</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">block</span><span class="o">.</span><span class="n">dstdata</span><span class="p">[</span><span class="s1">'h'</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_output_nodes</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>如果是从图中得到的边界，再由边界转换成块，则可以通过以下方式直接读取块的输入和输出节点的特征。</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">srcdata</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">dstdata</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">])</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">srcdata</span><span class="p">[</span><span class="s1">'x'</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">dstdata</span><span class="p">[</span><span class="s1">'y'</span><span class="p">])</span>
 </pre></div>
 </div>
 <div class="alert alert-info"><p>用户可以通过 <code class="docutils literal notranslate"><span class="pre">dgl.NID</span></code> 得到块中输入节点和输出节点的初始节点ID，可以通过 <code class="docutils literal notranslate"><span class="pre">dgl.EID</span></code>
@@ -294,7 +283,7 @@ DGL称这种仅包含必要的输入节点和输出节点的二分图为一个 <
 </div>
 <p>因此，在用多层图神经网络时，中间某一层对应的边界需要包含该层及所有后续层计算涉及边的目标节点。例如，考虑以下边界</p>
 <figure class="align-default">
-<img alt="Imgur" src="https://data.dgl.ai/asset/image/guide_6_4_5.png" />
+<img alt="Imgur" src="https://data.dgl.ai/asset/image/guide_6_4_5.png"/>
 </figure>
 <p>其中红色和绿色节点（即节点4、5、7、8和11）都是后续图神经网络层计算中某条边的目标节点。
 以下代码由于输出节点未覆盖所有这些节点，将会报错。</p>
@@ -314,21 +303,21 @@ DGL称这种仅包含必要的输入节点和输出节点的二分图为一个 <
 <h3>异构图上的采样<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
 <p>块也可用于异构图。假设有如下的边界：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hetero_frontier</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">heterograph</span><span class="p">({</span>
-    <span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;follow&#39;</span><span class="p">,</span> <span class="s1">&#39;user&#39;</span><span class="p">):</span> <span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">]),</span>
-    <span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;play&#39;</span><span class="p">,</span> <span class="s1">&#39;game&#39;</span><span class="p">):</span> <span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),</span>
-    <span class="p">(</span><span class="s1">&#39;game&#39;</span><span class="p">,</span> <span class="s1">&#39;played-by&#39;</span><span class="p">,</span> <span class="s1">&#39;user&#39;</span><span class="p">):</span> <span class="p">([</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">])</span>
-<span class="p">},</span> <span class="n">num_nodes_dict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;game&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">})</span>
+    <span class="p">(</span><span class="s1">'user'</span><span class="p">,</span> <span class="s1">'follow'</span><span class="p">,</span> <span class="s1">'user'</span><span class="p">):</span> <span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">]),</span>
+    <span class="p">(</span><span class="s1">'user'</span><span class="p">,</span> <span class="s1">'play'</span><span class="p">,</span> <span class="s1">'game'</span><span class="p">):</span> <span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),</span>
+    <span class="p">(</span><span class="s1">'game'</span><span class="p">,</span> <span class="s1">'played-by'</span><span class="p">,</span> <span class="s1">'user'</span><span class="p">):</span> <span class="p">([</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">])</span>
+<span class="p">},</span> <span class="n">num_nodes_dict</span><span class="o">=</span><span class="p">{</span><span class="s1">'user'</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">'game'</span><span class="p">:</span> <span class="mi">10</span><span class="p">})</span>
 </pre></div>
 </div>
 <p>可以创建一个如下的块，块的输出节点为 <code class="docutils literal notranslate"><span class="pre">User</span></code> 节点3、6、8和 <code class="docutils literal notranslate"><span class="pre">Game</span></code> 节点2、6。</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hetero_block</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">to_block</span><span class="p">(</span><span class="n">hetero_frontier</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="s1">&#39;block&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">]})</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hetero_block</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">to_block</span><span class="p">(</span><span class="n">hetero_frontier</span><span class="p">,</span> <span class="p">{</span><span class="s1">'user'</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="s1">'block'</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">]})</span>
 </pre></div>
 </div>
 <p>对于这个块，用户可以按节点类型来获取输入节点和输出节点：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 输入的User和Game节点</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">hetero_block</span><span class="o">.</span><span class="n">srcnodes</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span><span class="p">],</span> <span class="n">hetero_block</span><span class="o">.</span><span class="n">srcnodes</span><span class="p">[</span><span class="s1">&#39;game&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hetero_block</span><span class="o">.</span><span class="n">srcnodes</span><span class="p">[</span><span class="s1">'user'</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span><span class="p">],</span> <span class="n">hetero_block</span><span class="o">.</span><span class="n">srcnodes</span><span class="p">[</span><span class="s1">'game'</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span><span class="p">])</span>
 <span class="c1"># 输出的User和Game节点</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">hetero_block</span><span class="o">.</span><span class="n">dstnodes</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span><span class="p">],</span> <span class="n">hetero_block</span><span class="o">.</span><span class="n">dstnodes</span><span class="p">[</span><span class="s1">&#39;game&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hetero_block</span><span class="o">.</span><span class="n">dstnodes</span><span class="p">[</span><span class="s1">'user'</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span><span class="p">],</span> <span class="n">hetero_block</span><span class="o">.</span><span class="n">dstnodes</span><span class="p">[</span><span class="s1">'game'</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span><span class="p">])</span>
 </pre></div>
 </div>
 </section>
@@ -416,7 +405,7 @@ DGL称这种仅包含必要的输入节点和输出节点的二分图为一个 <
 <span class="n">opt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
 
 <span class="k">for</span> <span class="n">input_nodes</span><span class="p">,</span> <span class="n">blocks</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
-    <span class="n">blocks</span> <span class="o">=</span> <span class="p">[</span><span class="n">b</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span><span class="p">))</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">blocks</span><span class="p">]</span>
+    <span class="n">blocks</span> <span class="o">=</span> <span class="p">[</span><span class="n">b</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">'cuda'</span><span class="p">))</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">blocks</span><span class="p">]</span>
     <span class="n">input_features</span> <span class="o">=</span> <span class="n">blocks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">srcdata</span>     <span class="c1"># 返回一个字典</span>
     <span class="n">output_labels</span> <span class="o">=</span> <span class="n">blocks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">dstdata</span>     <span class="c1"># 返回一个字典</span>
     <span class="n">output_predictions</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">blocks</span><span class="p">,</span> <span class="n">input_features</span><span class="p">)</span>
@@ -459,20 +448,16 @@ DGL称这种仅包含必要的输入节点和输出节点的二分图为一个 <
 </section>
 </section>
 </section>
-
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="minibatch-link.html" class="btn btn-neutral float-left" title="6.3 针对链接预测任务的邻居采样训练方法" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="minibatch-nn.html" class="btn btn-neutral float-right" title="6.5 为小批次训练实现定制化的GNN模块" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2018, DGL Team.</p>
-  </div>
+</div>
+</div>
+<footer><div aria-label="Footer" class="rst-footer-buttons" role="navigation">
+<a accesskey="p" class="btn btn-neutral float-left" href="minibatch-link.html" rel="prev" title="6.3 针对链接预测任务的邻居采样训练方法"><span aria-hidden="true" class="fa fa-arrow-circle-left"></span> Previous</a>
+<a accesskey="n" class="btn btn-neutral float-right" href="minibatch-nn.html" rel="next" title="6.5 为小批次训练实现定制化的GNN模块">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
+</div>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
@@ -480,15 +465,58 @@ DGL称这种仅包含必要的输入节点和输出节点的二分图为一个 <
    
 
 </footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+
+<script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
-
+  </script>
 </body>
 </html>

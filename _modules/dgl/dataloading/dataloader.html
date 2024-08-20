@@ -1,61 +1,55 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../../../">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dgl.dataloading.dataloader &mdash; DGL 2.4 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=0bf289b5" />
 
-  
-  <!--[if lt IE 9]>
+<html class="writer-html5" data-content_root="../../../" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>dgl.dataloading.dataloader — DGL 2.3.1 documentation</title>
+<link href="../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=9caaf7ed"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../../../_static/copybutton.js?v=ccdb6887"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-    <script src="../../../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
+<script src="../../../_static/jquery.js?v=5d32c60e"></script>
+<script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../../../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../../../_static/doctools.js?v=9a2dae69"></script>
+<script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../../../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script src="../../../_static/js/theme.js"></script>
+<link href="../../../genindex.html" rel="index" title="Index"/>
+<link href="../../../search.html" rel="search" title="Search"/>
 </head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../../../index.html" class="icon icon-home">
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../../../index.html">
             DGL
           </a>
-              <div class="version">
-                2.4
+<div class="version">
+                2.3.1
               </div>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+<form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Install and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/blitz/index.html">A Blitz Introduction to DGL</a></li>
@@ -105,33 +99,29 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../env_var.html">Environment Variables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../resources.html">Resources</a></li>
 </ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">DGL</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">dgl.dataloading.dataloader</li>
-      <li class="wy-breadcrumbs-aside">
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <h1>Source code for dgl.dataloading.dataloader</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;DGL PyTorch DataLoaders&quot;&quot;&quot;</span>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../../../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../../../index.html"></a></li>
+<li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+<li class="breadcrumb-item active">dgl.dataloading.dataloader</li>
+<li class="wy-breadcrumbs-aside">
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<h1>Source code for dgl.dataloading.dataloader</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""DGL PyTorch DataLoaders"""</span>
 <span class="kn">import</span> <span class="nn">atexit</span>
 <span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
@@ -181,7 +171,7 @@
 
 <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">_set_python_exit_flag</span><span class="p">)</span>
 
-<span class="n">prefetcher_timeout</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DGL_PREFETCHER_TIMEOUT&quot;</span><span class="p">,</span> <span class="s2">&quot;30&quot;</span><span class="p">))</span>
+<span class="n">prefetcher_timeout</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"DGL_PREFETCHER_TIMEOUT"</span><span class="p">,</span> <span class="s2">"30"</span><span class="p">))</span>
 
 
 <span class="k">class</span> <span class="nc">_TensorizedDatasetIter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -322,9 +312,9 @@
 
 
 <span class="k">class</span> <span class="nc">TensorizedDataset</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">IterableDataset</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom Dataset wrapper that returns a minibatch as tensors or dicts of tensors.</span>
+<span class="w">    </span><span class="sd">"""Custom Dataset wrapper that returns a minibatch as tensors or dicts of tensors.</span>
 <span class="sd">    When the dataset is on the GPU, this significantly reduces the overhead.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">drop_last</span><span class="p">,</span> <span class="n">shuffle</span><span class="p">,</span> <span class="n">use_shared_memory</span>
@@ -352,7 +342,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_shuffle</span> <span class="o">=</span> <span class="n">shuffle</span>
 
     <span class="k">def</span> <span class="nf">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Shuffle the dataset.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Shuffle the dataset."""</span>
         <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_indices</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
 
     <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -386,12 +376,12 @@
 
 
 <span class="k">class</span> <span class="nc">DDPTensorizedDataset</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">IterableDataset</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom Dataset wrapper that returns a minibatch as tensors or dicts of tensors.</span>
+<span class="w">    </span><span class="sd">"""Custom Dataset wrapper that returns a minibatch as tensors or dicts of tensors.</span>
 <span class="sd">    When the dataset is on the GPU, this significantly reduces the overhead.</span>
 
 <span class="sd">    This class additionally saves the index tensor in shared memory and therefore</span>
 <span class="sd">    avoids duplicating the same index tensor during shuffling.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">drop_last</span><span class="p">,</span> <span class="n">ddp_seed</span><span class="p">,</span> <span class="n">shuffle</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
@@ -445,7 +435,7 @@
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_id_tensor</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_samples</span>
 
     <span class="k">def</span> <span class="nf">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Shuffles the dataset.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Shuffles the dataset."""</span>
         <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_indices</span><span class="p">[:</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_num_indices</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">drop_last</span><span class="p">:</span>
             <span class="c1"># pad extra from local indices</span>
@@ -477,13 +467,13 @@
 
 
 <span class="k">def</span> <span class="nf">_init_gpu_caches</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">gpu_caches</span><span class="p">):</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="s2">&quot;_gpu_caches&quot;</span><span class="p">):</span>
-        <span class="n">graph</span><span class="o">.</span><span class="n">_gpu_caches</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;node&quot;</span><span class="p">:</span> <span class="p">{},</span> <span class="s2">&quot;edge&quot;</span><span class="p">:</span> <span class="p">{}}</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="s2">"_gpu_caches"</span><span class="p">):</span>
+        <span class="n">graph</span><span class="o">.</span><span class="n">_gpu_caches</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"node"</span><span class="p">:</span> <span class="p">{},</span> <span class="s2">"edge"</span><span class="p">:</span> <span class="p">{}}</span>
     <span class="k">if</span> <span class="n">gpu_caches</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span>
-    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">gpu_caches</span><span class="p">,</span> <span class="nb">dict</span><span class="p">),</span> <span class="s2">&quot;GPU cache argument should be a dict&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">gpu_caches</span><span class="p">,</span> <span class="nb">dict</span><span class="p">),</span> <span class="s2">"GPU cache argument should be a dict"</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">frames</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="n">graph</span><span class="o">.</span><span class="n">_node_frames</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">_edge_frames</span><span class="p">]):</span>
-        <span class="n">node_or_edge</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;node&quot;</span><span class="p">,</span> <span class="s2">&quot;edge&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">node_or_edge</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"node"</span><span class="p">,</span> <span class="s2">"edge"</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
         <span class="n">cache_inf</span> <span class="o">=</span> <span class="n">gpu_caches</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">node_or_edge</span><span class="p">,</span> <span class="p">{})</span>
         <span class="k">for</span> <span class="n">tid</span><span class="p">,</span> <span class="n">frame</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">frames</span><span class="p">):</span>
             <span class="n">type_</span> <span class="o">=</span> <span class="p">[</span><span class="n">graph</span><span class="o">.</span><span class="n">ntypes</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">canonical_etypes</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="n">tid</span><span class="p">]</span>
@@ -521,8 +511,8 @@
                 <span class="n">parent_key</span> <span class="o">=</span> <span class="n">column</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="n">key</span>
                 <span class="k">if</span> <span class="n">column</span><span class="o">.</span><span class="n">id_</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">default_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="n">DGLError</span><span class="p">(</span>
-                        <span class="s2">&quot;Found a LazyFeature with no ID specified, &quot;</span>
-                        <span class="s2">&quot;and the graph does not have dgl.NID or dgl.EID columns&quot;</span>
+                        <span class="s2">"Found a LazyFeature with no ID specified, "</span>
+                        <span class="s2">"and the graph does not have dgl.NID or dgl.EID columns"</span>
                     <span class="p">)</span>
                 <span class="n">ids</span> <span class="o">=</span> <span class="n">column</span><span class="o">.</span><span class="n">id_</span> <span class="ow">or</span> <span class="n">default_id</span>
                 <span class="k">if</span> <span class="p">(</span><span class="n">parent_key</span><span class="p">,</span> <span class="n">type_</span><span class="p">)</span> <span class="ow">in</span> <span class="n">gpu_caches</span><span class="p">:</span>
@@ -549,7 +539,7 @@
 <span class="c1"># This class exists to avoid recursion into the feature dictionary returned by the</span>
 <span class="c1"># prefetcher when calling recursive_apply().</span>
 <span class="k">class</span> <span class="nc">_PrefetchedGraphFeatures</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;node_feats&quot;</span><span class="p">,</span> <span class="s2">&quot;edge_feats&quot;</span><span class="p">]</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"node_feats"</span><span class="p">,</span> <span class="s2">"edge_feats"</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_feats</span><span class="p">,</span> <span class="n">edge_feats</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">node_feats</span> <span class="o">=</span> <span class="n">node_feats</span>
@@ -566,7 +556,7 @@
         <span class="n">NID</span><span class="p">,</span>
         <span class="n">dataloader</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
         <span class="n">dataloader</span><span class="o">.</span><span class="n">pin_prefetcher</span><span class="p">,</span>
-        <span class="n">dataloader</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">_gpu_caches</span><span class="p">[</span><span class="s2">&quot;node&quot;</span><span class="p">],</span>
+        <span class="n">dataloader</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">_gpu_caches</span><span class="p">[</span><span class="s2">"node"</span><span class="p">],</span>
     <span class="p">)</span>
     <span class="n">_prefetch_update_feats</span><span class="p">(</span>
         <span class="n">edge_feats</span><span class="p">,</span>
@@ -576,7 +566,7 @@
         <span class="n">EID</span><span class="p">,</span>
         <span class="n">dataloader</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
         <span class="n">dataloader</span><span class="o">.</span><span class="n">pin_prefetcher</span><span class="p">,</span>
-        <span class="n">dataloader</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">_gpu_caches</span><span class="p">[</span><span class="s2">&quot;edge&quot;</span><span class="p">],</span>
+        <span class="n">dataloader</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">_gpu_caches</span><span class="p">[</span><span class="s2">"edge"</span><span class="p">],</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">_PrefetchedGraphFeatures</span><span class="p">(</span><span class="n">node_feats</span><span class="p">,</span> <span class="n">edge_feats</span><span class="p">)</span>
 
@@ -593,7 +583,7 @@
 
 
 <span class="k">def</span> <span class="nf">_await_or_return</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;wait&quot;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">"wait"</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">_PrefetchedGraphFeatures</span><span class="p">):</span>
         <span class="n">node_feats</span> <span class="o">=</span> <span class="n">recursive_apply</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">node_feats</span><span class="p">,</span> <span class="n">_await_or_return</span><span class="p">)</span>
@@ -606,7 +596,7 @@
 <span class="k">def</span> <span class="nf">_record_stream</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">stream</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">stream</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">x</span>
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;record_stream&quot;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">"record_stream"</span><span class="p">):</span>
         <span class="n">x</span><span class="o">.</span><span class="n">record_stream</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">x</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">_PrefetchedGraphFeatures</span><span class="p">):</span>
@@ -696,21 +686,21 @@
     <span class="k">except</span><span class="p">:</span>  <span class="c1"># pylint: disable=bare-except</span>
         <span class="n">_put_if_event_not_set</span><span class="p">(</span>
             <span class="n">queue</span><span class="p">,</span>
-            <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ExceptionWrapper</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="s2">&quot;in prefetcher&quot;</span><span class="p">)),</span>
+            <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ExceptionWrapper</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="s2">"in prefetcher"</span><span class="p">)),</span>
             <span class="n">done_event</span><span class="p">,</span>
         <span class="p">)</span>
 
 
 <span class="c1"># DGLGraphs have the semantics of lazy feature slicing with subgraphs.  Such behavior depends</span>
-<span class="c1"># on that DGLGraph&#39;s ndata and edata are maintained by Frames.  So to maintain compatibility</span>
+<span class="c1"># on that DGLGraph's ndata and edata are maintained by Frames.  So to maintain compatibility</span>
 <span class="c1"># with older code, DGLGraphs and other graph storages are handled separately: (1)</span>
 <span class="c1"># DGLGraphs will preserve the lazy feature slicing for subgraphs.  (2) Other graph storages</span>
 <span class="c1"># will not have lazy feature slicing; all feature slicing will be eager.</span>
 <span class="k">def</span> <span class="nf">remove_parent_storage_columns</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">g</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Removes the storage objects in the given graphs&#39; Frames if it is a sub-frame of the</span>
+<span class="w">    </span><span class="sd">"""Removes the storage objects in the given graphs' Frames if it is a sub-frame of the</span>
 <span class="sd">    given parent graph, so that the storages are not serialized during IPC from PyTorch</span>
 <span class="sd">    DataLoader workers.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">DGLGraph</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">DGLGraph</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">item</span>
 
@@ -731,9 +721,9 @@
 
 
 <span class="k">def</span> <span class="nf">restore_parent_storage_columns</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">g</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Restores the storage objects in the given graphs&#39; Frames if it is a sub-frame of the</span>
+<span class="w">    </span><span class="sd">"""Restores the storage objects in the given graphs' Frames if it is a sub-frame of the</span>
 <span class="sd">    given parent graph (i.e. when the storage object is None).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">DGLGraph</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">DGLGraph</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">item</span>
 
@@ -763,7 +753,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">use_thread</span> <span class="o">=</span> <span class="n">dataloader</span><span class="o">.</span><span class="n">use_prefetch_thread</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">use_alternate_streams</span> <span class="o">=</span> <span class="n">dataloader</span><span class="o">.</span><span class="n">use_alternate_streams</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataloader</span><span class="o">.</span><span class="n">device</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_alternate_streams</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;cuda&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_alternate_streams</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"cuda"</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">stream</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">Stream</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">stream</span> <span class="o">=</span> <span class="kc">None</span>
@@ -830,7 +820,7 @@
             <span class="p">)</span>
         <span class="k">except</span> <span class="n">Empty</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Prefetcher thread timed out at </span><span class="si">{</span><span class="n">prefetcher_timeout</span><span class="si">}</span><span class="s2"> seconds.&quot;</span>
+                <span class="sa">f</span><span class="s2">"Prefetcher thread timed out at </span><span class="si">{</span><span class="n">prefetcher_timeout</span><span class="si">}</span><span class="s2"> seconds."</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">batch</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
@@ -853,9 +843,9 @@
 
 <span class="c1"># Make them classes to work with pickling in mp.spawn</span>
 <span class="k">class</span> <span class="nc">CollateWrapper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wraps a collate function with :func:`remove_parent_storage_columns` for serializing</span>
+<span class="w">    </span><span class="sd">"""Wraps a collate function with :func:`remove_parent_storage_columns` for serializing</span>
 <span class="sd">    from PyTorch DataLoader workers.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_func</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">use_uva</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sample_func</span> <span class="o">=</span> <span class="n">sample_func</span>
@@ -864,8 +854,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">):</span>
-        <span class="n">graph_device</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_uva</span> <span class="ow">or</span> <span class="p">(</span><span class="n">graph_device</span> <span class="o">!=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)):</span>
+        <span class="n">graph_device</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="p">,</span> <span class="s2">"device"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_uva</span> <span class="ow">or</span> <span class="p">(</span><span class="n">graph_device</span> <span class="o">!=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"cpu"</span><span class="p">)):</span>
             <span class="c1"># Only copy the indices to the given device if in UVA mode or the graph</span>
             <span class="c1"># is not on CPU.</span>
             <span class="n">items</span> <span class="o">=</span> <span class="n">recursive_apply</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">))</span>
@@ -874,9 +864,9 @@
 
 
 <span class="k">class</span> <span class="nc">WorkerInitWrapper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wraps the :attr:`worker_init_fn` argument of the DataLoader to set the number of DGL</span>
+<span class="w">    </span><span class="sd">"""Wraps the :attr:`worker_init_fn` argument of the DataLoader to set the number of DGL</span>
 <span class="sd">    OMP threads to 1 for PyTorch DataLoader workers.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
@@ -896,10 +886,10 @@
     <span class="n">shuffle</span><span class="p">,</span>
     <span class="n">use_shared_memory</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Converts a given indices tensor to a TensorizedDataset, an IterableDataset</span>
+<span class="w">    </span><span class="sd">"""Converts a given indices tensor to a TensorizedDataset, an IterableDataset</span>
 <span class="sd">    that returns views of the original tensor, to reduce overhead from having</span>
 <span class="sd">    a list of scalar tensors in default PyTorch DataLoader implementation.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">use_ddp</span><span class="p">:</span>
         <span class="c1"># DDP always uses shared memory</span>
         <span class="k">return</span> <span class="n">DDPTensorizedDataset</span><span class="p">(</span>
@@ -913,18 +903,18 @@
 
 <span class="k">def</span> <span class="nf">_get_device</span><span class="p">(</span><span class="n">device</span><span class="p">):</span>
     <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;cuda&quot;</span> <span class="ow">and</span> <span class="n">device</span><span class="o">.</span><span class="n">index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">current_device</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"cuda"</span> <span class="ow">and</span> <span class="n">device</span><span class="o">.</span><span class="n">index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"cuda"</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">current_device</span><span class="p">())</span>
     <span class="k">return</span> <span class="n">device</span>
 
 
 <div class="viewcode-block" id="DataLoader">
 <a class="viewcode-back" href="../../../generated/dgl.dataloading.DataLoader.html#dgl.dataloading.DataLoader">[docs]</a>
 <span class="k">class</span> <span class="nc">DataLoader</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sampled graph data loader. Wrap a :class:`~dgl.DGLGraph` and a</span>
+<span class="w">    </span><span class="sd">"""Sampled graph data loader. Wrap a :class:`~dgl.DGLGraph` and a</span>
 <span class="sd">    :class:`~dgl.dataloading.Sampler` into an iterable over mini-batches of samples.</span>
 
-<span class="sd">    DGL&#39;s ``DataLoader`` extends PyTorch&#39;s ``DataLoader`` by handling creation</span>
+<span class="sd">    DGL's ``DataLoader`` extends PyTorch's ``DataLoader`` by handling creation</span>
 <span class="sd">    and transmission of graph samples. It supports iterating over a set of nodes,</span>
 <span class="sd">    edges or any kinds of indices to get samples in the form of ``DGLGraph``, message</span>
 <span class="sd">    flow graphs (MFGS), or any other structures necessary to train a graph neural network.</span>
@@ -987,9 +977,9 @@
 <span class="sd">        Default: True if the graph is on CPU and :attr:`device` is CUDA.  False otherwise.</span>
 <span class="sd">    gpu_cache : dict[dict], optional</span>
 <span class="sd">        Which node and edge features to cache using HugeCTR gpu_cache. Example:</span>
-<span class="sd">        {&quot;node&quot;: {&quot;features&quot;: 500000}, &quot;edge&quot;: {&quot;types&quot;: 4000000}} would</span>
-<span class="sd">        indicate that we want to cache 500k of the node &quot;features&quot; and 4M of the</span>
-<span class="sd">        edge &quot;types&quot; in GPU caches.</span>
+<span class="sd">        {"node": {"features": 500000}, "edge": {"types": 4000000}} would</span>
+<span class="sd">        indicate that we want to cache 500k of the node "features" and 4M of the</span>
+<span class="sd">        edge "types" in GPU caches.</span>
 
 <span class="sd">        Is supported only on NVIDIA GPUs with compute capability 70 or above.</span>
 <span class="sd">        The dictionary holds the keys of features along with the corresponding</span>
@@ -1021,7 +1011,7 @@
 
 <span class="sd">    **Using with Distributed Data Parallel**</span>
 
-<span class="sd">    If you are using PyTorch&#39;s distributed training (e.g. when using</span>
+<span class="sd">    If you are using PyTorch's distributed training (e.g. when using</span>
 <span class="sd">    :mod:`torch.nn.parallel.DistributedDataParallel`), you can train the model by turning</span>
 <span class="sd">    on the `use_ddp` option:</span>
 
@@ -1055,7 +1045,7 @@
 <span class="sd">        in this case.</span>
 
 <span class="sd">      - Otherwise, both the sampling and subgraph construction will take place on the CPU.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1079,14 +1069,14 @@
         <span class="c1"># DataLoader with modifications to the original arguments.  The arguments are retrieved</span>
         <span class="c1"># from the attributes with the same name, and because we change certain arguments</span>
         <span class="c1"># when calling super().__init__() (e.g. batch_size attribute is None even if the</span>
-        <span class="c1"># batch_size argument is not, so the next DataLoader&#39;s batch_size argument will be</span>
+        <span class="c1"># batch_size argument is not, so the next DataLoader's batch_size argument will be</span>
         <span class="c1"># None), we cannot reinitialize the DataLoader with attributes from the previous</span>
         <span class="c1"># DataLoader directly.</span>
-        <span class="c1"># A workaround is to check whether &quot;collate_fn&quot; appears in kwargs.  If &quot;collate_fn&quot;</span>
-        <span class="c1"># is indeed in kwargs and it&#39;s already a CollateWrapper object, we can assume that</span>
+        <span class="c1"># A workaround is to check whether "collate_fn" appears in kwargs.  If "collate_fn"</span>
+        <span class="c1"># is indeed in kwargs and it's already a CollateWrapper object, we can assume that</span>
         <span class="c1"># the arguments come from a previously created DGL DataLoader, and directly initialize</span>
         <span class="c1"># the new DataLoader from kwargs without any changes.</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;collate_fn&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">CollateWrapper</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"collate_fn"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">CollateWrapper</span><span class="p">):</span>
             <span class="k">assert</span> <span class="n">batch_size</span> <span class="ow">is</span> <span class="kc">None</span>  <span class="c1"># must be None</span>
             <span class="c1"># restore attributes</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">graph</span>
@@ -1101,27 +1091,27 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">use_alternate_streams</span> <span class="o">=</span> <span class="n">use_alternate_streams</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">pin_prefetcher</span> <span class="o">=</span> <span class="n">pin_prefetcher</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">use_uva</span> <span class="o">=</span> <span class="n">use_uva</span>
-            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;batch_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">"batch_size"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="k">return</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">DistGraph</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                <span class="s2">&quot;Please use dgl.dataloading.DistNodeDataLoader or &quot;</span>
-                <span class="s2">&quot;dgl.datalaoding.DistEdgeDataLoader for DistGraphs.&quot;</span>
+                <span class="s2">"Please use dgl.dataloading.DistNodeDataLoader or "</span>
+                <span class="s2">"dgl.datalaoding.DistEdgeDataLoader for DistGraphs."</span>
             <span class="p">)</span>
-        <span class="c1"># (BarclayII) I hoped that pin_prefetcher can be merged into PyTorch&#39;s native</span>
+        <span class="c1"># (BarclayII) I hoped that pin_prefetcher can be merged into PyTorch's native</span>
         <span class="c1"># pin_memory argument.  But our neighbor samplers and subgraph samplers</span>
         <span class="c1"># return indices, which could be CUDA tensors (e.g. during UVA sampling)</span>
-        <span class="c1"># hence cannot be pinned.  PyTorch&#39;s native pin memory thread does not ignore</span>
+        <span class="c1"># hence cannot be pinned.  PyTorch's native pin memory thread does not ignore</span>
         <span class="c1"># CUDA tensors when pinning and will crash.  To enable pin memory for prefetching</span>
-        <span class="c1"># features and disable pin memory for sampler&#39;s return value, I had to use</span>
+        <span class="c1"># features and disable pin memory for sampler's return value, I had to use</span>
         <span class="c1"># a different argument.  Of course I could change the meaning of pin_memory</span>
-        <span class="c1"># to pinning prefetched features and disable pin memory for sampler&#39;s returns</span>
-        <span class="c1"># no matter what, but I doubt if it&#39;s reasonable.</span>
+        <span class="c1"># to pinning prefetched features and disable pin memory for sampler's returns</span>
+        <span class="c1"># no matter what, but I doubt if it's reasonable.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">graph</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">indices</span> <span class="o">=</span> <span class="n">indices</span>  <span class="c1"># For PyTorch-Lightning</span>
-        <span class="n">num_workers</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;num_workers&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">num_workers</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"num_workers"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
         <span class="n">indices_device</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">try</span><span class="p">:</span>
@@ -1143,10 +1133,10 @@
             <span class="k">pass</span>
 
         <span class="k">if</span> <span class="n">indices_device</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="s2">"device"</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
-                    <span class="s1">&#39;Custom indices dataset requires a &quot;device&quot; </span><span class="se">\</span>
-<span class="s1">                attribute indicating where the indices is.&#39;</span>
+                    <span class="s1">'Custom indices dataset requires a "device" </span><span class="se">\</span>
+<span class="s1">                attribute indicating where the indices is.'</span>
                 <span class="p">)</span>
             <span class="n">indices_device</span> <span class="o">=</span> <span class="n">indices</span><span class="o">.</span><span class="n">device</span>
 
@@ -1161,13 +1151,13 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">,</span> <span class="n">DGLGraph</span><span class="p">):</span>
             <span class="c1"># Check graph and indices device as well as num_workers</span>
             <span class="k">if</span> <span class="n">use_uva</span><span class="p">:</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s2">&quot;cpu&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s2">"cpu"</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="s2">&quot;Graph must be on CPU if UVA sampling is enabled.&quot;</span>
+                        <span class="s2">"Graph must be on CPU if UVA sampling is enabled."</span>
                     <span class="p">)</span>
                 <span class="k">if</span> <span class="n">num_workers</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="s2">&quot;num_workers must be 0 if UVA sampling is enabled.&quot;</span>
+                        <span class="s2">"num_workers must be 0 if UVA sampling is enabled."</span>
                     <span class="p">)</span>
 
                 <span class="c1"># Create all the formats and pin the features - custom GraphStorages</span>
@@ -1177,21 +1167,21 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">device</span> <span class="o">!=</span> <span class="n">indices_device</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="s2">&quot;Expect graph and indices to be on the same device when use_uva=False. &quot;</span>
+                        <span class="s2">"Expect graph and indices to be on the same device when use_uva=False. "</span>
                     <span class="p">)</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;cuda&quot;</span> <span class="ow">and</span> <span class="n">num_workers</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"cuda"</span> <span class="ow">and</span> <span class="n">num_workers</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="s2">&quot;num_workers must be 0 if graph and indices are on CUDA.&quot;</span>
+                        <span class="s2">"num_workers must be 0 if graph and indices are on CUDA."</span>
                     <span class="p">)</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;cpu&quot;</span> <span class="ow">and</span> <span class="n">num_workers</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"cpu"</span> <span class="ow">and</span> <span class="n">num_workers</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="c1"># Instantiate all the formats if the number of workers is greater than 0.</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">create_formats_</span><span class="p">()</span>
 
             <span class="c1"># Check pin_prefetcher and use_prefetch_thread - should be only effective</span>
             <span class="c1"># if performing CPU sampling but output device is CUDA</span>
             <span class="k">if</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;cuda&quot;</span>
-                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;cpu&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"cuda"</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"cpu"</span>
                 <span class="ow">and</span> <span class="ow">not</span> <span class="n">use_uva</span>
             <span class="p">):</span>
                 <span class="k">if</span> <span class="n">pin_prefetcher</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1201,16 +1191,16 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">pin_prefetcher</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="s2">&quot;pin_prefetcher=True is only effective when device=cuda and &quot;</span>
-                        <span class="s2">&quot;sampling is performed on CPU.&quot;</span>
+                        <span class="s2">"pin_prefetcher=True is only effective when device=cuda and "</span>
+                        <span class="s2">"sampling is performed on CPU."</span>
                     <span class="p">)</span>
                 <span class="k">if</span> <span class="n">pin_prefetcher</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">pin_prefetcher</span> <span class="o">=</span> <span class="kc">False</span>
 
                 <span class="k">if</span> <span class="n">use_prefetch_thread</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="s2">&quot;use_prefetch_thread=True is only effective when device=cuda and &quot;</span>
-                        <span class="s2">&quot;sampling is performed on CPU.&quot;</span>
+                        <span class="s2">"use_prefetch_thread=True is only effective when device=cuda and "</span>
+                        <span class="s2">"sampling is performed on CPU."</span>
                     <span class="p">)</span>
                 <span class="k">if</span> <span class="n">use_prefetch_thread</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">use_prefetch_thread</span> <span class="o">=</span> <span class="kc">False</span>
@@ -1218,15 +1208,15 @@
             <span class="c1"># Check use_alternate_streams</span>
             <span class="k">if</span> <span class="n">use_alternate_streams</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">use_alternate_streams</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;cuda&quot;</span>
-                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;cpu&quot;</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"cuda"</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"cpu"</span>
                     <span class="ow">and</span> <span class="ow">not</span> <span class="n">use_uva</span>
                     <span class="ow">and</span> <span class="n">is_tensor_adaptor_enabled</span><span class="p">()</span>
                 <span class="p">)</span>
             <span class="k">elif</span> <span class="n">use_alternate_streams</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_tensor_adaptor_enabled</span><span class="p">():</span>
                 <span class="n">dgl_warning</span><span class="p">(</span>
-                    <span class="s2">&quot;use_alternate_streams is turned off because &quot;</span>
-                    <span class="s2">&quot;TensorAdaptor is not available.&quot;</span>
+                    <span class="s2">"use_alternate_streams is turned off because "</span>
+                    <span class="s2">"TensorAdaptor is not available."</span>
                 <span class="p">)</span>
                 <span class="n">use_alternate_streams</span> <span class="o">=</span> <span class="kc">False</span>
 
@@ -1241,7 +1231,7 @@
                 <span class="n">use_ddp</span><span class="p">,</span>
                 <span class="n">ddp_seed</span><span class="p">,</span>
                 <span class="n">shuffle</span><span class="p">,</span>
-                <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;persistent_workers&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+                <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"persistent_workers"</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">indices</span>
@@ -1257,7 +1247,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">use_prefetch_thread</span> <span class="o">=</span> <span class="n">use_prefetch_thread</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cpu_affinity_enabled</span> <span class="o">=</span> <span class="kc">False</span>
 
-        <span class="n">worker_init_fn</span> <span class="o">=</span> <span class="n">WorkerInitWrapper</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;worker_init_fn&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="n">worker_init_fn</span> <span class="o">=</span> <span class="n">WorkerInitWrapper</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"worker_init_fn"</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">other_storages</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -1276,14 +1266,14 @@
 
     <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;cpu&quot;</span>
-            <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">psutil</span><span class="o">.</span><span class="n">Process</span><span class="p">,</span> <span class="s2">&quot;cpu_affinity&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"cpu"</span>
+            <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">psutil</span><span class="o">.</span><span class="n">Process</span><span class="p">,</span> <span class="s2">"cpu_affinity"</span><span class="p">)</span>
             <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">cpu_affinity_enabled</span>
         <span class="p">):</span>
-            <span class="n">link</span> <span class="o">=</span> <span class="s2">&quot;https://docs.dgl.ai/tutorials/cpu/cpu_best_practises.html&quot;</span>
+            <span class="n">link</span> <span class="o">=</span> <span class="s2">"https://docs.dgl.ai/tutorials/cpu/cpu_best_practises.html"</span>
             <span class="n">dgl_warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Dataloader CPU affinity opt is not enabled, consider switching it on &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;(see enable_cpu_affinity() or CPU best practices for DGL [</span><span class="si">{</span><span class="n">link</span><span class="si">}</span><span class="s2">])&quot;</span>
+                <span class="sa">f</span><span class="s2">"Dataloader CPU affinity opt is not enabled, consider switching it on "</span>
+                <span class="sa">f</span><span class="s2">"(see enable_cpu_affinity() or CPU best practices for DGL [</span><span class="si">{</span><span class="n">link</span><span class="si">}</span><span class="s2">])"</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shuffle</span><span class="p">:</span>
@@ -1299,7 +1289,7 @@
     <span class="k">def</span> <span class="nf">enable_cpu_affinity</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">loader_cores</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compute_cores</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Helper method for enabling cpu affinity for compute threads and dataloader workers</span>
+<span class="w">        </span><span class="sd">"""Helper method for enabling cpu affinity for compute threads and dataloader workers</span>
 <span class="sd">        Only for CPU devices</span>
 <span class="sd">        Uses only NUMA node 0 by default for multi-node systems</span>
 
@@ -1320,16 +1310,16 @@
 <span class="sd">        -----</span>
 <span class="sd">        with dataloader.enable_cpu_affinity():</span>
 <span class="sd">            &lt;training loop&gt;</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;cpu&quot;</span><span class="p">:</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"cpu"</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                    <span class="s2">&quot;ERROR: affinity should be used with at least one DL worker&quot;</span>
+                    <span class="s2">"ERROR: affinity should be used with at least one DL worker"</span>
                 <span class="p">)</span>
             <span class="k">if</span> <span class="n">loader_cores</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">loader_cores</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_workers</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                    <span class="s2">&quot;ERROR: cpu_affinity incorrect &quot;</span>
-                    <span class="s2">&quot;number of loader_cores=</span><span class="si">{}</span><span class="s2"> for num_workers=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="s2">"ERROR: cpu_affinity incorrect "</span>
+                    <span class="s2">"number of loader_cores=</span><span class="si">{}</span><span class="s2"> for num_workers=</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                         <span class="n">loader_cores</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_workers</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
@@ -1347,7 +1337,7 @@
                     <span class="n">psutil</span><span class="o">.</span><span class="n">Process</span><span class="p">()</span><span class="o">.</span><span class="n">cpu_affinity</span><span class="p">([</span><span class="n">loader_cores</span><span class="p">[</span><span class="n">worker_id</span><span class="p">]])</span>
                 <span class="k">except</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                        <span class="s2">&quot;ERROR: cannot use affinity id=</span><span class="si">{}</span><span class="s2"> cpu=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="s2">"ERROR: cannot use affinity id=</span><span class="si">{}</span><span class="s2"> cpu=</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                             <span class="n">worker_id</span><span class="p">,</span> <span class="n">loader_cores</span>
                         <span class="p">)</span>
                     <span class="p">)</span>
@@ -1363,7 +1353,7 @@
                     <span class="n">node0_cores</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">psutil</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">(</span><span class="n">logical</span><span class="o">=</span><span class="kc">False</span><span class="p">)))</span>
 
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">node0_cores</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_workers</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;ERROR: more workers than available cores&quot;</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">"ERROR: more workers than available cores"</span><span class="p">)</span>
 
                 <span class="n">loader_cores</span> <span class="o">=</span> <span class="n">loader_cores</span> <span class="ow">or</span> <span class="n">node0_cores</span><span class="p">[</span><span class="mi">0</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_workers</span><span class="p">]</span>
                 <span class="n">compute_cores</span> <span class="o">=</span> <span class="p">[</span>
@@ -1378,9 +1368,9 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">cpu_affinity_enabled</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">num_workers</span><span class="si">}</span><span class="s2"> DL workers are assigned to cpus &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">loader_cores</span><span class="si">}</span><span class="s2">, main process will use cpus &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">compute_cores</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">num_workers</span><span class="si">}</span><span class="s2"> DL workers are assigned to cpus "</span>
+                        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">loader_cores</span><span class="si">}</span><span class="s2">, main process will use cpus "</span>
+                        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">compute_cores</span><span class="si">}</span><span class="s2">"</span>
                     <span class="p">)</span>
 
                 <span class="k">yield</span>
@@ -1396,29 +1386,29 @@
 
     <span class="c1"># To allow data other than node/edge data to be prefetched.</span>
     <span class="k">def</span> <span class="nf">attach_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a data other than node and edge features for prefetching.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Add a data other than node and edge features for prefetching."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">other_storages</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">wrap_storage</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
 
 
 
 <span class="c1">######## Graph DataLoaders ########</span>
-<span class="c1"># GraphDataLoader loads a set of graphs so it&#39;s not relevant to the above.  They are currently</span>
+<span class="c1"># GraphDataLoader loads a set of graphs so it's not relevant to the above.  They are currently</span>
 <span class="c1"># copied from the old DataLoader implementation.</span>
 
 
 <span class="k">def</span> <span class="nf">_create_dist_sampler</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">dataloader_kwargs</span><span class="p">,</span> <span class="n">ddp_seed</span><span class="p">):</span>
     <span class="c1"># Note: will change the content of dataloader_kwargs</span>
-    <span class="n">dist_sampler_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;shuffle&quot;</span><span class="p">:</span> <span class="n">dataloader_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;shuffle&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)}</span>
-    <span class="n">dataloader_kwargs</span><span class="p">[</span><span class="s2">&quot;shuffle&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">dist_sampler_kwargs</span><span class="p">[</span><span class="s2">&quot;seed&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ddp_seed</span>
-    <span class="n">dist_sampler_kwargs</span><span class="p">[</span><span class="s2">&quot;drop_last&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataloader_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;drop_last&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-    <span class="n">dataloader_kwargs</span><span class="p">[</span><span class="s2">&quot;drop_last&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">dist_sampler_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"shuffle"</span><span class="p">:</span> <span class="n">dataloader_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"shuffle"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)}</span>
+    <span class="n">dataloader_kwargs</span><span class="p">[</span><span class="s2">"shuffle"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">dist_sampler_kwargs</span><span class="p">[</span><span class="s2">"seed"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ddp_seed</span>
+    <span class="n">dist_sampler_kwargs</span><span class="p">[</span><span class="s2">"drop_last"</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataloader_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"drop_last"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">dataloader_kwargs</span><span class="p">[</span><span class="s2">"drop_last"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="k">return</span> <span class="n">DistributedSampler</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="o">**</span><span class="n">dist_sampler_kwargs</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">GraphCollator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Given a set of graphs as well as their graph-level data, the collate function will batch the</span>
+<span class="w">    </span><span class="sd">"""Given a set of graphs as well as their graph-level data, the collate function will batch the</span>
 <span class="sd">    graphs into a batched graph, and stack the tensors into a single bigger tensor.  If the</span>
 <span class="sd">    example is a container (such as sequences or mapping), the collate function preserves</span>
 <span class="sd">    the structure and collates each of the elements recursively.</span>
@@ -1434,18 +1424,18 @@
 <span class="sd">    ...     dataset, batch_size=1024, shuffle=True, drop_last=False, num_workers=4)</span>
 <span class="sd">    &gt;&gt;&gt; for batched_graph, labels in dataloader:</span>
 <span class="sd">    ...     train_on(batched_graph, labels)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">graph_collate_err_msg_format</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="s2">&quot;graph_collate: batch must contain DGLGraph, tensors, numpy arrays, &quot;</span>
-            <span class="s2">&quot;numbers, dicts or lists; found </span><span class="si">{}</span><span class="s2">&quot;</span>
+            <span class="s2">"graph_collate: batch must contain DGLGraph, tensors, numpy arrays, "</span>
+            <span class="s2">"numbers, dicts or lists; found </span><span class="si">{}</span><span class="s2">"</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">np_str_obj_array_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[SaUO]&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">np_str_obj_array_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"[SaUO]"</span><span class="p">)</span>
 
     <span class="c1"># This implementation is based on torch.utils.data._utils.collate.default_collate</span>
     <span class="k">def</span> <span class="nf">collate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;This function is similar to ``torch.utils.data._utils.collate.default_collate``.</span>
+<span class="w">        </span><span class="sd">"""This function is similar to ``torch.utils.data._utils.collate.default_collate``.</span>
 <span class="sd">        It combines the sampled graphs and corresponding graph-level data</span>
 <span class="sd">        into a batched graph and tensors.</span>
 
@@ -1459,7 +1449,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        A tuple of the batching results.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">elem</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">elem_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">DGLGraph</span><span class="p">):</span>
@@ -1468,13 +1458,13 @@
         <span class="k">elif</span> <span class="n">F</span><span class="o">.</span><span class="n">is_tensor</span><span class="p">(</span><span class="n">elem</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">F</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="k">elif</span> <span class="p">(</span>
-            <span class="n">elem_type</span><span class="o">.</span><span class="vm">__module__</span> <span class="o">==</span> <span class="s2">&quot;numpy&quot;</span>
-            <span class="ow">and</span> <span class="n">elem_type</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">!=</span> <span class="s2">&quot;str_&quot;</span>
-            <span class="ow">and</span> <span class="n">elem_type</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">!=</span> <span class="s2">&quot;string_&quot;</span>
+            <span class="n">elem_type</span><span class="o">.</span><span class="vm">__module__</span> <span class="o">==</span> <span class="s2">"numpy"</span>
+            <span class="ow">and</span> <span class="n">elem_type</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">!=</span> <span class="s2">"str_"</span>
+            <span class="ow">and</span> <span class="n">elem_type</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">!=</span> <span class="s2">"string_"</span>
         <span class="p">):</span>
             <span class="k">if</span> <span class="p">(</span>
-                <span class="n">elem_type</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;ndarray&quot;</span>
-                <span class="ow">or</span> <span class="n">elem_type</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;memmap&quot;</span>
+                <span class="n">elem_type</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"ndarray"</span>
+                <span class="ow">or</span> <span class="n">elem_type</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"memmap"</span>
             <span class="p">):</span>
                 <span class="c1"># array of string classes and object</span>
                 <span class="k">if</span> <span class="p">(</span>
@@ -1496,7 +1486,7 @@
             <span class="k">return</span> <span class="n">items</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">collate</span><span class="p">([</span><span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">items</span><span class="p">])</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">elem</span><span class="p">}</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="s2">&quot;_fields&quot;</span><span class="p">):</span>  <span class="c1"># namedtuple</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="s2">"_fields"</span><span class="p">):</span>  <span class="c1"># namedtuple</span>
             <span class="k">return</span> <span class="n">elem_type</span><span class="p">(</span>
                 <span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">collate</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span> <span class="k">for</span> <span class="n">samples</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">items</span><span class="p">))</span>
             <span class="p">)</span>
@@ -1506,7 +1496,7 @@
             <span class="n">elem_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">item_iter</span><span class="p">))</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span> <span class="o">==</span> <span class="n">elem_size</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">item_iter</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                    <span class="s2">&quot;each element in list of batch should be of equal size&quot;</span>
+                    <span class="s2">"each element in list of batch should be of equal size"</span>
                 <span class="p">)</span>
             <span class="n">transposed</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">items</span><span class="p">)</span>
             <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">collate</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span> <span class="k">for</span> <span class="n">samples</span> <span class="ow">in</span> <span class="n">transposed</span><span class="p">]</span>
@@ -1517,7 +1507,7 @@
 <div class="viewcode-block" id="GraphDataLoader">
 <a class="viewcode-back" href="../../../generated/dgl.dataloading.GraphDataLoader.html#dgl.dataloading.GraphDataLoader">[docs]</a>
 <span class="k">class</span> <span class="nc">GraphDataLoader</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Batched graph data loader.</span>
+<span class="w">    </span><span class="sd">"""Batched graph data loader.</span>
 
 <span class="sd">    PyTorch dataloader for batch-iterating over a set of graphs, generating the batched</span>
 <span class="sd">    graph and corresponding label tensor (if provided) of the said minibatch.</span>
@@ -1559,7 +1549,7 @@
 
 <span class="sd">    **With Distributed Data Parallel**</span>
 
-<span class="sd">    If you are using PyTorch&#39;s distributed training (e.g. when using</span>
+<span class="sd">    If you are using PyTorch's distributed training (e.g. when using</span>
 <span class="sd">    :mod:`torch.nn.parallel.DistributedDataParallel`), you can train the model by</span>
 <span class="sd">    turning on the :attr:`use_ddp` option:</span>
 
@@ -1569,7 +1559,7 @@
 <span class="sd">    ...     dataloader.set_epoch(epoch)</span>
 <span class="sd">    ...     for batched_graph, labels in dataloader:</span>
 <span class="sd">    ...         train_on(batched_graph, labels)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">collator_arglist</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getfullargspec</span><span class="p">(</span><span class="n">GraphCollator</span><span class="p">)</span><span class="o">.</span><span class="n">args</span>
 
@@ -1589,9 +1579,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">dist_sampler</span> <span class="o">=</span> <span class="n">_create_dist_sampler</span><span class="p">(</span>
                 <span class="n">dataset</span><span class="p">,</span> <span class="n">dataloader_kwargs</span><span class="p">,</span> <span class="n">ddp_seed</span>
             <span class="p">)</span>
-            <span class="n">dataloader_kwargs</span><span class="p">[</span><span class="s2">&quot;sampler&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dist_sampler</span>
+            <span class="n">dataloader_kwargs</span><span class="p">[</span><span class="s2">"sampler"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dist_sampler</span>
 
-        <span class="k">if</span> <span class="n">collate_fn</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;batch_size&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">collate_fn</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"batch_size"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">collate_fn</span> <span class="o">=</span> <span class="n">GraphCollator</span><span class="p">(</span><span class="o">**</span><span class="n">collator_kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">collate</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
@@ -1599,7 +1589,7 @@
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">set_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epoch</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the epoch number for the underlying sampler which ensures all replicas</span>
+<span class="w">        </span><span class="sd">"""Sets the epoch number for the underlying sampler which ensures all replicas</span>
 <span class="sd">        to use a different ordering for each epoch.</span>
 
 <span class="sd">        Only available when :attr:`use_ddp` is True.</span>
@@ -1610,23 +1600,20 @@
 <span class="sd">        ----------</span>
 <span class="sd">        epoch : int</span>
 <span class="sd">            The epoch number.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_ddp</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">dist_sampler</span><span class="o">.</span><span class="n">set_epoch</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">DGLError</span><span class="p">(</span><span class="s2">&quot;set_epoch is only available when use_ddp is True.&quot;</span><span class="p">)</span></div>
+            <span class="k">raise</span> <span class="n">DGLError</span><span class="p">(</span><span class="s2">"set_epoch is only available when use_ddp is True."</span><span class="p">)</span></div>
 
 </pre></div>
-
-           </div>
-          </div>
-          <footer>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2018, DGL Team.</p>
-  </div>
+</div>
+</div>
+<footer>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
@@ -1634,15 +1621,58 @@
    
 
 </footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+
+<script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
-
+  </script>
 </body>
 </html>

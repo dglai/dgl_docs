@@ -1,67 +1,60 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../../">
+
+<html class="writer-html5" data-content_root="../../" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Graph Transformer in a Nutshell &mdash; DGL 2.4 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
-      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=0bf289b5" />
-
-  
-  <!--[if lt IE 9]>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Graph Transformer in a Nutshell — DGL 2.3.1 documentation</title>
+<link href="../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../../_static/nbsphinx-code-cells.css?v=2aa19091" rel="stylesheet" type="text/css"/>
+<link href="../../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script src="../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=9caaf7ed"></script>
-        <script src="../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../../_static/copybutton.js?v=ccdb6887"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="../../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Training on CPUs" href="../../tutorials/cpu/index.html" />
-    <link rel="prev" title="Hypergraph Neural Networks" href="hgnn.html" /> 
+<script src="../../_static/jquery.js?v=5d32c60e"></script>
+<script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../../_static/doctools.js?v=9a2dae69"></script>
+<script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+<script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../_static/js/theme.js"></script>
+<link href="../../genindex.html" rel="index" title="Index"/>
+<link href="../../search.html" rel="search" title="Search"/>
+<link href="../../tutorials/cpu/index.html" rel="next" title="Training on CPUs"/>
+<link href="hgnn.html" rel="prev" title="Hypergraph Neural Networks"/>
 </head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../../index.html" class="icon icon-home">
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../../index.html">
             DGL
           </a>
-              <div class="version">
-                2.4
+<div class="version">
+                2.3.1
               </div>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+<form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Install and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/blitz/index.html">A Blitz Introduction to DGL</a></li>
@@ -118,37 +111,33 @@
 <li class="toctree-l1"><a class="reference internal" href="../../env_var.html">Environment Variables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../resources.html">Resources</a></li>
 </ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">DGL</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">Tutorials: dgl.sparse</a></li>
-      <li class="breadcrumb-item active">Graph Transformer in a Nutshell</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/notebooks/sparse/graph_transformer.nblink.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="Graph-Transformer-in-a-Nutshell">
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../../index.html"></a></li>
+<li class="breadcrumb-item"><a href="index.html">Tutorials: dgl.sparse</a></li>
+<li class="breadcrumb-item active">Graph Transformer in a Nutshell</li>
+<li class="wy-breadcrumbs-aside">
+<a href="../../_sources/notebooks/sparse/graph_transformer.nblink.txt" rel="nofollow"> View page source</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<section id="Graph-Transformer-in-a-Nutshell">
 <h1>Graph Transformer in a Nutshell<a class="headerlink" href="#Graph-Transformer-in-a-Nutshell" title="Link to this heading"></a></h1>
 <p>The <strong>Transformer</strong> <a class="reference external" href="https://proceedings.neurips.cc/paper/2017/hash/3f5ee243547dee91fbd053c1c4a845aa-Abstract.html">(Vaswani et al. 2017)</a> has been proven an effective learning architecture in natural language processing and computer vision. Recently, researchers turns to explore the application of transformer in graph learning. They have achieved inital success on many practical tasks, e.g., graph property prediction. <a class="reference external" href="https://arxiv.org/abs/2012.09699">Dwivedi et al. (2020)</a> firstly
 generalize the transformer neural architecture to graph-structured data. Here, we present how to build such a graph transformer with DGL’s sparse matrix APIs.</p>
-<p><a class="reference external" href="https://colab.research.google.com/github/dmlc/dgl/blob/master/notebooks/sparse/graph_transformer.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a> <a class="reference external" href="https://github.com/dmlc/dgl/blob/master/notebooks/sparse/graph_transformer.ipynb"><img alt="GitHub" src="https://img.shields.io/badge/-View%20on%20GitHub-181717?logo=github&amp;logoColor=ffffff" /></a></p>
+<p><a class="reference external" href="https://colab.research.google.com/github/dmlc/dgl/blob/master/notebooks/sparse/graph_transformer.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg"/></a> <a class="reference external" href="https://github.com/dmlc/dgl/blob/master/notebooks/sparse/graph_transformer.ipynb"><img alt="GitHub" src="https://img.shields.io/badge/-View%20on%20GitHub-181717?logo=github&amp;logoColor=ffffff"/></a></p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -156,8 +145,8 @@ generalize the transformer neural architecture to graph-structured data. Here, w
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install required packages.</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">torch</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;TORCH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">__version__</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;DGLBACKEND&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pytorch&quot;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">'TORCH'</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">__version__</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">'DGLBACKEND'</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"pytorch"</span>
 
 <span class="c1"># Uncomment below to install required packages. If the CUDA version is not 11.8,</span>
 <span class="c1"># check the https://www.dgl.ai/pages/start.html to find the supported CUDA</span>
@@ -170,7 +159,7 @@ generalize the transformer neural architecture to graph-structured data. Here, w
     <span class="n">installed</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="n">installed</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DGL installed!&quot;</span> <span class="k">if</span> <span class="n">installed</span> <span class="k">else</span> <span class="s2">&quot;Failed to install DGL!&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"DGL installed!"</span> <span class="k">if</span> <span class="n">installed</span> <span class="k">else</span> <span class="s2">"Failed to install DGL!"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -183,7 +172,7 @@ generalize the transformer neural architecture to graph-structured data. Here, w
 <div class="math notranslate nohighlight">
 \[\text{SparseAttn}(Q, K, V, A) = \text{softmax}(\frac{(QK^T) \circ A}{\sqrt{d}})V,\]</div>
 <p>where <span class="math notranslate nohighlight">\(Q, K, V ∈\mathbb{R}^{N\times d}\)</span> are query feature, key feature, and value feature, respectively. <span class="math notranslate nohighlight">\(A\in[0,1]^{N\times N}\)</span> is the adjacency matrix of the input graph. <span class="math notranslate nohighlight">\((QK^T)\circ A\)</span> means that the multiplication of query matrix and key matrix is followed by a Hadamard product (or element-wise multiplication) with the sparse adjacency matrix as illustrated in the figure below:</p>
-<p><img alt="05f0c5dfcf5f466d89a91349d5c6fd27" class="no-scaled-link" src="https://drive.google.com/uc?id=1OgMAewLR3Z1vz5y4J8aPRSeaU3g8iQfX" style="width: 500px;" /></p>
+<p><img alt="fdb9c54844ae483da4cdc5d9c25719e7" class="no-scaled-link" src="https://drive.google.com/uc?id=1OgMAewLR3Z1vz5y4J8aPRSeaU3g8iQfX" style="width: 500px;"/></p>
 <p>Essentially, only the attention scores between connected nodes are computed according to the sparsity of <span class="math notranslate nohighlight">\(A\)</span>. This operation is also called <em>Sampled Dense Dense Matrix Multiplication (SDDMM)</em>.</p>
 <p>Enjoying the <a class="reference external" href="https://docs.dgl.ai/en/latest/generated/dgl.sparse.bsddmm.html">batched SDDMM API</a> in DGL, we can parallel the computation on multiple attention heads (different representation subspaces).</p>
 <div class="nbinput nblast docutils container">
@@ -206,7 +195,7 @@ generalize the transformer neural architecture to graph-structured data. Here, w
 
 
 <span class="k">class</span> <span class="nc">SparseMHA</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sparse Multi-head Attention Module&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Sparse Multi-head Attention Module"""</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_size</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">num_heads</span><span class="o">=</span><span class="mi">8</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -246,13 +235,13 @@ generalize the transformer neural architecture to graph-structured data. Here, w
 <section id="Graph-Transformer-Layer">
 <h2>Graph Transformer Layer<a class="headerlink" href="#Graph-Transformer-Layer" title="Link to this heading"></a></h2>
 <p>The GT layer is composed of Multi-head Attention, Batch Norm, and Feed-forward Network, connected by residual links as in vanilla transformer.</p>
-<p><img alt="12ff9b71a4ef44a1a3e143deeab1dd92" class="no-scaled-link" src="https://drive.google.com/uc?id=1cm-Ijw7bUQIOkoTKn5MQ3m4-66JqCsMz" style="width: 300px;" /></p>
+<p><img alt="1a397b55e2d74e81abbe43555cbcd951" class="no-scaled-link" src="https://drive.google.com/uc?id=1cm-Ijw7bUQIOkoTKn5MQ3m4-66JqCsMz" style="width: 300px;"/></p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">GTLayer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Graph Transformer Layer&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Graph Transformer Layer"""</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_size</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">num_heads</span><span class="o">=</span><span class="mi">8</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -336,13 +325,13 @@ generalize the transformer neural architecture to graph-structured data. Here, w
     <span class="n">y_pred</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">batched_g</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
         <span class="n">batched_g</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">batched_g</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
-        <span class="n">y_hat</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">batched_g</span><span class="p">,</span> <span class="n">batched_g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;feat&quot;</span><span class="p">],</span> <span class="n">batched_g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;PE&quot;</span><span class="p">])</span>
+        <span class="n">y_hat</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">batched_g</span><span class="p">,</span> <span class="n">batched_g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"feat"</span><span class="p">],</span> <span class="n">batched_g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"PE"</span><span class="p">])</span>
         <span class="n">y_true</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">y_hat</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">())</span>
         <span class="n">y_pred</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y_hat</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">())</span>
     <span class="n">y_true</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
     <span class="n">y_pred</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
-    <span class="n">input_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;y_true&quot;</span><span class="p">:</span> <span class="n">y_true</span><span class="p">,</span> <span class="s2">&quot;y_pred&quot;</span><span class="p">:</span> <span class="n">y_pred</span><span class="p">}</span>
-    <span class="k">return</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">input_dict</span><span class="p">)[</span><span class="s2">&quot;rocauc&quot;</span><span class="p">]</span>
+    <span class="n">input_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"y_true"</span><span class="p">:</span> <span class="n">y_true</span><span class="p">,</span> <span class="s2">"y_pred"</span><span class="p">:</span> <span class="n">y_pred</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">input_dict</span><span class="p">)[</span><span class="s2">"rocauc"</span><span class="p">]</span>
 
 
 <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">evaluator</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
@@ -371,7 +360,7 @@ generalize the transformer neural architecture to graph-structured data. Here, w
         <span class="k">for</span> <span class="n">batched_g</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">train_dataloader</span><span class="p">:</span>
             <span class="n">batched_g</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">batched_g</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
             <span class="n">logits</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span>
-                <span class="n">batched_g</span><span class="p">,</span> <span class="n">batched_g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;feat&quot;</span><span class="p">],</span> <span class="n">batched_g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;PE&quot;</span><span class="p">]</span>
+                <span class="n">batched_g</span><span class="p">,</span> <span class="n">batched_g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"feat"</span><span class="p">],</span> <span class="n">batched_g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"PE"</span><span class="p">]</span>
             <span class="p">)</span>
             <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fcn</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="o">.</span><span class="n">float</span><span class="p">())</span>
             <span class="n">total_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
@@ -383,22 +372,22 @@ generalize the transformer neural architecture to graph-structured data. Here, w
         <span class="n">val_metric</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_dataloader</span><span class="p">,</span> <span class="n">evaluator</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
         <span class="n">test_metric</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_dataloader</span><span class="p">,</span> <span class="n">evaluator</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Epoch: </span><span class="si">{</span><span class="n">epoch</span><span class="si">:</span><span class="s2">03d</span><span class="si">}</span><span class="s2">, Loss: </span><span class="si">{</span><span class="n">avg_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;Val: </span><span class="si">{</span><span class="n">val_metric</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, Test: </span><span class="si">{</span><span class="n">test_metric</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"Epoch: </span><span class="si">{</span><span class="n">epoch</span><span class="si">:</span><span class="s2">03d</span><span class="si">}</span><span class="s2">, Loss: </span><span class="si">{</span><span class="n">avg_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, "</span>
+            <span class="sa">f</span><span class="s2">"Val: </span><span class="si">{</span><span class="n">val_metric</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, Test: </span><span class="si">{</span><span class="n">test_metric</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
 
 
 <span class="c1"># Training device.</span>
-<span class="n">dev</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+<span class="n">dev</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"cpu"</span><span class="p">)</span>
 <span class="c1"># Uncomment the code below to train on GPU. Be sure to install DGL with CUDA support.</span>
-<span class="c1">#dev = torch.device(&quot;cuda:0&quot;)</span>
+<span class="c1">#dev = torch.device("cuda:0")</span>
 
 <span class="c1"># Load dataset.</span>
 <span class="n">pos_enc_size</span> <span class="o">=</span> <span class="mi">8</span>
 <span class="n">dataset</span> <span class="o">=</span> <span class="n">AsGraphPredDataset</span><span class="p">(</span>
-    <span class="n">DglGraphPropPredDataset</span><span class="p">(</span><span class="s2">&quot;ogbg-molhiv&quot;</span><span class="p">,</span> <span class="s2">&quot;./data/OGB&quot;</span><span class="p">)</span>
+    <span class="n">DglGraphPropPredDataset</span><span class="p">(</span><span class="s2">"ogbg-molhiv"</span><span class="p">,</span> <span class="s2">"./data/OGB"</span><span class="p">)</span>
 <span class="p">)</span>
-<span class="n">evaluator</span> <span class="o">=</span> <span class="n">Evaluator</span><span class="p">(</span><span class="s2">&quot;ogbg-molhiv&quot;</span><span class="p">)</span>
+<span class="n">evaluator</span> <span class="o">=</span> <span class="n">Evaluator</span><span class="p">(</span><span class="s2">"ogbg-molhiv"</span><span class="p">)</span>
 
 <span class="c1"># Down sample the dataset to make the tutorial run faster.</span>
 <span class="kn">import</span> <span class="nn">random</span>
@@ -418,9 +407,9 @@ generalize the transformer neural architecture to graph-structured data. Here, w
 
 <span class="c1"># Laplacian positional encoding.</span>
 <span class="n">indices</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">dataset</span><span class="o">.</span><span class="n">train_idx</span><span class="p">,</span> <span class="n">dataset</span><span class="o">.</span><span class="n">val_idx</span><span class="p">,</span> <span class="n">dataset</span><span class="o">.</span><span class="n">test_idx</span><span class="p">])</span>
-<span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Computing Laplacian PE&quot;</span><span class="p">):</span>
+<span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">"Computing Laplacian PE"</span><span class="p">):</span>
     <span class="n">g</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-    <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;PE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">laplacian_pe</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">pos_enc_size</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"PE"</span><span class="p">]</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">laplacian_pe</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">pos_enc_size</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Create model.</span>
 <span class="n">out_size</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">num_tasks</span>
@@ -470,20 +459,16 @@ Epoch: 019, Loss: 0.0093, Val: 0.7356, Test: 0.5561
 </div>
 </section>
 </section>
-
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="hgnn.html" class="btn btn-neutral float-left" title="Hypergraph Neural Networks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../../tutorials/cpu/index.html" class="btn btn-neutral float-right" title="Training on CPUs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2018, DGL Team.</p>
-  </div>
+</div>
+</div>
+<footer><div aria-label="Footer" class="rst-footer-buttons" role="navigation">
+<a accesskey="p" class="btn btn-neutral float-left" href="hgnn.html" rel="prev" title="Hypergraph Neural Networks"><span aria-hidden="true" class="fa fa-arrow-circle-left"></span> Previous</a>
+<a accesskey="n" class="btn btn-neutral float-right" href="../../tutorials/cpu/index.html" rel="next" title="Training on CPUs">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
+</div>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
@@ -491,15 +476,58 @@ Epoch: 019, Loss: 0.0093, Val: 0.7356, Test: 0.5561
    
 
 </footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+
+<script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
-
+  </script>
 </body>
 </html>

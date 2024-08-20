@@ -1,64 +1,57 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../">
+
+<html class="writer-html5" data-content_root="../" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>7.2 分布式计算的API &mdash; DGL 2.4 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
-      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=0bf289b5" />
-
-  
-  <!--[if lt IE 9]>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>7.2 分布式计算的API — DGL 2.3.1 documentation</title>
+<link href="../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=9caaf7ed"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../_static/copybutton.js?v=ccdb6887"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-    <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="7.3 运行分布式训练/推断所需的工具" href="distributed-tools.html" />
-    <link rel="prev" title="7.1 分布式训练所需的图数据预处理" href="distributed-preprocessing.html" /> 
+<script src="../_static/jquery.js?v=5d32c60e"></script>
+<script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../_static/doctools.js?v=9a2dae69"></script>
+<script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script src="../_static/js/theme.js"></script>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="distributed-tools.html" rel="next" title="7.3 运行分布式训练/推断所需的工具"/>
+<link href="distributed-preprocessing.html" rel="prev" title="7.1 分布式训练所需的图数据预处理"/>
 </head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../index.html" class="icon icon-home">
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../index.html">
             DGL
           </a>
-              <div class="version">
-                2.4
+<div class="version">
+                2.3.1
               </div>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+<form action="../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../install/index.html">Install and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/blitz/index.html">A Blitz Introduction to DGL</a></li>
@@ -122,34 +115,30 @@
 <li class="toctree-l1"><a class="reference internal" href="../env_var.html">Environment Variables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../resources.html">Resources</a></li>
 </ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">DGL</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">用户指南【包含过时信息】</a></li>
-          <li class="breadcrumb-item"><a href="distributed.html">第7章：分布式训练</a></li>
-      <li class="breadcrumb-item active">7.2 分布式计算的API</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/guide_cn/distributed-apis.rst.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="api">
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../index.html"></a></li>
+<li class="breadcrumb-item"><a href="index.html">用户指南【包含过时信息】</a></li>
+<li class="breadcrumb-item"><a href="distributed.html">第7章：分布式训练</a></li>
+<li class="breadcrumb-item active">7.2 分布式计算的API</li>
+<li class="wy-breadcrumbs-aside">
+<a href="../_sources/guide_cn/distributed-apis.rst.txt" rel="nofollow"> View page source</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<section id="api">
 <span id="guide-cn-distributed-apis"></span><h1>7.2 分布式计算的API<a class="headerlink" href="#api" title="Link to this heading"></a></h1>
 <p><a class="reference internal" href="../guide/distributed-apis.html#guide-distributed-apis"><span class="std std-ref">(English Version)</span></a></p>
 <p>本节介绍了在训练脚本中使用的分布式计算API。DGL提供了三种分布式数据结构和多种API，用于初始化、分布式采样和数据分割。
@@ -163,8 +152,8 @@
 直到训练任务结束。必须在DGL的任何其他分布式API之前，调用此API。在使用PyTorch时，必须在
 <code class="docutils literal notranslate"><span class="pre">torch.distributed.init_process_group</span></code> 之前调用 <a class="reference internal" href="../generated/dgl.distributed.initialize.html#dgl.distributed.initialize" title="dgl.distributed.initialize"><code class="xref py py-func docutils literal notranslate"><span class="pre">initialize()</span></code></a>。
 通常，初始化API应按以下顺序调用：</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="s1">&#39;ip_config.txt&#39;</span><span class="p">)</span>
-<span class="n">th</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">init_process_group</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">&#39;gloo&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="s1">'ip_config.txt'</span><span class="p">)</span>
+<span class="n">th</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">init_process_group</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">'gloo'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Note</strong>: 如果训练脚本里包含需要在服务器(细节内容可以在下面的DistTensor和DistEmbedding章节里查看)上调用的用户自定义函数(UDF)，
@@ -190,12 +179,12 @@
 <p>在分布式模式下，<a class="reference internal" href="../api/python/dgl.distributed.html#dgl.distributed.DistGraph" title="dgl.distributed.DistGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">DistGraph</span></code></a> 的创建需要(定义)在图划分期间的图名称。
 图名称标识了集群中所需加载的图。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dgl</span>
-<span class="n">g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">DistGraph</span><span class="p">(</span><span class="s1">&#39;graph_name&#39;</span><span class="p">)</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">DistGraph</span><span class="p">(</span><span class="s1">'graph_name'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>在独立模式下运行时，DistGraph将图数据加载到本地计算机中。因此，用户需要提供分区配置文件，其中包含有关输入图的所有信息。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dgl</span>
-<span class="n">g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">DistGraph</span><span class="p">(</span><span class="s1">&#39;graph_name&#39;</span><span class="p">,</span> <span class="n">part_config</span><span class="o">=</span><span class="s1">&#39;data/graph_name.json&#39;</span><span class="p">)</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">DistGraph</span><span class="p">(</span><span class="s1">'graph_name'</span><span class="p">,</span> <span class="n">part_config</span><span class="o">=</span><span class="s1">'data/graph_name.json'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Note</strong>: 在当前实现中，DGL仅允许创建单个DistGraph对象。销毁DistGraph并创建一个新DistGraph的行为没有被定义。</p>
@@ -215,9 +204,9 @@
 <a class="reference internal" href="../api/python/dgl.distributed.html#dgl.distributed.DistGraph" title="dgl.distributed.DistGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">DistGraph</span></code></a> 中的 <code class="docutils literal notranslate"><span class="pre">ndata</span></code> / <code class="docutils literal notranslate"><span class="pre">edata</span></code> 返回的是 <a class="reference internal" href="../api/python/dgl.distributed.html#dgl.distributed.DistTensor" title="dgl.distributed.DistTensor"><code class="xref py py-class docutils literal notranslate"><span class="pre">DistTensor</span></code></a>，
 而不是底层框架里的张量。用户还可以将新的 <a class="reference internal" href="../api/python/dgl.distributed.html#dgl.distributed.DistTensor" title="dgl.distributed.DistTensor"><code class="xref py py-class docutils literal notranslate"><span class="pre">DistTensor</span></code></a> 分配给
 <a class="reference internal" href="../api/python/dgl.distributed.html#dgl.distributed.DistGraph" title="dgl.distributed.DistGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">DistGraph</span></code></a> 作为节点数据或边数据。</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;train_mask&#39;</span><span class="p">]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'train_mask'</span><span class="p">]</span>
 <span class="o">&lt;</span><span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">dist_graph</span><span class="o">.</span><span class="n">DistTensor</span> <span class="n">at</span> <span class="mh">0x7fec820937b8</span><span class="o">&gt;</span>
-<span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;train_mask&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'train_mask'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -233,14 +222,14 @@ DGL为分布式张量提供了类似于单机普通张量的接口，以访问�
 以下代码创建一个分布式张量。 除了张量的形状和数据类型之外，用户还可以提供唯一的张量名称。
 如果用户要引用一个固定的分布式张量(即使 <a class="reference internal" href="../api/python/dgl.distributed.html#dgl.distributed.DistTensor" title="dgl.distributed.DistTensor"><code class="xref py py-class docutils literal notranslate"><span class="pre">DistTensor</span></code></a> 对象消失，该名称仍存在于群集中)，
 则(使用这样的)名称就很有用。</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tensor</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">DistTensor</span><span class="p">((</span><span class="n">g</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">(),</span> <span class="mi">10</span><span class="p">),</span> <span class="n">th</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tensor</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">DistTensor</span><span class="p">((</span><span class="n">g</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">(),</span> <span class="mi">10</span><span class="p">),</span> <span class="n">th</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'test'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Note</strong>: <a class="reference internal" href="../api/python/dgl.distributed.html#dgl.distributed.DistTensor" title="dgl.distributed.DistTensor"><code class="xref py py-class docutils literal notranslate"><span class="pre">DistTensor</span></code></a> 的创建是一个同步操作。所有训练器都必须调用创建，
 并且只有当所有训练器都调用它时，此创建过程才能成功。</p>
 <p>用户可以将 <a class="reference internal" href="../api/python/dgl.distributed.html#dgl.distributed.DistTensor" title="dgl.distributed.DistTensor"><code class="xref py py-class docutils literal notranslate"><span class="pre">DistTensor</span></code></a> 作为节点数据或边数据之一添加到
 <a class="reference internal" href="../api/python/dgl.distributed.html#dgl.distributed.DistGraph" title="dgl.distributed.DistGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">DistGraph</span></code></a> 对象。</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;feat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tensor</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'feat'</span><span class="p">]</span> <span class="o">=</span> <span class="n">tensor</span>
 </pre></div>
 </div>
 <p><strong>Note</strong>: 节点数据名称和张量名称不必相同。前者在 <a class="reference internal" href="../api/python/dgl.distributed.html#dgl.distributed.DistGraph" title="dgl.distributed.DistGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">DistGraph</span></code></a> 中标识节点数据(在训练器进程中)，
@@ -248,9 +237,9 @@ DGL为分布式张量提供了类似于单机普通张量的接口，以访问�
 <p><a class="reference internal" href="../api/python/dgl.distributed.html#dgl.distributed.DistTensor" title="dgl.distributed.DistTensor"><code class="xref py py-class docutils literal notranslate"><span class="pre">DistTensor</span></code></a> 提供了一些功能。它具有与常规张量相同的API，用于访问其元数据，
 例如形状和数据类型。<a class="reference internal" href="../api/python/dgl.distributed.html#dgl.distributed.DistTensor" title="dgl.distributed.DistTensor"><code class="xref py py-class docutils literal notranslate"><span class="pre">DistTensor</span></code></a> 支持索引读取和写入，
 但不支持一些计算运算符，例如求和以及求均值。</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;feat&#39;</span><span class="p">][[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'feat'</span><span class="p">][[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;feat&#39;</span><span class="p">][[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]]</span> <span class="o">=</span> <span class="n">data</span>
+<span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'feat'</span><span class="p">][[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]]</span> <span class="o">=</span> <span class="n">data</span>
 </pre></div>
 </div>
 <p><strong>Note</strong>: 当前，当一台机器运行多个服务器时，DGL不提供对来自多个训练器的并发写入的保护。
@@ -348,25 +337,21 @@ DGL提供了一个稀疏的Adagrad优化器 <code class="xref py py-class docuti
 默认情况下，它们确保所有部分都具有相同数量的节点和边。这对于同步SGD非常重要，
 因为同步SGD会假定每个训练器具有相同数量的小批次。</p>
 <p>下面的示例演示了训练集拆分，并向本地进程返回节点的子集。</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_nids</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">node_split</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;train_mask&#39;</span><span class="p">])</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_nids</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">node_split</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'train_mask'</span><span class="p">])</span>
 </pre></div>
 </div>
 </section>
 </section>
-
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="distributed-preprocessing.html" class="btn btn-neutral float-left" title="7.1 分布式训练所需的图数据预处理" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="distributed-tools.html" class="btn btn-neutral float-right" title="7.3 运行分布式训练/推断所需的工具" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2018, DGL Team.</p>
-  </div>
+</div>
+</div>
+<footer><div aria-label="Footer" class="rst-footer-buttons" role="navigation">
+<a accesskey="p" class="btn btn-neutral float-left" href="distributed-preprocessing.html" rel="prev" title="7.1 分布式训练所需的图数据预处理"><span aria-hidden="true" class="fa fa-arrow-circle-left"></span> Previous</a>
+<a accesskey="n" class="btn btn-neutral float-right" href="distributed-tools.html" rel="next" title="7.3 运行分布式训练/推断所需的工具">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
+</div>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
@@ -374,15 +359,58 @@ DGL提供了一个稀疏的Adagrad优化器 <code class="xref py py-class docuti
    
 
 </footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+
+<script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
-
+  </script>
 </body>
 </html>

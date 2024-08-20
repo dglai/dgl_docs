@@ -1,61 +1,55 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../../../">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dgl.graphbolt.sampled_subgraph &mdash; DGL 2.4 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=0bf289b5" />
 
-  
-  <!--[if lt IE 9]>
+<html class="writer-html5" data-content_root="../../../" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>dgl.graphbolt.sampled_subgraph — DGL 2.3.1 documentation</title>
+<link href="../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=9caaf7ed"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../../../_static/copybutton.js?v=ccdb6887"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-    <script src="../../../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
+<script src="../../../_static/jquery.js?v=5d32c60e"></script>
+<script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../../../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../../../_static/doctools.js?v=9a2dae69"></script>
+<script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../../../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script src="../../../_static/js/theme.js"></script>
+<link href="../../../genindex.html" rel="index" title="Index"/>
+<link href="../../../search.html" rel="search" title="Search"/>
 </head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../../../index.html" class="icon icon-home">
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../../../index.html">
             DGL
           </a>
-              <div class="version">
-                2.4
+<div class="version">
+                2.3.1
               </div>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+<form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Install and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/blitz/index.html">A Blitz Introduction to DGL</a></li>
@@ -105,67 +99,62 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../env_var.html">Environment Variables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../resources.html">Resources</a></li>
 </ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">DGL</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">dgl.graphbolt.sampled_subgraph</li>
-      <li class="wy-breadcrumbs-aside">
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <h1>Source code for dgl.graphbolt.sampled_subgraph</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Graphbolt sampled subgraph.&quot;&quot;&quot;</span>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../../../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../../../index.html"></a></li>
+<li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+<li class="breadcrumb-item active">dgl.graphbolt.sampled_subgraph</li>
+<li class="wy-breadcrumbs-aside">
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<h1>Source code for dgl.graphbolt.sampled_subgraph</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Graphbolt sampled subgraph."""</span>
 
 <span class="c1"># pylint: disable= invalid-name</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">torch</span>
 
+<span class="kn">from</span> <span class="nn">dgl.utils</span> <span class="kn">import</span> <span class="n">recursive_apply</span>
+
 <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">apply_to</span><span class="p">,</span>
     <span class="n">CSCFormatBase</span><span class="p">,</span>
     <span class="n">etype_str_to_tuple</span><span class="p">,</span>
     <span class="n">expand_indptr</span><span class="p">,</span>
-    <span class="n">is_object_pinned</span><span class="p">,</span>
     <span class="n">isin</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">.internal_utils</span> <span class="kn">import</span> <span class="n">recursive_apply</span>
 
-
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SampledSubgraph&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"SampledSubgraph"</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="SampledSubgraph">
 <a class="viewcode-back" href="../../../generated/dgl.graphbolt.SampledSubgraph.html#dgl.graphbolt.SampledSubgraph">[docs]</a>
 <span class="k">class</span> <span class="nc">SampledSubgraph</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;An abstract class for sampled subgraph. In the context of a</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""An abstract class for sampled subgraph. In the context of a</span>
 <span class="sd">    heterogeneous graph, each field should be of `Dict` type. Otherwise,</span>
 <span class="sd">    for homogeneous graphs, each field should correspond to its respective</span>
-<span class="sd">    value type.&quot;&quot;&quot;</span>
+<span class="sd">    value type."""</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">sampled_csc</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">CSCFormatBase</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">CSCFormatBase</span><span class="p">],]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the node pairs representing edges in csc format.</span>
+<span class="w">        </span><span class="sd">"""Returns the node pairs representing edges in csc format.</span>
 <span class="sd">          - If `sampled_csc` is a CSCFormatBase: It should be in the csc</span>
 <span class="sd">            format. `indptr` stores the index in the data array where each</span>
 <span class="sd">            column starts. `indices` stores the row indices of the non-zero</span>
@@ -190,22 +179,22 @@
 
 <span class="sd">        2. Heterogeneous graph.</span>
 
-<span class="sd">        &gt;&gt;&gt; sampled_csc = {&quot;A:relation:B&quot;: gb.CSCFormatBase(</span>
+<span class="sd">        &gt;&gt;&gt; sampled_csc = {"A:relation:B": gb.CSCFormatBase(</span>
 <span class="sd">        ...     indptr=torch.tensor([0, 1, 2, 3]),</span>
 <span class="sd">        ...     indices=torch.tensor([0, 1, 2]))}</span>
 <span class="sd">        &gt;&gt;&gt; print(sampled_csc)</span>
-<span class="sd">        {&#39;A:relation:B&#39;: CSCFormatBase(indptr=tensor([0, 1, 2, 3]),</span>
+<span class="sd">        {'A:relation:B': CSCFormatBase(indptr=tensor([0, 1, 2, 3]),</span>
 <span class="sd">                    indices=tensor([0, 1, 2]),</span>
 <span class="sd">        )}</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">original_column_node_ids</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns corresponding reverse column node ids the original graph.</span>
-<span class="sd">        Column&#39;s reverse node ids in the original graph. A graph structure</span>
+<span class="w">        </span><span class="sd">"""Returns corresponding reverse column node ids the original graph.</span>
+<span class="sd">        Column's reverse node ids in the original graph. A graph structure</span>
 <span class="sd">        can be treated as a coordinated row and column pair, and this is</span>
 <span class="sd">        the mapped ids of the column.</span>
 <span class="sd">          - If `original_column_node_ids` is a tensor: It represents the</span>
@@ -215,15 +204,15 @@
 <span class="sd">            heterogeneous node ids.</span>
 <span class="sd">        If present, it means column IDs are compacted, and `sampled_csc`</span>
 <span class="sd">        column IDs match these compacted ones.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">original_row_node_ids</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns corresponding reverse row node ids the original graph.</span>
-<span class="sd">        Row&#39;s reverse node ids in the original graph. A graph structure</span>
+<span class="w">        </span><span class="sd">"""Returns corresponding reverse row node ids the original graph.</span>
+<span class="sd">        Row's reverse node ids in the original graph. A graph structure</span>
 <span class="sd">        can be treated as a coordinated row and column pair, and this is</span>
 <span class="sd">        the mapped ids of the row.</span>
 <span class="sd">          - If `original_row_node_ids` is a tensor: It represents the original</span>
@@ -232,12 +221,12 @@
 <span class="sd">            type and the values should be corresponding original heterogeneous</span>
 <span class="sd">            node ids.</span>
 <span class="sd">        If present, it means row IDs are compacted, and `sampled_csc`</span>
-<span class="sd">        row IDs match these compacted ones.&quot;&quot;&quot;</span>
+<span class="sd">        row IDs match these compacted ones."""</span>
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">original_edge_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns corresponding reverse edge ids the original graph.</span>
+<span class="w">        </span><span class="sd">"""Returns corresponding reverse edge ids the original graph.</span>
 <span class="sd">        Reverse edge ids in the original graph. This is useful when edge</span>
 <span class="sd">        features are needed.</span>
 <span class="sd">          - If `original_edge_ids` is a tensor: It represents the original edge</span>
@@ -245,7 +234,7 @@
 <span class="sd">          - If `original_edge_ids` is a dictionary: The keys should be edge</span>
 <span class="sd">            type and the values should be corresponding original heterogeneous</span>
 <span class="sd">            edge ids.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="SampledSubgraph.exclude_edges">
@@ -258,7 +247,7 @@
         <span class="p">],</span>
         <span class="n">assume_num_node_within_int32</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Exclude edges from the sampled subgraph.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Exclude edges from the sampled subgraph.</span>
 
 <span class="sd">        This function can be used with sampled subgraphs, regardless of</span>
 <span class="sd">        whether they have compacted row/column nodes or not. If the original</span>
@@ -288,40 +277,40 @@
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; import dgl.graphbolt as gb</span>
 <span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; sampled_csc = {&quot;A:relation:B&quot;: gb.CSCFormatBase(</span>
+<span class="sd">        &gt;&gt;&gt; sampled_csc = {"A:relation:B": gb.CSCFormatBase(</span>
 <span class="sd">        ...     indptr=torch.tensor([0, 1, 2, 3]),</span>
 <span class="sd">        ...     indices=torch.tensor([0, 1, 2]))}</span>
-<span class="sd">        &gt;&gt;&gt; original_column_node_ids = {&quot;B&quot;: torch.tensor([10, 11, 12])}</span>
-<span class="sd">        &gt;&gt;&gt; original_row_node_ids = {&quot;A&quot;: torch.tensor([13, 14, 15])}</span>
-<span class="sd">        &gt;&gt;&gt; original_edge_ids = {&quot;A:relation:B&quot;: torch.tensor([19, 20, 21])}</span>
+<span class="sd">        &gt;&gt;&gt; original_column_node_ids = {"B": torch.tensor([10, 11, 12])}</span>
+<span class="sd">        &gt;&gt;&gt; original_row_node_ids = {"A": torch.tensor([13, 14, 15])}</span>
+<span class="sd">        &gt;&gt;&gt; original_edge_ids = {"A:relation:B": torch.tensor([19, 20, 21])}</span>
 <span class="sd">        &gt;&gt;&gt; subgraph = gb.SampledSubgraphImpl(</span>
 <span class="sd">        ...     sampled_csc=sampled_csc,</span>
 <span class="sd">        ...     original_column_node_ids=original_column_node_ids,</span>
 <span class="sd">        ...     original_row_node_ids=original_row_node_ids,</span>
 <span class="sd">        ...     original_edge_ids=original_edge_ids</span>
 <span class="sd">        ... )</span>
-<span class="sd">        &gt;&gt;&gt; edges_to_exclude = {&quot;A:relation:B&quot;: torch.tensor([[14, 11], [15, 12]])}</span>
+<span class="sd">        &gt;&gt;&gt; edges_to_exclude = {"A:relation:B": torch.tensor([[14, 11], [15, 12]])}</span>
 <span class="sd">        &gt;&gt;&gt; result = subgraph.exclude_edges(edges_to_exclude)</span>
 <span class="sd">        &gt;&gt;&gt; print(result.sampled_csc)</span>
-<span class="sd">        {&#39;A:relation:B&#39;: CSCFormatBase(indptr=tensor([0, 1, 1, 1]),</span>
+<span class="sd">        {'A:relation:B': CSCFormatBase(indptr=tensor([0, 1, 1, 1]),</span>
 <span class="sd">                    indices=tensor([0]),</span>
 <span class="sd">        )}</span>
 <span class="sd">        &gt;&gt;&gt; print(result.original_column_node_ids)</span>
-<span class="sd">        {&#39;B&#39;: tensor([10, 11, 12])}</span>
+<span class="sd">        {'B': tensor([10, 11, 12])}</span>
 <span class="sd">        &gt;&gt;&gt; print(result.original_row_node_ids)</span>
-<span class="sd">        {&#39;A&#39;: tensor([13, 14, 15])}</span>
+<span class="sd">        {'A': tensor([13, 14, 15])}</span>
 <span class="sd">        &gt;&gt;&gt; print(result.original_edge_ids)</span>
-<span class="sd">        {&#39;A:relation:B&#39;: tensor([19])}</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        {'A:relation:B': tensor([19])}</span>
+<span class="sd">        """</span>
         <span class="c1"># TODO: Add support for value &gt; in32, then remove this line.</span>
         <span class="k">assert</span> <span class="p">(</span>
             <span class="n">assume_num_node_within_int32</span>
-        <span class="p">),</span> <span class="s2">&quot;Values &gt; int32 are not supported yet.&quot;</span>
+        <span class="p">),</span> <span class="s2">"Values &gt; int32 are not supported yet."</span>
         <span class="k">assert</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sampled_csc</span><span class="p">,</span> <span class="n">CSCFormatBase</span><span class="p">))</span> <span class="o">==</span> <span class="nb">isinstance</span><span class="p">(</span>
             <span class="n">edges</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
         <span class="p">),</span> <span class="p">(</span>
-            <span class="s2">&quot;The sampled subgraph and the edges to exclude should be both &quot;</span>
-            <span class="s2">&quot;homogeneous or both heterogeneous.&quot;</span>
+            <span class="s2">"The sampled subgraph and the edges to exclude should be both "</span>
+            <span class="s2">"homogeneous or both heterogeneous."</span>
         <span class="p">)</span>
         <span class="c1"># Get type of calling class.</span>
         <span class="n">calling_class</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -373,42 +362,21 @@
 
 <div class="viewcode-block" id="SampledSubgraph.to">
 <a class="viewcode-back" href="../../../generated/dgl.graphbolt.SampledSubgraph.html#dgl.graphbolt.SampledSubgraph.to">[docs]</a>
-    <span class="k">def</span> <span class="nf">to</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">non_blocking</span><span class="o">=</span><span class="kc">False</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># pylint: disable=invalid-name</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Copy `SampledSubgraph` to the specified device using reflection.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># pylint: disable=invalid-name</span>
+<span class="w">        </span><span class="sd">"""Copy `SampledSubgraph` to the specified device using reflection."""</span>
 
         <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="c1"># Only copy member variables.</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">))</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">attr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">))</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">attr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"__"</span><span class="p">):</span>
                 <span class="nb">setattr</span><span class="p">(</span>
                     <span class="bp">self</span><span class="p">,</span>
                     <span class="n">attr</span><span class="p">,</span>
                     <span class="n">recursive_apply</span><span class="p">(</span>
-                        <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">),</span>
-                        <span class="n">apply_to</span><span class="p">,</span>
-                        <span class="n">device</span><span class="p">,</span>
-                        <span class="n">non_blocking</span><span class="o">=</span><span class="n">non_blocking</span><span class="p">,</span>
+                        <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">apply_to</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
                     <span class="p">),</span>
                 <span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span></div>
-
-
-<div class="viewcode-block" id="SampledSubgraph.pin_memory">
-<a class="viewcode-back" href="../../../generated/dgl.graphbolt.SampledSubgraph.html#dgl.graphbolt.SampledSubgraph.pin_memory">[docs]</a>
-    <span class="k">def</span> <span class="nf">pin_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Copy `SampledSubgraph` to the pinned memory using reflection.&quot;&quot;&quot;</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;pinned&quot;</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="SampledSubgraph.is_pinned">
-<a class="viewcode-back" href="../../../generated/dgl.graphbolt.SampledSubgraph.html#dgl.graphbolt.SampledSubgraph.is_pinned">[docs]</a>
-    <span class="k">def</span> <span class="nf">is_pinned</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check whether `SampledSubgraph` is pinned using reflection.&quot;&quot;&quot;</span>
-
-        <span class="k">return</span> <span class="n">is_object_pinned</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 </div>
 
 
@@ -427,7 +395,7 @@
 
 
 <span class="k">def</span> <span class="nf">_relabel_two_arrays</span><span class="p">(</span><span class="n">lhs_array</span><span class="p">,</span> <span class="n">rhs_array</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Relabel two arrays into a consecutive range starting from 0.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Relabel two arrays into a consecutive range starting from 0."""</span>
     <span class="n">concated</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">lhs_array</span><span class="p">,</span> <span class="n">rhs_array</span><span class="p">])</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">mapping</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">concated</span><span class="p">,</span> <span class="n">return_inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">mapping</span><span class="p">[:</span> <span class="n">lhs_array</span><span class="o">.</span><span class="n">numel</span><span class="p">()],</span> <span class="n">mapping</span><span class="p">[</span><span class="n">lhs_array</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="p">:]</span>
@@ -438,7 +406,7 @@
     <span class="n">edges_to_exclude</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
     <span class="n">assume_num_node_within_int32</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the indices of edges to be included.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Return the indices of edges to be included."""</span>
     <span class="k">if</span> <span class="n">assume_num_node_within_int32</span><span class="p">:</span>
         <span class="n">val</span> <span class="o">=</span> <span class="n">edges</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">long</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="mi">32</span> <span class="o">|</span> <span class="n">edges</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">long</span><span class="p">()</span>
         <span class="n">edges_to_exclude_trans</span> <span class="o">=</span> <span class="n">edges_to_exclude</span><span class="o">.</span><span class="n">T</span>
@@ -449,14 +417,14 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># TODO: Add support for value &gt; int32.</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="s2">&quot;Values out of range int32 are not supported yet&quot;</span>
+            <span class="s2">"Values out of range int32 are not supported yet"</span>
         <span class="p">)</span>
     <span class="n">mask</span> <span class="o">=</span> <span class="o">~</span><span class="n">isin</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">val_to_exclude</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">as_tuple</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
 
 <span class="k">def</span> <span class="nf">_slice_subgraph</span><span class="p">(</span><span class="n">subgraph</span><span class="p">:</span> <span class="n">SampledSubgraph</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Slice the subgraph according to the index.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Slice the subgraph according to the index."""</span>
 
     <span class="k">def</span> <span class="nf">_index_select</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -487,16 +455,13 @@
         <span class="n">_index_select</span><span class="p">(</span><span class="n">subgraph</span><span class="o">.</span><span class="n">original_edge_ids</span><span class="p">,</span> <span class="n">index</span><span class="p">),</span>
     <span class="p">)</span>
 </pre></div>
-
-           </div>
-          </div>
-          <footer>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2018, DGL Team.</p>
-  </div>
+</div>
+</div>
+<footer>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
@@ -504,15 +469,58 @@
    
 
 </footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+
+<script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
-
+  </script>
 </body>
 </html>

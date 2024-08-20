@@ -1,66 +1,59 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../../../">
+
+<html class="writer-html5" data-content_root="../../../" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tree-LSTM in DGL &mdash; DGL 2.4 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=0bf289b5" />
-
-  
-  <!--[if lt IE 9]>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tree-LSTM in DGL — DGL 2.3.1 documentation</title>
+<link href="../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=9caaf7ed"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../../../_static/copybutton.js?v=ccdb6887"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="../../../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Generative models" href="../3_generative_model/index.html" />
-    <link rel="prev" title="Batching many small graphs" href="index.html" /> 
+<script src="../../../_static/jquery.js?v=5d32c60e"></script>
+<script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../../../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../../../_static/doctools.js?v=9a2dae69"></script>
+<script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../../../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+<script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../../_static/js/theme.js"></script>
+<link href="../../../genindex.html" rel="index" title="Index"/>
+<link href="../../../search.html" rel="search" title="Search"/>
+<link href="../3_generative_model/index.html" rel="next" title="Generative models"/>
+<link href="index.html" rel="prev" title="Batching many small graphs"/>
 </head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../../../index.html" class="icon icon-home">
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../../../index.html">
             DGL
           </a>
-              <div class="version">
-                2.4
+<div class="version">
+                2.3.1
               </div>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+<form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Install and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../blitz/index.html">A Blitz Introduction to DGL</a></li>
@@ -119,34 +112,30 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../env_var.html">Environment Variables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../resources.html">Resources</a></li>
 </ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">DGL</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html">Paper Study with DGL</a></li>
-          <li class="breadcrumb-item"><a href="index.html">Batching many small graphs</a></li>
-      <li class="breadcrumb-item active">Tree-LSTM in DGL</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="../../../_sources/tutorials/models/2_small_graph/3_tree-lstm.rst.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <div class="sphx-glr-download-link-note admonition note">
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../../../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../../../index.html"></a></li>
+<li class="breadcrumb-item"><a href="../index.html">Paper Study with DGL</a></li>
+<li class="breadcrumb-item"><a href="index.html">Batching many small graphs</a></li>
+<li class="breadcrumb-item active">Tree-LSTM in DGL</li>
+<li class="wy-breadcrumbs-aside">
+<a href="../../../_sources/tutorials/models/2_small_graph/3_tree-lstm.rst.txt" rel="nofollow"> View page source</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
 <p><a class="reference internal" href="#sphx-glr-download-tutorials-models-2-small-graph-3-tree-lstm-py"><span class="std std-ref">Go to the end</span></a>
 to download the full example code.</p>
@@ -188,43 +177,43 @@ nodes in a constituency tree do not contain words, so use a special
 <code class="docutils literal notranslate"><span class="pre">PAD_WORD</span></code> token to denote them. During training and inference
 their embeddings would be masked to all-zero.</p>
 <figure class="align-default">
-<img alt="" src="https://i.loli.net/2018/11/08/5be3d4bfe031b.png" />
+<img alt="" src="https://i.loli.net/2018/11/08/5be3d4bfe031b.png"/>
 </figure>
 <p>The figure displays one sample of the SST dataset, which is a
 constituency parse tree with their nodes labeled with sentiment. To
 speed up things, build a tiny set with five sentences and take a look
 at the first one.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/collections.html#collections.namedtuple" title="collections.namedtuple" class="sphx-glr-backref-module-collections sphx-glr-backref-type-py-function"><span class="n">namedtuple</span></a>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <a class="sphx-glr-backref-module-collections sphx-glr-backref-type-py-function" href="https://docs.python.org/3/library/collections.html#collections.namedtuple" title="collections.namedtuple"><span class="n">namedtuple</span></a>
 
-<a href="https://docs.python.org/3/library/os.html#os.environ" title="os.environ" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-data"><span class="n">os</span><span class="o">.</span><span class="n">environ</span></a><span class="p">[</span><span class="s2">&quot;DGLBACKEND&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pytorch&quot;</span>
+<a class="sphx-glr-backref-module-os sphx-glr-backref-type-py-data" href="https://docs.python.org/3/library/os.html#os.environ" title="os.environ"><span class="n">os</span><span class="o">.</span><span class="n">environ</span></a><span class="p">[</span><span class="s2">"DGLBACKEND"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"pytorch"</span>
 <span class="kn">import</span> <span class="nn">dgl</span>
 <span class="kn">from</span> <span class="nn">dgl.data.tree</span> <span class="kn">import</span> <span class="n">SSTDataset</span>
 
 
-<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class"><span class="n">SSTBatch</span></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/collections.html#collections.namedtuple" title="collections.namedtuple" class="sphx-glr-backref-module-collections sphx-glr-backref-type-py-function"><span class="n">namedtuple</span></a><span class="p">(</span><span class="s2">&quot;SSTBatch&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;graph&quot;</span><span class="p">,</span> <span class="s2">&quot;mask&quot;</span><span class="p">,</span> <span class="s2">&quot;wordid&quot;</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">])</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple"><span class="n">SSTBatch</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-collections sphx-glr-backref-type-py-function" href="https://docs.python.org/3/library/collections.html#collections.namedtuple" title="collections.namedtuple"><span class="n">namedtuple</span></a><span class="p">(</span><span class="s2">"SSTBatch"</span><span class="p">,</span> <span class="p">[</span><span class="s2">"graph"</span><span class="p">,</span> <span class="s2">"mask"</span><span class="p">,</span> <span class="s2">"wordid"</span><span class="p">,</span> <span class="s2">"label"</span><span class="p">])</span>
 
 <span class="c1"># Each sample in the dataset is a constituency tree. The leaf nodes</span>
-<span class="c1"># represent words. The word is an int value stored in the &quot;x&quot; field.</span>
+<span class="c1"># represent words. The word is an int value stored in the "x" field.</span>
 <span class="c1"># The non-leaf nodes have a special word PAD_WORD. The sentiment</span>
-<span class="c1"># label is stored in the &quot;y&quot; feature field.</span>
-<span class="n">trainset</span> <span class="o">=</span> <span class="n">SSTDataset</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;tiny&quot;</span><span class="p">)</span>  <span class="c1"># the &quot;tiny&quot; set has only five trees</span>
-<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tiny_sst</span></a> <span class="o">=</span> <span class="p">[</span><span class="n">tr</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">trainset</span><span class="p">]</span>
-<a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_vocabs</span></a> <span class="o">=</span> <span class="n">trainset</span><span class="o">.</span><span class="n">vocab_size</span>
-<a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_classes</span></a> <span class="o">=</span> <span class="n">trainset</span><span class="o">.</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_classes</span></a>
+<span class="c1"># label is stored in the "y" feature field.</span>
+<span class="n">trainset</span> <span class="o">=</span> <span class="n">SSTDataset</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"tiny"</span><span class="p">)</span>  <span class="c1"># the "tiny" set has only five trees</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">tiny_sst</span></a> <span class="o">=</span> <span class="p">[</span><span class="n">tr</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">trainset</span><span class="p">]</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_vocabs</span></a> <span class="o">=</span> <span class="n">trainset</span><span class="o">.</span><span class="n">vocab_size</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_classes</span></a> <span class="o">=</span> <span class="n">trainset</span><span class="o">.</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_classes</span></a>
 
-<a href="https://docs.python.org/3/library/collections.html#collections.OrderedDict" title="collections.OrderedDict" class="sphx-glr-backref-module-collections sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">vocab</span></a> <span class="o">=</span> <span class="n">trainset</span><span class="o">.</span><a href="https://docs.python.org/3/library/collections.html#collections.OrderedDict" title="collections.OrderedDict" class="sphx-glr-backref-module-collections sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">vocab</span></a>  <span class="c1"># vocabulary dict: key -&gt; id</span>
-<a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inv_vocab</span></a> <span class="o">=</span> <span class="p">{</span>
-    <span class="n">v</span><span class="p">:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <a href="https://docs.python.org/3/library/collections.html#collections.OrderedDict" title="collections.OrderedDict" class="sphx-glr-backref-module-collections sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">vocab</span></a><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<a class="sphx-glr-backref-module-collections sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/collections.html#collections.OrderedDict" title="collections.OrderedDict"><span class="n">vocab</span></a> <span class="o">=</span> <span class="n">trainset</span><span class="o">.</span><a class="sphx-glr-backref-module-collections sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/collections.html#collections.OrderedDict" title="collections.OrderedDict"><span class="n">vocab</span></a>  <span class="c1"># vocabulary dict: key -&gt; id</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict"><span class="n">inv_vocab</span></a> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">v</span><span class="p">:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <a class="sphx-glr-backref-module-collections sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/collections.html#collections.OrderedDict" title="collections.OrderedDict"><span class="n">vocab</span></a><span class="o">.</span><span class="n">items</span><span class="p">()</span>
 <span class="p">}</span>  <span class="c1"># inverted vocabulary dict: id -&gt; word</span>
 
-<span class="n">a_tree</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tiny_sst</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="k">for</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">token</span></a> <span class="ow">in</span> <span class="n">a_tree</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">():</span>
-    <span class="k">if</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">token</span></a> <span class="o">!=</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">trainset</span><span class="o">.</span><span class="n">PAD_WORD</span></a><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inv_vocab</span></a><span class="p">[</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">token</span></a><span class="p">],</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+<span class="n">a_tree</span> <span class="o">=</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">tiny_sst</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">for</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">token</span></a> <span class="ow">in</span> <span class="n">a_tree</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"x"</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">():</span>
+    <span class="k">if</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">token</span></a> <span class="o">!=</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">trainset</span><span class="o">.</span><span class="n">PAD_WORD</span></a><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict"><span class="n">inv_vocab</span></a><span class="p">[</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">token</span></a><span class="p">],</span> <span class="n">end</span><span class="o">=</span><span class="s2">" "</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>the rock is destined to be the 21st century &#39;s new `` conan &#39;&#39; and that he &#39;s going to make a splash even greater than arnold schwarzenegger , jean-claud van damme or steven segal .
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>the rock is destined to be the 21st century 's new `` conan '' and that he 's going to make a splash even greater than arnold schwarzenegger , jean-claud van damme or steven segal .
 </pre></div>
 </div>
 </section>
@@ -234,12 +223,12 @@ at the first one.</p>
 the <code class="xref py py-func docutils literal notranslate"><span class="pre">batch()</span></code> API.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
-<span class="n">graph</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tiny_sst</span></a><span class="p">)</span>
+<span class="n">graph</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">tiny_sst</span></a><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">plot_tree</span><span class="p">(</span><span class="n">g</span><span class="p">):</span>
     <span class="c1"># this plot requires pygraphviz package</span>
-    <span class="n">pos</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">nx_agraph</span><span class="o">.</span><span class="n">graphviz_layout</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">prog</span><span class="o">=</span><span class="s2">&quot;dot&quot;</span><span class="p">)</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">nx_agraph</span><span class="o">.</span><span class="n">graphviz_layout</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">prog</span><span class="o">=</span><span class="s2">"dot"</span><span class="p">)</span>
     <span class="n">nx</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span>
         <span class="n">g</span><span class="p">,</span>
         <span class="n">pos</span><span class="p">,</span>
@@ -248,13 +237,13 @@ the <code class="xref py py-func docutils literal notranslate"><span class="pre"
         <span class="n">node_color</span><span class="o">=</span><span class="p">[[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]],</span>
         <span class="n">arrowsize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
     <span class="p">)</span>
-    <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+    <a class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 
 
 <span class="n">plot_tree</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">to_networkx</span><span class="p">())</span>
 </pre></div>
 </div>
-<img src="../../../_images/sphx_glr_3_tree-lstm_001.png" srcset="../../../_images/sphx_glr_3_tree-lstm_001.png" alt="3 tree lstm" class = "sphx-glr-single-img"/><p>You can read more about the definition of <a class="reference internal" href="../../../generated/dgl.batch.html#dgl.batch" title="dgl.batch"><code class="xref py py-func docutils literal notranslate"><span class="pre">batch()</span></code></a>, or
+<img alt="3 tree lstm" class="sphx-glr-single-img" src="../../../_images/sphx_glr_3_tree-lstm_001.png" srcset="../../../_images/sphx_glr_3_tree-lstm_001.png"/><p>You can read more about the definition of <a class="reference internal" href="../../../generated/dgl.batch.html#dgl.batch" title="dgl.batch"><code class="xref py py-func docutils literal notranslate"><span class="pre">batch()</span></code></a>, or
 skip ahead to the next step:
 .. note:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>**Definition**: :func:`~dgl.batch` unions a list of :math:`B`
@@ -319,35 +308,35 @@ without considering edge features and messages. In a Tree-LSTM case,
 
 
 <span class="k">class</span> <span class="nc">TreeLSTMCell</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x_size</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">h_size</span></a><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">x_size</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">h_size</span></a><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">TreeLSTMCell</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">W_iou</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x_size</span></a><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">h_size</span></a><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">U_iou</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">h_size</span></a><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">h_size</span></a><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">b_iou</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">h_size</span></a><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">U_f</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">h_size</span></a><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">h_size</span></a><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">W_iou</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">x_size</span></a><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">h_size</span></a><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">U_iou</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">h_size</span></a><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">h_size</span></a><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b_iou</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">h_size</span></a><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">U_f</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">h_size</span></a><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">h_size</span></a><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">message_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edges</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;h&quot;</span><span class="p">:</span> <span class="n">edges</span><span class="o">.</span><span class="n">src</span><span class="p">[</span><span class="s2">&quot;h&quot;</span><span class="p">],</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="n">edges</span><span class="o">.</span><span class="n">src</span><span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">]}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">"h"</span><span class="p">:</span> <span class="n">edges</span><span class="o">.</span><span class="n">src</span><span class="p">[</span><span class="s2">"h"</span><span class="p">],</span> <span class="s2">"c"</span><span class="p">:</span> <span class="n">edges</span><span class="o">.</span><span class="n">src</span><span class="p">[</span><span class="s2">"c"</span><span class="p">]}</span>
 
     <span class="k">def</span> <span class="nf">reduce_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="p">):</span>
         <span class="c1"># concatenate h_jl for equation (1), (2), (3), (4)</span>
-        <span class="n">h_cat</span> <span class="o">=</span> <span class="n">nodes</span><span class="o">.</span><span class="n">mailbox</span><span class="p">[</span><span class="s2">&quot;h&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">nodes</span><span class="o">.</span><span class="n">mailbox</span><span class="p">[</span><span class="s2">&quot;h&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">h_cat</span> <span class="o">=</span> <span class="n">nodes</span><span class="o">.</span><span class="n">mailbox</span><span class="p">[</span><span class="s2">"h"</span><span class="p">]</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">nodes</span><span class="o">.</span><span class="n">mailbox</span><span class="p">[</span><span class="s2">"h"</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
         <span class="c1"># equation (2)</span>
-        <span class="n">f</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">U_f</span><span class="p">(</span><span class="n">h_cat</span><span class="p">))</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">*</span><span class="n">nodes</span><span class="o">.</span><span class="n">mailbox</span><span class="p">[</span><span class="s2">&quot;h&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">U_f</span><span class="p">(</span><span class="n">h_cat</span><span class="p">))</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">*</span><span class="n">nodes</span><span class="o">.</span><span class="n">mailbox</span><span class="p">[</span><span class="s2">"h"</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
         <span class="c1"># second term of equation (5)</span>
-        <span class="n">c</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">f</span> <span class="o">*</span> <span class="n">nodes</span><span class="o">.</span><span class="n">mailbox</span><span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;iou&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">U_iou</span><span class="p">(</span><span class="n">h_cat</span><span class="p">),</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="n">c</span><span class="p">}</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">f</span> <span class="o">*</span> <span class="n">nodes</span><span class="o">.</span><span class="n">mailbox</span><span class="p">[</span><span class="s2">"c"</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">"iou"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">U_iou</span><span class="p">(</span><span class="n">h_cat</span><span class="p">),</span> <span class="s2">"c"</span><span class="p">:</span> <span class="n">c</span><span class="p">}</span>
 
     <span class="k">def</span> <span class="nf">apply_node_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="p">):</span>
         <span class="c1"># equation (1), (3), (4)</span>
-        <span class="n">iou</span> <span class="o">=</span> <span class="n">nodes</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;iou&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_iou</span>
+        <span class="n">iou</span> <span class="o">=</span> <span class="n">nodes</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"iou"</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_iou</span>
         <span class="n">i</span><span class="p">,</span> <span class="n">o</span><span class="p">,</span> <span class="n">u</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">chunk</span><span class="p">(</span><span class="n">iou</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">i</span><span class="p">,</span> <span class="n">o</span><span class="p">,</span> <span class="n">u</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">th</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">o</span><span class="p">),</span> <span class="n">th</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
         <span class="c1"># equation (5)</span>
-        <span class="n">c</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">u</span> <span class="o">+</span> <span class="n">nodes</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">]</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">u</span> <span class="o">+</span> <span class="n">nodes</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"c"</span><span class="p">]</span>
         <span class="c1"># equation (6)</span>
         <span class="n">h</span> <span class="o">=</span> <span class="n">o</span> <span class="o">*</span> <span class="n">th</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;h&quot;</span><span class="p">:</span> <span class="n">h</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="n">c</span><span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">"h"</span><span class="p">:</span> <span class="n">h</span><span class="p">,</span> <span class="s2">"c"</span><span class="p">:</span> <span class="n">c</span><span class="p">}</span>
 </pre></div>
 </div>
 </section>
@@ -361,7 +350,7 @@ such as GCN, where all nodes are pulling messages from upstream ones
 propagate/processed upwards until they reach the roots. A visualization
 is as follows:</p>
 <figure class="align-default">
-<img alt="" src="https://i.loli.net/2018/11/09/5be4b5d2df54d.gif" />
+<img alt="" src="https://i.loli.net/2018/11/09/5be4b5d2df54d.gif"/>
 </figure>
 <p>DGL defines a generator to perform the topological sort, each item is a
 tensor recording the nodes from bottom level to the roots. One can
@@ -369,12 +358,12 @@ appreciate the degree of parallelism by inspecting the difference of the
 followings:</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># to heterogenous graph</span>
 <span class="n">trv_a_tree</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">graph</span><span class="p">(</span><span class="n">a_tree</span><span class="o">.</span><span class="n">edges</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Traversing one tree:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Traversing one tree:"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">dgl</span><span class="o">.</span><span class="n">topological_nodes_generator</span><span class="p">(</span><span class="n">trv_a_tree</span><span class="p">))</span>
 
 <span class="c1"># to heterogenous graph</span>
 <span class="n">trv_graph</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">graph</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Traversing many trees at the same time:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Traversing many trees at the same time:"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">dgl</span><span class="o">.</span><span class="n">topological_nodes_generator</span><span class="p">(</span><span class="n">trv_graph</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -401,12 +390,12 @@ Traversing many trees at the same time:
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dgl.function</span> <span class="k">as</span> <span class="nn">fn</span>
 <span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="nn">th</span>
 
-<span class="n">trv_graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
-<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">traversal_order</span></a> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">topological_nodes_generator</span><span class="p">(</span><span class="n">trv_graph</span><span class="p">)</span>
+<span class="n">trv_graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"a"</span><span class="p">]</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple"><span class="n">traversal_order</span></a> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">topological_nodes_generator</span><span class="p">(</span><span class="n">trv_graph</span><span class="p">)</span>
 <span class="n">trv_graph</span><span class="o">.</span><span class="n">prop_nodes</span><span class="p">(</span>
-    <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">traversal_order</span></a><span class="p">,</span>
-    <span class="n">message_func</span><span class="o">=</span><span class="n">fn</span><span class="o">.</span><span class="n">copy_u</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">),</span>
-    <span class="n">reduce_func</span><span class="o">=</span><span class="n">fn</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">),</span>
+    <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple"><span class="n">traversal_order</span></a><span class="p">,</span>
+    <span class="n">message_func</span><span class="o">=</span><span class="n">fn</span><span class="o">.</span><span class="n">copy_u</span><span class="p">(</span><span class="s2">"a"</span><span class="p">,</span> <span class="s2">"a"</span><span class="p">),</span>
+    <span class="n">reduce_func</span><span class="o">=</span><span class="n">fn</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">"a"</span><span class="p">,</span> <span class="s2">"a"</span><span class="p">),</span>
 <span class="p">)</span>
 
 <span class="c1"># the following is a syntax sugar that does the same</span>
@@ -427,26 +416,26 @@ function for demonstration.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TreeLSTM</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_vocabs</span></a><span class="p">,</span>
-        <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x_size</span></a><span class="p">,</span>
-        <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">h_size</span></a><span class="p">,</span>
-        <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_classes</span></a><span class="p">,</span>
-        <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dropout</span></a><span class="p">,</span>
+        <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_vocabs</span></a><span class="p">,</span>
+        <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">x_size</span></a><span class="p">,</span>
+        <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">h_size</span></a><span class="p">,</span>
+        <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_classes</span></a><span class="p">,</span>
+        <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">dropout</span></a><span class="p">,</span>
         <span class="n">pretrained_emb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">TreeLSTM</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x_size</span></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x_size</span></a>
-        <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_vocabs</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x_size</span></a><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">x_size</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">x_size</span></a>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_vocabs</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">x_size</span></a><span class="p">)</span>
         <span class="k">if</span> <span class="n">pretrained_emb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Using glove&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"Using glove"</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">copy_</span><span class="p">(</span><span class="n">pretrained_emb</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dropout</span></a> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dropout</span></a><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">linear</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">h_size</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_classes</span></a><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cell</span> <span class="o">=</span> <span class="n">TreeLSTMCell</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x_size</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">h_size</span></a><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">dropout</span></a> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">dropout</span></a><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">h_size</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_classes</span></a><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cell</span> <span class="o">=</span> <span class="n">TreeLSTMCell</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">x_size</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">h_size</span></a><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute tree-lstm prediction given a batch.</span>
+<span class="w">        </span><span class="sd">"""Compute tree-lstm prediction given a batch.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -461,17 +450,17 @@ function for demonstration.</p>
 <span class="sd">        -------</span>
 <span class="sd">        logits : Tensor</span>
 <span class="sd">            The prediction of each node.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">g</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">graph</span>
         <span class="c1"># to heterogenous graph</span>
         <span class="n">g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">graph</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">())</span>
         <span class="c1"># feed embedding</span>
         <span class="n">embeds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">wordid</span> <span class="o">*</span> <span class="n">batch</span><span class="o">.</span><span class="n">mask</span><span class="p">)</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;iou&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">W_iou</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dropout</span></a><span class="p">(</span><span class="n">embeds</span><span class="p">)</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"iou"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">W_iou</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">dropout</span></a><span class="p">(</span><span class="n">embeds</span><span class="p">)</span>
         <span class="p">)</span> <span class="o">*</span> <span class="n">batch</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;h&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"h"</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"c"</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span>
         <span class="c1"># propagate</span>
         <span class="n">dgl</span><span class="o">.</span><span class="n">prop_nodes_topo</span><span class="p">(</span>
             <span class="n">g</span><span class="p">,</span>
@@ -480,7 +469,7 @@ function for demonstration.</p>
             <span class="n">apply_node_func</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">apply_node_func</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="c1"># compute logits</span>
-        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dropout</span></a><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;h&quot;</span><span class="p">))</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">dropout</span></a><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"h"</span><span class="p">))</span>
         <span class="n">logits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">logits</span>
 
@@ -492,44 +481,44 @@ function for demonstration.</p>
 <section id="main-loop">
 <h2>Main Loop<a class="headerlink" href="#main-loop" title="Link to this heading"></a></h2>
 <p>Finally, you could write a training paradigm in PyTorch.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic" class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class"><span class="n">DataLoader</span></a>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <a class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic"><span class="n">DataLoader</span></a>
 
-<span class="n">device</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+<span class="n">device</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"cpu"</span><span class="p">)</span>
 <span class="c1"># hyper parameters</span>
-<a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x_size</span></a> <span class="o">=</span> <span class="mi">256</span>
-<a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">h_size</span></a> <span class="o">=</span> <span class="mi">256</span>
-<a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dropout</span></a> <span class="o">=</span> <span class="mf">0.5</span>
-<a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lr</span></a> <span class="o">=</span> <span class="mf">0.05</span>
-<a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">weight_decay</span></a> <span class="o">=</span> <span class="mf">1e-4</span>
-<a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">epochs</span></a> <span class="o">=</span> <span class="mi">10</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">x_size</span></a> <span class="o">=</span> <span class="mi">256</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">h_size</span></a> <span class="o">=</span> <span class="mi">256</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">dropout</span></a> <span class="o">=</span> <span class="mf">0.5</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">lr</span></a> <span class="o">=</span> <span class="mf">0.05</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">weight_decay</span></a> <span class="o">=</span> <span class="mf">1e-4</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">epochs</span></a> <span class="o">=</span> <span class="mi">10</span>
 
 <span class="c1"># create the model</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">TreeLSTM</span><span class="p">(</span>
-    <span class="n">trainset</span><span class="o">.</span><span class="n">vocab_size</span><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x_size</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">h_size</span></a><span class="p">,</span> <span class="n">trainset</span><span class="o">.</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_classes</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dropout</span></a>
+    <span class="n">trainset</span><span class="o">.</span><span class="n">vocab_size</span><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">x_size</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">h_size</span></a><span class="p">,</span> <span class="n">trainset</span><span class="o">.</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_classes</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">dropout</span></a>
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 
 <span class="c1"># create the optimizer</span>
 <span class="n">optimizer</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adagrad</span><span class="p">(</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lr</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lr</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">weight_decay</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">weight_decay</span></a>
+    <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">lr</span></a><span class="o">=</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">lr</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">weight_decay</span></a><span class="o">=</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">weight_decay</span></a>
 <span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">batcher</span><span class="p">(</span><span class="n">dev</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">batcher_dev</span><span class="p">(</span><span class="n">batch</span><span class="p">):</span>
         <span class="n">batch_trees</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
-        <span class="k">return</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class"><span class="n">SSTBatch</span></a><span class="p">(</span>
+        <span class="k">return</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple"><span class="n">SSTBatch</span></a><span class="p">(</span>
             <span class="n">graph</span><span class="o">=</span><span class="n">batch_trees</span><span class="p">,</span>
-            <span class="n">mask</span><span class="o">=</span><span class="n">batch_trees</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;mask&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span>
-            <span class="n">wordid</span><span class="o">=</span><span class="n">batch_trees</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span>
-            <span class="n">label</span><span class="o">=</span><span class="n">batch_trees</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span>
+            <span class="n">mask</span><span class="o">=</span><span class="n">batch_trees</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"mask"</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span>
+            <span class="n">wordid</span><span class="o">=</span><span class="n">batch_trees</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"x"</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span>
+            <span class="n">label</span><span class="o">=</span><span class="n">batch_trees</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"y"</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span>
         <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">batcher_dev</span>
 
 
-<span class="n">train_loader</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic" class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class"><span class="n">DataLoader</span></a><span class="p">(</span>
-    <span class="n">dataset</span><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tiny_sst</span></a><span class="p">,</span>
+<span class="n">train_loader</span> <span class="o">=</span> <a class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic"><span class="n">DataLoader</span></a><span class="p">(</span>
+    <span class="n">dataset</span><span class="o">=</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">tiny_sst</span></a><span class="p">,</span>
     <span class="n">batch_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
     <span class="n">collate_fn</span><span class="o">=</span><span class="n">batcher</span><span class="p">(</span><span class="n">device</span><span class="p">),</span>
     <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -537,23 +526,23 @@ function for demonstration.</p>
 <span class="p">)</span>
 
 <span class="c1"># training loop</span>
-<span class="k">for</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">epoch</span></a> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">epochs</span></a><span class="p">):</span>
-    <span class="k">for</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">step</span></a><span class="p">,</span> <span class="n">batch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">train_loader</span><span class="p">):</span>
+<span class="k">for</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">epoch</span></a> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">epochs</span></a><span class="p">):</span>
+    <span class="k">for</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">step</span></a><span class="p">,</span> <span class="n">batch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">train_loader</span><span class="p">):</span>
         <span class="n">g</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">graph</span>
-        <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n</span></a> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">()</span>
-        <span class="n">h</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">h_size</span></a><span class="p">))</span>
-        <span class="n">c</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">h_size</span></a><span class="p">))</span>
+        <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">n</span></a> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">()</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">n</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">h_size</span></a><span class="p">))</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">n</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">h_size</span></a><span class="p">))</span>
         <span class="n">logits</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
         <span class="n">logp</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span><span class="p">(</span><span class="n">logp</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span><span class="p">(</span><span class="n">logp</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">"sum"</span><span class="p">)</span>
         <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
         <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-        <span class="n">optimizer</span><span class="o">.</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">step</span></a><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">step</span></a><span class="p">()</span>
         <span class="n">pred</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">acc</span></a> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">pred</span><span class="p">)))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
+        <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">acc</span></a> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">pred</span><span class="p">)))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span>
-            <span class="s2">&quot;Epoch </span><span class="si">{:05d}</span><span class="s2"> | Step </span><span class="si">{:05d}</span><span class="s2"> | Loss </span><span class="si">{:.4f}</span><span class="s2"> | Acc </span><span class="si">{:.4f}</span><span class="s2"> |&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">epoch</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">step</span></a><span class="p">,</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">acc</span></a>
+            <span class="s2">"Epoch </span><span class="si">{:05d}</span><span class="s2"> | Step </span><span class="si">{:05d}</span><span class="s2"> | Loss </span><span class="si">{:.4f}</span><span class="s2"> | Acc </span><span class="si">{:.4f}</span><span class="s2"> |"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">epoch</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">step</span></a><span class="p">,</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">acc</span></a>
             <span class="p">)</span>
         <span class="p">)</span>
 </pre></div>
@@ -568,24 +557,24 @@ function for demonstration.</p>
     (U_f): Linear(in_features=512, out_features=512, bias=True)
   )
 )
-/home/ubuntu/dgl_test/python/dgl/core.py:82: DGLWarning: The input graph for the user-defined edge function does not contain valid edges
+/home/ubuntu/dgl_doc_dev/dgl/python/dgl/core.py:82: DGLWarning: The input graph for the user-defined edge function does not contain valid edges
   dgl_warning(
-Epoch 00000 | Step 00000 | Loss 428.9457 | Acc 0.3407 |
-Epoch 00001 | Step 00000 | Loss 252.3893 | Acc 0.7729 |
-Epoch 00002 | Step 00000 | Loss 1054.8375 | Acc 0.3443 |
-Epoch 00003 | Step 00000 | Loss 367.7872 | Acc 0.5714 |
-Epoch 00004 | Step 00000 | Loss 150.8872 | Acc 0.8059 |
-Epoch 00005 | Step 00000 | Loss 116.6925 | Acc 0.8755 |
-Epoch 00006 | Step 00000 | Loss 147.6088 | Acc 0.8388 |
-Epoch 00007 | Step 00000 | Loss 120.0407 | Acc 0.8681 |
-Epoch 00008 | Step 00000 | Loss 174.6056 | Acc 0.8645 |
-Epoch 00009 | Step 00000 | Loss 82.5310 | Acc 0.9158 |
+Epoch 00000 | Step 00000 | Loss 437.0417 | Acc 0.1868 |
+Epoch 00001 | Step 00000 | Loss 242.2891 | Acc 0.7399 |
+Epoch 00002 | Step 00000 | Loss 592.5659 | Acc 0.5385 |
+Epoch 00003 | Step 00000 | Loss 332.5842 | Acc 0.7875 |
+Epoch 00004 | Step 00000 | Loss 511.6198 | Acc 0.6044 |
+Epoch 00005 | Step 00000 | Loss 167.5837 | Acc 0.8352 |
+Epoch 00006 | Step 00000 | Loss 233.0846 | Acc 0.7839 |
+Epoch 00007 | Step 00000 | Loss 111.2352 | Acc 0.8681 |
+Epoch 00008 | Step 00000 | Loss 75.3412 | Acc 0.9414 |
+Epoch 00009 | Step 00000 | Loss 55.8239 | Acc 0.9414 |
 </pre></div>
 </div>
 <p>To train the model on a full dataset with different settings (such as CPU or GPU),
 refer to the <a class="reference external" href="https://github.com/dmlc/dgl/tree/master/examples/pytorch/tree_lstm">PyTorch example</a>.
 There is also an implementation of the Child-Sum Tree-LSTM.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.772 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 43.083 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-models-2-small-graph-3-tree-lstm-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/9f3dd8c4e3a1346dffc152c3a0e871cb/3_tree-lstm.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">3_tree-lstm.ipynb</span></code></a></p>
@@ -600,20 +589,16 @@ There is also an implementation of the Child-Sum Tree-LSTM.</p>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </section>
 </section>
-
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="Batching many small graphs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../3_generative_model/index.html" class="btn btn-neutral float-right" title="Generative models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2018, DGL Team.</p>
-  </div>
+</div>
+</div>
+<footer><div aria-label="Footer" class="rst-footer-buttons" role="navigation">
+<a accesskey="p" class="btn btn-neutral float-left" href="index.html" rel="prev" title="Batching many small graphs"><span aria-hidden="true" class="fa fa-arrow-circle-left"></span> Previous</a>
+<a accesskey="n" class="btn btn-neutral float-right" href="../3_generative_model/index.html" rel="next" title="Generative models">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
+</div>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
@@ -621,15 +606,58 @@ There is also an implementation of the Child-Sum Tree-LSTM.</p>
    
 
 </footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+
+<script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
-
+  </script>
 </body>
 </html>

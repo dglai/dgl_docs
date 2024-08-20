@@ -1,61 +1,55 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../../../">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dgl.dataloading.dist_dataloader &mdash; DGL 2.4 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=0bf289b5" />
 
-  
-  <!--[if lt IE 9]>
+<html class="writer-html5" data-content_root="../../../" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>dgl.dataloading.dist_dataloader — DGL 2.3.1 documentation</title>
+<link href="../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=9caaf7ed"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../../../_static/copybutton.js?v=ccdb6887"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-    <script src="../../../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
+<script src="../../../_static/jquery.js?v=5d32c60e"></script>
+<script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../../../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../../../_static/doctools.js?v=9a2dae69"></script>
+<script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../../../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script src="../../../_static/js/theme.js"></script>
+<link href="../../../genindex.html" rel="index" title="Index"/>
+<link href="../../../search.html" rel="search" title="Search"/>
 </head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../../../index.html" class="icon icon-home">
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../../../index.html">
             DGL
           </a>
-              <div class="version">
-                2.4
+<div class="version">
+                2.3.1
               </div>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+<form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Install and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/blitz/index.html">A Blitz Introduction to DGL</a></li>
@@ -105,34 +99,30 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../env_var.html">Environment Variables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../resources.html">Resources</a></li>
 </ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">DGL</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">dgl.dataloading.dist_dataloader</li>
-      <li class="wy-breadcrumbs-aside">
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <h1>Source code for dgl.dataloading.dist_dataloader</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Distributed dataloaders.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../../../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../../../index.html"></a></li>
+<li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+<li class="breadcrumb-item active">dgl.dataloading.dist_dataloader</li>
+<li class="wy-breadcrumbs-aside">
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<h1>Source code for dgl.dataloading.dist_dataloader</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Distributed dataloaders.</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span><span class="p">,</span> <span class="n">abstractproperty</span>
@@ -173,7 +163,7 @@
 
 
 <span class="k">def</span> <span class="nf">_find_exclude_eids</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">exclude_mode</span><span class="p">,</span> <span class="n">eids</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Find all edge IDs to exclude according to :attr:`exclude_mode`.</span>
+<span class="w">    </span><span class="sd">"""Find all edge IDs to exclude according to :attr:`exclude_mode`.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -185,10 +175,10 @@
 <span class="sd">        None (default)</span>
 <span class="sd">            Does not exclude any edge.</span>
 
-<span class="sd">        &#39;self&#39;</span>
+<span class="sd">        'self'</span>
 <span class="sd">            Exclude the given edges themselves but nothing else.</span>
 
-<span class="sd">        &#39;reverse_id&#39;</span>
+<span class="sd">        'reverse_id'</span>
 <span class="sd">            Exclude all edges specified in ``eids``, as well as their reverse edges</span>
 <span class="sd">            of the same edge type.</span>
 
@@ -198,7 +188,7 @@
 <span class="sd">            This mode assumes that the reverse of an edge with ID ``e`` and type</span>
 <span class="sd">            ``etype`` will have ID ``reverse_eid_map[e]`` and type ``etype``.</span>
 
-<span class="sd">        &#39;reverse_types&#39;</span>
+<span class="sd">        'reverse_types'</span>
 <span class="sd">            Exclude all edges specified in ``eids``, as well as their reverse</span>
 <span class="sd">            edges of the corresponding edge types.</span>
 
@@ -213,27 +203,27 @@
 <span class="sd">        The mapping from edge ID to its reverse edge ID.</span>
 <span class="sd">    reverse_etype_map : dict[etype, etype]</span>
 <span class="sd">        The mapping from edge etype to its reverse edge type.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">exclude_mode</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
-    <span class="k">elif</span> <span class="n">exclude_mode</span> <span class="o">==</span> <span class="s2">&quot;self&quot;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">exclude_mode</span> <span class="o">==</span> <span class="s2">"self"</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">eids</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
             <span class="n">eids</span> <span class="o">=</span> <span class="p">{</span><span class="n">g</span><span class="o">.</span><span class="n">to_canonical_etype</span><span class="p">(</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">eids</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
         <span class="k">return</span> <span class="n">eids</span>
-    <span class="k">elif</span> <span class="n">exclude_mode</span> <span class="o">==</span> <span class="s2">&quot;reverse_id&quot;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">exclude_mode</span> <span class="o">==</span> <span class="s2">"reverse_id"</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">_find_exclude_eids_with_reverse_id</span><span class="p">(</span>
-            <span class="n">g</span><span class="p">,</span> <span class="n">eids</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;reverse_eid_map&quot;</span><span class="p">]</span>
+            <span class="n">g</span><span class="p">,</span> <span class="n">eids</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">"reverse_eid_map"</span><span class="p">]</span>
         <span class="p">)</span>
-    <span class="k">elif</span> <span class="n">exclude_mode</span> <span class="o">==</span> <span class="s2">&quot;reverse_types&quot;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">exclude_mode</span> <span class="o">==</span> <span class="s2">"reverse_types"</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">_find_exclude_eids_with_reverse_types</span><span class="p">(</span>
-            <span class="n">g</span><span class="p">,</span> <span class="n">eids</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;reverse_etype_map&quot;</span><span class="p">]</span>
+            <span class="n">g</span><span class="p">,</span> <span class="n">eids</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">"reverse_etype_map"</span><span class="p">]</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;unsupported mode </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">exclude_mode</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"unsupported mode </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">exclude_mode</span><span class="p">))</span>
 
 
 <span class="k">class</span> <span class="nc">Collator</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract DGL collator for training GNNs on downstream tasks stochastically.</span>
+<span class="w">    </span><span class="sd">"""Abstract DGL collator for training GNNs on downstream tasks stochastically.</span>
 
 <span class="sd">    Provides a :attr:`dataset` object containing the collection of all nodes or edges,</span>
 <span class="sd">    as well as a :attr:`collate` method that combines a set of items from</span>
@@ -244,16 +234,16 @@
 <span class="sd">    For the concept of MFGs, please refer to</span>
 <span class="sd">    :ref:`User Guide Section 6 &lt;guide-minibatch&gt;` and</span>
 <span class="sd">    :doc:`Minibatch Training Tutorials &lt;tutorials/large/L0_neighbor_sampling_overview&gt;`.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="nd">@abstractproperty</span>
     <span class="k">def</span> <span class="nf">dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the dataset object of the collator.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Returns the dataset object of the collator."""</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">collate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Combines the items from the dataset object and obtains the list of MFGs.</span>
+<span class="w">        </span><span class="sd">"""Combines the items from the dataset object and obtains the list of MFGs.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -265,12 +255,12 @@
 <span class="sd">        For the concept of MFGs, please refer to</span>
 <span class="sd">        :ref:`User Guide Section 6 &lt;guide-minibatch&gt;` and</span>
 <span class="sd">        :doc:`Minibatch Training Tutorials &lt;tutorials/large/L0_neighbor_sampling_overview&gt;`.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">add_edge_attribute_to_graph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">data_name</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add data into the graph as an edge attribute.</span>
+<span class="w">        </span><span class="sd">"""Add data into the graph as an edge attribute.</span>
 
 <span class="sd">        For some cases such as prob/mask-based sampling on GraphBolt partitions,</span>
 <span class="sd">        we need to prepare such data beforehand. This is because data are</span>
@@ -284,14 +274,14 @@
 <span class="sd">        g : DistGraph</span>
 <span class="sd">            The graph.</span>
 <span class="sd">        data_name : str</span>
-<span class="sd">            The name of data that&#39;s stored in DistGraph.ndata/edata.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">            The name of data that's stored in DistGraph.ndata/edata.</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">_use_graphbolt</span> <span class="ow">and</span> <span class="n">data_name</span><span class="p">:</span>
             <span class="n">g</span><span class="o">.</span><span class="n">add_edge_attribute</span><span class="p">(</span><span class="n">data_name</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">NodeCollator</span><span class="p">(</span><span class="n">Collator</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;DGL collator to combine nodes and their computation dependencies within a minibatch for</span>
+<span class="w">    </span><span class="sd">"""DGL collator to combine nodes and their computation dependencies within a minibatch for</span>
 <span class="sd">    training node classification or regression on a single graph with neighborhood sampling.</span>
 
 <span class="sd">    Parameters</span>
@@ -322,20 +312,20 @@
 <span class="sd">    For the concept of MFGs, please refer to</span>
 <span class="sd">    :ref:`User Guide Section 6 &lt;guide-minibatch&gt;` and</span>
 <span class="sd">    :doc:`Minibatch Training Tutorials &lt;tutorials/large/L0_neighbor_sampling_overview&gt;`.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">nids</span><span class="p">,</span> <span class="n">graph_sampler</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">g</span> <span class="o">=</span> <span class="n">g</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">nids</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
             <span class="k">assert</span> <span class="p">(</span>
                 <span class="nb">len</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">ntypes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-            <span class="p">),</span> <span class="s2">&quot;nids should be a dict of node type and ids for graph with multiple node types&quot;</span>
+            <span class="p">),</span> <span class="s2">"nids should be a dict of node type and ids for graph with multiple node types"</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">graph_sampler</span> <span class="o">=</span> <span class="n">graph_sampler</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">nids</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">prepare_tensor_or_dict</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">nids</span><span class="p">,</span> <span class="s2">&quot;nids&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nids</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">prepare_tensor_or_dict</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">nids</span><span class="p">,</span> <span class="s2">"nids"</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">maybe_flatten_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nids</span><span class="p">)</span>
 
-        <span class="c1"># Add prob/mask into graphbolt partition&#39;s edge attributes if needed.</span>
+        <span class="c1"># Add prob/mask into graphbolt partition's edge attributes if needed.</span>
         <span class="n">Collator</span><span class="o">.</span><span class="n">add_edge_attribute_to_graph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph_sampler</span><span class="o">.</span><span class="n">prob</span><span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -343,7 +333,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span>
 
     <span class="k">def</span> <span class="nf">collate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the list of MFGs necessary for computing the representation of given</span>
+<span class="w">        </span><span class="sd">"""Find the list of MFGs necessary for computing the representation of given</span>
 <span class="sd">        nodes for a node classification/regression task.</span>
 
 <span class="sd">        Parameters</span>
@@ -366,11 +356,11 @@
 <span class="sd">            node type names and node ID tensors.  Otherwise, return a single tensor.</span>
 <span class="sd">        MFGs : list[DGLGraph]</span>
 <span class="sd">            The list of MFGs necessary for computing the representation.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">):</span>
             <span class="c1"># returns a list of pairs: group them by node types into a dict</span>
             <span class="n">items</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">group_as_dict</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
-        <span class="n">items</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">prepare_tensor_or_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="s2">&quot;items&quot;</span><span class="p">)</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">prepare_tensor_or_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="s2">"items"</span><span class="p">)</span>
 
         <span class="n">input_nodes</span><span class="p">,</span> <span class="n">output_nodes</span><span class="p">,</span> <span class="n">blocks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph_sampler</span><span class="o">.</span><span class="n">sample_blocks</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="p">,</span> <span class="n">items</span>
@@ -380,7 +370,7 @@
 
 
 <span class="k">class</span> <span class="nc">EdgeCollator</span><span class="p">(</span><span class="n">Collator</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;DGL collator to combine edges and their computation dependencies within a minibatch for</span>
+<span class="w">    </span><span class="sd">"""DGL collator to combine edges and their computation dependencies within a minibatch for</span>
 <span class="sd">    training edge classification, edge regression, or link prediction on a single graph</span>
 <span class="sd">    with neighborhood sampling.</span>
 
@@ -392,7 +382,7 @@
 <span class="sd">    * A subgraph that contains only the edges in the minibatch and their incident nodes.</span>
 <span class="sd">      Note that the graph has an identical metagraph with the original graph.</span>
 
-<span class="sd">    * If a negative sampler is given, another graph that contains the &quot;negative edges&quot;,</span>
+<span class="sd">    * If a negative sampler is given, another graph that contains the "negative edges",</span>
 <span class="sd">      connecting the source and destination nodes yielded from the given negative sampler.</span>
 
 <span class="sd">    * A list of MFGs necessary for computing the representation of the incident nodes</span>
@@ -419,19 +409,19 @@
 
 <span class="sd">        * None, which excludes nothing.</span>
 
-<span class="sd">        * ``&#39;self&#39;``, which excludes the sampled edges themselves but nothing else.</span>
+<span class="sd">        * ``'self'``, which excludes the sampled edges themselves but nothing else.</span>
 
-<span class="sd">        * ``&#39;reverse_id&#39;``, which excludes the reverse edges of the sampled edges.  The said</span>
+<span class="sd">        * ``'reverse_id'``, which excludes the reverse edges of the sampled edges.  The said</span>
 <span class="sd">          reverse edges have the same edge type as the sampled edges.  Only works</span>
 <span class="sd">          on edge types whose source node type is the same as its destination node type.</span>
 
-<span class="sd">        * ``&#39;reverse_types&#39;``, which excludes the reverse edges of the sampled edges.  The</span>
+<span class="sd">        * ``'reverse_types'``, which excludes the reverse edges of the sampled edges.  The</span>
 <span class="sd">          said reverse edges have different edge types from the sampled edges.</span>
 
 <span class="sd">        If ``g_sampling`` is given, ``exclude`` is ignored and will be always ``None``.</span>
 <span class="sd">    reverse_eids : Tensor or dict[etype, Tensor], optional</span>
 <span class="sd">        A tensor of reverse edge ID mapping.  The i-th element indicates the ID of</span>
-<span class="sd">        the i-th edge&#39;s reverse edge.</span>
+<span class="sd">        the i-th edge's reverse edge.</span>
 
 <span class="sd">        If the graph is heterogeneous, this argument requires a dictionary of edge</span>
 <span class="sd">        types and the reverse edge ID mapping tensors.</span>
@@ -489,7 +479,7 @@
 
 <span class="sd">    &gt;&gt;&gt; sampler = dgl.dataloading.MultiLayerNeighborSampler([15, 10, 5])</span>
 <span class="sd">    &gt;&gt;&gt; collator = dgl.dataloading.EdgeCollator(</span>
-<span class="sd">    ...     g, train_eid, sampler, exclude=&#39;reverse_id&#39;,</span>
+<span class="sd">    ...     g, train_eid, sampler, exclude='reverse_id',</span>
 <span class="sd">    ...     reverse_eids=reverse_eids)</span>
 <span class="sd">    &gt;&gt;&gt; dataloader = torch.utils.data.DataLoader(</span>
 <span class="sd">    ...     collator.dataset, collate_fn=collator.collate,</span>
@@ -504,7 +494,7 @@
 <span class="sd">    &gt;&gt;&gt; sampler = dgl.dataloading.MultiLayerNeighborSampler([15, 10, 5])</span>
 <span class="sd">    &gt;&gt;&gt; neg_sampler = dgl.dataloading.negative_sampler.Uniform(5)</span>
 <span class="sd">    &gt;&gt;&gt; collator = dgl.dataloading.EdgeCollator(</span>
-<span class="sd">    ...     g, train_eid, sampler, exclude=&#39;reverse_id&#39;,</span>
+<span class="sd">    ...     g, train_eid, sampler, exclude='reverse_id',</span>
 <span class="sd">    ...     reverse_eids=reverse_eids, negative_sampler=neg_sampler)</span>
 <span class="sd">    &gt;&gt;&gt; dataloader = torch.utils.data.DataLoader(</span>
 <span class="sd">    ...     collator.dataset, collate_fn=collator.collate,</span>
@@ -519,16 +509,16 @@
 <span class="sd">    item-clicked-by-user relation.</span>
 
 <span class="sd">    &gt;&gt;&gt; g = dgl.heterograph({</span>
-<span class="sd">    ...     (&#39;user&#39;, &#39;click&#39;, &#39;item&#39;): (user, item),</span>
-<span class="sd">    ...     (&#39;item&#39;, &#39;clicked-by&#39;, &#39;user&#39;): (item, user)})</span>
+<span class="sd">    ...     ('user', 'click', 'item'): (user, item),</span>
+<span class="sd">    ...     ('item', 'clicked-by', 'user'): (item, user)})</span>
 
 <span class="sd">    To train a 3-layer GNN for edge classification on a set of edges ``train_eid`` with</span>
 <span class="sd">    type ``click``, you can write</span>
 
 <span class="sd">    &gt;&gt;&gt; sampler = dgl.dataloading.MultiLayerNeighborSampler([15, 10, 5])</span>
 <span class="sd">    &gt;&gt;&gt; collator = dgl.dataloading.EdgeCollator(</span>
-<span class="sd">    ...     g, {&#39;click&#39;: train_eid}, sampler, exclude=&#39;reverse_types&#39;,</span>
-<span class="sd">    ...     reverse_etypes={&#39;click&#39;: &#39;clicked-by&#39;, &#39;clicked-by&#39;: &#39;click&#39;})</span>
+<span class="sd">    ...     g, {'click': train_eid}, sampler, exclude='reverse_types',</span>
+<span class="sd">    ...     reverse_etypes={'click': 'clicked-by', 'clicked-by': 'click'})</span>
 <span class="sd">    &gt;&gt;&gt; dataloader = torch.utils.data.DataLoader(</span>
 <span class="sd">    ...     collator.dataset, collate_fn=collator.collate,</span>
 <span class="sd">    ...     batch_size=1024, shuffle=True, drop_last=False, num_workers=4)</span>
@@ -541,8 +531,8 @@
 <span class="sd">    &gt;&gt;&gt; sampler = dgl.dataloading.MultiLayerNeighborSampler([15, 10, 5])</span>
 <span class="sd">    &gt;&gt;&gt; neg_sampler = dgl.dataloading.negative_sampler.Uniform(5)</span>
 <span class="sd">    &gt;&gt;&gt; collator = dgl.dataloading.EdgeCollator(</span>
-<span class="sd">    ...     g, train_eid, sampler, exclude=&#39;reverse_types&#39;,</span>
-<span class="sd">    ...     reverse_etypes={&#39;click&#39;: &#39;clicked-by&#39;, &#39;clicked-by&#39;: &#39;click&#39;},</span>
+<span class="sd">    ...     g, train_eid, sampler, exclude='reverse_types',</span>
+<span class="sd">    ...     reverse_etypes={'click': 'clicked-by', 'clicked-by': 'click'},</span>
 <span class="sd">    ...     negative_sampler=neg_sampler)</span>
 <span class="sd">    &gt;&gt;&gt; dataloader = torch.utils.data.DataLoader(</span>
 <span class="sd">    ...     collator.dataset, collate_fn=collator.collate,</span>
@@ -555,7 +545,7 @@
 <span class="sd">    For the concept of MFGs, please refer to</span>
 <span class="sd">    :ref:`User Guide Section 6 &lt;guide-minibatch&gt;` and</span>
 <span class="sd">    :doc:`Minibatch Training Tutorials &lt;tutorials/large/L0_neighbor_sampling_overview&gt;`.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -572,7 +562,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">eids</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
             <span class="k">assert</span> <span class="p">(</span>
                 <span class="nb">len</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">etypes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-            <span class="p">),</span> <span class="s2">&quot;eids should be a dict of etype and ids for graph with multiple etypes&quot;</span>
+            <span class="p">),</span> <span class="s2">"eids should be a dict of etype and ids for graph with multiple etypes"</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">graph_sampler</span> <span class="o">=</span> <span class="n">graph_sampler</span>
 
         <span class="c1"># One may wish to iterate over the edges in one graph while perform sampling in</span>
@@ -591,10 +581,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">reverse_etypes</span> <span class="o">=</span> <span class="n">reverse_etypes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">negative_sampler</span> <span class="o">=</span> <span class="n">negative_sampler</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">eids</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">prepare_tensor_or_dict</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">eids</span><span class="p">,</span> <span class="s2">&quot;eids&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eids</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">prepare_tensor_or_dict</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">eids</span><span class="p">,</span> <span class="s2">"eids"</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">maybe_flatten_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eids</span><span class="p">)</span>
 
-        <span class="c1"># Add prob/mask into graphbolt partition&#39;s edge attributes if needed.</span>
+        <span class="c1"># Add prob/mask into graphbolt partition's edge attributes if needed.</span>
         <span class="n">Collator</span><span class="o">.</span><span class="n">add_edge_attribute_to_graph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph_sampler</span><span class="o">.</span><span class="n">prob</span><span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -605,7 +595,7 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">):</span>
             <span class="c1"># returns a list of pairs: group them by node types into a dict</span>
             <span class="n">items</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">group_as_dict</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
-        <span class="n">items</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">prepare_tensor_or_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g_sampling</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="s2">&quot;items&quot;</span><span class="p">)</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">prepare_tensor_or_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g_sampling</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="s2">"items"</span><span class="p">)</span>
 
         <span class="n">pair_graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">edge_subgraph</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
         <span class="n">seed_nodes</span> <span class="o">=</span> <span class="n">pair_graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="n">NID</span><span class="p">]</span>
@@ -628,7 +618,7 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">):</span>
             <span class="c1"># returns a list of pairs: group them by node types into a dict</span>
             <span class="n">items</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">group_as_dict</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
-        <span class="n">items</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">prepare_tensor_or_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g_sampling</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="s2">&quot;items&quot;</span><span class="p">)</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">prepare_tensor_or_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g_sampling</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="s2">"items"</span><span class="p">)</span>
 
         <span class="n">pair_graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">edge_subgraph</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">relabel_nodes</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">induced_edges</span> <span class="o">=</span> <span class="n">pair_graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">EID</span><span class="p">]</span>
@@ -636,8 +626,8 @@
         <span class="n">neg_srcdst</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">negative_sampler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="p">,</span> <span class="n">items</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">neg_srcdst</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
             <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">etypes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span>
-                <span class="s2">&quot;graph has multiple or no edge types; &quot;</span>
-                <span class="s2">&quot;please return a dict in negative sampler.&quot;</span>
+                <span class="s2">"graph has multiple or no edge types; "</span>
+                <span class="s2">"please return a dict in negative sampler."</span>
             <span class="p">)</span>
             <span class="n">neg_srcdst</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">canonical_etypes</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">neg_srcdst</span><span class="p">}</span>
         <span class="c1"># Get dtype from a tuple of tensors</span>
@@ -680,7 +670,7 @@
         <span class="k">return</span> <span class="n">input_nodes</span><span class="p">,</span> <span class="n">pair_graph</span><span class="p">,</span> <span class="n">neg_pair_graph</span><span class="p">,</span> <span class="n">blocks</span>
 
     <span class="k">def</span> <span class="nf">collate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Combines the sampled edges into a minibatch for edge classification, edge</span>
+<span class="w">        </span><span class="sd">"""Combines the sampled edges into a minibatch for edge classification, edge</span>
 <span class="sd">        regression, and link prediction tasks.</span>
 
 <span class="sd">        Parameters</span>
@@ -714,7 +704,7 @@
 <span class="sd">            graph.</span>
 <span class="sd">        blocks : list[DGLGraph]</span>
 <span class="sd">            The list of MFGs necessary for computing the representation of the edges.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">negative_sampler</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collate</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -722,18 +712,18 @@
 
 
 <span class="k">def</span> <span class="nf">_remove_kwargs_dist</span><span class="p">(</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">if</span> <span class="s2">&quot;num_workers&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-        <span class="k">del</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;num_workers&quot;</span><span class="p">]</span>
-    <span class="k">if</span> <span class="s2">&quot;pin_memory&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-        <span class="k">del</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;pin_memory&quot;</span><span class="p">]</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Distributed DataLoaders do not support pin_memory.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">"num_workers"</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">"num_workers"</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s2">"pin_memory"</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">"pin_memory"</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Distributed DataLoaders do not support pin_memory."</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">kwargs</span>
 
 
 <div class="viewcode-block" id="DistNodeDataLoader">
 <a class="viewcode-back" href="../../../generated/dgl.dataloading.DistNodeDataLoader.html#dgl.dataloading.DistNodeDataLoader">[docs]</a>
 <span class="k">class</span> <span class="nc">DistNodeDataLoader</span><span class="p">(</span><span class="n">DistDataLoader</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sampled graph data loader over nodes for distributed graph storage.</span>
+<span class="w">    </span><span class="sd">"""Sampled graph data loader over nodes for distributed graph storage.</span>
 
 <span class="sd">    It wraps an iterable over a set of nodes, generating the list</span>
 <span class="sd">    of message flow graphs (MFGs) as computation dependency of the said minibatch, on</span>
@@ -754,7 +744,7 @@
 <span class="sd">    See also</span>
 <span class="sd">    --------</span>
 <span class="sd">    dgl.dataloading.DataLoader</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">nids</span><span class="p">,</span> <span class="n">graph_sampler</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">collator_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
@@ -767,10 +757,10 @@
                 <span class="n">dataloader_kwargs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
         <span class="k">if</span> <span class="n">device</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># for the distributed case default to the CPU</span>
-            <span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;cpu&quot;</span>
+            <span class="n">device</span> <span class="o">=</span> <span class="s2">"cpu"</span>
         <span class="k">assert</span> <span class="p">(</span>
-            <span class="n">device</span> <span class="o">==</span> <span class="s2">&quot;cpu&quot;</span>
-        <span class="p">),</span> <span class="s2">&quot;Only cpu is supported in the case of a DistGraph.&quot;</span>
+            <span class="n">device</span> <span class="o">==</span> <span class="s2">"cpu"</span>
+        <span class="p">),</span> <span class="s2">"Only cpu is supported in the case of a DistGraph."</span>
         <span class="c1"># Distributed DataLoader currently does not support heterogeneous graphs</span>
         <span class="c1"># and does not copy features.  Fallback to normal solution</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">collator</span> <span class="o">=</span> <span class="n">NodeCollator</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">nids</span><span class="p">,</span> <span class="n">graph_sampler</span><span class="p">,</span> <span class="o">**</span><span class="n">collator_kwargs</span><span class="p">)</span>
@@ -787,7 +777,7 @@
 <div class="viewcode-block" id="DistEdgeDataLoader">
 <a class="viewcode-back" href="../../../generated/dgl.dataloading.DistEdgeDataLoader.html#dgl.dataloading.DistEdgeDataLoader">[docs]</a>
 <span class="k">class</span> <span class="nc">DistEdgeDataLoader</span><span class="p">(</span><span class="n">DistDataLoader</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sampled graph data loader over edges for distributed graph storage.</span>
+<span class="w">    </span><span class="sd">"""Sampled graph data loader over edges for distributed graph storage.</span>
 
 <span class="sd">    It wraps an iterable over a set of edges, generating the list</span>
 <span class="sd">    of message flow graphs (MFGs) as computation dependency of the said minibatch for</span>
@@ -809,7 +799,7 @@
 <span class="sd">    See also</span>
 <span class="sd">    --------</span>
 <span class="sd">    dgl.dataloading.DataLoader</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">eids</span><span class="p">,</span> <span class="n">graph_sampler</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">collator_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
@@ -823,10 +813,10 @@
 
         <span class="k">if</span> <span class="n">device</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># for the distributed case default to the CPU</span>
-            <span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;cpu&quot;</span>
+            <span class="n">device</span> <span class="o">=</span> <span class="s2">"cpu"</span>
         <span class="k">assert</span> <span class="p">(</span>
-            <span class="n">device</span> <span class="o">==</span> <span class="s2">&quot;cpu&quot;</span>
-        <span class="p">),</span> <span class="s2">&quot;Only cpu is supported in the case of a DistGraph.&quot;</span>
+            <span class="n">device</span> <span class="o">==</span> <span class="s2">"cpu"</span>
+        <span class="p">),</span> <span class="s2">"Only cpu is supported in the case of a DistGraph."</span>
         <span class="c1"># Distributed DataLoader currently does not support heterogeneous graphs</span>
         <span class="c1"># and does not copy features.  Fallback to normal solution</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">collator</span> <span class="o">=</span> <span class="n">EdgeCollator</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">eids</span><span class="p">,</span> <span class="n">graph_sampler</span><span class="p">,</span> <span class="o">**</span><span class="n">collator_kwargs</span><span class="p">)</span>
@@ -840,16 +830,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span></div>
 
 </pre></div>
-
-           </div>
-          </div>
-          <footer>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2018, DGL Team.</p>
-  </div>
+</div>
+</div>
+<footer>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
@@ -857,15 +844,58 @@
    
 
 </footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+
+<script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
-
+  </script>
 </body>
 </html>

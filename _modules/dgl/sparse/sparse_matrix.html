@@ -1,61 +1,55 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../../../">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dgl.sparse.sparse_matrix &mdash; DGL 2.4 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=0bf289b5" />
 
-  
-  <!--[if lt IE 9]>
+<html class="writer-html5" data-content_root="../../../" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>dgl.sparse.sparse_matrix — DGL 2.3.1 documentation</title>
+<link href="../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=9caaf7ed"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../../../_static/copybutton.js?v=ccdb6887"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-    <script src="../../../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
+<script src="../../../_static/jquery.js?v=5d32c60e"></script>
+<script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../../../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../../../_static/doctools.js?v=9a2dae69"></script>
+<script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../../../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script src="../../../_static/js/theme.js"></script>
+<link href="../../../genindex.html" rel="index" title="Index"/>
+<link href="../../../search.html" rel="search" title="Search"/>
 </head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../../../index.html" class="icon icon-home">
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../../../index.html">
             DGL
           </a>
-              <div class="version">
-                2.4
+<div class="version">
+                2.3.1
               </div>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+<form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Install and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/blitz/index.html">A Blitz Introduction to DGL</a></li>
@@ -105,33 +99,29 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../env_var.html">Environment Variables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../resources.html">Resources</a></li>
 </ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">DGL</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">dgl.sparse.sparse_matrix</li>
-      <li class="wy-breadcrumbs-aside">
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <h1>Source code for dgl.sparse.sparse_matrix</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;DGL sparse matrix module.&quot;&quot;&quot;</span>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../../../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../../../index.html"></a></li>
+<li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+<li class="breadcrumb-item active">dgl.sparse.sparse_matrix</li>
+<li class="wy-breadcrumbs-aside">
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<h1>Source code for dgl.sparse.sparse_matrix</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""DGL sparse matrix module."""</span>
 <span class="c1"># pylint: disable= invalid-name</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
 
@@ -141,7 +131,7 @@
 <div class="viewcode-block" id="SparseMatrix">
 <a class="viewcode-back" href="../../../api/python/dgl.sparse_v0.html#dgl.sparse.SparseMatrix">[docs]</a>
 <span class="k">class</span> <span class="nc">SparseMatrix</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Class for sparse matrix.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""Class for sparse matrix."""</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c_sparse_matrix</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">ScriptObject</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">c_sparse_matrix</span> <span class="o">=</span> <span class="n">c_sparse_matrix</span>
@@ -151,85 +141,85 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">val</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the values of the non-zero elements.</span>
+<span class="w">        </span><span class="sd">"""Returns the values of the non-zero elements.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        torch.Tensor</span>
 <span class="sd">            Values of the non-zero elements</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_sparse_matrix</span><span class="o">.</span><span class="n">val</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the shape of the sparse matrix.</span>
+<span class="w">        </span><span class="sd">"""Returns the shape of the sparse matrix.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        Tuple[int]</span>
 <span class="sd">            The shape of the sparse matrix</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c_sparse_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">())</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">nnz</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the number of non-zero elements in the sparse matrix.</span>
+<span class="w">        </span><span class="sd">"""Returns the number of non-zero elements in the sparse matrix.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        int</span>
 <span class="sd">            The number of non-zero elements of the matrix</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_sparse_matrix</span><span class="o">.</span><span class="n">nnz</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dtype</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">dtype</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the data type of the sparse matrix.</span>
+<span class="w">        </span><span class="sd">"""Returns the data type of the sparse matrix.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        torch.dtype</span>
 <span class="sd">            Data type of the sparse matrix</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_sparse_matrix</span><span class="o">.</span><span class="n">val</span><span class="p">()</span><span class="o">.</span><span class="n">dtype</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">device</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the device the sparse matrix is on.</span>
+<span class="w">        </span><span class="sd">"""Returns the device the sparse matrix is on.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        torch.device</span>
 <span class="sd">            The device the sparse matrix is on</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_sparse_matrix</span><span class="o">.</span><span class="n">device</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">row</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the row indices of the non-zero elements.</span>
+<span class="w">        </span><span class="sd">"""Returns the row indices of the non-zero elements.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        torch.Tensor</span>
 <span class="sd">            Row indices of the non-zero elements</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coo</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">col</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the column indices of the non-zero elements.</span>
+<span class="w">        </span><span class="sd">"""Returns the column indices of the non-zero elements.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        torch.Tensor</span>
 <span class="sd">            Column indices of the non-zero elements</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coo</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
 
 <div class="viewcode-block" id="SparseMatrix.coo">
 <a class="viewcode-back" href="../../../generated/dgl.sparse.SparseMatrix.coo.html#dgl.sparse.SparseMatrix.coo">[docs]</a>
     <span class="k">def</span> <span class="nf">coo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns the coordinate list (COO) representation of the sparse</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Returns the coordinate list (COO) representation of the sparse</span>
 <span class="sd">        matrix.</span>
 
 <span class="sd">        See `COO in Wikipedia &lt;https://en.wikipedia.org/wiki/</span>
@@ -249,14 +239,14 @@
 <span class="sd">        &gt;&gt;&gt; A = dglsp.spmatrix(indices)</span>
 <span class="sd">        &gt;&gt;&gt; A.coo()</span>
 <span class="sd">        (tensor([1, 2, 1]), tensor([2, 4, 3]))</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_sparse_matrix</span><span class="o">.</span><span class="n">coo</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="SparseMatrix.indices">
 <a class="viewcode-back" href="../../../generated/dgl.sparse.SparseMatrix.indices.html#dgl.sparse.SparseMatrix.indices">[docs]</a>
     <span class="k">def</span> <span class="nf">indices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns the coordinate list (COO) representation in one tensor with</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Returns the coordinate list (COO) representation in one tensor with</span>
 <span class="sd">        shape ``(2, nnz)``.</span>
 
 <span class="sd">        See `COO in Wikipedia &lt;https://en.wikipedia.org/wiki/</span>
@@ -275,14 +265,14 @@
 <span class="sd">        &gt;&gt;&gt; A.indices()</span>
 <span class="sd">        tensor([[1, 2, 1],</span>
 <span class="sd">                [2, 4, 3]])</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_sparse_matrix</span><span class="o">.</span><span class="n">indices</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="SparseMatrix.csr">
 <a class="viewcode-back" href="../../../generated/dgl.sparse.SparseMatrix.csr.html#dgl.sparse.SparseMatrix.csr">[docs]</a>
     <span class="k">def</span> <span class="nf">csr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns the compressed sparse row (CSR) representation of the sparse</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Returns the compressed sparse row (CSR) representation of the sparse</span>
 <span class="sd">        matrix.</span>
 
 <span class="sd">        See `CSR in Wikipedia &lt;https://en.wikipedia.org/wiki/</span>
@@ -309,14 +299,14 @@
 <span class="sd">        &gt;&gt;&gt; A = dglsp.spmatrix(indices)</span>
 <span class="sd">        &gt;&gt;&gt; A.csr()</span>
 <span class="sd">        (tensor([0, 0, 2, 3]), tensor([2, 3, 4]), tensor([0, 2, 1]))</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_sparse_matrix</span><span class="o">.</span><span class="n">csr</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="SparseMatrix.csc">
 <a class="viewcode-back" href="../../../generated/dgl.sparse.SparseMatrix.csc.html#dgl.sparse.SparseMatrix.csc">[docs]</a>
     <span class="k">def</span> <span class="nf">csc</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns the compressed sparse column (CSC) representation of the</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Returns the compressed sparse column (CSC) representation of the</span>
 <span class="sd">        sparse matrix.</span>
 
 <span class="sd">        See `CSC in Wikipedia &lt;https://en.wikipedia.org/wiki/</span>
@@ -343,20 +333,20 @@
 <span class="sd">        &gt;&gt;&gt; A = dglsp.spmatrix(indices)</span>
 <span class="sd">        &gt;&gt;&gt; A.csc()</span>
 <span class="sd">        (tensor([0, 0, 0, 1, 2, 3]), tensor([1, 1, 2]), tensor([0, 2, 1]))</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_sparse_matrix</span><span class="o">.</span><span class="n">csc</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="SparseMatrix.to_dense">
 <a class="viewcode-back" href="../../../generated/dgl.sparse.SparseMatrix.to_dense.html#dgl.sparse.SparseMatrix.to_dense">[docs]</a>
     <span class="k">def</span> <span class="nf">to_dense</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a copy in dense matrix format of the sparse matrix.</span>
+<span class="w">        </span><span class="sd">"""Returns a copy in dense matrix format of the sparse matrix.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        torch.Tensor</span>
 <span class="sd">            The copy in dense matrix format</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coo</span><span class="p">()</span>
         <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">val</span>
         <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">+</span> <span class="n">val</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
@@ -368,19 +358,19 @@
 <div class="viewcode-block" id="SparseMatrix.t">
 <a class="viewcode-back" href="../../../generated/dgl.sparse.SparseMatrix.t.html#dgl.sparse.SparseMatrix.t">[docs]</a>
     <span class="k">def</span> <span class="nf">t</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias of :meth:`transpose()`&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Alias of :meth:`transpose()`"""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span></div>
 
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">T</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pylint: disable=C0103</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias of :meth:`transpose()`&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Alias of :meth:`transpose()`"""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
 
 <div class="viewcode-block" id="SparseMatrix.transpose">
 <a class="viewcode-back" href="../../../generated/dgl.sparse.SparseMatrix.transpose.html#dgl.sparse.SparseMatrix.transpose">[docs]</a>
     <span class="k">def</span> <span class="nf">transpose</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the transpose of this sparse matrix.</span>
+<span class="w">        </span><span class="sd">"""Returns the transpose of this sparse matrix.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -398,14 +388,14 @@
 <span class="sd">                                     [1, 1, 3]]),</span>
 <span class="sd">                     values=tensor([1, 1, 2]),</span>
 <span class="sd">                     shape=(4, 4), nnz=3)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="n">SparseMatrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c_sparse_matrix</span><span class="o">.</span><span class="n">transpose</span><span class="p">())</span></div>
 
 
 <div class="viewcode-block" id="SparseMatrix.to">
 <a class="viewcode-back" href="../../../generated/dgl.sparse.SparseMatrix.to.html#dgl.sparse.SparseMatrix.to">[docs]</a>
     <span class="k">def</span> <span class="nf">to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs matrix dtype and/or device conversion. If the target device</span>
+<span class="w">        </span><span class="sd">"""Performs matrix dtype and/or device conversion. If the target device</span>
 <span class="sd">        and dtype are already in use, the original matrix will be returned.</span>
 
 <span class="sd">        Parameters</span>
@@ -427,13 +417,13 @@
 
 <span class="sd">        &gt;&gt;&gt; indices = torch.tensor([[1, 1, 2], [1, 2, 0]])</span>
 <span class="sd">        &gt;&gt;&gt; A = dglsp.spmatrix(indices, shape=(3, 4))</span>
-<span class="sd">        &gt;&gt;&gt; A.to(device=&quot;cuda:0&quot;, dtype=torch.int32)</span>
+<span class="sd">        &gt;&gt;&gt; A.to(device="cuda:0", dtype=torch.int32)</span>
 <span class="sd">        SparseMatrix(indices=tensor([[1, 1, 2],</span>
-<span class="sd">                                     [1, 2, 0]], device=&#39;cuda:0&#39;),</span>
-<span class="sd">                     values=tensor([1, 1, 1], device=&#39;cuda:0&#39;,</span>
+<span class="sd">                                     [1, 2, 0]], device='cuda:0'),</span>
+<span class="sd">                     values=tensor([1, 1, 1], device='cuda:0',</span>
 <span class="sd">                                   dtype=torch.int32),</span>
 <span class="sd">                     shape=(3, 4), nnz=3)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">device</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">device</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span>
         <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -456,7 +446,7 @@
 <div class="viewcode-block" id="SparseMatrix.cuda">
 <a class="viewcode-back" href="../../../generated/dgl.sparse.SparseMatrix.cuda.html#dgl.sparse.SparseMatrix.cuda">[docs]</a>
     <span class="k">def</span> <span class="nf">cuda</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Moves the matrix to GPU. If the matrix is already on GPU, the</span>
+<span class="w">        </span><span class="sd">"""Moves the matrix to GPU. If the matrix is already on GPU, the</span>
 <span class="sd">        original matrix will be returned. If multiple GPU devices exist,</span>
 <span class="sd">        ``cuda:0`` will be selected.</span>
 
@@ -472,17 +462,17 @@
 <span class="sd">        &gt;&gt;&gt; A = dglsp.spmatrix(indices, shape=(3, 4))</span>
 <span class="sd">        &gt;&gt;&gt; A.cuda()</span>
 <span class="sd">        SparseMatrix(indices=tensor([[1, 1, 2],</span>
-<span class="sd">                                     [1, 2, 0]], device=&#39;cuda:0&#39;),</span>
-<span class="sd">                     values=tensor([1., 1., 1.], device=&#39;cuda:0&#39;),</span>
+<span class="sd">                                     [1, 2, 0]], device='cuda:0'),</span>
+<span class="sd">                     values=tensor([1., 1., 1.], device='cuda:0'),</span>
 <span class="sd">                     shape=(3, 4), nnz=3)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="s2">&quot;cuda&quot;</span><span class="p">)</span></div>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="s2">"cuda"</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SparseMatrix.cpu">
 <a class="viewcode-back" href="../../../generated/dgl.sparse.SparseMatrix.cpu.html#dgl.sparse.SparseMatrix.cpu">[docs]</a>
     <span class="k">def</span> <span class="nf">cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Moves the matrix to CPU. If the matrix is already on CPU, the</span>
+<span class="w">        </span><span class="sd">"""Moves the matrix to CPU. If the matrix is already on CPU, the</span>
 <span class="sd">        original matrix will be returned.</span>
 
 <span class="sd">        Returns</span>
@@ -493,7 +483,7 @@
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 
-<span class="sd">        &gt;&gt;&gt; indices = torch.tensor([[1, 1, 2], [1, 2, 0]]).to(&quot;cuda&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; indices = torch.tensor([[1, 1, 2], [1, 2, 0]]).to("cuda")</span>
 <span class="sd">        &gt;&gt;&gt; A = dglsp.spmatrix(indices, shape=(3, 4))</span>
 
 <span class="sd">        &gt;&gt;&gt; A.cpu()</span>
@@ -501,14 +491,14 @@
 <span class="sd">                                     [1, 2, 0]]),</span>
 <span class="sd">                     values=tensor([1., 1., 1.]),</span>
 <span class="sd">                     shape=(3, 4), nnz=3)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span></div>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="s2">"cpu"</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SparseMatrix.float">
 <a class="viewcode-back" href="../../../generated/dgl.sparse.SparseMatrix.float.html#dgl.sparse.SparseMatrix.float">[docs]</a>
     <span class="k">def</span> <span class="nf">float</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Converts the matrix values to float32 data type. If the matrix</span>
+<span class="w">        </span><span class="sd">"""Converts the matrix values to float32 data type. If the matrix</span>
 <span class="sd">        already uses float data type, the original matrix will be returned.</span>
 
 <span class="sd">        Returns</span>
@@ -527,14 +517,14 @@
 <span class="sd">                                     [1, 2, 0]]),</span>
 <span class="sd">                     values=tensor([1., 1., 1.]),</span>
 <span class="sd">                     shape=(3, 4), nnz=3)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SparseMatrix.double">
 <a class="viewcode-back" href="../../../generated/dgl.sparse.SparseMatrix.double.html#dgl.sparse.SparseMatrix.double">[docs]</a>
     <span class="k">def</span> <span class="nf">double</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Converts the matrix values to double data type. If the matrix already</span>
+<span class="w">        </span><span class="sd">"""Converts the matrix values to double data type. If the matrix already</span>
 <span class="sd">        uses double data type, the original matrix will be returned.</span>
 
 <span class="sd">        Returns</span>
@@ -552,14 +542,14 @@
 <span class="sd">                                     [1, 2, 0]]),</span>
 <span class="sd">                     values=tensor([1., 1., 1.], dtype=torch.float64),</span>
 <span class="sd">                     shape=(3, 4), nnz=3)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">double</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SparseMatrix.int">
 <a class="viewcode-back" href="../../../generated/dgl.sparse.SparseMatrix.int.html#dgl.sparse.SparseMatrix.int">[docs]</a>
     <span class="k">def</span> <span class="nf">int</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Converts the matrix values to int32 data type. If the matrix already</span>
+<span class="w">        </span><span class="sd">"""Converts the matrix values to int32 data type. If the matrix already</span>
 <span class="sd">        uses int data type, the original matrix will be returned.</span>
 
 <span class="sd">        Returns</span>
@@ -577,14 +567,14 @@
 <span class="sd">                                     [1, 2, 0]]),</span>
 <span class="sd">                     values=tensor([1, 1, 1], dtype=torch.int32),</span>
 <span class="sd">                     shape=(3, 4), nnz=3)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SparseMatrix.long">
 <a class="viewcode-back" href="../../../generated/dgl.sparse.SparseMatrix.long.html#dgl.sparse.SparseMatrix.long">[docs]</a>
     <span class="k">def</span> <span class="nf">long</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Converts the matrix values to long data type. If the matrix already</span>
+<span class="w">        </span><span class="sd">"""Converts the matrix values to long data type. If the matrix already</span>
 <span class="sd">        uses long data type, the original matrix will be returned.</span>
 
 <span class="sd">        Returns</span>
@@ -602,14 +592,14 @@
 <span class="sd">                                     [1, 2, 0]]),</span>
 <span class="sd">                     values=tensor([1, 1, 1]),</span>
 <span class="sd">                     shape=(3, 4), nnz=3)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SparseMatrix.coalesce">
 <a class="viewcode-back" href="../../../generated/dgl.sparse.SparseMatrix.coalesce.html#dgl.sparse.SparseMatrix.coalesce">[docs]</a>
     <span class="k">def</span> <span class="nf">coalesce</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a coalesced sparse matrix.</span>
+<span class="w">        </span><span class="sd">"""Returns a coalesced sparse matrix.</span>
 
 <span class="sd">        A coalesced sparse matrix satisfies the following properties:</span>
 
@@ -636,14 +626,14 @@
 <span class="sd">                                     [1, 2, 1, 2]]),</span>
 <span class="sd">                     values=tensor([3, 3, 0, 4]),</span>
 <span class="sd">                     shape=(2, 3), nnz=4)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="n">SparseMatrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c_sparse_matrix</span><span class="o">.</span><span class="n">coalesce</span><span class="p">())</span></div>
 
 
 <div class="viewcode-block" id="SparseMatrix.has_duplicate">
 <a class="viewcode-back" href="../../../generated/dgl.sparse.SparseMatrix.has_duplicate.html#dgl.sparse.SparseMatrix.has_duplicate">[docs]</a>
     <span class="k">def</span> <span class="nf">has_duplicate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns ``True`` if the sparse matrix contains duplicate indices.</span>
+<span class="w">        </span><span class="sd">"""Returns ``True`` if the sparse matrix contains duplicate indices.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -654,16 +644,16 @@
 <span class="sd">        True</span>
 <span class="sd">        &gt;&gt;&gt; A.coalesce().has_duplicate()</span>
 <span class="sd">        False</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_sparse_matrix</span><span class="o">.</span><span class="n">has_duplicate</span><span class="p">()</span></div>
 
 
     <span class="k">def</span> <span class="nf">is_diag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns whether the sparse matrix is a diagonal matrix.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Returns whether the sparse matrix is a diagonal matrix."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_sparse_matrix</span><span class="o">.</span><span class="n">is_diag</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">index_select</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a sub-matrix selected according to the given index.</span>
+<span class="w">        </span><span class="sd">"""Returns a sub-matrix selected according to the given index.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -706,15 +696,15 @@
 <span class="sd">                                     [0, 0, 1, 2]]),</span>
 <span class="sd">                     values=tensor([0, 5, 2, 4]),</span>
 <span class="sd">                     shape=(5, 3), nnz=4)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">dim</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The selection dimension should be 0 or 1.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"The selection dimension should be 0 or 1."</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">SparseMatrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c_sparse_matrix</span><span class="o">.</span><span class="n">index_select</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">index</span><span class="p">))</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> is unsupported input type.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> is unsupported input type."</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">range_select</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">slice</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a sub-matrix selected according to the given range index.</span>
+<span class="w">        </span><span class="sd">"""Returns a sub-matrix selected according to the given range index.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -754,20 +744,20 @@
 <span class="sd">                                     [0, 1, 2]]),</span>
 <span class="sd">                     values=tensor([3, 2, 4]),</span>
 <span class="sd">                     shape=(5, 3), nnz=3)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">dim</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The selection dimension should be 0 or 1.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"The selection dimension should be 0 or 1."</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="nb">slice</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">step</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-                    <span class="s2">&quot;Slice with step other than 1 are not supported yet.&quot;</span>
+                    <span class="s2">"Slice with step other than 1 are not supported yet."</span>
                 <span class="p">)</span>
             <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">start</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">index</span><span class="o">.</span><span class="n">start</span>
             <span class="n">end</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">stop</span>
             <span class="k">return</span> <span class="n">SparseMatrix</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">c_sparse_matrix</span><span class="o">.</span><span class="n">range_select</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
             <span class="p">)</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> is unsupported input type.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> is unsupported input type."</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -777,7 +767,7 @@
         <span class="n">replace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">bias</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a sampled matrix on the given dimension and sample arguments.</span>
+<span class="w">        </span><span class="sd">"""Returns a sampled matrix on the given dimension and sample arguments.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -853,7 +843,7 @@
 <span class="sd">                                     [0, 0, 1, 1]]),</span>
 <span class="sd">                     values=tensor([0, 2, 3, 3]),</span>
 <span class="sd">                     shape=(3, 2), nnz=3)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">dim_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">dim</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">ids</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">range</span><span class="p">(</span>
@@ -868,28 +858,28 @@
         <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">leading_indices</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compact sparse matrix by removing rows or columns without non-zero</span>
+<span class="w">        </span><span class="sd">"""Compact sparse matrix by removing rows or columns without non-zero</span>
 <span class="sd">        elements in the sparse matrix and relabeling indices of the dimension.</span>
 
 <span class="sd">        This function serves a dual purpose: it allows you to reorganize the</span>
 <span class="sd">        indices within a specific dimension (rows or columns) of the sparse</span>
-<span class="sd">        matrix and, if needed, place certain &#39;leading_indices&#39; at the beginning</span>
+<span class="sd">        matrix and, if needed, place certain 'leading_indices' at the beginning</span>
 <span class="sd">        of the relabeled dimension.</span>
 
-<span class="sd">        In the absence of &#39;leading_indices&#39; (when it&#39;s set to `None`), the order</span>
+<span class="sd">        In the absence of 'leading_indices' (when it's set to `None`), the order</span>
 <span class="sd">        of relabeled indices remains the same as the original order, except that</span>
 <span class="sd">        rows or columns without non-zero elements are removed. When</span>
-<span class="sd">        &#39;leading_indices&#39; are provided, they are positioned at the start of the</span>
+<span class="sd">        'leading_indices' are provided, they are positioned at the start of the</span>
 <span class="sd">        relabeled dimension. To be precise, all rows selected by the specified</span>
 <span class="sd">        indices will be remapped from 0 to length(indices) - 1. Rows that are not</span>
 <span class="sd">        selected and contain any non-zero elements will be positioned after those</span>
 <span class="sd">        remapped rows while maintaining their original order.</span>
 
-<span class="sd">        This function mimics &#39;dgl.to_block&#39;, a method used to compress a sampled</span>
-<span class="sd">        subgraph by eliminating redundant nodes. The &#39;leading_indices&#39; parameter</span>
-<span class="sd">        replicates the behavior of &#39;include_dst_in_src&#39; in &#39;dgl.to_block&#39;,</span>
+<span class="sd">        This function mimics 'dgl.to_block', a method used to compress a sampled</span>
+<span class="sd">        subgraph by eliminating redundant nodes. The 'leading_indices' parameter</span>
+<span class="sd">        replicates the behavior of 'include_dst_in_src' in 'dgl.to_block',</span>
 <span class="sd">        adding destination node information for message passing.</span>
-<span class="sd">        Setting &#39;leading_indices&#39; to column IDs when relabeling the row</span>
+<span class="sd">        Setting 'leading_indices' to column IDs when relabeling the row</span>
 <span class="sd">        dimension, for example, achieves the same effect as including destination</span>
 <span class="sd">        nodes in source nodes.</span>
 
@@ -936,7 +926,7 @@
 <span class="sd">                [0., 1., 0.],])</span>
 <span class="sd">        &gt;&gt;&gt; print(original_rows)</span>
 <span class="sd">        torch.Tensor([1, 2, 0])</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">mat</span><span class="p">,</span> <span class="n">idx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">dgl_sparse</span><span class="o">.</span><span class="n">compact</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">c_sparse_matrix</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">leading_indices</span>
         <span class="p">)</span>
@@ -951,7 +941,7 @@
     <span class="n">val</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">shape</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SparseMatrix</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Creates a sparse matrix from Coordinate format indices.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""Creates a sparse matrix from Coordinate format indices.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1013,7 +1003,7 @@
 <span class="sd">                                [2., 2.],</span>
 <span class="sd">                                [3., 3.]]),</span>
 <span class="sd">                 shape=(3, 5), nnz=3, val_size=(2,))</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
@@ -1024,7 +1014,7 @@
 
     <span class="k">assert</span> <span class="p">(</span>
         <span class="n">val</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">2</span>
-    <span class="p">),</span> <span class="s2">&quot;The values of a SparseMatrix can only be scalars or vectors.&quot;</span>
+    <span class="p">),</span> <span class="s2">"The values of a SparseMatrix can only be scalars or vectors."</span>
     <span class="k">return</span> <span class="n">SparseMatrix</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">dgl_sparse</span><span class="o">.</span><span class="n">from_coo</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">shape</span><span class="p">))</span></div>
 
 
@@ -1037,7 +1027,7 @@
     <span class="n">val</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">shape</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SparseMatrix</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Creates a sparse matrix from a coordinate list (COO), which stores a list</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""Creates a sparse matrix from a coordinate list (COO), which stores a list</span>
 <span class="sd">    of (row, column, value) tuples.</span>
 
 <span class="sd">    See `COO in Wikipedia</span>
@@ -1105,7 +1095,7 @@
 <span class="sd">                                [2., 2.],</span>
 <span class="sd">                                [3., 3.]]),</span>
 <span class="sd">                 shape=(3, 5), nnz=3, val_size=(2,))</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">assert</span> <span class="n">row</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">col</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">spmatrix</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]),</span> <span class="n">val</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span></div>
 
@@ -1119,7 +1109,7 @@
     <span class="n">val</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">shape</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SparseMatrix</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Creates a sparse matrix from compress sparse row (CSR) format.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""Creates a sparse matrix from compress sparse row (CSR) format.</span>
 
 <span class="sd">    See `CSR in Wikipedia &lt;https://en.wikipedia.org/wiki/</span>
 <span class="sd">    Sparse_matrix#Compressed_sparse_row_(CSR,_CRS_or_Yale_format)&gt;`_.</span>
@@ -1190,7 +1180,7 @@
 <span class="sd">                                [4, 4],</span>
 <span class="sd">                                [5, 5]]),</span>
 <span class="sd">                 shape=(3, 3), nnz=5, val_size=(2,))</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">indptr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1198,7 +1188,7 @@
 
     <span class="k">assert</span> <span class="p">(</span>
         <span class="n">val</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">2</span>
-    <span class="p">),</span> <span class="s2">&quot;The values of a SparseMatrix can only be scalars or vectors.&quot;</span>
+    <span class="p">),</span> <span class="s2">"The values of a SparseMatrix can only be scalars or vectors."</span>
 
     <span class="k">return</span> <span class="n">SparseMatrix</span><span class="p">(</span>
         <span class="n">torch</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">dgl_sparse</span><span class="o">.</span><span class="n">from_csr</span><span class="p">(</span><span class="n">indptr</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
@@ -1214,7 +1204,7 @@
     <span class="n">val</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">shape</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SparseMatrix</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Creates a sparse matrix from compress sparse column (CSC) format.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""Creates a sparse matrix from compress sparse column (CSC) format.</span>
 
 <span class="sd">    See `CSC in Wikipedia &lt;https://en.wikipedia.org/wiki/</span>
 <span class="sd">    Sparse_matrix#Compressed_sparse_column_(CSC_or_CCS)&gt;`_.</span>
@@ -1285,7 +1275,7 @@
 <span class="sd">                                [4, 4],</span>
 <span class="sd">                                [5, 5]]),</span>
 <span class="sd">                 shape=(3, 3), nnz=5, val_size=(2,))</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">indptr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1293,7 +1283,7 @@
 
     <span class="k">assert</span> <span class="p">(</span>
         <span class="n">val</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">2</span>
-    <span class="p">),</span> <span class="s2">&quot;The values of a SparseMatrix can only be scalars or vectors.&quot;</span>
+    <span class="p">),</span> <span class="s2">"The values of a SparseMatrix can only be scalars or vectors."</span>
 
     <span class="k">return</span> <span class="n">SparseMatrix</span><span class="p">(</span>
         <span class="n">torch</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">dgl_sparse</span><span class="o">.</span><span class="n">from_csc</span><span class="p">(</span><span class="n">indptr</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
@@ -1304,7 +1294,7 @@
 <div class="viewcode-block" id="val_like">
 <a class="viewcode-back" href="../../../generated/dgl.sparse.val_like.html#dgl.sparse.val_like">[docs]</a>
 <span class="k">def</span> <span class="nf">val_like</span><span class="p">(</span><span class="n">mat</span><span class="p">:</span> <span class="n">SparseMatrix</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SparseMatrix</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates a sparse matrix from an existing sparse matrix using new values.</span>
+<span class="w">    </span><span class="sd">"""Creates a sparse matrix from an existing sparse matrix using new values.</span>
 
 <span class="sd">    The new sparse matrix will have the same non-zero indices as the given</span>
 <span class="sd">    sparse matrix and use the given values as the new non-zero values.</span>
@@ -1333,10 +1323,10 @@
 <span class="sd">                                 [2, 4, 3]]),</span>
 <span class="sd">                 values=tensor([2, 2, 2]),</span>
 <span class="sd">                 shape=(3, 5), nnz=3)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">assert</span> <span class="p">(</span>
         <span class="n">val</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">2</span>
-    <span class="p">),</span> <span class="s2">&quot;The values of a SparseMatrix can only be scalars or vectors.&quot;</span>
+    <span class="p">),</span> <span class="s2">"The values of a SparseMatrix can only be scalars or vectors."</span>
 
     <span class="k">return</span> <span class="n">SparseMatrix</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">dgl_sparse</span><span class="o">.</span><span class="n">val_like</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">c_sparse_matrix</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span></div>
 
@@ -1347,7 +1337,7 @@
 <span class="k">def</span> <span class="nf">diag</span><span class="p">(</span>
     <span class="n">val</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SparseMatrix</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates a sparse matrix based on the diagonal values.</span>
+<span class="w">    </span><span class="sd">"""Creates a sparse matrix based on the diagonal values.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1392,15 +1382,15 @@
 <span class="sd">    (5, 5)</span>
 <span class="sd">    &gt;&gt;&gt; D.nnz</span>
 <span class="sd">    5</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">assert</span> <span class="p">(</span>
         <span class="n">val</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">2</span>
-    <span class="p">),</span> <span class="s2">&quot;The values of a DiagMatrix can only be scalars or vectors.&quot;</span>
+    <span class="p">),</span> <span class="s2">"The values of a DiagMatrix can only be scalars or vectors."</span>
     <span class="n">len_val</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">assert</span> <span class="n">len_val</span> <span class="o">==</span> <span class="nb">min</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Expect len(val) to be min(shape) for a diagonal matrix, got&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">len_val</span><span class="si">}</span><span class="s2"> for len(val) and </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2"> for shape.&quot;</span>
+            <span class="sa">f</span><span class="s2">"Expect len(val) to be min(shape) for a diagonal matrix, got"</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">len_val</span><span class="si">}</span><span class="s2"> for len(val) and </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2"> for shape."</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">len_val</span><span class="p">,</span> <span class="n">len_val</span><span class="p">)</span>
@@ -1416,7 +1406,7 @@
     <span class="n">dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">dtype</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">device</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SparseMatrix</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Creates a sparse matrix with ones on the diagonal and zeros elsewhere.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""Creates a sparse matrix with ones on the diagonal and zeros elsewhere.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1475,7 +1465,7 @@
 <span class="sd">                                [1., 1.],</span>
 <span class="sd">                                [1., 1.]]),</span>
 <span class="sd">                 shape=(3, 3), nnz=3, val_size=(2,))</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">len_val</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">val_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">len_val</span><span class="p">,)</span>
@@ -1487,7 +1477,7 @@
 
 
 <span class="k">def</span> <span class="nf">from_torch_sparse</span><span class="p">(</span><span class="n">torch_sparse_tensor</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SparseMatrix</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates a sparse matrix from a torch sparse tensor, which can have coo,</span>
+<span class="w">    </span><span class="sd">"""Creates a sparse matrix from a torch sparse tensor, which can have coo,</span>
 <span class="sd">    csr, or csc layout.</span>
 
 <span class="sd">    Parameters</span>
@@ -1511,14 +1501,14 @@
 <span class="sd">                                 [2, 4, 3]]),</span>
 <span class="sd">                 values=tensor([1., 1., 1.]),</span>
 <span class="sd">                 shape=(3, 5), nnz=3)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">assert</span> <span class="n">torch_sparse_tensor</span><span class="o">.</span><span class="n">layout</span> <span class="ow">in</span> <span class="p">(</span>
         <span class="n">torch</span><span class="o">.</span><span class="n">sparse_coo</span><span class="p">,</span>
         <span class="n">torch</span><span class="o">.</span><span class="n">sparse_csr</span><span class="p">,</span>
         <span class="n">torch</span><span class="o">.</span><span class="n">sparse_csc</span><span class="p">,</span>
     <span class="p">),</span> <span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;Cannot convert Pytorch sparse tensor with layout &quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">torch_sparse_tensor</span><span class="o">.</span><span class="n">layout</span><span class="si">}</span><span class="s2"> to DGL sparse.&quot;</span>
+        <span class="sa">f</span><span class="s2">"Cannot convert Pytorch sparse tensor with layout "</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">torch_sparse_tensor</span><span class="o">.</span><span class="n">layout</span><span class="si">}</span><span class="s2"> to DGL sparse."</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="n">torch_sparse_tensor</span><span class="o">.</span><span class="n">layout</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">sparse_coo</span><span class="p">:</span>
         <span class="c1"># Use ._indices() and ._values() to access uncoalesced indices and</span>
@@ -1545,7 +1535,7 @@
 
 
 <span class="k">def</span> <span class="nf">to_torch_sparse_coo</span><span class="p">(</span><span class="n">spmat</span><span class="p">:</span> <span class="n">SparseMatrix</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates a torch sparse coo tensor from a sparse matrix.</span>
+<span class="w">    </span><span class="sd">"""Creates a torch sparse coo tensor from a sparse matrix.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1568,7 +1558,7 @@
 <span class="sd">                           [2, 4, 3]]),</span>
 <span class="sd">           values=tensor([1., 1., 1.]),</span>
 <span class="sd">           size=(3, 5), nnz=3, layout=torch.sparse_coo)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">shape</span> <span class="o">=</span> <span class="n">spmat</span><span class="o">.</span><span class="n">shape</span>
     <span class="k">if</span> <span class="n">spmat</span><span class="o">.</span><span class="n">val</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">shape</span> <span class="o">+=</span> <span class="n">spmat</span><span class="o">.</span><span class="n">val</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
@@ -1576,7 +1566,7 @@
 
 
 <span class="k">def</span> <span class="nf">to_torch_sparse_csr</span><span class="p">(</span><span class="n">spmat</span><span class="p">:</span> <span class="n">SparseMatrix</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates a torch sparse csr tensor from a sparse matrix.</span>
+<span class="w">    </span><span class="sd">"""Creates a torch sparse csr tensor from a sparse matrix.</span>
 
 <span class="sd">    Note that converting a sparse matrix to torch csr tensor could change the</span>
 <span class="sd">    order of non-zero values.</span>
@@ -1602,7 +1592,7 @@
 <span class="sd">           col_indices=tensor([2, 3, 4]),</span>
 <span class="sd">           values=tensor([0, 2, 1]), size=(3, 5), nnz=3,</span>
 <span class="sd">           layout=torch.sparse_csr)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">shape</span> <span class="o">=</span> <span class="n">spmat</span><span class="o">.</span><span class="n">shape</span>
     <span class="k">if</span> <span class="n">spmat</span><span class="o">.</span><span class="n">val</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">shape</span> <span class="o">+=</span> <span class="n">spmat</span><span class="o">.</span><span class="n">val</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
@@ -1614,7 +1604,7 @@
 
 
 <span class="k">def</span> <span class="nf">to_torch_sparse_csc</span><span class="p">(</span><span class="n">spmat</span><span class="p">:</span> <span class="n">SparseMatrix</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates a torch sparse csc tensor from a sparse matrix.</span>
+<span class="w">    </span><span class="sd">"""Creates a torch sparse csc tensor from a sparse matrix.</span>
 
 <span class="sd">    Note that converting a sparse matrix to torch csc tensor could change the</span>
 <span class="sd">    order of non-zero values.</span>
@@ -1640,7 +1630,7 @@
 <span class="sd">           row_indices=tensor([1, 1, 2]),</span>
 <span class="sd">           values=tensor([0, 2, 1]), size=(3, 5), nnz=3,</span>
 <span class="sd">           layout=torch.sparse_csc)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">shape</span> <span class="o">=</span> <span class="n">spmat</span><span class="o">.</span><span class="n">shape</span>
     <span class="k">if</span> <span class="n">spmat</span><span class="o">.</span><span class="n">val</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">shape</span> <span class="o">+=</span> <span class="n">spmat</span><span class="o">.</span><span class="n">val</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
@@ -1652,45 +1642,42 @@
 
 
 <span class="k">def</span> <span class="nf">_sparse_matrix_str</span><span class="p">(</span><span class="n">spmat</span><span class="p">:</span> <span class="n">SparseMatrix</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Internal function for converting a sparse matrix to string</span>
+<span class="w">    </span><span class="sd">"""Internal function for converting a sparse matrix to string</span>
 <span class="sd">    representation.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">indices_str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">spmat</span><span class="o">.</span><span class="n">coo</span><span class="p">()))</span>
     <span class="n">values_str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">spmat</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
-    <span class="n">meta_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;shape=</span><span class="si">{</span><span class="n">spmat</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, nnz=</span><span class="si">{</span><span class="n">spmat</span><span class="o">.</span><span class="n">nnz</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">meta_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"shape=</span><span class="si">{</span><span class="n">spmat</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, nnz=</span><span class="si">{</span><span class="n">spmat</span><span class="o">.</span><span class="n">nnz</span><span class="si">}</span><span class="s2">"</span>
     <span class="k">if</span> <span class="n">spmat</span><span class="o">.</span><span class="n">val</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">val_size</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">spmat</span><span class="o">.</span><span class="n">val</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
-        <span class="n">meta_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;, val_size=</span><span class="si">{</span><span class="n">val_size</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="n">prefix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">spmat</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(&quot;</span>
+        <span class="n">meta_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">", val_size=</span><span class="si">{</span><span class="n">val_size</span><span class="si">}</span><span class="s2">"</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">spmat</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">("</span>
 
     <span class="k">def</span> <span class="nf">_add_indent</span><span class="p">(</span><span class="n">_str</span><span class="p">,</span> <span class="n">indent</span><span class="p">):</span>
-        <span class="n">lines</span> <span class="o">=</span> <span class="n">_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="n">indent</span> <span class="o">+</span> <span class="n">line</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span>
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">" "</span> <span class="o">*</span> <span class="n">indent</span> <span class="o">+</span> <span class="n">line</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span>
+        <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
 
     <span class="n">final_str</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;indices=&quot;</span>
-        <span class="o">+</span> <span class="n">_add_indent</span><span class="p">(</span><span class="n">indices_str</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="s2">&quot;indices=&quot;</span><span class="p">))</span>
-        <span class="o">+</span> <span class="s2">&quot;,</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="o">+</span> <span class="s2">&quot;values=&quot;</span>
-        <span class="o">+</span> <span class="n">_add_indent</span><span class="p">(</span><span class="n">values_str</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="s2">&quot;values=&quot;</span><span class="p">))</span>
-        <span class="o">+</span> <span class="s2">&quot;,</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">"indices="</span>
+        <span class="o">+</span> <span class="n">_add_indent</span><span class="p">(</span><span class="n">indices_str</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="s2">"indices="</span><span class="p">))</span>
+        <span class="o">+</span> <span class="s2">",</span><span class="se">\n</span><span class="s2">"</span>
+        <span class="o">+</span> <span class="s2">"values="</span>
+        <span class="o">+</span> <span class="n">_add_indent</span><span class="p">(</span><span class="n">values_str</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="s2">"values="</span><span class="p">))</span>
+        <span class="o">+</span> <span class="s2">",</span><span class="se">\n</span><span class="s2">"</span>
         <span class="o">+</span> <span class="n">meta_str</span>
-        <span class="o">+</span> <span class="s2">&quot;)&quot;</span>
+        <span class="o">+</span> <span class="s2">")"</span>
     <span class="p">)</span>
     <span class="n">final_str</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">_add_indent</span><span class="p">(</span><span class="n">final_str</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">final_str</span>
 </pre></div>
-
-           </div>
-          </div>
-          <footer>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2018, DGL Team.</p>
-  </div>
+</div>
+</div>
+<footer>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
@@ -1698,15 +1685,58 @@
    
 
 </footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+
+<script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
-
+  </script>
 </body>
 </html>

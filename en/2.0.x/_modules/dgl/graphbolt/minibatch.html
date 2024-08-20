@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+
+<html class="writer-html5" data-content_root="../../../" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>dgl.graphbolt.minibatch — DGL 2.1.0 documentation</title>
+<link href="../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+<script src="../../../_static/jquery.js?v=5d32c60e"></script>
+<script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../../../_static/documentation_options.js?v=20623aea"></script>
+<script src="../../../_static/doctools.js?v=9a2dae69"></script>
+<script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../../../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script src="../../../_static/js/theme.js"></script>
+<link href="../../../genindex.html" rel="index" title="Index"/>
+<link href="../../../search.html" rel="search" title="Search"/>
+</head>
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../../../index.html">
+            DGL
+          </a>
+<div class="version">
+                2.1.0
+              </div>
+<div role="search">
+<form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
+</div>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Install and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/blitz/index.html">A Blitz Introduction to DGL</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Materials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../stochastic_training/index.html">🆕 Stochastic Training of GNNs with GraphBolt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guide_cn/index.html">用户指南【包含过时信息】</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guide_ko/index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../graphtransformer/index.html">🆕 Tutorial: Graph Transformer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/sparse/index.html">Tutorials: dgl.sparse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/cpu/index.html">Training on CPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/multi/index.html">Training on Multiple GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/dist/index.html">Distributed training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/models/index.html">Paper Study with DGL</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.html">dgl</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.data.html">dgl.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.dataloading.html">dgl.dataloading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.DGLGraph.html">dgl.DGLGraph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.distributed.html">dgl.distributed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.function.html">dgl.function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.geometry.html">dgl.geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.graphbolt.html">🆕 dgl.graphbolt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn.functional.html">dgl.nn.functional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.ops.html">dgl.ops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.optim.html">dgl.optim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.sampling.html">dgl.sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.sparse_v0.html">dgl.sparse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.multiprocessing.html">dgl.multiprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/transforms.html">dgl.transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/udf.html">User-defined Functions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../contribute.html">Contribute to DGL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/ffi.html">DGL Foreign Function Interface (FFI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../performance.html">Performance Benchmarks</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Misc</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../env_var.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resources.html">Resources</a></li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../../../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../../../index.html"></a></li>
+<li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+<li class="breadcrumb-item active">dgl.graphbolt.minibatch</li>
+<li class="wy-breadcrumbs-aside">
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<h1>Source code for dgl.graphbolt.minibatch</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Unified data structure for input and ouput of all the stages in loading process."""</span>
+
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="kn">import</span> <span class="nn">dgl</span>
+<span class="kn">from</span> <span class="nn">dgl.utils</span> <span class="kn">import</span> <span class="n">recursive_apply</span>
+
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">CSCFormatBase</span><span class="p">,</span> <span class="n">etype_str_to_tuple</span><span class="p">,</span> <span class="n">expand_indptr</span>
+<span class="kn">from</span> <span class="nn">.internal</span> <span class="kn">import</span> <span class="n">get_attributes</span>
+<span class="kn">from</span> <span class="nn">.sampled_subgraph</span> <span class="kn">import</span> <span class="n">SampledSubgraph</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"MiniBatch"</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="MiniBatch">
+<a class="viewcode-back" href="../../../generated/dgl.graphbolt.MiniBatch.html#dgl.graphbolt.MiniBatch">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">MiniBatch</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""A composite data class for data structure in the graphbolt.</span>
+
+<span class="sd">    It is designed to facilitate the exchange of data among different components</span>
+<span class="sd">    involved in processing data. The purpose of this class is to unify the</span>
+<span class="sd">    representation of input and output data across different stages, ensuring</span>
+<span class="sd">    consistency and ease of use throughout the loading process."""</span>
+
+    <span class="n">seed_nodes</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Representation of seed nodes used for sampling in the graph.</span>
+<span class="sd">    - If `seed_nodes` is a tensor: It indicates the graph is homogeneous.</span>
+<span class="sd">    - If `seed_nodes` is a dictionary: The keys should be node type and the</span>
+<span class="sd">      value should be corresponding heterogeneous node ids.</span>
+<span class="sd">    """</span>
+
+    <span class="n">node_pairs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
+        <span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span>
+        <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]],</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Representation of seed node pairs utilized in link prediction tasks.</span>
+<span class="sd">    - If `node_pairs` is a tuple: It indicates a homogeneous graph where each</span>
+<span class="sd">      tuple contains two tensors representing source-destination node pairs.</span>
+<span class="sd">    - If `node_pairs` is a dictionary: The keys should be edge type, and the</span>
+<span class="sd">      value should be a tuple of tensors representing node pairs of the given</span>
+<span class="sd">      type.</span>
+<span class="sd">    """</span>
+
+    <span class="n">labels</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Labels associated with seed nodes / node pairs in the graph.</span>
+<span class="sd">    - If `labels` is a tensor: It indicates the graph is homogeneous. The value</span>
+<span class="sd">      should be corresponding labels to given 'seed_nodes' or 'node_pairs'.</span>
+<span class="sd">    - If `labels` is a dictionary: The keys should be node or edge type and the</span>
+<span class="sd">      value should be corresponding labels to given 'seed_nodes' or 'node_pairs'.</span>
+<span class="sd">    """</span>
+
+    <span class="n">seeds</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Representation of seed items utilized in node classification tasks, link</span>
+<span class="sd">    prediction tasks and hyperlinks tasks.</span>
+<span class="sd">    - If `seeds` is a tensor: it indicates that the seeds originate from a</span>
+<span class="sd">      homogeneous graph. It can be either a 1-dimensional or 2-dimensional</span>
+<span class="sd">      tensor:</span>
+<span class="sd">        - 1-dimensional tensor: Each element directly represents a seed node</span>
+<span class="sd">          within the graph.</span>
+<span class="sd">        - 2-dimensional tensor: Each row designates a seed item, which can</span>
+<span class="sd">          encompass various entities such as edges, hyperlinks, or other graph</span>
+<span class="sd">          components depending on the specific context.</span>
+<span class="sd">    - If `seeds` is a dictionary: it indicates that the seeds originate from a</span>
+<span class="sd">      heterogeneous graph. The keys should be edge or node type, and the value</span>
+<span class="sd">      should be a tensor, which can be either a 1-dimensional or 2-dimensional</span>
+<span class="sd">      tensor:</span>
+<span class="sd">        - 1-dimensional tensor: Each element directly represents a seed node</span>
+<span class="sd">        of the given type within the graph.</span>
+<span class="sd">        - 2-dimensional tensor: Each row designates a seed item of the given</span>
+<span class="sd">          type, which can encompass various entities such as edges, hyperlinks,</span>
+<span class="sd">          or other graph components depending on the specific context.</span>
+<span class="sd">    """</span>
+
+    <span class="n">indexes</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Indexes associated with seed nodes / node pairs in the graph, which</span>
+<span class="sd">    indicates to which query a seed node / node pair belongs.</span>
+<span class="sd">    - If `indexes` is a tensor: It indicates the graph is homogeneous. The</span>
+<span class="sd">      value should be corresponding query to given 'seed_nodes' or</span>
+<span class="sd">      'node_pairs'.</span>
+<span class="sd">    - If `indexes` is a dictionary: It indicates the graph is</span>
+<span class="sd">      heterogeneous. The keys should be node or edge type and the value should</span>
+<span class="sd">      be corresponding query to given 'seed_nodes' or 'node_pairs'. For each</span>
+<span class="sd">      key, indexes are consecutive integers starting from zero.</span>
+<span class="sd">    """</span>
+
+    <span class="n">negative_srcs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Representation of negative samples for the head nodes in the link</span>
+<span class="sd">    prediction task.</span>
+<span class="sd">    - If `negative_srcs` is a tensor: It indicates a homogeneous graph.</span>
+<span class="sd">    - If `negative_srcs` is a dictionary: The key should be edge type, and the</span>
+<span class="sd">      value should correspond to the negative samples for head nodes of the</span>
+<span class="sd">      given type.</span>
+<span class="sd">    """</span>
+
+    <span class="n">negative_dsts</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Representation of negative samples for the tail nodes in the link</span>
+<span class="sd">    prediction task.</span>
+<span class="sd">    - If `negative_dsts` is a tensor: It indicates a homogeneous graph.</span>
+<span class="sd">    - If `negative_dsts` is a dictionary: The key should be edge type, and the</span>
+<span class="sd">      value should correspond to the negative samples for head nodes of the</span>
+<span class="sd">      given type.</span>
+<span class="sd">    """</span>
+
+    <span class="n">sampled_subgraphs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">SampledSubgraph</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""A list of 'SampledSubgraph's, each one corresponding to one layer,</span>
+<span class="sd">    representing a subset of a larger graph structure.</span>
+<span class="sd">    """</span>
+
+    <span class="n">input_nodes</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""A representation of input nodes in the outermost layer. Conatins all nodes</span>
+<span class="sd">       in the 'sampled_subgraphs'.</span>
+<span class="sd">    - If `input_nodes` is a tensor: It indicates the graph is homogeneous.</span>
+<span class="sd">    - If `input_nodes` is a dictionary: The keys should be node type and the</span>
+<span class="sd">      value should be corresponding heterogeneous node id.</span>
+<span class="sd">    """</span>
+
+    <span class="n">node_features</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
+        <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""A representation of node features.</span>
+<span class="sd">      - If keys are single strings: It means the graph is homogeneous, and the</span>
+<span class="sd">      keys are feature names.</span>
+<span class="sd">      - If keys are tuples: It means the graph is heterogeneous, and the keys</span>
+<span class="sd">      are tuples of '(node_type, feature_name)'.</span>
+<span class="sd">    """</span>
+
+    <span class="n">edge_features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span>
+        <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]]</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""Edge features associated with the 'sampled_subgraphs'.</span>
+<span class="sd">      - If keys are single strings: It means the graph is homogeneous, and the</span>
+<span class="sd">      keys are feature names.</span>
+<span class="sd">      - If keys are tuples: It means the graph is heterogeneous, and the keys</span>
+<span class="sd">      are tuples of '(edge_type, feature_name)'. Note, edge type is single</span>
+<span class="sd">      string of format 'str:str:str'.</span>
+<span class="sd">    """</span>
+
+    <span class="n">compacted_node_pairs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
+        <span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span>
+        <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]],</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Representation of compacted node pairs corresponding to 'node_pairs', where</span>
+<span class="sd">    all node ids inside are compacted.</span>
+<span class="sd">    """</span>
+
+    <span class="n">compacted_seeds</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Representation of compacted seeds corresponding to 'seeds', where</span>
+<span class="sd">    all node ids inside are compacted.</span>
+<span class="sd">    """</span>
+
+    <span class="n">compacted_negative_srcs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Representation of compacted nodes corresponding to 'negative_srcs', where</span>
+<span class="sd">    all node ids inside are compacted.</span>
+<span class="sd">    """</span>
+
+    <span class="n">compacted_negative_dsts</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Representation of compacted nodes corresponding to 'negative_dsts', where</span>
+<span class="sd">    all node ids inside are compacted.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_minibatch_str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MiniBatch.node_ids">
+<a class="viewcode-back" href="../../../generated/dgl.graphbolt.MiniBatch.html#dgl.graphbolt.MiniBatch.node_ids">[docs]</a>
+    <span class="k">def</span> <span class="nf">node_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">"""A representation of input nodes in the outermost layer. Contains all</span>
+<span class="sd">        nodes in the `sampled_subgraphs`.</span>
+<span class="sd">        - If `input_nodes` is a tensor: It indicates the graph is homogeneous.</span>
+<span class="sd">        - If `input_nodes` is a dictionary: The keys should be node type and the</span>
+<span class="sd">          value should be corresponding heterogeneous node id.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_nodes</span></div>
+
+
+<div class="viewcode-block" id="MiniBatch.num_layers">
+<a class="viewcode-back" href="../../../generated/dgl.graphbolt.MiniBatch.html#dgl.graphbolt.MiniBatch.num_layers">[docs]</a>
+    <span class="k">def</span> <span class="nf">num_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return the number of layers."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampled_subgraphs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sampled_subgraphs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MiniBatch.edge_ids">
+<a class="viewcode-back" href="../../../generated/dgl.graphbolt.MiniBatch.html#dgl.graphbolt.MiniBatch.edge_ids">[docs]</a>
+    <span class="k">def</span> <span class="nf">edge_ids</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">layer_id</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Get the edge ids of a layer."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampled_subgraphs</span><span class="p">[</span><span class="n">layer_id</span><span class="p">]</span><span class="o">.</span><span class="n">original_edge_ids</span></div>
+
+
+<div class="viewcode-block" id="MiniBatch.set_node_features">
+<a class="viewcode-back" href="../../../generated/dgl.graphbolt.MiniBatch.html#dgl.graphbolt.MiniBatch.set_node_features">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_node_features</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">node_features</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
+            <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span>
+        <span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Set node features."""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">node_features</span> <span class="o">=</span> <span class="n">node_features</span></div>
+
+
+<div class="viewcode-block" id="MiniBatch.set_edge_features">
+<a class="viewcode-back" href="../../../generated/dgl.graphbolt.MiniBatch.html#dgl.graphbolt.MiniBatch.set_edge_features">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_edge_features</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">edge_features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span>
+            <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]]</span>
+        <span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Set edge features."""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edge_features</span> <span class="o">=</span> <span class="n">edge_features</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">blocks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Extracts DGL blocks from `MiniBatch` to construct a graphical</span>
+<span class="sd">        structure and ID mappings.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampled_subgraphs</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">is_heterogeneous</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sampled_subgraphs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sampled_csc</span><span class="p">,</span> <span class="n">Dict</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Casts to minimum dtype in-place and returns self.</span>
+        <span class="k">def</span> <span class="nf">cast_to_minimum_dtype</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">CSCFormatBase</span><span class="p">):</span>
+            <span class="c1"># Checks if number of vertices and edges fit into an int32.</span>
+            <span class="n">dtype</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">int32</span>
+                <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">indptr</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">indices</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+                <span class="o">&lt;=</span> <span class="n">torch</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span><span class="o">.</span><span class="n">max</span>
+                <span class="k">else</span> <span class="n">torch</span><span class="o">.</span><span class="n">int64</span>
+            <span class="p">)</span>
+            <span class="n">v</span><span class="o">.</span><span class="n">indptr</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">indptr</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="n">v</span><span class="o">.</span><span class="n">indices</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">indices</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">v</span>
+
+        <span class="n">blocks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">subgraph</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampled_subgraphs</span><span class="p">:</span>
+            <span class="n">original_row_node_ids</span> <span class="o">=</span> <span class="n">subgraph</span><span class="o">.</span><span class="n">original_row_node_ids</span>
+            <span class="k">assert</span> <span class="p">(</span>
+                <span class="n">original_row_node_ids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="p">),</span> <span class="s2">"Missing `original_row_node_ids` in sampled subgraph."</span>
+            <span class="n">original_column_node_ids</span> <span class="o">=</span> <span class="n">subgraph</span><span class="o">.</span><span class="n">original_column_node_ids</span>
+            <span class="k">assert</span> <span class="p">(</span>
+                <span class="n">original_column_node_ids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="p">),</span> <span class="s2">"Missing `original_column_node_ids` in sampled subgraph."</span>
+            <span class="k">if</span> <span class="n">is_heterogeneous</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">subgraph</span><span class="o">.</span><span class="n">sampled_csc</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                    <span class="n">cast_to_minimum_dtype</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                <span class="n">sampled_csc</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="n">etype_str_to_tuple</span><span class="p">(</span><span class="n">etype</span><span class="p">):</span> <span class="p">(</span>
+                        <span class="s2">"csc"</span><span class="p">,</span>
+                        <span class="p">(</span>
+                            <span class="n">v</span><span class="o">.</span><span class="n">indptr</span><span class="p">,</span>
+                            <span class="n">v</span><span class="o">.</span><span class="n">indices</span><span class="p">,</span>
+                            <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+                                <span class="mi">0</span><span class="p">,</span>
+                                <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">indices</span><span class="p">),</span>
+                                <span class="n">device</span><span class="o">=</span><span class="n">v</span><span class="o">.</span><span class="n">indptr</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
+                                <span class="n">dtype</span><span class="o">=</span><span class="n">v</span><span class="o">.</span><span class="n">indptr</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+                            <span class="p">),</span>
+                        <span class="p">),</span>
+                    <span class="p">)</span>
+                    <span class="k">for</span> <span class="n">etype</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">subgraph</span><span class="o">.</span><span class="n">sampled_csc</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="p">}</span>
+                <span class="n">num_src_nodes</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="n">ntype</span><span class="p">:</span> <span class="n">nodes</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">ntype</span><span class="p">,</span> <span class="n">nodes</span> <span class="ow">in</span> <span class="n">original_row_node_ids</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="p">}</span>
+                <span class="n">num_dst_nodes</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="n">ntype</span><span class="p">:</span> <span class="n">nodes</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">ntype</span><span class="p">,</span> <span class="n">nodes</span> <span class="ow">in</span> <span class="n">original_column_node_ids</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="p">}</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sampled_csc</span> <span class="o">=</span> <span class="n">cast_to_minimum_dtype</span><span class="p">(</span><span class="n">subgraph</span><span class="o">.</span><span class="n">sampled_csc</span><span class="p">)</span>
+                <span class="n">sampled_csc</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="s2">"csc"</span><span class="p">,</span>
+                    <span class="p">(</span>
+                        <span class="n">sampled_csc</span><span class="o">.</span><span class="n">indptr</span><span class="p">,</span>
+                        <span class="n">sampled_csc</span><span class="o">.</span><span class="n">indices</span><span class="p">,</span>
+                        <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+                            <span class="mi">0</span><span class="p">,</span>
+                            <span class="nb">len</span><span class="p">(</span><span class="n">sampled_csc</span><span class="o">.</span><span class="n">indices</span><span class="p">),</span>
+                            <span class="n">device</span><span class="o">=</span><span class="n">sampled_csc</span><span class="o">.</span><span class="n">indptr</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
+                            <span class="n">dtype</span><span class="o">=</span><span class="n">sampled_csc</span><span class="o">.</span><span class="n">indptr</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+                        <span class="p">),</span>
+                    <span class="p">),</span>
+                <span class="p">)</span>
+                <span class="n">num_src_nodes</span> <span class="o">=</span> <span class="n">original_row_node_ids</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">num_dst_nodes</span> <span class="o">=</span> <span class="n">original_column_node_ids</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">dgl</span><span class="o">.</span><span class="n">create_block</span><span class="p">(</span>
+                    <span class="n">sampled_csc</span><span class="p">,</span>
+                    <span class="n">num_src_nodes</span><span class="o">=</span><span class="n">num_src_nodes</span><span class="p">,</span>
+                    <span class="n">num_dst_nodes</span><span class="o">=</span><span class="n">num_dst_nodes</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">is_heterogeneous</span><span class="p">:</span>
+            <span class="c1"># Assign reverse node ids to the outermost layer's source nodes.</span>
+            <span class="k">for</span> <span class="n">node_type</span><span class="p">,</span> <span class="n">reverse_ids</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampled_subgraphs</span><span class="p">[</span>
+                <span class="mi">0</span>
+            <span class="p">]</span><span class="o">.</span><span class="n">original_row_node_ids</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">blocks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">srcnodes</span><span class="p">[</span><span class="n">node_type</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span><span class="p">]</span> <span class="o">=</span> <span class="n">reverse_ids</span>
+            <span class="c1"># Assign reverse edges ids.</span>
+            <span class="k">for</span> <span class="n">block</span><span class="p">,</span> <span class="n">subgraph</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">blocks</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampled_subgraphs</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">subgraph</span><span class="o">.</span><span class="n">original_edge_ids</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="p">(</span>
+                        <span class="n">edge_type</span><span class="p">,</span>
+                        <span class="n">reverse_ids</span><span class="p">,</span>
+                    <span class="p">)</span> <span class="ow">in</span> <span class="n">subgraph</span><span class="o">.</span><span class="n">original_edge_ids</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="n">block</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">etype_str_to_tuple</span><span class="p">(</span><span class="n">edge_type</span><span class="p">)]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span>
+                            <span class="n">dgl</span><span class="o">.</span><span class="n">EID</span>
+                        <span class="p">]</span> <span class="o">=</span> <span class="n">reverse_ids</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">blocks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">srcdata</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampled_subgraphs</span><span class="p">[</span>
+                <span class="mi">0</span>
+            <span class="p">]</span><span class="o">.</span><span class="n">original_row_node_ids</span>
+            <span class="c1"># Assign reverse edges ids.</span>
+            <span class="k">for</span> <span class="n">block</span><span class="p">,</span> <span class="n">subgraph</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">blocks</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampled_subgraphs</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">subgraph</span><span class="o">.</span><span class="n">original_edge_ids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">block</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">dgl</span><span class="o">.</span><span class="n">EID</span><span class="p">]</span> <span class="o">=</span> <span class="n">subgraph</span><span class="o">.</span><span class="n">original_edge_ids</span>
+        <span class="k">return</span> <span class="n">blocks</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">positive_node_pairs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""`positive_node_pairs` is a representation of positive graphs used for</span>
+<span class="sd">        evaluating or computing loss in link prediction tasks.</span>
+<span class="sd">        - If `positive_node_pairs` is a tuple: It indicates a homogeneous graph</span>
+<span class="sd">        containing two tensors representing source-destination node pairs.</span>
+<span class="sd">        - If `positive_node_pairs` is a dictionary: The keys should be edge type,</span>
+<span class="sd">        and the value should be a tuple of tensors representing node pairs of the</span>
+<span class="sd">        given type.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compacted_node_pairs</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">negative_node_pairs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""`negative_node_pairs` is a representation of negative graphs used for</span>
+<span class="sd">        evaluating or computing loss in link prediction tasks.</span>
+<span class="sd">        - If `negative_node_pairs` is a tuple: It indicates a homogeneous graph</span>
+<span class="sd">        containing two tensors representing source-destination node pairs.</span>
+<span class="sd">        - If `negative_node_pairs` is a dictionary: The keys should be edge type,</span>
+<span class="sd">        and the value should be a tuple of tensors representing node pairs of the</span>
+<span class="sd">        given type.</span>
+<span class="sd">        """</span>
+        <span class="c1"># Build negative graph.</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">compacted_negative_srcs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">compacted_negative_dsts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">):</span>
+            <span class="c1"># For homogeneous graph.</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">compacted_negative_srcs</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+                <span class="n">negative_node_pairs</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">compacted_negative_srcs</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">compacted_negative_dsts</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="c1"># For heterogeneous graph.</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">negative_node_pairs</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="n">etype</span><span class="p">:</span> <span class="p">(</span>
+                        <span class="n">neg_src</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">compacted_negative_dsts</span><span class="p">[</span><span class="n">etype</span><span class="p">],</span>
+                    <span class="p">)</span>
+                    <span class="k">for</span> <span class="n">etype</span><span class="p">,</span> <span class="n">neg_src</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">compacted_negative_srcs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="p">}</span>
+        <span class="k">elif</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">compacted_negative_srcs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">compacted_node_pairs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">):</span>
+            <span class="c1"># For homogeneous graph.</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">compacted_negative_srcs</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+                <span class="n">negative_ratio</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compacted_negative_srcs</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">negative_node_pairs</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">compacted_negative_srcs</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">compacted_node_pairs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="o">.</span><span class="n">repeat_interleave</span><span class="p">(</span><span class="n">negative_ratio</span><span class="p">)</span>
+                    <span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">negative_ratio</span><span class="p">),</span>
+                <span class="p">)</span>
+            <span class="c1"># For heterogeneous graph.</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">negative_ratio</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">compacted_negative_srcs</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span>
+                    <span class="mi">0</span>
+                <span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">negative_node_pairs</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="n">etype</span><span class="p">:</span> <span class="p">(</span>
+                        <span class="n">neg_src</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">compacted_node_pairs</span><span class="p">[</span><span class="n">etype</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="o">.</span><span class="n">repeat_interleave</span><span class="p">(</span><span class="n">negative_ratio</span><span class="p">)</span>
+                        <span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">negative_ratio</span><span class="p">),</span>
+                    <span class="p">)</span>
+                    <span class="k">for</span> <span class="n">etype</span><span class="p">,</span> <span class="n">neg_src</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">compacted_negative_srcs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="p">}</span>
+        <span class="k">elif</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">compacted_negative_dsts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">compacted_node_pairs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">):</span>
+            <span class="c1"># For homogeneous graph.</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">compacted_negative_dsts</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+                <span class="n">negative_ratio</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compacted_negative_dsts</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">negative_node_pairs</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">compacted_node_pairs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="o">.</span><span class="n">repeat_interleave</span><span class="p">(</span><span class="n">negative_ratio</span><span class="p">)</span>
+                    <span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">negative_ratio</span><span class="p">),</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">compacted_negative_dsts</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="c1"># For heterogeneous graph.</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">negative_ratio</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">compacted_negative_dsts</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span>
+                    <span class="mi">0</span>
+                <span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">negative_node_pairs</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="n">etype</span><span class="p">:</span> <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">compacted_node_pairs</span><span class="p">[</span><span class="n">etype</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="o">.</span><span class="n">repeat_interleave</span><span class="p">(</span><span class="n">negative_ratio</span><span class="p">)</span>
+                        <span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">negative_ratio</span><span class="p">),</span>
+                        <span class="n">neg_dst</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="k">for</span> <span class="n">etype</span><span class="p">,</span> <span class="n">neg_dst</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">compacted_negative_dsts</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">negative_node_pairs</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">negative_node_pairs</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">node_pairs_with_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Get a node pair tensor and a label tensor from MiniBatch. They are</span>
+<span class="sd">        used for evaluating or computing loss. For homogeneous graph, it will</span>
+<span class="sd">        return `(node_pairs, labels)` as result; for heterogeneous graph, the</span>
+<span class="sd">        `node_pairs` and `labels` will both be a dict with etype as the key.</span>
+<span class="sd">        - If it's a link prediction task, `node_pairs` will contain both</span>
+<span class="sd">        negative and positive node pairs and `labels` will consist of 0 and 1,</span>
+<span class="sd">        indicating whether the corresponding node pair is negative or positive.</span>
+<span class="sd">        - If it's an edge classification task, this function will directly</span>
+<span class="sd">        return `compacted_node_pairs` for each etype and the corresponding</span>
+<span class="sd">        `labels`.</span>
+<span class="sd">        - Otherwise it will return None.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Link prediction.</span>
+            <span class="n">positive_node_pairs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">positive_node_pairs</span>
+            <span class="n">negative_node_pairs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">negative_node_pairs</span>
+            <span class="k">if</span> <span class="n">positive_node_pairs</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">negative_node_pairs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">positive_node_pairs</span><span class="p">,</span> <span class="n">Dict</span><span class="p">):</span>
+                <span class="c1"># Heterogeneous graph.</span>
+                <span class="n">node_pairs_by_etype</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">labels_by_etype</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">etype</span> <span class="ow">in</span> <span class="n">positive_node_pairs</span><span class="p">:</span>
+                    <span class="n">pos_src</span><span class="p">,</span> <span class="n">pos_dst</span> <span class="o">=</span> <span class="n">positive_node_pairs</span><span class="p">[</span><span class="n">etype</span><span class="p">]</span>
+                    <span class="n">neg_src</span><span class="p">,</span> <span class="n">neg_dst</span> <span class="o">=</span> <span class="n">negative_node_pairs</span><span class="p">[</span><span class="n">etype</span><span class="p">]</span>
+                    <span class="n">neg_src</span><span class="p">,</span> <span class="n">neg_dst</span> <span class="o">=</span> <span class="n">neg_src</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">neg_dst</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="n">node_pairs_by_etype</span><span class="p">[</span><span class="n">etype</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">pos_src</span><span class="p">,</span> <span class="n">neg_src</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+                        <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">pos_dst</span><span class="p">,</span> <span class="n">neg_dst</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+                    <span class="p">)</span>
+                    <span class="n">pos_label</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">pos_src</span><span class="p">)</span>
+                    <span class="n">neg_label</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">neg_src</span><span class="p">)</span>
+                    <span class="n">labels_by_etype</span><span class="p">[</span><span class="n">etype</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span>
+                        <span class="p">[</span><span class="n">pos_label</span><span class="p">,</span> <span class="n">neg_label</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span>
+                    <span class="p">)</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">node_pairs_by_etype</span><span class="p">,</span> <span class="n">labels_by_etype</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Homogeneous graph.</span>
+                <span class="n">pos_src</span><span class="p">,</span> <span class="n">pos_dst</span> <span class="o">=</span> <span class="n">positive_node_pairs</span>
+                <span class="n">neg_src</span><span class="p">,</span> <span class="n">neg_dst</span> <span class="o">=</span> <span class="n">negative_node_pairs</span>
+                <span class="n">neg_src</span><span class="p">,</span> <span class="n">neg_dst</span> <span class="o">=</span> <span class="n">neg_src</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">neg_dst</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">node_pairs</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">pos_src</span><span class="p">,</span> <span class="n">neg_src</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+                    <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">pos_dst</span><span class="p">,</span> <span class="n">neg_dst</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+                <span class="p">)</span>
+                <span class="n">pos_label</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">pos_src</span><span class="p">)</span>
+                <span class="n">neg_label</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">neg_src</span><span class="p">)</span>
+                <span class="n">labels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">pos_label</span><span class="p">,</span> <span class="n">neg_label</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">node_pairs</span><span class="p">,</span> <span class="n">labels</span><span class="o">.</span><span class="n">float</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">compacted_node_pairs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Edge classification.</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">compacted_node_pairs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="MiniBatch.to_pyg_data">
+<a class="viewcode-back" href="../../../generated/dgl.graphbolt.MiniBatch.html#dgl.graphbolt.MiniBatch.to_pyg_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_pyg_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Construct a PyG Data from `MiniBatch`. This function only supports</span>
+<span class="sd">        node classification task on a homogeneous graph and the number of</span>
+<span class="sd">        features cannot be more than one.</span>
+<span class="sd">        """</span>
+        <span class="kn">from</span> <span class="nn">torch_geometric.data</span> <span class="kn">import</span> <span class="n">Data</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampled_subgraphs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">edge_index</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">col_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">row_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">subgraph</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampled_subgraphs</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">subgraph</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">sampled_csc</span> <span class="o">=</span> <span class="n">subgraph</span><span class="o">.</span><span class="n">sampled_csc</span>
+                <span class="n">indptr</span> <span class="o">=</span> <span class="n">sampled_csc</span><span class="o">.</span><span class="n">indptr</span>
+                <span class="n">indices</span> <span class="o">=</span> <span class="n">sampled_csc</span><span class="o">.</span><span class="n">indices</span>
+                <span class="n">expanded_indptr</span> <span class="o">=</span> <span class="n">expand_indptr</span><span class="p">(</span>
+                    <span class="n">indptr</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">indices</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">output_size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">col_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">expanded_indptr</span><span class="p">)</span>
+                <span class="n">row_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+            <span class="n">col_nodes</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">col_nodes</span><span class="p">)</span>
+            <span class="n">row_nodes</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">row_nodes</span><span class="p">)</span>
+            <span class="n">edge_index</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">row_nodes</span><span class="p">,</span> <span class="n">col_nodes</span><span class="p">)),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">long</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_features</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">node_features</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="p">(</span>
+                <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_features</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+            <span class="p">),</span> <span class="s2">"`to_pyg_data` only supports single feature homogeneous graph."</span>
+            <span class="n">node_features</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_features</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+
+        <span class="n">pyg_data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">node_features</span><span class="p">,</span>
+            <span class="n">edge_index</span><span class="o">=</span><span class="n">edge_index</span><span class="p">,</span>
+            <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">pyg_data</span></div>
+
+
+<div class="viewcode-block" id="MiniBatch.to">
+<a class="viewcode-back" href="../../../generated/dgl.graphbolt.MiniBatch.html#dgl.graphbolt.MiniBatch.to">[docs]</a>
+    <span class="k">def</span> <span class="nf">to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">):</span>  <span class="c1"># pylint: disable=invalid-name</span>
+<span class="w">        </span><span class="sd">"""Copy `MiniBatch` to the specified device using reflection."""</span>
+
+        <span class="k">def</span> <span class="nf">_to</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">"to"</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span>
+
+        <span class="k">def</span> <span class="nf">apply_to</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">recursive_apply</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">_to</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">device</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed_nodes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">compacted_node_pairs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Node related tasks.</span>
+            <span class="n">transfer_attrs</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="s2">"labels"</span><span class="p">,</span>
+                <span class="s2">"sampled_subgraphs"</span><span class="p">,</span>
+                <span class="s2">"node_features"</span><span class="p">,</span>
+                <span class="s2">"edge_features"</span><span class="p">,</span>
+            <span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># Layerwise inference</span>
+                <span class="n">transfer_attrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"seed_nodes"</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed_nodes</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">compacted_node_pairs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Link/edge related tasks.</span>
+            <span class="n">transfer_attrs</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="s2">"labels"</span><span class="p">,</span>
+                <span class="s2">"compacted_node_pairs"</span><span class="p">,</span>
+                <span class="s2">"compacted_negative_srcs"</span><span class="p">,</span>
+                <span class="s2">"compacted_negative_dsts"</span><span class="p">,</span>
+                <span class="s2">"sampled_subgraphs"</span><span class="p">,</span>
+                <span class="s2">"node_features"</span><span class="p">,</span>
+                <span class="s2">"edge_features"</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Otherwise copy all the attributes to the device.</span>
+            <span class="n">transfer_attrs</span> <span class="o">=</span> <span class="n">get_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">transfer_attrs</span><span class="p">:</span>
+            <span class="c1"># Only copy member variables.</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># For read-only attributes such as blocks and</span>
+                <span class="c1"># node_pairs_with_labels, setattr will throw an AttributeError.</span>
+                <span class="c1"># We catch these exceptions and skip those attributes.</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">apply_to</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">),</span> <span class="n">device</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+</div>
+
+
+
+<span class="k">def</span> <span class="nf">_minibatch_str</span><span class="p">(</span><span class="n">minibatch</span><span class="p">:</span> <span class="n">MiniBatch</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">final_str</span> <span class="o">=</span> <span class="s2">""</span>
+    <span class="c1"># Get all attributes in the class except methods.</span>
+    <span class="n">attributes</span> <span class="o">=</span> <span class="n">get_attributes</span><span class="p">(</span><span class="n">minibatch</span><span class="p">)</span>
+    <span class="n">attributes</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+    <span class="c1"># Insert key with its value into the string.</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">minibatch</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">_add_indent</span><span class="p">(</span><span class="n">_str</span><span class="p">,</span> <span class="n">indent</span><span class="p">):</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+</span> <span class="p">[</span>
+                <span class="s2">" "</span> <span class="o">*</span> <span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">10</span><span class="p">)</span> <span class="o">+</span> <span class="n">line</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="p">]</span>
+            <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+
+        <span class="c1"># Let the variables in the list occupy one line each, and adjust the</span>
+        <span class="c1"># indentation on top of the original if the original data output has</span>
+        <span class="c1"># line feeds.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">val_str</span><span class="p">)</span> <span class="k">for</span> <span class="n">val_str</span> <span class="ow">in</span> <span class="n">val</span><span class="p">]</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="s2">"["</span> <span class="o">+</span> <span class="s2">",</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"]"</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">val_str</span><span class="p">)</span> <span class="k">for</span> <span class="n">val_str</span> <span class="ow">in</span> <span class="n">val</span><span class="p">]</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="s2">"("</span> <span class="o">+</span> <span class="s2">",</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">+</span> <span class="s2">")"</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="n">final_str</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">final_str</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">_add_indent</span><span class="p">(</span><span class="n">val</span><span class="p">,</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s2">,</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">" "</span> <span class="o">*</span> <span class="mi">10</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="s2">"MiniBatch("</span> <span class="o">+</span> <span class="n">final_str</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="s2">")"</span>
+</pre></div>
+</div>
+</div>
+<footer>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+</body>
+</html>

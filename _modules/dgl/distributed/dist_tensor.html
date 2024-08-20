@@ -1,61 +1,55 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../../../">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dgl.distributed.dist_tensor &mdash; DGL 2.4 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=0bf289b5" />
 
-  
-  <!--[if lt IE 9]>
+<html class="writer-html5" data-content_root="../../../" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>dgl.distributed.dist_tensor — DGL 2.3.1 documentation</title>
+<link href="../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=9caaf7ed"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../../../_static/copybutton.js?v=ccdb6887"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-    <script src="../../../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
+<script src="../../../_static/jquery.js?v=5d32c60e"></script>
+<script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../../../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../../../_static/doctools.js?v=9a2dae69"></script>
+<script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../../../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script src="../../../_static/js/theme.js"></script>
+<link href="../../../genindex.html" rel="index" title="Index"/>
+<link href="../../../search.html" rel="search" title="Search"/>
 </head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../../../index.html" class="icon icon-home">
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../../../index.html">
             DGL
           </a>
-              <div class="version">
-                2.4
+<div class="version">
+                2.3.1
               </div>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+<form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Install and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/blitz/index.html">A Blitz Introduction to DGL</a></li>
@@ -105,33 +99,29 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../env_var.html">Environment Variables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../resources.html">Resources</a></li>
 </ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">DGL</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">dgl.distributed.dist_tensor</li>
-      <li class="wy-breadcrumbs-aside">
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <h1>Source code for dgl.distributed.dist_tensor</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Define distributed tensor.&quot;&quot;&quot;</span>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../../../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../../../index.html"></a></li>
+<li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+<li class="breadcrumb-item active">dgl.distributed.dist_tensor</li>
+<li class="wy-breadcrumbs-aside">
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<h1>Source code for dgl.distributed.dist_tensor</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Define distributed tensor."""</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
 
@@ -154,7 +144,7 @@
 <div class="viewcode-block" id="DistTensor">
 <a class="viewcode-back" href="../../../api/python/dgl.distributed.html#dgl.distributed.DistTensor">[docs]</a>
 <span class="k">class</span> <span class="nc">DistTensor</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Distributed tensor.</span>
+<span class="w">    </span><span class="sd">"""Distributed tensor.</span>
 
 <span class="sd">    ``DistTensor`` references to a distributed tensor sharded and stored in a cluster of machines.</span>
 <span class="sd">    It has the same interface as Pytorch Tensor to access its metadata (e.g., shape and data type).</span>
@@ -185,7 +175,7 @@
 <span class="sd">    create a new one. A distributed tensor is identified by the name passed to the constructor.</span>
 <span class="sd">    If the name exists, ``DistTensor`` will reference the existing one.</span>
 <span class="sd">    In this case, the shape and the data type must match the existing tensor.</span>
-<span class="sd">    If the name doesn&#39;t exist, a new tensor will be created in the kvstore.</span>
+<span class="sd">    If the name doesn't exist, a new tensor will be created in the kvstore.</span>
 
 <span class="sd">    When a distributed tensor is created, its values are initialized to zero. Users</span>
 <span class="sd">    can define an initialization function to control how the values are initialized.</span>
@@ -241,7 +231,7 @@
 <span class="sd">    The creation of ``DistTensor`` is a synchronized operation. When a trainer process tries to</span>
 <span class="sd">    create a ``DistTensor`` object, the creation succeeds only when all trainer processes</span>
 <span class="sd">    do the same.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -257,14 +247,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">kvstore</span> <span class="o">=</span> <span class="n">get_kvstore</span><span class="p">()</span>
         <span class="k">assert</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">kvstore</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-        <span class="p">),</span> <span class="s2">&quot;Distributed module is not initialized. Please call dgl.distributed.initialize.&quot;</span>
+        <span class="p">),</span> <span class="s2">"Distributed module is not initialized. Please call dgl.distributed.initialize."</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span> <span class="o">=</span> <span class="n">shape</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span> <span class="o">=</span> <span class="n">dtype</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_attach</span> <span class="o">=</span> <span class="n">attach</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_is_gdata</span> <span class="o">=</span> <span class="n">is_gdata</span>
 
         <span class="n">part_policies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kvstore</span><span class="o">.</span><span class="n">all_possible_part_policy</span>
-        <span class="c1"># If a user doesn&#39;t provide a partition policy, we should find one based on</span>
+        <span class="c1"># If a user doesn't provide a partition policy, we should find one based on</span>
         <span class="c1"># the input shape.</span>
         <span class="k">if</span> <span class="n">part_policy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">policy_name</span> <span class="ow">in</span> <span class="n">part_policies</span><span class="p">:</span>
@@ -274,36 +264,36 @@
                     <span class="c1"># decide which is the right one automatically. We should ask users</span>
                     <span class="c1"># to provide one.</span>
                     <span class="k">assert</span> <span class="n">part_policy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span> <span class="p">(</span>
-                        <span class="s2">&quot;Multiple partition policies match the input shape. &quot;</span>
-                        <span class="o">+</span> <span class="s2">&quot;Please provide a partition policy explicitly.&quot;</span>
+                        <span class="s2">"Multiple partition policies match the input shape. "</span>
+                        <span class="o">+</span> <span class="s2">"Please provide a partition policy explicitly."</span>
                     <span class="p">)</span>
                     <span class="n">part_policy</span> <span class="o">=</span> <span class="n">policy</span>
             <span class="k">assert</span> <span class="n">part_policy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="p">(</span>
-                <span class="s2">&quot;Cannot find a right partition policy. It is either because &quot;</span>
-                <span class="o">+</span> <span class="s2">&quot;its first dimension does not match the number of nodes or edges &quot;</span>
-                <span class="o">+</span> <span class="s2">&quot;of a distributed graph or there does not exist a distributed graph.&quot;</span>
+                <span class="s2">"Cannot find a right partition policy. It is either because "</span>
+                <span class="o">+</span> <span class="s2">"its first dimension does not match the number of nodes or edges "</span>
+                <span class="o">+</span> <span class="s2">"of a distributed graph or there does not exist a distributed graph."</span>
             <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_part_policy</span> <span class="o">=</span> <span class="n">part_policy</span>
         <span class="k">assert</span> <span class="p">(</span>
             <span class="n">part_policy</span><span class="o">.</span><span class="n">get_size</span><span class="p">()</span> <span class="o">==</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="p">),</span> <span class="s2">&quot;The partition policy does not match the input shape.&quot;</span>
+        <span class="p">),</span> <span class="s2">"The partition policy does not match the input shape."</span>
 
         <span class="k">if</span> <span class="n">init_func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">init_func</span> <span class="o">=</span> <span class="n">_default_init_data</span>
         <span class="n">exist_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kvstore</span><span class="o">.</span><span class="n">data_name_list</span><span class="p">()</span>
-        <span class="c1"># If a user doesn&#39;t provide a name, we generate a name ourselves.</span>
+        <span class="c1"># If a user doesn't provide a name, we generate a name ourselves.</span>
         <span class="c1"># We need to generate the name in a deterministic way.</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">assert</span> <span class="p">(</span>
                 <span class="ow">not</span> <span class="n">persistent</span>
-            <span class="p">),</span> <span class="s2">&quot;We cannot generate anonymous persistent distributed tensors&quot;</span>
+            <span class="p">),</span> <span class="s2">"We cannot generate anonymous persistent distributed tensors"</span>
             <span class="k">global</span> <span class="n">DIST_TENSOR_ID</span>
             <span class="c1"># All processes of the same role should create DistTensor synchronously.</span>
             <span class="c1"># Thus, all of them should have the same IDs.</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;anonymous-&quot;</span> <span class="o">+</span> <span class="n">get_role</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">DIST_TENSOR_ID</span><span class="p">)</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s2">"anonymous-"</span> <span class="o">+</span> <span class="n">get_role</span><span class="p">()</span> <span class="o">+</span> <span class="s2">"-"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">DIST_TENSOR_ID</span><span class="p">)</span>
             <span class="n">DIST_TENSOR_ID</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;name </span><span class="si">{}</span><span class="s2"> is type </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="s2">"name </span><span class="si">{}</span><span class="s2"> is type </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">name</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attach_group_id</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
@@ -321,14 +311,14 @@
             <span class="n">dtype1</span><span class="p">,</span> <span class="n">shape1</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kvstore</span><span class="o">.</span><span class="n">get_data_meta</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span>
             <span class="k">assert</span> <span class="p">(</span>
                 <span class="n">dtype</span> <span class="o">==</span> <span class="n">dtype1</span>
-            <span class="p">),</span> <span class="s2">&quot;The dtype does not match with the existing tensor&quot;</span>
+            <span class="p">),</span> <span class="s2">"The dtype does not match with the existing tensor"</span>
             <span class="k">assert</span> <span class="p">(</span>
                 <span class="n">shape</span> <span class="o">==</span> <span class="n">shape1</span>
-            <span class="p">),</span> <span class="s2">&quot;The shape does not match with the existing tensor&quot;</span>
+            <span class="p">),</span> <span class="s2">"The shape does not match with the existing tensor"</span>
 
     <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">initialized</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DGL_DIST_MODE&quot;</span><span class="p">,</span> <span class="s2">&quot;standalone&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;standalone&quot;</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"DGL_DIST_MODE"</span><span class="p">,</span> <span class="s2">"standalone"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"standalone"</span>
             <span class="ow">or</span> <span class="n">is_initialized</span><span class="p">()</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_persistent</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span> <span class="ow">and</span> <span class="n">initialized</span><span class="p">:</span>
@@ -342,17 +332,17 @@
     <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">toindex</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="n">idx</span><span class="o">.</span><span class="n">tousertensor</span><span class="p">()</span>
-        <span class="c1"># TODO(zhengda) how do we want to support broadcast (e.g., G.ndata[&#39;h&#39;][idx] = 1).</span>
+        <span class="c1"># TODO(zhengda) how do we want to support broadcast (e.g., G.ndata['h'][idx] = 1).</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">kvstore</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">id_tensor</span><span class="o">=</span><span class="n">idx</span><span class="p">,</span> <span class="n">data_tensor</span><span class="o">=</span><span class="n">val</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">kvstore_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the key string of this DistTensor in the associated KVStore.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the key string of this DistTensor in the associated KVStore."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">local_partition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the local partition of this DistTensor.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the local partition of this DistTensor."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">kvstore</span><span class="o">.</span><span class="n">data_store</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="fm">__or__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
@@ -373,105 +363,102 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">part_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the partition policy</span>
+<span class="w">        </span><span class="sd">"""Return the partition policy</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        PartitionPolicy</span>
 <span class="sd">            The partition policy of the distributed tensor.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_part_policy</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the shape of the distributed tensor.</span>
+<span class="w">        </span><span class="sd">"""Return the shape of the distributed tensor.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        tuple</span>
 <span class="sd">            The shape of the distributed tensor.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dtype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the data type of the distributed tensor.</span>
+<span class="w">        </span><span class="sd">"""Return the data type of the distributed tensor.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        ------</span>
 <span class="sd">        dtype</span>
 <span class="sd">            The data type of the tensor.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the name of the distributed tensor</span>
+<span class="w">        </span><span class="sd">"""Return the name of the distributed tensor</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">            The name of the tensor.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detach_group_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">tensor_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the tensor name</span>
+<span class="w">        </span><span class="sd">"""Return the tensor name</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">            The name of the tensor.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detach_group_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tensor_name</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">count_nonzero</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Count and return the number of nonzero value</span>
+<span class="w">        </span><span class="sd">"""Count and return the number of nonzero value</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        int</span>
 <span class="sd">            the number of nonzero value</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">kvstore</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_attach_group_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Attach group ID if needed</span>
+<span class="w">        </span><span class="sd">"""Attach group ID if needed</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">            new name with group ID attached</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attach</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">name</span>
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">get_group_id</span><span class="p">())</span>
+        <span class="k">return</span> <span class="s2">"</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">get_group_id</span><span class="p">())</span>
 
     <span class="k">def</span> <span class="nf">_detach_group_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Detach group ID if needed</span>
+<span class="w">        </span><span class="sd">"""Detach group ID if needed</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">            original name without group ID</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attach</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">name</span>
-        <span class="n">suffix</span> <span class="o">=</span> <span class="s2">&quot;_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">get_group_id</span><span class="p">())</span>
+        <span class="n">suffix</span> <span class="o">=</span> <span class="s2">"_</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">get_group_id</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">name</span><span class="p">[:</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">suffix</span><span class="p">)]</span></div>
 
 </pre></div>
-
-           </div>
-          </div>
-          <footer>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2018, DGL Team.</p>
-  </div>
+</div>
+</div>
+<footer>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
@@ -479,15 +466,58 @@
    
 
 </footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+
+<script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
-
+  </script>
 </body>
 </html>

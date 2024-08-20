@@ -1,66 +1,59 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../">
+
+<html class="writer-html5" data-content_root="../" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GNNExplainer &mdash; DGL 2.4 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
-      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=0bf289b5" />
-
-  
-  <!--[if lt IE 9]>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GNNExplainer — DGL 2.3.1 documentation</title>
+<link href="../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=9caaf7ed"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../_static/copybutton.js?v=ccdb6887"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="HeteroGNNExplainer" href="dgl.nn.pytorch.explain.HeteroGNNExplainer.html" />
-    <link rel="prev" title="NodeEmbedding" href="dgl.nn.pytorch.sparse_emb.NodeEmbedding.html" /> 
+<script src="../_static/jquery.js?v=5d32c60e"></script>
+<script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../_static/doctools.js?v=9a2dae69"></script>
+<script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+<script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../_static/js/theme.js"></script>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="dgl.nn.pytorch.explain.HeteroGNNExplainer.html" rel="next" title="HeteroGNNExplainer"/>
+<link href="dgl.nn.pytorch.sparse_emb.NodeEmbedding.html" rel="prev" title="NodeEmbedding"/>
 </head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../index.html" class="icon icon-home">
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../index.html">
             DGL
           </a>
-              <div class="version">
-                2.4
+<div class="version">
+                2.3.1
               </div>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+<form action="../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../install/index.html">Install and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/blitz/index.html">A Blitz Introduction to DGL</a></li>
@@ -140,33 +133,29 @@
 <li class="toctree-l1"><a class="reference internal" href="../env_var.html">Environment Variables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../resources.html">Resources</a></li>
 </ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">DGL</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
-      <li class="breadcrumb-item active">GNNExplainer</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/generated/dgl.nn.pytorch.explain.GNNExplainer.rst.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="gnnexplainer">
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../index.html"></a></li>
+<li class="breadcrumb-item"><a href="../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="breadcrumb-item active">GNNExplainer</li>
+<li class="wy-breadcrumbs-aside">
+<a href="../_sources/generated/dgl.nn.pytorch.explain.GNNExplainer.rst.txt" rel="nofollow"> View page source</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<section id="gnnexplainer">
 <h1>GNNExplainer<a class="headerlink" href="#gnnexplainer" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="dgl.nn.pytorch.explain.GNNExplainer">
@@ -251,7 +240,7 @@ the more important.</p></li>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Load dataset</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">GINDataset</span><span class="p">(</span><span class="s1">&#39;MUTAG&#39;</span><span class="p">,</span> <span class="n">self_loop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">GINDataset</span><span class="p">(</span><span class="s1">'MUTAG'</span><span class="p">,</span> <span class="n">self_loop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataloader</span> <span class="o">=</span> <span class="n">GraphDataLoader</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -265,22 +254,22 @@ the more important.</p></li>
 <span class="gp">... </span>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">feat</span><span class="p">,</span> <span class="n">eweight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="gp">... </span>        <span class="k">with</span> <span class="n">graph</span><span class="o">.</span><span class="n">local_scope</span><span class="p">():</span>
 <span class="gp">... </span>            <span class="n">feat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">feat</span><span class="p">)</span>
-<span class="gp">... </span>            <span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">feat</span>
+<span class="gp">... </span>            <span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'h'</span><span class="p">]</span> <span class="o">=</span> <span class="n">feat</span>
 <span class="gp">... </span>            <span class="k">if</span> <span class="n">eweight</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<span class="gp">... </span>                <span class="n">graph</span><span class="o">.</span><span class="n">update_all</span><span class="p">(</span><span class="n">fn</span><span class="o">.</span><span class="n">copy_u</span><span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">),</span> <span class="n">fn</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">))</span>
+<span class="gp">... </span>                <span class="n">graph</span><span class="o">.</span><span class="n">update_all</span><span class="p">(</span><span class="n">fn</span><span class="o">.</span><span class="n">copy_u</span><span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="s1">'m'</span><span class="p">),</span> <span class="n">fn</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s1">'m'</span><span class="p">,</span> <span class="s1">'h'</span><span class="p">))</span>
 <span class="gp">... </span>            <span class="k">else</span><span class="p">:</span>
-<span class="gp">... </span>                <span class="n">graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s1">&#39;w&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eweight</span>
-<span class="gp">... </span>                <span class="n">graph</span><span class="o">.</span><span class="n">update_all</span><span class="p">(</span><span class="n">fn</span><span class="o">.</span><span class="n">u_mul_e</span><span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">),</span> <span class="n">fn</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">))</span>
-<span class="gp">... </span>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">])</span>
+<span class="gp">... </span>                <span class="n">graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s1">'w'</span><span class="p">]</span> <span class="o">=</span> <span class="n">eweight</span>
+<span class="gp">... </span>                <span class="n">graph</span><span class="o">.</span><span class="n">update_all</span><span class="p">(</span><span class="n">fn</span><span class="o">.</span><span class="n">u_mul_e</span><span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">,</span> <span class="s1">'m'</span><span class="p">),</span> <span class="n">fn</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s1">'m'</span><span class="p">,</span> <span class="s1">'h'</span><span class="p">))</span>
+<span class="gp">... </span>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'h'</span><span class="p">])</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Train the model</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">feat_size</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;attr&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">feat_size</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'attr'</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">feat_size</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">gclasses</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">bg</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">logits</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">bg</span><span class="p">,</span> <span class="n">bg</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;attr&#39;</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="n">logits</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">bg</span><span class="p">,</span> <span class="n">bg</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'attr'</span><span class="p">])</span>
 <span class="gp">... </span>    <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
 <span class="gp">... </span>    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
@@ -290,7 +279,7 @@ the more important.</p></li>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Explain the prediction for graph 0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">explainer</span> <span class="o">=</span> <span class="n">GNNExplainer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">num_hops</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">features</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;attr&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">features</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'attr'</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">feat_mask</span><span class="p">,</span> <span class="n">edge_mask</span> <span class="o">=</span> <span class="n">explainer</span><span class="o">.</span><span class="n">explain_graph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">features</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">feat_mask</span>
 <span class="go">tensor([0.2362, 0.2497, 0.2622, 0.2675, 0.2649, 0.2962, 0.2533])</span>
@@ -299,7 +288,6 @@ the more important.</p></li>
 </pre></div>
 </div>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.nn.pytorch.explain.GNNExplainer.explain_node">
 <span class="sig-name descname"><span class="pre">explain_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feat</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dgl/nn/pytorch/explain/gnnexplainer.html#GNNExplainer.explain_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.nn.pytorch.explain.GNNExplainer.explain_node" title="Link to this definition"></a></dt>
@@ -345,9 +333,9 @@ The higher, the more important.</p></li>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Load dataset</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">CoraGraphDataset</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">features</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;feat&#39;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">labels</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">train_mask</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;train_mask&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">features</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'feat'</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">labels</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'label'</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">train_mask</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'train_mask'</span><span class="p">]</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define a model</span>
@@ -359,13 +347,13 @@ The higher, the more important.</p></li>
 <span class="gp">... </span>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">feat</span><span class="p">,</span> <span class="n">eweight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="gp">... </span>        <span class="k">with</span> <span class="n">graph</span><span class="o">.</span><span class="n">local_scope</span><span class="p">():</span>
 <span class="gp">... </span>            <span class="n">feat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">feat</span><span class="p">)</span>
-<span class="gp">... </span>            <span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">feat</span>
+<span class="gp">... </span>            <span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'h'</span><span class="p">]</span> <span class="o">=</span> <span class="n">feat</span>
 <span class="gp">... </span>            <span class="k">if</span> <span class="n">eweight</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<span class="gp">... </span>                <span class="n">graph</span><span class="o">.</span><span class="n">update_all</span><span class="p">(</span><span class="n">fn</span><span class="o">.</span><span class="n">copy_u</span><span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">),</span> <span class="n">fn</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">))</span>
+<span class="gp">... </span>                <span class="n">graph</span><span class="o">.</span><span class="n">update_all</span><span class="p">(</span><span class="n">fn</span><span class="o">.</span><span class="n">copy_u</span><span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="s1">'m'</span><span class="p">),</span> <span class="n">fn</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s1">'m'</span><span class="p">,</span> <span class="s1">'h'</span><span class="p">))</span>
 <span class="gp">... </span>            <span class="k">else</span><span class="p">:</span>
-<span class="gp">... </span>                <span class="n">graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s1">&#39;w&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eweight</span>
-<span class="gp">... </span>                <span class="n">graph</span><span class="o">.</span><span class="n">update_all</span><span class="p">(</span><span class="n">fn</span><span class="o">.</span><span class="n">u_mul_e</span><span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">),</span> <span class="n">fn</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">))</span>
-<span class="gp">... </span>            <span class="k">return</span> <span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]</span>
+<span class="gp">... </span>                <span class="n">graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s1">'w'</span><span class="p">]</span> <span class="o">=</span> <span class="n">eweight</span>
+<span class="gp">... </span>                <span class="n">graph</span><span class="o">.</span><span class="n">update_all</span><span class="p">(</span><span class="n">fn</span><span class="o">.</span><span class="n">u_mul_e</span><span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">,</span> <span class="s1">'m'</span><span class="p">),</span> <span class="n">fn</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s1">'m'</span><span class="p">,</span> <span class="s1">'h'</span><span class="p">))</span>
+<span class="gp">... </span>            <span class="k">return</span> <span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'h'</span><span class="p">]</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Train the model</span>
@@ -401,11 +389,10 @@ The higher, the more important.</p></li>
 </pre></div>
 </div>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.nn.pytorch.explain.GNNExplainer.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#dgl.nn.pytorch.explain.GNNExplainer.forward" title="Link to this definition"></a></dt>
-<dd><p>Defines the computation performed at every call.</p>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#dgl.nn.pytorch.explain.GNNExplainer.forward" title="Link to this definition"></a></dt>
+<dd><p>Define the computation performed at every call.</p>
 <p>Should be overridden by all subclasses.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -415,24 +402,18 @@ instead of this since the former takes care of running the
 registered hooks while the latter silently ignores them.</p>
 </div>
 </dd></dl>
-
 </dd></dl>
-
 </section>
-
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="dgl.nn.pytorch.sparse_emb.NodeEmbedding.html" class="btn btn-neutral float-left" title="NodeEmbedding" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="dgl.nn.pytorch.explain.HeteroGNNExplainer.html" class="btn btn-neutral float-right" title="HeteroGNNExplainer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2018, DGL Team.</p>
-  </div>
+</div>
+</div>
+<footer><div aria-label="Footer" class="rst-footer-buttons" role="navigation">
+<a accesskey="p" class="btn btn-neutral float-left" href="dgl.nn.pytorch.sparse_emb.NodeEmbedding.html" rel="prev" title="NodeEmbedding"><span aria-hidden="true" class="fa fa-arrow-circle-left"></span> Previous</a>
+<a accesskey="n" class="btn btn-neutral float-right" href="dgl.nn.pytorch.explain.HeteroGNNExplainer.html" rel="next" title="HeteroGNNExplainer">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
+</div>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
@@ -440,15 +421,58 @@ registered hooks while the latter silently ignores them.</p>
    
 
 </footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+
+<script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
-
+  </script>
 </body>
 </html>

@@ -1,66 +1,59 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../../../">
+
+<html class="writer-html5" data-content_root="../../../" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Understand Graph Attention Network &mdash; DGL 2.4 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=0bf289b5" />
-
-  
-  <!--[if lt IE 9]>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Understand Graph Attention Network — DGL 2.3.1 documentation</title>
+<link href="../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=9caaf7ed"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../../../_static/copybutton.js?v=ccdb6887"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="../../../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Batching many small graphs" href="../2_small_graph/index.html" />
-    <link rel="prev" title="Line Graph Neural Network" href="6_line_graph.html" /> 
+<script src="../../../_static/jquery.js?v=5d32c60e"></script>
+<script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../../../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../../../_static/doctools.js?v=9a2dae69"></script>
+<script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../../../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+<script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../../_static/js/theme.js"></script>
+<link href="../../../genindex.html" rel="index" title="Index"/>
+<link href="../../../search.html" rel="search" title="Search"/>
+<link href="../2_small_graph/index.html" rel="next" title="Batching many small graphs"/>
+<link href="6_line_graph.html" rel="prev" title="Line Graph Neural Network"/>
 </head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../../../index.html" class="icon icon-home">
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../../../index.html">
             DGL
           </a>
-              <div class="version">
-                2.4
+<div class="version">
+                2.3.1
               </div>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+<form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Install and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../blitz/index.html">A Blitz Introduction to DGL</a></li>
@@ -122,41 +115,37 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../env_var.html">Environment Variables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../resources.html">Resources</a></li>
 </ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">DGL</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html">Paper Study with DGL</a></li>
-          <li class="breadcrumb-item"><a href="index.html">Graph neural networks and its variants</a></li>
-      <li class="breadcrumb-item active">Understand Graph Attention Network</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="../../../_sources/tutorials/models/1_gnn/9_gat.rst.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <div class="sphx-glr-download-link-note admonition note">
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../../../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../../../index.html"></a></li>
+<li class="breadcrumb-item"><a href="../index.html">Paper Study with DGL</a></li>
+<li class="breadcrumb-item"><a href="index.html">Graph neural networks and its variants</a></li>
+<li class="breadcrumb-item active">Understand Graph Attention Network</li>
+<li class="wy-breadcrumbs-aside">
+<a href="../../../_sources/tutorials/models/1_gnn/9_gat.rst.txt" rel="nofollow"> View page source</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
 <p><a class="reference internal" href="#sphx-glr-download-tutorials-models-1-gnn-9-gat-py"><span class="std std-ref">Go to the end</span></a>
 to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="understand-graph-attention-network">
 <span id="model-gat"></span><span id="sphx-glr-tutorials-models-1-gnn-9-gat-py"></span><h1>Understand Graph Attention Network<a class="headerlink" href="#understand-graph-attention-network" title="Link to this heading"></a></h1>
-<p><strong>Authors:</strong> <a class="reference external" href="https://github.com/sufeidechabei/">Hao Zhang</a>, <a class="reference external" href="https://github.com/mufeili">Mufei Li</a>, <a class="reference external" href="https://jermainewang.github.io/">Minjie Wang</a>  <a class="reference external" href="https://shanghai.nyu.edu/academics/faculty/directory/zheng-zhang">Zheng Zhang</a></p>
+<p><strong>Authors:</strong> <a class="reference external" href="https://github.com/sufeidechabei/">Hao Zhang</a>, <a class="reference external" href="https://github.com/mufeili">Mufei Li</a>, <a class="reference external" href="https://jermainewang.github.io/">Minjie Wang</a> <a class="reference external" href="https://shanghai.nyu.edu/academics/faculty/directory/zheng-zhang">Zheng Zhang</a></p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>The tutorial aims at gaining insights into the paper, with code as a mean
@@ -195,7 +184,7 @@ employs the same update rule except that they set
 normalized convolution operation. Below are the equations to compute the node
 embedding <span class="math notranslate nohighlight">\(h_i^{(l+1)}\)</span> of layer <span class="math notranslate nohighlight">\(l+1\)</span> from the embeddings of
 layer <span class="math notranslate nohighlight">\(l\)</span>.</p>
-<a class="reference internal image-reference" href="https://data.dgl.ai/tutorial/gat/gat.png"><img alt="https://data.dgl.ai/tutorial/gat/gat.png" class="align-center" src="https://data.dgl.ai/tutorial/gat/gat.png" style="width: 450px;" /></a>
+<a class="reference internal image-reference" href="https://data.dgl.ai/tutorial/gat/gat.png"><img alt="https://data.dgl.ai/tutorial/gat/gat.png" class="align-center" src="https://data.dgl.ai/tutorial/gat/gat.png" style="width: 450px;"/></a>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 z_i^{(l)}&amp;=W^{(l)}h_i^{(l)},&amp;(1) \\
@@ -230,7 +219,7 @@ over features of neighbors, instead of a simple mean aggregation.</p>
 subpackage. Simply import the <code class="docutils literal notranslate"><span class="pre">GATConv</span></code> as the follows.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 
-<a href="https://docs.python.org/3/library/os.html#os.environ" title="os.environ" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-data"><span class="n">os</span><span class="o">.</span><span class="n">environ</span></a><span class="p">[</span><span class="s2">&quot;DGLBACKEND&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pytorch&quot;</span>
+<a class="sphx-glr-backref-module-os sphx-glr-backref-type-py-data" href="https://docs.python.org/3/library/os.html#os.environ" title="os.environ"><span class="n">os</span><span class="o">.</span><span class="n">environ</span></a><span class="p">[</span><span class="s2">"DGLBACKEND"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"pytorch"</span>
 </pre></div>
 </div>
 <p>Readers can skip the following step-by-step explanation of the implementation and
@@ -260,38 +249,38 @@ efficient <a class="reference internal" href="../../../generated/dgl.nn.pytorch.
         <span class="bp">self</span><span class="o">.</span><span class="n">reset_parameters</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">reset_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reinitialize learnable parameters.&quot;&quot;&quot;</span>
-        <span class="n">gain</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">calculate_gain</span><span class="p">(</span><span class="s2">&quot;relu&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">"""Reinitialize learnable parameters."""</span>
+        <span class="n">gain</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">calculate_gain</span><span class="p">(</span><span class="s2">"relu"</span><span class="p">)</span>
         <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">xavier_normal_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="n">gain</span><span class="o">=</span><span class="n">gain</span><span class="p">)</span>
         <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">xavier_normal_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attn_fc</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="n">gain</span><span class="o">=</span><span class="n">gain</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">edge_attention</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edges</span><span class="p">):</span>
         <span class="c1"># edge UDF for equation (2)</span>
-        <span class="n">z2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">edges</span><span class="o">.</span><span class="n">src</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">],</span> <span class="n">edges</span><span class="o">.</span><span class="n">dst</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">]],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">z2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">edges</span><span class="o">.</span><span class="n">src</span><span class="p">[</span><span class="s2">"z"</span><span class="p">],</span> <span class="n">edges</span><span class="o">.</span><span class="n">dst</span><span class="p">[</span><span class="s2">"z"</span><span class="p">]],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attn_fc</span><span class="p">(</span><span class="n">z2</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;e&quot;</span><span class="p">:</span> <span class="n">F</span><span class="o">.</span><span class="n">leaky_relu</span><span class="p">(</span><span class="n">a</span><span class="p">)}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">"e"</span><span class="p">:</span> <span class="n">F</span><span class="o">.</span><span class="n">leaky_relu</span><span class="p">(</span><span class="n">a</span><span class="p">)}</span>
 
     <span class="k">def</span> <span class="nf">message_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edges</span><span class="p">):</span>
         <span class="c1"># message UDF for equation (3) &amp; (4)</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="n">edges</span><span class="o">.</span><span class="n">src</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">],</span> <span class="s2">&quot;e&quot;</span><span class="p">:</span> <span class="n">edges</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;e&quot;</span><span class="p">]}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">"z"</span><span class="p">:</span> <span class="n">edges</span><span class="o">.</span><span class="n">src</span><span class="p">[</span><span class="s2">"z"</span><span class="p">],</span> <span class="s2">"e"</span><span class="p">:</span> <span class="n">edges</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"e"</span><span class="p">]}</span>
 
     <span class="k">def</span> <span class="nf">reduce_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="p">):</span>
         <span class="c1"># reduce UDF for equation (3) &amp; (4)</span>
         <span class="c1"># equation (3)</span>
-        <span class="n">alpha</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">nodes</span><span class="o">.</span><span class="n">mailbox</span><span class="p">[</span><span class="s2">&quot;e&quot;</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">nodes</span><span class="o">.</span><span class="n">mailbox</span><span class="p">[</span><span class="s2">"e"</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="c1"># equation (4)</span>
-        <span class="n">h</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">alpha</span> <span class="o">*</span> <span class="n">nodes</span><span class="o">.</span><span class="n">mailbox</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;h&quot;</span><span class="p">:</span> <span class="n">h</span><span class="p">}</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">alpha</span> <span class="o">*</span> <span class="n">nodes</span><span class="o">.</span><span class="n">mailbox</span><span class="p">[</span><span class="s2">"z"</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">"h"</span><span class="p">:</span> <span class="n">h</span><span class="p">}</span>
 
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
         <span class="c1"># equation (1)</span>
         <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"z"</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span>
         <span class="c1"># equation (2)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">apply_edges</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_attention</span><span class="p">)</span>
         <span class="c1"># equation (3) &amp; (4)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">update_all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">message_func</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduce_func</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;h&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"h"</span><span class="p">)</span>
 </pre></div>
 </div>
 <section id="equation-1">
@@ -312,9 +301,9 @@ attention scores can be viewed as edge data, which can be calculated by the
 which is defined as below:</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">edge_attention</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edges</span><span class="p">):</span>
     <span class="c1"># edge UDF for equation (2)</span>
-    <span class="n">z2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">edges</span><span class="o">.</span><span class="n">src</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">],</span> <span class="n">edges</span><span class="o">.</span><span class="n">dst</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">]],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">z2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">edges</span><span class="o">.</span><span class="n">src</span><span class="p">[</span><span class="s2">"z"</span><span class="p">],</span> <span class="n">edges</span><span class="o">.</span><span class="n">dst</span><span class="p">[</span><span class="s2">"z"</span><span class="p">]],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attn_fc</span><span class="p">(</span><span class="n">z2</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;e&quot;</span><span class="p">:</span> <span class="n">F</span><span class="o">.</span><span class="n">leaky_relu</span><span class="p">(</span><span class="n">a</span><span class="p">)}</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">"e"</span><span class="p">:</span> <span class="n">F</span><span class="o">.</span><span class="n">leaky_relu</span><span class="p">(</span><span class="n">a</span><span class="p">)}</span>
 </pre></div>
 </div>
 <p>Here, the dot product with the learnable weight vector <span class="math notranslate nohighlight">\(\vec{a^{(l)}}\)</span>
@@ -342,10 +331,10 @@ second dimension (<code class="docutils literal notranslate"><span class="pre">d
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">reduce_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="p">):</span>
     <span class="c1"># reduce UDF for equation (3) &amp; (4)</span>
     <span class="c1"># equation (3)</span>
-    <span class="n">alpha</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">nodes</span><span class="o">.</span><span class="n">mailbox</span><span class="p">[</span><span class="s2">&quot;e&quot;</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">nodes</span><span class="o">.</span><span class="n">mailbox</span><span class="p">[</span><span class="s2">"e"</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="c1"># equation (4)</span>
-    <span class="n">h</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">alpha</span> <span class="o">*</span> <span class="n">nodes</span><span class="o">.</span><span class="n">mailbox</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;h&quot;</span><span class="p">:</span> <span class="n">h</span><span class="p">}</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">alpha</span> <span class="o">*</span> <span class="n">nodes</span><span class="o">.</span><span class="n">mailbox</span><span class="p">[</span><span class="s2">"z"</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">"h"</span><span class="p">:</span> <span class="n">h</span><span class="p">}</span>
 </pre></div>
 </div>
 </section>
@@ -365,7 +354,7 @@ concatenation for intermediary layers and average for the final layer.</p>
 <p>Use the above defined single-head <code class="docutils literal notranslate"><span class="pre">GATLayer</span></code> as the building block
 for the <code class="docutils literal notranslate"><span class="pre">MultiHeadGATLayer</span></code> below:</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MultiHeadGATLayer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">in_dim</span><span class="p">,</span> <span class="n">out_dim</span><span class="p">,</span> <span class="n">num_heads</span><span class="p">,</span> <span class="n">merge</span><span class="o">=</span><span class="s2">&quot;cat&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">in_dim</span><span class="p">,</span> <span class="n">out_dim</span><span class="p">,</span> <span class="n">num_heads</span><span class="p">,</span> <span class="n">merge</span><span class="o">=</span><span class="s2">"cat"</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">MultiHeadGATLayer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">heads</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_heads</span><span class="p">):</span>
@@ -374,7 +363,7 @@ for the <code class="docutils literal notranslate"><span class="pre">MultiHeadGA
 
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
         <span class="n">head_outs</span> <span class="o">=</span> <span class="p">[</span><span class="n">attn_head</span><span class="p">(</span><span class="n">h</span><span class="p">)</span> <span class="k">for</span> <span class="n">attn_head</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">heads</span><span class="p">]</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">merge</span> <span class="o">==</span> <span class="s2">&quot;cat&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">merge</span> <span class="o">==</span> <span class="s2">"cat"</span><span class="p">:</span>
             <span class="c1"># concat on the output feature dimension (dim=1)</span>
             <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">head_outs</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -413,8 +402,8 @@ for the <code class="docutils literal notranslate"><span class="pre">MultiHeadGA
 <span class="k">def</span> <span class="nf">load_cora_data</span><span class="p">():</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">citegrh</span><span class="o">.</span><span class="n">load_cora</span><span class="p">()</span>
     <span class="n">g</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">BoolTensor</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;train_mask&quot;</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">g</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;feat&quot;</span><span class="p">],</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">],</span> <span class="n">mask</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">BoolTensor</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"train_mask"</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">g</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"feat"</span><span class="p">],</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"label"</span><span class="p">],</span> <span class="n">mask</span>
 </pre></div>
 </div>
 <p>The training loop is exactly the same as in the GCN tutorial.</p>
@@ -431,10 +420,10 @@ for the <code class="docutils literal notranslate"><span class="pre">MultiHeadGA
 <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
 
 <span class="c1"># main loop</span>
-<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dur</span></a> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">epoch</span></a> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">):</span>
-    <span class="k">if</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">epoch</span></a> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
-        <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t0</span></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">dur</span></a> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">epoch</span></a> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">):</span>
+    <span class="k">if</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">epoch</span></a> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+        <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">t0</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function" href="https://docs.python.org/3/library/time.html#time.time" title="time.time"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span>
 
     <span class="n">logits</span> <span class="o">=</span> <span class="n">net</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
     <span class="n">logp</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -444,12 +433,12 @@ for the <code class="docutils literal notranslate"><span class="pre">MultiHeadGA
     <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
     <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
 
-    <span class="k">if</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">epoch</span></a> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
-        <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dur</span></a><span class="o">.</span><span class="n">append</span><span class="p">(</span><a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span> <span class="o">-</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t0</span></a><span class="p">)</span>
+    <span class="k">if</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">epoch</span></a> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+        <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">dur</span></a><span class="o">.</span><span class="n">append</span><span class="p">(</span><a class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function" href="https://docs.python.org/3/library/time.html#time.time" title="time.time"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span> <span class="o">-</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">t0</span></a><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span>
-        <span class="s2">&quot;Epoch </span><span class="si">{:05d}</span><span class="s2"> | Loss </span><span class="si">{:.4f}</span><span class="s2"> | Time(s) </span><span class="si">{:.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">epoch</span></a><span class="p">,</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.mean.html#numpy.mean" title="numpy.mean" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">mean</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dur</span></a><span class="p">)</span>
+        <span class="s2">"Epoch </span><span class="si">{:05d}</span><span class="s2"> | Loss </span><span class="si">{:.4f}</span><span class="s2"> | Time(s) </span><span class="si">{:.4f}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">epoch</span></a><span class="p">,</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function" href="https://numpy.org/doc/stable/reference/generated/numpy.mean.html#numpy.mean" title="numpy.mean"><span class="n">np</span><span class="o">.</span><span class="n">mean</span></a><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">dur</span></a><span class="p">)</span>
         <span class="p">)</span>
     <span class="p">)</span>
 </pre></div>
@@ -462,40 +451,40 @@ for the <code class="docutils literal notranslate"><span class="pre">MultiHeadGA
   NumValidationSamples: 500
   NumTestSamples: 1000
 Done loading data from cached files.
-/opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
+/opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages/numpy/_core/fromnumeric.py:3596: RuntimeWarning: Mean of empty slice.
   return _methods._mean(a, axis=axis, dtype=dtype,
-/opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+/opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages/numpy/_core/_methods.py:138: RuntimeWarning: invalid value encountered in scalar divide
   ret = ret.dtype.type(ret / rcount)
-Epoch 00000 | Loss 1.9479 | Time(s) nan
-Epoch 00001 | Loss 1.9459 | Time(s) nan
+Epoch 00000 | Loss 1.9469 | Time(s) nan
+Epoch 00001 | Loss 1.9454 | Time(s) nan
 Epoch 00002 | Loss 1.9439 | Time(s) nan
-Epoch 00003 | Loss 1.9419 | Time(s) 0.0954
-Epoch 00004 | Loss 1.9399 | Time(s) 0.0939
-Epoch 00005 | Loss 1.9379 | Time(s) 0.0932
-Epoch 00006 | Loss 1.9359 | Time(s) 0.0932
-Epoch 00007 | Loss 1.9339 | Time(s) 0.0933
-Epoch 00008 | Loss 1.9318 | Time(s) 0.0932
-Epoch 00009 | Loss 1.9298 | Time(s) 0.0930
-Epoch 00010 | Loss 1.9278 | Time(s) 0.0928
-Epoch 00011 | Loss 1.9258 | Time(s) 0.0930
-Epoch 00012 | Loss 1.9237 | Time(s) 0.0931
-Epoch 00013 | Loss 1.9217 | Time(s) 0.0933
-Epoch 00014 | Loss 1.9196 | Time(s) 0.0932
-Epoch 00015 | Loss 1.9176 | Time(s) 0.0930
-Epoch 00016 | Loss 1.9155 | Time(s) 0.0929
-Epoch 00017 | Loss 1.9134 | Time(s) 0.0928
-Epoch 00018 | Loss 1.9113 | Time(s) 0.0927
-Epoch 00019 | Loss 1.9092 | Time(s) 0.0927
-Epoch 00020 | Loss 1.9071 | Time(s) 0.0926
-Epoch 00021 | Loss 1.9049 | Time(s) 0.0928
-Epoch 00022 | Loss 1.9028 | Time(s) 0.0933
-Epoch 00023 | Loss 1.9006 | Time(s) 0.0933
-Epoch 00024 | Loss 1.8985 | Time(s) 0.0932
-Epoch 00025 | Loss 1.8963 | Time(s) 0.0932
-Epoch 00026 | Loss 1.8941 | Time(s) 0.0932
-Epoch 00027 | Loss 1.8919 | Time(s) 0.0931
-Epoch 00028 | Loss 1.8897 | Time(s) 0.0930
-Epoch 00029 | Loss 1.8875 | Time(s) 0.0930
+Epoch 00003 | Loss 1.9425 | Time(s) 1.7596
+Epoch 00004 | Loss 1.9410 | Time(s) 1.2987
+Epoch 00005 | Loss 1.9395 | Time(s) 1.0705
+Epoch 00006 | Loss 1.9381 | Time(s) 1.0734
+Epoch 00007 | Loss 1.9366 | Time(s) 0.9892
+Epoch 00008 | Loss 1.9351 | Time(s) 0.9457
+Epoch 00009 | Loss 1.9336 | Time(s) 0.8978
+Epoch 00010 | Loss 1.9321 | Time(s) 0.9064
+Epoch 00011 | Loss 1.9306 | Time(s) 0.8800
+Epoch 00012 | Loss 1.9292 | Time(s) 0.8731
+Epoch 00013 | Loss 1.9276 | Time(s) 0.8556
+Epoch 00014 | Loss 1.9261 | Time(s) 0.8553
+Epoch 00015 | Loss 1.9246 | Time(s) 0.8456
+Epoch 00016 | Loss 1.9231 | Time(s) 0.8431
+Epoch 00017 | Loss 1.9215 | Time(s) 0.8372
+Epoch 00018 | Loss 1.9200 | Time(s) 0.8414
+Epoch 00019 | Loss 1.9184 | Time(s) 0.8317
+Epoch 00020 | Loss 1.9169 | Time(s) 0.8303
+Epoch 00021 | Loss 1.9153 | Time(s) 0.8204
+Epoch 00022 | Loss 1.9137 | Time(s) 0.8298
+Epoch 00023 | Loss 1.9121 | Time(s) 0.8285
+Epoch 00024 | Loss 1.9105 | Time(s) 0.8216
+Epoch 00025 | Loss 1.9088 | Time(s) 0.8186
+Epoch 00026 | Loss 1.9072 | Time(s) 0.8171
+Epoch 00027 | Loss 1.9055 | Time(s) 0.8176
+Epoch 00028 | Loss 1.9039 | Time(s) 0.8105
+Epoch 00029 | Loss 1.9022 | Time(s) 0.8044
 </pre></div>
 </div>
 </section>
@@ -534,7 +523,7 @@ visualize it by coloring edges. Below you can pick a subgraph of Cora and plot t
 attention weights of the last <code class="docutils literal notranslate"><span class="pre">GATLayer</span></code>. The nodes are colored according
 to their labels, whereas the edges are colored according to the magnitude of
 the attention weights, which can be referred with the colorbar on the right.</p>
-<a class="reference internal image-reference" href="https://data.dgl.ai/tutorial/gat/cora-attention.png"><img alt="https://data.dgl.ai/tutorial/gat/cora-attention.png" class="align-center" src="https://data.dgl.ai/tutorial/gat/cora-attention.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="https://data.dgl.ai/tutorial/gat/cora-attention.png"><img alt="https://data.dgl.ai/tutorial/gat/cora-attention.png" class="align-center" src="https://data.dgl.ai/tutorial/gat/cora-attention.png" style="width: 600px;"/></a>
 <p>You can see that the model seems to learn different attention weights. To
 understand the distribution more thoroughly, measure the <a class="reference external" href="https://en.wikipedia.org/wiki/Entropy_(information_theory">entropy</a>) of the
 attention distribution. For any node <span class="math notranslate nohighlight">\(i\)</span>,
@@ -551,9 +540,9 @@ Ideally, you want to see the model learns a distribution of lower entropy
 also be different. Therefore, you plot the aggregated histogram of entropy
 values of all nodes in the entire graph. Below are the attention histogram of
 learned by each attention head.</p>
-<p><img alt="image2" src="https://data.dgl.ai/tutorial/gat/cora-attention-hist.png" /></p>
+<p><img alt="image2" src="https://data.dgl.ai/tutorial/gat/cora-attention-hist.png"/></p>
 <p>As a reference, here is the histogram if all the nodes have uniform attention weight distribution.</p>
-<a class="reference internal image-reference" href="https://data.dgl.ai/tutorial/gat/cora-attention-uniform-hist.png"><img alt="https://data.dgl.ai/tutorial/gat/cora-attention-uniform-hist.png" class="align-center" src="https://data.dgl.ai/tutorial/gat/cora-attention-uniform-hist.png" style="width: 250px;" /></a>
+<a class="reference internal image-reference" href="https://data.dgl.ai/tutorial/gat/cora-attention-uniform-hist.png"><img alt="https://data.dgl.ai/tutorial/gat/cora-attention-uniform-hist.png" class="align-center" src="https://data.dgl.ai/tutorial/gat/cora-attention-uniform-hist.png" style="width: 250px;"/></a>
 <p>One can see that <strong>the attention values learned is quite similar to uniform distribution</strong>
 (i.e, all neighbors are equally important). This partially
 explains why the performance of GAT is close to that of GCN on Cora
@@ -613,18 +602,18 @@ performance.</p>
 <p>During training, use <code class="docutils literal notranslate"><span class="pre">BCEWithLogitsLoss</span></code> as the loss function. The
 learning curves of GAT and GCN are presented below; what is evident is the
 dramatic performance adavantage of GAT over GCN.</p>
-<a class="reference internal image-reference" href="https://data.dgl.ai/tutorial/gat/ppi-curve.png"><img alt="https://data.dgl.ai/tutorial/gat/ppi-curve.png" class="align-center" src="https://data.dgl.ai/tutorial/gat/ppi-curve.png" style="width: 300px;" /></a>
+<a class="reference internal image-reference" href="https://data.dgl.ai/tutorial/gat/ppi-curve.png"><img alt="https://data.dgl.ai/tutorial/gat/ppi-curve.png" class="align-center" src="https://data.dgl.ai/tutorial/gat/ppi-curve.png" style="width: 300px;"/></a>
 <p>As before, you can have a statistical understanding of the attentions learned
 by showing the histogram plot for the node-wise attention entropy. Below are
 the attention histograms learned by different attention layers.</p>
 <p><em>Attention learned in layer 1:</em></p>
-<p><img alt="image5" src="https://data.dgl.ai/tutorial/gat/ppi-first-layer-hist.png" /></p>
+<p><img alt="image5" src="https://data.dgl.ai/tutorial/gat/ppi-first-layer-hist.png"/></p>
 <p><em>Attention learned in layer 2:</em></p>
-<p><img alt="image6" src="https://data.dgl.ai/tutorial/gat/ppi-second-layer-hist.png" /></p>
+<p><img alt="image6" src="https://data.dgl.ai/tutorial/gat/ppi-second-layer-hist.png"/></p>
 <p><em>Attention learned in final layer:</em></p>
-<p><img alt="image7" src="https://data.dgl.ai/tutorial/gat/ppi-final-layer-hist.png" /></p>
+<p><img alt="image7" src="https://data.dgl.ai/tutorial/gat/ppi-final-layer-hist.png"/></p>
 <p>Again, comparing with uniform distribution:</p>
-<a class="reference internal image-reference" href="https://data.dgl.ai/tutorial/gat/ppi-uniform-hist.png"><img alt="https://data.dgl.ai/tutorial/gat/ppi-uniform-hist.png" class="align-center" src="https://data.dgl.ai/tutorial/gat/ppi-uniform-hist.png" style="width: 250px;" /></a>
+<a class="reference internal image-reference" href="https://data.dgl.ai/tutorial/gat/ppi-uniform-hist.png"><img alt="https://data.dgl.ai/tutorial/gat/ppi-uniform-hist.png" class="align-center" src="https://data.dgl.ai/tutorial/gat/ppi-uniform-hist.png" style="width: 250px;"/></a>
 <p>Clearly, <strong>GAT does learn sharp attention weights</strong>! There is a clear pattern
 over the layers as well: <strong>the attention gets sharper with a higher
 layer</strong>.</p>
@@ -647,7 +636,7 @@ check out the full example.</p>
 <li><p>See the optimized <a class="reference external" href="https://github.com/dmlc/dgl/blob/master/examples/pytorch/gat/gat.py">full example</a>.</p></li>
 <li><p>The next tutorial describes how to speedup GAT models by parallelizing multiple attention heads and SPMV optimization.</p></li>
 </ul>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.847 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 34.111 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-models-1-gnn-9-gat-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/30dde79d1418f8a8224fa315d0f97a95/9_gat.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">9_gat.ipynb</span></code></a></p>
@@ -662,20 +651,16 @@ check out the full example.</p>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </section>
 </section>
-
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="6_line_graph.html" class="btn btn-neutral float-left" title="Line Graph Neural Network" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../2_small_graph/index.html" class="btn btn-neutral float-right" title="Batching many small graphs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2018, DGL Team.</p>
-  </div>
+</div>
+</div>
+<footer><div aria-label="Footer" class="rst-footer-buttons" role="navigation">
+<a accesskey="p" class="btn btn-neutral float-left" href="6_line_graph.html" rel="prev" title="Line Graph Neural Network"><span aria-hidden="true" class="fa fa-arrow-circle-left"></span> Previous</a>
+<a accesskey="n" class="btn btn-neutral float-right" href="../2_small_graph/index.html" rel="next" title="Batching many small graphs">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
+</div>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
@@ -683,15 +668,58 @@ check out the full example.</p>
    
 
 </footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+
+<script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
-
+  </script>
 </body>
 </html>

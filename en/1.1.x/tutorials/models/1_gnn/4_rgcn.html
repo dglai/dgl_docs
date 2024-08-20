@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+
+<html class="writer-html5" data-content_root="../../../" lang="en">
+<head>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Relational Graph Convolutional Network — DGL 2.1.0 documentation</title>
+<link href="../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+<script src="../../../_static/jquery.js?v=5d32c60e"></script>
+<script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../../../_static/documentation_options.js?v=20623aea"></script>
+<script src="../../../_static/doctools.js?v=9a2dae69"></script>
+<script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../../../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+<script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../../_static/js/theme.js"></script>
+<link href="../../../genindex.html" rel="index" title="Index"/>
+<link href="../../../search.html" rel="search" title="Search"/>
+<link href="6_line_graph.html" rel="next" title="Line Graph Neural Network"/>
+<link href="1_gcn.html" rel="prev" title="Graph Convolutional Network"/>
+</head>
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../../../index.html">
+            DGL
+          </a>
+<div class="version">
+                2.1.0
+              </div>
+<div role="search">
+<form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
+</div>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Install and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../blitz/index.html">A Blitz Introduction to DGL</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Materials</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../stochastic_training/index.html">🆕 Stochastic Training of GNNs with GraphBolt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guide_cn/index.html">用户指南【包含过时信息】</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guide_ko/index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../graphtransformer/index.html">🆕 Tutorial: Graph Transformer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/sparse/index.html">Tutorials: dgl.sparse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cpu/index.html">Training on CPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../multi/index.html">Training on Multiple GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dist/index.html">Distributed training</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Paper Study with DGL</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Graph neural networks and its variants</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="1_gcn.html">Graph Convolutional Network</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Relational Graph Convolutional Network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="6_line_graph.html">Line Graph Neural Network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="9_gat.html">Understand Graph Attention Network</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../2_small_graph/index.html">Batching many small graphs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3_generative_model/index.html">Generative models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4_old_wines/index.html">Revisit classic models from a graph perspective</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.html">dgl</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.data.html">dgl.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.dataloading.html">dgl.dataloading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.DGLGraph.html">dgl.DGLGraph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.distributed.html">dgl.distributed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.function.html">dgl.function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.geometry.html">dgl.geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.graphbolt.html">🆕 dgl.graphbolt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn.functional.html">dgl.nn.functional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.ops.html">dgl.ops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.optim.html">dgl.optim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.sampling.html">dgl.sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.sparse_v0.html">dgl.sparse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.multiprocessing.html">dgl.multiprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/transforms.html">dgl.transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/udf.html">User-defined Functions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../contribute.html">Contribute to DGL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/ffi.html">DGL Foreign Function Interface (FFI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../performance.html">Performance Benchmarks</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Misc</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../env_var.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resources.html">Resources</a></li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../../../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../../../index.html"></a></li>
+<li class="breadcrumb-item"><a href="../index.html">Paper Study with DGL</a></li>
+<li class="breadcrumb-item"><a href="index.html">Graph neural networks and its variants</a></li>
+<li class="breadcrumb-item active">Relational Graph Convolutional Network</li>
+<li class="wy-breadcrumbs-aside">
+<a href="../../../_sources/tutorials/models/1_gnn/4_rgcn.rst.txt" rel="nofollow"> View page source</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-tutorials-models-1-gnn-4-rgcn-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="relational-graph-convolutional-network">
+<span id="model-rgcn"></span><span id="sphx-glr-tutorials-models-1-gnn-4-rgcn-py"></span><h1>Relational Graph Convolutional Network<a class="headerlink" href="#relational-graph-convolutional-network" title="Link to this heading"></a></h1>
+<p><strong>Author:</strong> Lingfan Yu, Mufei Li, Zheng Zhang</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The tutorial aims at gaining insights into the paper, with code as a mean
+of explanation. The implementation thus is NOT optimized for running
+efficiency. For recommended implementation, please refer to the <a class="reference external" href="https://github.com/dmlc/dgl/tree/master/examples">official
+examples</a>.</p>
+</div>
+<p>In this tutorial, you learn how to implement a relational graph convolutional
+network (R-GCN). This type of network is one effort to generalize GCN
+to handle different relationships between entities in a knowledge base. To
+learn more about the research behind R-GCN, see <a class="reference external" href="https://arxiv.org/pdf/1703.06103.pdf">Modeling Relational Data with Graph Convolutional
+Networks</a></p>
+<p>The straightforward graph convolutional network (GCN) exploits
+structural information of a dataset (that is, the graph connectivity) in order to
+improve the extraction of node representations. Graph edges are left as
+untyped.</p>
+<p>A knowledge graph is made up of a collection of triples in the form
+subject, relation, object. Edges thus encode important information and
+have their own embeddings to be learned. Furthermore, there may exist
+multiple edges among any given pair.</p>
+<section id="a-brief-introduction-to-r-gcn">
+<h2>A brief introduction to R-GCN<a class="headerlink" href="#a-brief-introduction-to-r-gcn" title="Link to this heading"></a></h2>
+<p>In <em>statistical relational learning</em> (SRL), there are two fundamental
+tasks:</p>
+<ul class="simple">
+<li><p><strong>Entity classification</strong> - Where you assign types and categorical
+properties to entities.</p></li>
+<li><p><strong>Link prediction</strong> - Where you recover missing triples.</p></li>
+</ul>
+<p>In both cases, missing information is expected to be recovered from the
+neighborhood structure of the graph. For example, the R-GCN
+paper cited earlier provides the following example. Knowing that Mikhail Baryshnikov was educated at the Vaganova Academy
+implies both that Mikhail Baryshnikov should have the label person, and
+that the triple (Mikhail Baryshnikov, lived in, Russia) must belong to the
+knowledge graph.</p>
+<p>R-GCN solves these two problems using a common graph convolutional network. It’s
+extended with multi-edge encoding to compute embedding of the entities, but
+with different downstream processing.</p>
+<ul class="simple">
+<li><p>Entity classification is done by attaching a softmax classifier at the
+final embedding of an entity (node). Training is through loss of standard
+cross-entropy.</p></li>
+<li><p>Link prediction is done by reconstructing an edge with an autoencoder
+architecture, using a parameterized score function. Training uses negative
+sampling.</p></li>
+</ul>
+<p>This tutorial focuses on the first task, entity classification, to show how to generate entity
+representation. <a class="reference external" href="https://github.com/dmlc/dgl/tree/master/examples/pytorch/rgcn">Complete
+code</a>
+for both tasks is found in the DGL Github repository.</p>
+</section>
+<section id="key-ideas-of-r-gcn">
+<h2>Key ideas of R-GCN<a class="headerlink" href="#key-ideas-of-r-gcn" title="Link to this heading"></a></h2>
+<p>Recall that in GCN, the hidden representation for each node <span class="math notranslate nohighlight">\(i\)</span> at
+<span class="math notranslate nohighlight">\((l+1)^{th}\)</span> layer is computed by:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}h_i^{l+1} = \sigma\left(\sum_{j\in N_i}\frac{1}{c_i} W^{(l)} h_j^{(l)}\right)~~~~~~~~~~(1)\\\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(c_i\)</span> is a normalization constant.</p>
+<p>The key difference between R-GCN and GCN is that in R-GCN, edges can
+represent different relations. In GCN, weight <span class="math notranslate nohighlight">\(W^{(l)}\)</span> in equation
+<span class="math notranslate nohighlight">\((1)\)</span> is shared by all edges in layer <span class="math notranslate nohighlight">\(l\)</span>. In contrast, in
+R-GCN, different edge types use different weights and only edges of the
+same relation type <span class="math notranslate nohighlight">\(r\)</span> are associated with the same projection weight
+<span class="math notranslate nohighlight">\(W_r^{(l)}\)</span>.</p>
+<p>So the hidden representation of entities in <span class="math notranslate nohighlight">\((l+1)^{th}\)</span> layer in
+R-GCN can be formulated as the following equation:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}h_i^{l+1} = \sigma\left(W_0^{(l)}h_i^{(l)}+\sum_{r\in R}\sum_{j\in N_i^r}\frac{1}{c_{i,r}}W_r^{(l)}h_j^{(l)}\right)~~~~~~~~~~(2)\\\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(N_i^r\)</span> denotes the set of neighbor indices of node <span class="math notranslate nohighlight">\(i\)</span>
+under relation <span class="math notranslate nohighlight">\(r\in R\)</span> and <span class="math notranslate nohighlight">\(c_{i,r}\)</span> is a normalization
+constant. In entity classification, the R-GCN paper uses
+<span class="math notranslate nohighlight">\(c_{i,r}=|N_i^r|\)</span>.</p>
+<p>The problem of applying the above equation directly is the rapid growth of
+the number of parameters, especially with highly multi-relational data. In
+order to reduce model parameter size and prevent overfitting, the original
+paper proposes to use basis decomposition.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}W_r^{(l)}=\sum\limits_{b=1}^B a_{rb}^{(l)}V_b^{(l)}~~~~~~~~~~(3)\\\end{split}\]</div>
+<p>Therefore, the weight <span class="math notranslate nohighlight">\(W_r^{(l)}\)</span> is a linear combination of basis
+transformation <span class="math notranslate nohighlight">\(V_b^{(l)}\)</span> with coefficients <span class="math notranslate nohighlight">\(a_{rb}^{(l)}\)</span>.
+The number of bases <span class="math notranslate nohighlight">\(B\)</span> is much smaller than the number of relations
+in the knowledge base.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Another weight regularization, block-decomposition, is implemented in
+the <a class="reference internal" href="#link-prediction">link prediction</a>.</p>
+</div>
+</section>
+<section id="implement-r-gcn-in-dgl">
+<h2>Implement R-GCN in DGL<a class="headerlink" href="#implement-r-gcn-in-dgl" title="Link to this heading"></a></h2>
+<p>An R-GCN model is composed of several R-GCN layers. The first R-GCN layer
+also serves as input layer and takes in features (for example, description texts)
+that are associated with node entity and project to hidden space. In this tutorial,
+we only use the entity ID as an entity feature.</p>
+<section id="r-gcn-layers">
+<h3>R-GCN layers<a class="headerlink" href="#r-gcn-layers" title="Link to this heading"></a></h3>
+<p>For each node, an R-GCN layer performs the following steps:</p>
+<ul class="simple">
+<li><p>Compute outgoing message using node representation and weight matrix
+associated with the edge type (message function)</p></li>
+<li><p>Aggregate incoming messages and generate new node representations (reduce
+and apply function)</p></li>
+</ul>
+<p>The following code is the definition of an R-GCN hidden layer.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Each relation type is associated with a different weight. Therefore,
+the full weight matrix has three dimensions: relation, input_feature,
+output_feature.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is showing how to implement an R-GCN from scratch.  DGL provides a more
+efficient <a class="reference internal" href="../../../generated/dgl.nn.pytorch.conv.RelGraphConv.html#dgl.nn.pytorch.conv.RelGraphConv" title="dgl.nn.pytorch.conv.RelGraphConv"><code class="xref py py-class docutils literal notranslate"><span class="pre">builtin</span> <span class="pre">R-GCN</span> <span class="pre">layer</span> <span class="pre">module</span></code></a>.</p>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<a class="sphx-glr-backref-module-os sphx-glr-backref-type-py-data" href="https://docs.python.org/3/library/os.html#os.environ" title="os.environ"><span class="n">os</span><span class="o">.</span><span class="n">environ</span></a><span class="p">[</span><span class="s2">"DGLBACKEND"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"pytorch"</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <a class="sphx-glr-backref-module-functools sphx-glr-backref-type-py-function" href="https://docs.python.org/3/library/functools.html#functools.partial" title="functools.partial"><span class="n">partial</span></a>
+
+<span class="kn">import</span> <span class="nn">dgl</span>
+<span class="kn">import</span> <span class="nn">dgl.function</span> <span class="k">as</span> <span class="nn">fn</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+<span class="kn">from</span> <span class="nn">dgl</span> <span class="kn">import</span> <span class="n">DGLGraph</span>
+
+
+<span class="k">class</span> <span class="nc">RGCNLayer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">in_feat</span><span class="p">,</span>
+        <span class="n">out_feat</span><span class="p">,</span>
+        <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_rels</span></a><span class="p">,</span>
+        <span class="n">num_bases</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">bias</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">activation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">is_input_layer</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">RGCNLayer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">in_feat</span> <span class="o">=</span> <span class="n">in_feat</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_feat</span> <span class="o">=</span> <span class="n">out_feat</span>
+        <span class="bp">self</span><span class="o">.</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_rels</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_rels</span></a>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_bases</span> <span class="o">=</span> <span class="n">num_bases</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">=</span> <span class="n">bias</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">activation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_input_layer</span> <span class="o">=</span> <span class="n">is_input_layer</span>
+
+        <span class="c1"># sanity check</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_bases</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_bases</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_rels</span></a><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">num_bases</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_rels</span></a>
+        <span class="c1"># weight bases in equation (3)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_bases</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">in_feat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_feat</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_bases</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_rels</span></a><span class="p">:</span>
+            <span class="c1"># linear combination coefficients in equation (3)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">w_comp</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_rels</span></a><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_bases</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="c1"># add bias</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">out_feat</span><span class="p">))</span>
+        <span class="c1"># init trainable parameters</span>
+        <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">xavier_uniform_</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="n">gain</span><span class="o">=</span><span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">calculate_gain</span><span class="p">(</span><span class="s2">"relu"</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_bases</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_rels</span></a><span class="p">:</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">xavier_uniform_</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">w_comp</span><span class="p">,</span> <span class="n">gain</span><span class="o">=</span><span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">calculate_gain</span><span class="p">(</span><span class="s2">"relu"</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="p">:</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">xavier_uniform_</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="p">,</span> <span class="n">gain</span><span class="o">=</span><span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">calculate_gain</span><span class="p">(</span><span class="s2">"relu"</span><span class="p">)</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_bases</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_rels</span></a><span class="p">:</span>
+            <span class="c1"># generate all weights from bases (equation (3))</span>
+            <span class="n">weight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">view</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">in_feat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_bases</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_feat</span>
+            <span class="p">)</span>
+            <span class="n">weight</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_comp</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_rels</span></a><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">in_feat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_feat</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">weight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_input_layer</span><span class="p">:</span>
+
+            <span class="k">def</span> <span class="nf">message_func</span><span class="p">(</span><span class="n">edges</span><span class="p">):</span>
+                <span class="c1"># for input layer, matrix multiply can be converted to be</span>
+                <span class="c1"># an embedding lookup using source node id</span>
+                <span class="n">embed</span> <span class="o">=</span> <span class="n">weight</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_feat</span><span class="p">)</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="n">edges</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">dgl</span><span class="o">.</span><span class="n">ETYPE</span></a><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">in_feat</span> <span class="o">+</span> <span class="n">edges</span><span class="o">.</span><span class="n">src</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span>
+                <span class="k">return</span> <span class="p">{</span><span class="s2">"msg"</span><span class="p">:</span> <span class="n">embed</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">*</span> <span class="n">edges</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"norm"</span><span class="p">]}</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="k">def</span> <span class="nf">message_func</span><span class="p">(</span><span class="n">edges</span><span class="p">):</span>
+                <span class="n">w</span> <span class="o">=</span> <span class="n">weight</span><span class="p">[</span><span class="n">edges</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">dgl</span><span class="o">.</span><span class="n">ETYPE</span></a><span class="p">]]</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">bmm</span><span class="p">(</span><span class="n">edges</span><span class="o">.</span><span class="n">src</span><span class="p">[</span><span class="s2">"h"</span><span class="p">]</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">w</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span> <span class="o">*</span> <span class="n">edges</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"norm"</span><span class="p">]</span>
+                <span class="k">return</span> <span class="p">{</span><span class="s2">"msg"</span><span class="p">:</span> <span class="n">msg</span><span class="p">}</span>
+
+        <span class="k">def</span> <span class="nf">apply_func</span><span class="p">(</span><span class="n">nodes</span><span class="p">):</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="n">nodes</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"h"</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="p">:</span>
+                <span class="n">h</span> <span class="o">=</span> <span class="n">h</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">:</span>
+                <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">"h"</span><span class="p">:</span> <span class="n">h</span><span class="p">}</span>
+
+        <span class="n">g</span><span class="o">.</span><span class="n">update_all</span><span class="p">(</span><span class="n">message_func</span><span class="p">,</span> <span class="n">fn</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">msg</span><span class="o">=</span><span class="s2">"msg"</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="s2">"h"</span><span class="p">),</span> <span class="n">apply_func</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="full-r-gcn-model-defined">
+<h3>Full R-GCN model defined<a class="headerlink" href="#full-r-gcn-model-defined" title="Link to this heading"></a></h3>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">num_nodes</span><span class="p">,</span>
+        <span class="n">h_dim</span><span class="p">,</span>
+        <span class="n">out_dim</span><span class="p">,</span>
+        <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_rels</span></a><span class="p">,</span>
+        <span class="n">num_bases</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">num_hidden_layers</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Model</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_nodes</span> <span class="o">=</span> <span class="n">num_nodes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h_dim</span> <span class="o">=</span> <span class="n">h_dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_dim</span> <span class="o">=</span> <span class="n">out_dim</span>
+        <span class="bp">self</span><span class="o">.</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_rels</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_rels</span></a>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_bases</span> <span class="o">=</span> <span class="n">num_bases</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_hidden_layers</span> <span class="o">=</span> <span class="n">num_hidden_layers</span>
+
+        <span class="c1"># create rgcn layers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">build_model</span><span class="p">()</span>
+
+        <span class="c1"># create initial features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_features</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">build_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">()</span>
+        <span class="c1"># input to hidden</span>
+        <span class="n">i2h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_input_layer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i2h</span><span class="p">)</span>
+        <span class="c1"># hidden to hidden</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_hidden_layers</span><span class="p">):</span>
+            <span class="n">h2h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_hidden_layer</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">h2h</span><span class="p">)</span>
+        <span class="c1"># hidden to output</span>
+        <span class="n">h2o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_output_layer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">h2o</span><span class="p">)</span>
+
+    <span class="c1"># initialize feature for each node</span>
+    <span class="k">def</span> <span class="nf">create_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">features</span>
+
+    <span class="k">def</span> <span class="nf">build_input_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">RGCNLayer</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">h_dim</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_rels</span></a><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">num_bases</span><span class="p">,</span>
+            <span class="n">activation</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">,</span>
+            <span class="n">is_input_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">build_hidden_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">RGCNLayer</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">h_dim</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">h_dim</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_rels</span></a><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">num_bases</span><span class="p">,</span>
+            <span class="n">activation</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">build_output_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">RGCNLayer</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">h_dim</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">out_dim</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_rels</span></a><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">num_bases</span><span class="p">,</span>
+            <span class="n">activation</span><span class="o">=</span><a class="sphx-glr-backref-module-functools sphx-glr-backref-type-py-function" href="https://docs.python.org/3/library/functools.html#functools.partial" title="functools.partial"><span class="n">partial</span></a><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">features</span>
+        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
+            <span class="n">layer</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"h"</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="handle-dataset">
+<h3>Handle dataset<a class="headerlink" href="#handle-dataset" title="Link to this heading"></a></h3>
+<p>This tutorial uses Institute for Applied Informatics and Formal Description Methods (AIFB) dataset from R-GCN paper.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># load graph data</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">rdf</span><span class="o">.</span><span class="n">AIFBDataset</span><span class="p">()</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">category</span></a> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">predict_category</span>
+<span class="n">train_mask</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">category</span></a><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"train_mask"</span><span class="p">)</span>
+<span class="n">test_mask</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">category</span></a><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"test_mask"</span><span class="p">)</span>
+<span class="n">train_idx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">train_mask</span><span class="p">,</span> <span class="n">as_tuple</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+<span class="n">test_idx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">test_mask</span><span class="p">,</span> <span class="n">as_tuple</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">category</span></a><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"label"</span><span class="p">)</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_rels</span></a> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">canonical_etypes</span><span class="p">)</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_classes</span></a> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_classes</span></a>
+<span class="c1"># normalization factor</span>
+<span class="k">for</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple"><span class="n">cetype</span></a> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">canonical_etypes</span><span class="p">:</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple"><span class="n">cetype</span></a><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"norm"</span><span class="p">]</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">norm_by_dst</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple"><span class="n">cetype</span></a><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">category_id</span></a> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ntypes</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">category</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Done loading data from cached files.
+</pre></div>
+</div>
+</section>
+<section id="create-graph-and-model">
+<h3>Create graph and model<a class="headerlink" href="#create-graph-and-model" title="Link to this heading"></a></h3>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># configurations</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">n_hidden</span></a> <span class="o">=</span> <span class="mi">16</span>  <span class="c1"># number of hidden units</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">n_bases</span></a> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>  <span class="c1"># use number of relations as number of bases</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">n_hidden_layers</span></a> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># use 1 input layer, 1 output layer, no hidden layer</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">n_epochs</span></a> <span class="o">=</span> <span class="mi">25</span>  <span class="c1"># epochs to train</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">lr</span></a> <span class="o">=</span> <span class="mf">0.01</span>  <span class="c1"># learning rate</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">l2norm</span></a> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># L2 norm coefficient</span>
+
+<span class="c1"># create graph</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">to_homogeneous</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">edata</span><span class="o">=</span><span class="p">[</span><span class="s2">"norm"</span><span class="p">])</span>
+<span class="n">node_ids</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">())</span>
+<span class="n">target_idx</span> <span class="o">=</span> <span class="n">node_ids</span><span class="p">[</span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">dgl</span><span class="o">.</span><span class="n">NTYPE</span></a><span class="p">]</span> <span class="o">==</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">category_id</span></a><span class="p">]</span>
+
+<span class="c1"># create model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">(),</span>
+    <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">n_hidden</span></a><span class="p">,</span>
+    <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_classes</span></a><span class="p">,</span>
+    <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_rels</span></a><span class="p">,</span>
+    <span class="n">num_bases</span><span class="o">=</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">n_bases</span></a><span class="p">,</span>
+    <span class="n">num_hidden_layers</span><span class="o">=</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">n_hidden_layers</span></a><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="training-loop">
+<h3>Training loop<a class="headerlink" href="#training-loop" title="Link to this heading"></a></h3>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># optimizer</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">lr</span></a><span class="o">=</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">lr</span></a><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">l2norm</span></a><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"start training..."</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+<span class="k">for</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">epoch</span></a> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">n_epochs</span></a><span class="p">):</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">logits</span><span class="p">[</span><span class="n">target_idx</span><span class="p">]</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">(</span><span class="n">logits</span><span class="p">[</span><span class="n">train_idx</span><span class="p">],</span> <span class="n">labels</span><span class="p">[</span><span class="n">train_idx</span><span class="p">])</span>
+    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+    <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">train_acc</span></a> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">logits</span><span class="p">[</span><span class="n">train_idx</span><span class="p">]</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">labels</span><span class="p">[</span><span class="n">train_idx</span><span class="p">])</span>
+    <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">train_acc</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">train_acc</span><span class="o">.</span><span class="n">item</span></a><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_idx</span><span class="p">)</span>
+    <span class="n">val_loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">(</span><span class="n">logits</span><span class="p">[</span><span class="n">test_idx</span><span class="p">],</span> <span class="n">labels</span><span class="p">[</span><span class="n">test_idx</span><span class="p">])</span>
+    <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">val_acc</span></a> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">logits</span><span class="p">[</span><span class="n">test_idx</span><span class="p">]</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">labels</span><span class="p">[</span><span class="n">test_idx</span><span class="p">])</span>
+    <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">val_acc</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">val_acc</span><span class="o">.</span><span class="n">item</span></a><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_idx</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">"Epoch </span><span class="si">{:05d}</span><span class="s2"> | "</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">epoch</span></a><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">"Train Accuracy: </span><span class="si">{:.4f}</span><span class="s2"> | Train Loss: </span><span class="si">{:.4f}</span><span class="s2"> | "</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">train_acc</span></a><span class="p">,</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="o">+</span> <span class="s2">"Validation Accuracy: </span><span class="si">{:.4f}</span><span class="s2"> | Validation loss: </span><span class="si">{:.4f}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">val_acc</span></a><span class="p">,</span> <span class="n">val_loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>start training...
+Epoch 00000 | Train Accuracy: 0.1714 | Train Loss: 1.3863 | Validation Accuracy: 0.2500 | Validation loss: 1.3861
+Epoch 00001 | Train Accuracy: 0.9786 | Train Loss: 1.3567 | Validation Accuracy: 0.9444 | Validation loss: 1.3635
+Epoch 00002 | Train Accuracy: 0.9786 | Train Loss: 1.3119 | Validation Accuracy: 0.9444 | Validation loss: 1.3277
+Epoch 00003 | Train Accuracy: 0.9714 | Train Loss: 1.2516 | Validation Accuracy: 0.9444 | Validation loss: 1.2779
+Epoch 00004 | Train Accuracy: 0.9643 | Train Loss: 1.1829 | Validation Accuracy: 0.9444 | Validation loss: 1.2191
+Epoch 00005 | Train Accuracy: 0.9571 | Train Loss: 1.1170 | Validation Accuracy: 0.9444 | Validation loss: 1.1605
+Epoch 00006 | Train Accuracy: 0.9571 | Train Loss: 1.0617 | Validation Accuracy: 0.9444 | Validation loss: 1.1106
+Epoch 00007 | Train Accuracy: 0.9571 | Train Loss: 1.0185 | Validation Accuracy: 0.9444 | Validation loss: 1.0713
+Epoch 00008 | Train Accuracy: 0.9571 | Train Loss: 0.9848 | Validation Accuracy: 0.9444 | Validation loss: 1.0401
+Epoch 00009 | Train Accuracy: 0.9643 | Train Loss: 0.9576 | Validation Accuracy: 0.9444 | Validation loss: 1.0146
+Epoch 00010 | Train Accuracy: 0.9714 | Train Loss: 0.9352 | Validation Accuracy: 0.9444 | Validation loss: 0.9935
+Epoch 00011 | Train Accuracy: 0.9714 | Train Loss: 0.9164 | Validation Accuracy: 0.9444 | Validation loss: 0.9762
+Epoch 00012 | Train Accuracy: 0.9714 | Train Loss: 0.9003 | Validation Accuracy: 0.9444 | Validation loss: 0.9621
+Epoch 00013 | Train Accuracy: 0.9714 | Train Loss: 0.8864 | Validation Accuracy: 0.9444 | Validation loss: 0.9505
+Epoch 00014 | Train Accuracy: 0.9714 | Train Loss: 0.8743 | Validation Accuracy: 0.9444 | Validation loss: 0.9407
+Epoch 00015 | Train Accuracy: 0.9786 | Train Loss: 0.8634 | Validation Accuracy: 0.9444 | Validation loss: 0.9318
+Epoch 00016 | Train Accuracy: 0.9786 | Train Loss: 0.8535 | Validation Accuracy: 0.9444 | Validation loss: 0.9235
+Epoch 00017 | Train Accuracy: 0.9786 | Train Loss: 0.8444 | Validation Accuracy: 0.9444 | Validation loss: 0.9156
+Epoch 00018 | Train Accuracy: 0.9786 | Train Loss: 0.8360 | Validation Accuracy: 0.9444 | Validation loss: 0.9080
+Epoch 00019 | Train Accuracy: 0.9786 | Train Loss: 0.8281 | Validation Accuracy: 0.9722 | Validation loss: 0.9006
+Epoch 00020 | Train Accuracy: 0.9786 | Train Loss: 0.8208 | Validation Accuracy: 0.9722 | Validation loss: 0.8934
+Epoch 00021 | Train Accuracy: 0.9786 | Train Loss: 0.8141 | Validation Accuracy: 0.9722 | Validation loss: 0.8867
+Epoch 00022 | Train Accuracy: 0.9786 | Train Loss: 0.8079 | Validation Accuracy: 0.9722 | Validation loss: 0.8803
+Epoch 00023 | Train Accuracy: 0.9786 | Train Loss: 0.8024 | Validation Accuracy: 0.9722 | Validation loss: 0.8744
+Epoch 00024 | Train Accuracy: 0.9786 | Train Loss: 0.7974 | Validation Accuracy: 0.9722 | Validation loss: 0.8690
+</pre></div>
+</div>
+</section>
+</section>
+<section id="the-second-task-link-prediction">
+<span id="link-prediction"></span><h2>The second task, link prediction<a class="headerlink" href="#the-second-task-link-prediction" title="Link to this heading"></a></h2>
+<p>So far, you have seen how to use DGL to implement entity classification with an
+R-GCN model. In the knowledge base setting, representation generated by
+R-GCN can be used to uncover potential relationships between nodes. In the
+R-GCN paper, the authors feed the entity representations generated by R-GCN
+into the <a class="reference external" href="https://arxiv.org/pdf/1412.6575.pdf">DistMult</a> prediction model
+to predict possible relationships.</p>
+<p>The implementation is similar to that presented here, but with an extra DistMult layer
+stacked on top of the R-GCN layers. You can find the complete
+implementation of link prediction with R-GCN in our <a class="reference external" href="https://github.com/dmlc/dgl/blob/master/examples/pytorch/rgcn/link.py">Github Python code
+example</a>.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.676 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-models-1-gnn-4-rgcn-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../../_downloads/be527058f1b143daf0768d117b30c374/4_rgcn.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">4_rgcn.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../../_downloads/208df4cdd7544e5c637ccb811ef670ea/4_rgcn.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">4_rgcn.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../../_downloads/40a3cadd8f5b33a55c8d4b43619eeead/4_rgcn.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">4_rgcn.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+</div>
+</div>
+<footer><div aria-label="Footer" class="rst-footer-buttons" role="navigation">
+<a accesskey="p" class="btn btn-neutral float-left" href="1_gcn.html" rel="prev" title="Graph Convolutional Network"><span aria-hidden="true" class="fa fa-arrow-circle-left"></span> Previous</a>
+<a accesskey="n" class="btn btn-neutral float-right" href="6_line_graph.html" rel="next" title="Line Graph Neural Network">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
+</div>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+            v: 1.1.x
+            <span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 假设 branches.json 位于同目录下
+            fetch('branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+    </script>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+</body>
+</html>
