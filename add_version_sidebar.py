@@ -2,8 +2,8 @@ import os
 from bs4 import BeautifulSoup
 
 # 设定文件夹路径和模板文件路径
-folder_path = 'latest'  # 替换为你 HTML 文件夹的路径
-template_file_path = 'version_template.html'  # 替换为 template.html 的路径
+folder_path = '.'  # 替换为你 HTML 文件夹的路径
+template_file_path = './version_template.html'  # 替换为 template.html 的路径
 
 # 读取模板文件内容
 with open(template_file_path, 'r', encoding='utf-8') as template_file:
