@@ -6,7 +6,7 @@ def generate_branch_json(branches, output_file='branches.json'):
     data = {
         "branches": [{"name": branch, "url": f"/dgl_docs/en/{branch}/"} for branch in branches]
     }
-    
+    data["branches"].append({"name": "latest", "url": "/dgl_docs/"})
     # 将数据写入 JSON 文件
     with open(output_file, 'w') as f:
         json.dump(data, f, indent=2)
