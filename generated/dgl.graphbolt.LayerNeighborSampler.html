@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>LayerNeighborSampler — DGL 2.3.1 documentation</title>
+<title>LayerNeighborSampler — DGL 2.4 documentation</title>
 <link href="../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,7 +19,7 @@
   <![endif]-->
 <script src="../_static/jquery.js?v=5d32c60e"></script>
 <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../_static/documentation_options.js?v=9caaf7ed"></script>
 <script src="../_static/doctools.js?v=9a2dae69"></script>
 <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -31,7 +31,7 @@
 <script src="../_static/js/theme.js"></script>
 <link href="../genindex.html" rel="index" title="Index"/>
 <link href="../search.html" rel="search" title="Search"/>
-<link href="dgl.graphbolt.SampledSubgraphImpl.html" rel="next" title="SampledSubgraphImpl"/>
+<link href="dgl.graphbolt.TemporalNeighborSampler.html" rel="next" title="TemporalNeighborSampler"/>
 <link href="dgl.graphbolt.NeighborSampler.html" rel="prev" title="NeighborSampler"/>
 </head>
 <body class="wy-body-for-nav">
@@ -43,7 +43,7 @@
             DGL
           </a>
 <div class="version">
-                2.3.1
+                2.4
               </div>
 <div role="search">
 <form action="../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -97,6 +97,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#dgl.graphbolt.LayerNeighborSampler"><code class="docutils literal notranslate"><span class="pre">LayerNeighborSampler</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="dgl.graphbolt.TemporalNeighborSampler.html">TemporalNeighborSampler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgl.graphbolt.TemporalLayerNeighborSampler.html">TemporalLayerNeighborSampler</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dgl.graphbolt.SampledSubgraphImpl.html">SampledSubgraphImpl</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dgl.graphbolt.InSubgraphSampler.html">InSubgraphSampler</a></li>
 </ul>
@@ -154,7 +156,7 @@
 <h1>LayerNeighborSampler<a class="headerlink" href="#layerneighborsampler" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="dgl.graphbolt.LayerNeighborSampler">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgl.graphbolt.</span></span><span class="sig-name descname"><span class="pre">LayerNeighborSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datapipe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fanouts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prob_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deduplicate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_dependency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_dependency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dgl/graphbolt/impl/neighbor_sampler.html#LayerNeighborSampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.graphbolt.LayerNeighborSampler" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgl.graphbolt.</span></span><span class="sig-name descname"><span class="pre">LayerNeighborSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datapipe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fanouts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prob_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deduplicate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_dependency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_dependency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlap_fetch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_gpu_cached_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpu_cache_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">asynchronous</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dgl/graphbolt/impl/neighbor_sampler.html#LayerNeighborSampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.graphbolt.LayerNeighborSampler" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">NeighborSamplerImpl</span></code></p>
 <p>Sample layer neighbor edges from a graph and return a subgraph.</p>
 <p>Functional name: <code class="xref py py-obj docutils literal notranslate"><span class="pre">sample_layer_neighbor</span></code>.</p>
@@ -207,6 +209,18 @@ variates. Results in a higher temporal access locality of sampled
 nodes and edges. Setting it to <span class="math notranslate nohighlight">\(\kappa\)</span> slows down the change in
 the random variates proportional to <span class="math notranslate nohighlight">\(\frac{1}{\kappa}\)</span>. Implements
 the dependent minibatching approach in <a class="reference external" href="https://arxiv.org/abs/2310.12403">arXiv:2310.12403</a>.</p></li>
+<li><p><strong>overlap_fetch</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, the data loader will overlap the UVA graph fetching operations
+with the rest of operations by using an alternative CUDA stream. This
+option should be enabled if you have moved your graph to the pinned
+memory for optimal performance. Default is False.</p></li>
+<li><p><strong>num_gpu_cached_edges</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – If positive and overlap_graph_fetch is True, then the GPU will cache
+frequently accessed vertex neighborhoods to reduce the PCI-e bandwidth
+demand due to pinned graph accesses.</p></li>
+<li><p><strong>gpu_cache_threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – Determines how many times a vertex needs to be accessed before its
+neighborhood ends up being cached on the GPU.</p></li>
+<li><p><strong>asynchronous</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Boolean indicating whether sampling and compaction stages should run
+in background threads to hide the latency of CPU GPU synchronization.
+Should be enabled only when sampling on the GPU.</p></li>
 </ul>
 </dd>
 </dl>
@@ -262,7 +276,7 @@ the dependent minibatching approach in <a class="reference external" href="https
 </div>
 <footer><div aria-label="Footer" class="rst-footer-buttons" role="navigation">
 <a accesskey="p" class="btn btn-neutral float-left" href="dgl.graphbolt.NeighborSampler.html" rel="prev" title="NeighborSampler"><span aria-hidden="true" class="fa fa-arrow-circle-left"></span> Previous</a>
-<a accesskey="n" class="btn btn-neutral float-right" href="dgl.graphbolt.SampledSubgraphImpl.html" rel="next" title="SampledSubgraphImpl">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
+<a accesskey="n" class="btn btn-neutral float-right" href="dgl.graphbolt.TemporalNeighborSampler.html" rel="next" title="TemporalNeighborSampler">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
 </div>
 <hr/>
 <div role="contentinfo">
@@ -282,8 +296,8 @@ the dependent minibatching approach in <a class="reference external" href="https
 <div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
 <span class="rst-current-version" data-toggle="rst-current-version">
 <span class="fa fa-book"> Read the Docs</span>
-            v: 1.1.x
-            <span class="fa fa-caret-down"></span>
+<span id="version-placeholder">v: latest</span>
+<span class="fa fa-caret-down"></span>
 </span>
 <div class="rst-other-versions">
 <dl>
@@ -305,8 +319,7 @@ the dependent minibatching approach in <a class="reference external" href="https
 </div>
 <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 假设 branches.json 位于同目录下
-            fetch('branches.json')
+            fetch('/dgl_docs/branches.json')
                 .then(response => response.json())
                 .then(data => {
                     var versionListDiv = document.getElementById('version-list');
@@ -320,6 +333,29 @@ the dependent minibatching approach in <a class="reference external" href="https
                     });
                 })
                 .catch(error => console.error('Error loading branches:', error));
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            // 获取当前路径
+            var path = window.location.pathname;
+            var versionPlaceholder = document.getElementById('version-placeholder');
+
+            // 检查路径中是否包含 'en'
+            if (path.includes('/en/')) {
+                // 提取 'en' 后的文件夹作为版本号
+                var parts = path.split('/en/');
+                if (parts[1]) {
+                    var folders = parts[1].split('/');
+                    if (folders.length > 0 && folders[0]) {
+                        versionPlaceholder.textContent = 'v: ' + folders[0];
+                    } else {
+                        versionPlaceholder.textContent = 'v: latest';
+                    }
+                } else {
+                    versionPlaceholder.textContent = 'v: latest';
+                }
+            } else {
+                versionPlaceholder.textContent = 'v: latest';
+            }
         });
     </script>
 

@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Single Machine Multi-GPU Minibatch Node Classification — DGL 2.1.0 documentation</title>
+<title>Single Machine Multi-GPU Minibatch Node Classification — DGL 2.0.0 documentation</title>
 <link href="../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,13 +19,12 @@
   <![endif]-->
 <script src="../../_static/jquery.js?v=5d32c60e"></script>
 <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../../_static/documentation_options.js?v=20623aea"></script>
+<script src="../../_static/documentation_options.js?v=51b770b3"></script>
 <script src="../../_static/doctools.js?v=9a2dae69"></script>
 <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../../_static/copybutton.js?v=ccdb6887"></script>
 <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
 <script src="../../_static/js/theme.js"></script>
 <link href="../../genindex.html" rel="index" title="Index"/>
 <link href="../../search.html" rel="search" title="Search"/>
@@ -41,7 +40,7 @@
             DGL
           </a>
 <div class="version">
-                2.1.0
+                2.0.0
               </div>
 <div role="search">
 <form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -62,7 +61,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../guide_cn/index.html">用户指南【包含过时信息】</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../guide_ko/index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../graphtransformer/index.html">🆕 Tutorial: Graph Transformer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../notebooks/sparse/index.html">Tutorials: dgl.sparse</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cpu/index.html">Training on CPUs</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Training on Multiple GPUs</a><ul class="current">
@@ -84,6 +82,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.geometry.html">dgl.geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.graphbolt.html">🆕 dgl.graphbolt</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/nn-tensorflow.html">dgl.nn (TensorFlow)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/nn-mxnet.html">dgl.nn (MXNet)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/nn.functional.html">dgl.nn.functional</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.ops.html">dgl.ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.optim.html">dgl.optim</a></li>
@@ -165,9 +165,9 @@ and <code class="docutils literal notranslate"><span class="pre">torch.multiproc
 <span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
 <span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
 <span class="kn">import</span> <span class="nn">torchmetrics.functional</span> <span class="k">as</span> <span class="nn">MF</span>
+<span class="kn">import</span> <span class="nn">tqdm</span>
 <span class="kn">from</span> <span class="nn">torch.distributed.algorithms.join</span> <span class="kn">import</span> <span class="n">Join</span>
 <span class="kn">from</span> <span class="nn">torch.nn.parallel</span> <span class="kn">import</span> <span class="n">DistributedDataParallel</span> <span class="k">as</span> <a class="sphx-glr-backref-module-abc sphx-glr-backref-type-py-class" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="abc.ABC"><span class="n">DDP</span></a>
-<span class="kn">from</span> <span class="nn">tqdm.auto</span> <span class="kn">import</span> <span class="n">tqdm</span>
 </pre></div>
 </div>
 </section>
@@ -187,7 +187,12 @@ Classification in DGL</a>.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span> <span class="o">=</span> <span class="n">hidden_size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">out_size</span> <span class="o">=</span> <span class="n">out_size</span>
         <span class="c1"># Set the dtype for the layers manually.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_layer_dtype</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_layer_dtype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">layer</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
+                <span class="n">param</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blocks</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="n">hidden_x</span> <span class="o">=</span> <span class="n">x</span>
@@ -215,38 +220,22 @@ minibatch to avoid the need for padding.</p>
     <span class="n">features</span><span class="p">,</span>
     <span class="n">itemset</span><span class="p">,</span>
     <span class="n">device</span><span class="p">,</span>
-    <span class="n">is_train</span><span class="p">,</span>
+    <span class="n">drop_last</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">drop_uneven_inputs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="n">datapipe</span> <span class="o">=</span> <a class="sphx-glr-backref-module-collections-abc sphx-glr-backref-type-py-class" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="collections.abc.Iterable"><span class="n">gb</span><span class="o">.</span><span class="n">DistributedItemSampler</span></a><span class="p">(</span>
         <span class="n">item_set</span><span class="o">=</span><span class="n">itemset</span><span class="p">,</span>
         <span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
-        <span class="n">drop_last</span><span class="o">=</span><span class="n">is_train</span><span class="p">,</span>
-        <span class="n">shuffle</span><span class="o">=</span><span class="n">is_train</span><span class="p">,</span>
-        <span class="n">drop_uneven_inputs</span><span class="o">=</span><span class="n">is_train</span><span class="p">,</span>
+        <span class="n">drop_last</span><span class="o">=</span><span class="n">drop_last</span><span class="p">,</span>
+        <span class="n">shuffle</span><span class="o">=</span><span class="n">shuffle</span><span class="p">,</span>
+        <span class="n">drop_uneven_inputs</span><span class="o">=</span><span class="n">drop_uneven_inputs</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">copy_to</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">extra_attrs</span><span class="o">=</span><span class="p">[</span><span class="s2">"seed_nodes"</span><span class="p">])</span>
-    <span class="c1"># Now that we have moved to device, sample_neighbor and fetch_feature steps</span>
-    <span class="c1"># will be executed on GPUs.</span>
     <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">sample_neighbor</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
     <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">fetch_feature</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">node_feature_keys</span><span class="o">=</span><span class="p">[</span><span class="s2">"feat"</span><span class="p">])</span>
-    <span class="k">return</span> <a class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic"><span class="n">gb</span><span class="o">.</span><span class="n">DataLoader</span></a><span class="p">(</span><span class="n">datapipe</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">weighted_reduce</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="c1">########################################################################</span>
-    <span class="c1"># (HIGHLIGHT) Collect accuracy and loss values from sub-processes and</span>
-    <span class="c1"># obtain overall average values.</span>
-    <span class="c1">#</span>
-    <span class="c1"># `torch.distributed.reduce` is used to reduce tensors from all the</span>
-    <span class="c1"># sub-processes to a specified process, ReduceOp.SUM is used by default.</span>
-    <span class="c1">#</span>
-    <span class="c1"># Because the GPUs may have differing numbers of processed items, we</span>
-    <span class="c1"># perform a weighted mean to calculate the exact loss and accuracy.</span>
-    <span class="c1">########################################################################</span>
-    <span class="n">dist</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">tensor</span><span class="o">=</span><span class="n">tensor</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="n">dst</span><span class="p">)</span>
-    <span class="n">weight</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">weight</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">tensor</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
-    <span class="n">dist</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">tensor</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="n">dst</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">tensor</span> <span class="o">/</span> <span class="n">weight</span>
+    <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">copy_to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">dataloader</span> <span class="o">=</span> <a class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic"><span class="n">gb</span><span class="o">.</span><span class="n">DataLoader</span></a><span class="p">(</span><span class="n">datapipe</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dataloader</span>
 </pre></div>
 </div>
 </section>
@@ -262,11 +251,15 @@ minibatch to avoid the need for padding.</p>
         <span class="n">graph</span><span class="p">,</span>
         <span class="n">features</span><span class="p">,</span>
         <span class="n">itemset</span><span class="p">,</span>
-        <span class="n">device</span><span class="p">,</span>
-        <span class="n">is_train</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">drop_last</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">drop_uneven_inputs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">dataloader</span><span class="p">)</span> <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">dataloader</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">step</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="p">(</span>
+        <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">dataloader</span><span class="p">))</span> <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dataloader</span><span class="p">)</span>
+    <span class="p">):</span>
         <span class="n">blocks</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">blocks</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">node_features</span><span class="p">[</span><span class="s2">"feat"</span><span class="p">]</span>
         <span class="n">y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">labels</span><span class="p">)</span>
@@ -279,7 +272,7 @@ minibatch to avoid the need for padding.</p>
         <span class="n">num_classes</span><span class="o">=</span><span class="n">num_classes</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">y_i</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">y_i</span> <span class="ow">in</span> <span class="n">y</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -293,6 +286,7 @@ error or hang. To solve it, PyTorch provides Join Context Manager. Please
 refer to <a class="reference external" href="https://pytorch.org/tutorials/advanced/generic_join.html">this tutorial</a>
 for detailed information.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">train</span><span class="p">(</span>
+    <span class="n">world_size</span><span class="p">,</span>
     <span class="n">rank</span><span class="p">,</span>
     <span class="n">graph</span><span class="p">,</span>
     <span class="n">features</span><span class="p">,</span>
@@ -309,17 +303,22 @@ for detailed information.</p>
         <span class="n">features</span><span class="p">,</span>
         <span class="n">train_set</span><span class="p">,</span>
         <span class="n">device</span><span class="p">,</span>
-        <span class="n">is_train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">drop_last</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">drop_uneven_inputs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
         <span class="n">epoch_start</span> <span class="o">=</span> <a class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function" href="https://docs.python.org/3/library/time.html#time.time" title="time.time"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span>
 
         <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
-        <span class="n">total_loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
-        <span class="n">num_train_items</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">total_loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
         <span class="k">with</span> <span class="n">Join</span><span class="p">([</span><span class="n">model</span><span class="p">]):</span>
-            <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">dataloader</span><span class="p">)</span> <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">dataloader</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">step</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="p">(</span>
+                <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">dataloader</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span>
+                <span class="k">else</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dataloader</span><span class="p">)</span>
+            <span class="p">):</span>
                 <span class="c1"># The input features are from the source nodes in the first</span>
                 <span class="c1"># layer's computation graph.</span>
                 <span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">node_features</span><span class="p">[</span><span class="s2">"feat"</span><span class="p">]</span>
@@ -339,31 +338,40 @@ for detailed information.</p>
                 <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
                 <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
 
-                <span class="n">total_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span> <span class="o">*</span> <span class="n">y</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-                <span class="n">num_train_items</span> <span class="o">+=</span> <span class="n">y</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">total_loss</span> <span class="o">+=</span> <span class="n">loss</span>
 
         <span class="c1"># Evaluate the model.</span>
         <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">"Validating..."</span><span class="p">)</span>
-        <span class="n">acc</span><span class="p">,</span> <span class="n">num_val_items</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span>
-            <span class="n">rank</span><span class="p">,</span>
-            <span class="n">model</span><span class="p">,</span>
-            <span class="n">graph</span><span class="p">,</span>
-            <span class="n">features</span><span class="p">,</span>
-            <span class="n">valid_set</span><span class="p">,</span>
-            <span class="n">num_classes</span><span class="p">,</span>
-            <span class="n">device</span><span class="p">,</span>
+        <span class="n">acc</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">evaluate</span><span class="p">(</span>
+                <span class="n">rank</span><span class="p">,</span>
+                <span class="n">model</span><span class="p">,</span>
+                <span class="n">graph</span><span class="p">,</span>
+                <span class="n">features</span><span class="p">,</span>
+                <span class="n">valid_set</span><span class="p">,</span>
+                <span class="n">num_classes</span><span class="p">,</span>
+                <span class="n">device</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="o">/</span> <span class="n">world_size</span>
         <span class="p">)</span>
-        <span class="n">total_loss</span> <span class="o">=</span> <span class="n">weighted_reduce</span><span class="p">(</span><span class="n">total_loss</span><span class="p">,</span> <span class="n">num_train_items</span><span class="p">)</span>
-        <span class="n">acc</span> <span class="o">=</span> <span class="n">weighted_reduce</span><span class="p">(</span><span class="n">acc</span> <span class="o">*</span> <span class="n">num_val_items</span><span class="p">,</span> <span class="n">num_val_items</span><span class="p">)</span>
+        <span class="c1">########################################################################</span>
+        <span class="c1"># (HIGHLIGHT) Collect accuracy and loss values from sub-processes and</span>
+        <span class="c1"># obtain overall average values.</span>
+        <span class="c1">#</span>
+        <span class="c1"># `torch.distributed.reduce` is used to reduce tensors from all the</span>
+        <span class="c1"># sub-processes to a specified process, ReduceOp.SUM is used by default.</span>
+        <span class="c1">########################################################################</span>
+        <span class="n">dist</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">tensor</span><span class="o">=</span><span class="n">acc</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">total_loss</span> <span class="o">/=</span> <span class="n">step</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">dist</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">tensor</span><span class="o">=</span><span class="n">total_loss</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">dist</span><span class="o">.</span><span class="n">barrier</span><span class="p">()</span>
 
-        <span class="c1"># We synchronize before measuring the epoch time.</span>
-        <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span>
         <span class="n">epoch_end</span> <span class="o">=</span> <a class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function" href="https://docs.python.org/3/library/time.html#time.time" title="time.time"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span>
         <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">"Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="si">:</span><span class="s2">05d</span><span class="si">}</span><span class="s2"> | "</span>
-                <span class="sa">f</span><span class="s2">"Average Loss </span><span class="si">{</span><span class="n">total_loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> | "</span>
+                <span class="sa">f</span><span class="s2">"Average Loss </span><span class="si">{</span><span class="n">total_loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">world_size</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> | "</span>
                 <span class="sa">f</span><span class="s2">"Accuracy </span><span class="si">{</span><span class="n">acc</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> | "</span>
                 <span class="sa">f</span><span class="s2">"Time </span><span class="si">{</span><span class="n">epoch_end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">epoch_start</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
@@ -387,9 +395,8 @@ with <code class="docutils literal notranslate"><span class="pre">torch.nn.paral
         <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="c1"># Pin the graph and features in-place to enable GPU access.</span>
-    <span class="n">graph</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">pin_memory_</span><span class="p">()</span>
-    <span class="n">features</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">pin_memory_</span><span class="p">()</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">graph</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">feature</span>
     <span class="n">train_set</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">train_set</span>
     <span class="n">valid_set</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">validation_set</span>
     <span class="n">num_classes</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">"num_classes"</span><span class="p">]</span>
@@ -406,6 +413,7 @@ with <code class="docutils literal notranslate"><span class="pre">torch.nn.paral
     <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">"Training..."</span><span class="p">)</span>
     <span class="n">train</span><span class="p">(</span>
+        <span class="n">world_size</span><span class="p">,</span>
         <span class="n">rank</span><span class="p">,</span>
         <span class="n">graph</span><span class="p">,</span>
         <span class="n">features</span><span class="p">,</span>
@@ -420,17 +428,20 @@ with <code class="docutils literal notranslate"><span class="pre">torch.nn.paral
     <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">"Testing..."</span><span class="p">)</span>
     <span class="n">test_set</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">test_set</span>
-    <span class="n">test_acc</span><span class="p">,</span> <span class="n">num_test_items</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span>
-        <span class="n">rank</span><span class="p">,</span>
-        <span class="n">model</span><span class="p">,</span>
-        <span class="n">graph</span><span class="p">,</span>
-        <span class="n">features</span><span class="p">,</span>
-        <span class="n">itemset</span><span class="o">=</span><span class="n">test_set</span><span class="p">,</span>
-        <span class="n">num_classes</span><span class="o">=</span><span class="n">num_classes</span><span class="p">,</span>
-        <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
+    <span class="n">test_acc</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">evaluate</span><span class="p">(</span>
+            <span class="n">rank</span><span class="p">,</span>
+            <span class="n">model</span><span class="p">,</span>
+            <span class="n">graph</span><span class="p">,</span>
+            <span class="n">features</span><span class="p">,</span>
+            <span class="n">itemset</span><span class="o">=</span><span class="n">test_set</span><span class="p">,</span>
+            <span class="n">num_classes</span><span class="o">=</span><span class="n">num_classes</span><span class="p">,</span>
+            <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="o">/</span> <span class="n">world_size</span>
     <span class="p">)</span>
-    <span class="n">test_acc</span> <span class="o">=</span> <span class="n">weighted_reduce</span><span class="p">(</span><span class="n">test_acc</span> <span class="o">*</span> <span class="n">num_test_items</span><span class="p">,</span> <span class="n">num_test_items</span><span class="p">)</span>
-
+    <span class="n">dist</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">tensor</span><span class="o">=</span><span class="n">test_acc</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">dist</span><span class="o">.</span><span class="n">barrier</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Test Accuracy </span><span class="si">{</span><span class="n">test_acc</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
@@ -474,7 +485,7 @@ function defined above.</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>No GPU found!
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.083 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.082 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-multi-2-node-classification-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/0c638c5fe1559d5c5412450f6d33520e/2_node_classification.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">2_node_classification.ipynb</span></code></a></p>

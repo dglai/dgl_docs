@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>dgl.graphbolt.minibatch — DGL 2.3.1 documentation</title>
+<title>dgl.graphbolt.minibatch — DGL 2.4 documentation</title>
 <link href="../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,7 +19,7 @@
   <![endif]-->
 <script src="../../../_static/jquery.js?v=5d32c60e"></script>
 <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../../../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../../../_static/documentation_options.js?v=9caaf7ed"></script>
 <script src="../../../_static/doctools.js?v=9a2dae69"></script>
 <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -39,7 +39,7 @@
             DGL
           </a>
 <div class="version">
-                2.3.1
+                2.4
               </div>
 <div role="search">
 <form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -128,11 +128,18 @@
 
 <span class="kn">import</span> <span class="nn">torch</span>
 
-<span class="kn">from</span> <span class="nn">..convert</span> <span class="kn">import</span> <span class="n">create_block</span><span class="p">,</span> <span class="n">DGLBlock</span><span class="p">,</span> <span class="n">EID</span><span class="p">,</span> <span class="n">NID</span>
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">recursive_apply</span>
-
-<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">CSCFormatBase</span><span class="p">,</span> <span class="n">etype_str_to_tuple</span><span class="p">,</span> <span class="n">expand_indptr</span>
-<span class="kn">from</span> <span class="nn">.internal</span> <span class="kn">import</span> <span class="n">get_attributes</span><span class="p">,</span> <span class="n">get_nonproperty_attributes</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">apply_to</span><span class="p">,</span>
+    <span class="n">CSCFormatBase</span><span class="p">,</span>
+    <span class="n">etype_str_to_tuple</span><span class="p">,</span>
+    <span class="n">expand_indptr</span><span class="p">,</span>
+    <span class="n">is_object_pinned</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.internal_utils</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">get_attributes</span><span class="p">,</span>
+    <span class="n">get_nonproperty_attributes</span><span class="p">,</span>
+    <span class="n">recursive_apply</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">.sampled_subgraph</span> <span class="kn">import</span> <span class="n">SampledSubgraph</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"MiniBatch"</span><span class="p">]</span>
@@ -239,7 +246,10 @@
 <span class="sd">    all node ids inside are compacted.</span>
 <span class="sd">    """</span>
 
-    <span class="n">_blocks</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">DGLBlock</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_blocks</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    A list of `DGLBlock`s.</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">_minibatch_str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -299,7 +309,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">blocks</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">DGLBlock</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">blocks</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""DGL blocks extracted from `MiniBatch` containing graphical structures</span>
 <span class="sd">        and ID mappings.</span>
 <span class="sd">        """</span>
@@ -312,10 +322,12 @@
 
 <div class="viewcode-block" id="MiniBatch.compute_blocks">
 <a class="viewcode-back" href="../../../generated/dgl.graphbolt.MiniBatch.html#dgl.graphbolt.MiniBatch.compute_blocks">[docs]</a>
-    <span class="k">def</span> <span class="nf">compute_blocks</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">DGLBlock</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">compute_blocks</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Extracts DGL blocks from `MiniBatch` to construct graphical</span>
 <span class="sd">        structures and ID mappings.</span>
 <span class="sd">        """</span>
+        <span class="kn">from</span> <span class="nn">dgl.convert</span> <span class="kn">import</span> <span class="n">create_block</span><span class="p">,</span> <span class="n">EID</span><span class="p">,</span> <span class="n">NID</span>
+
         <span class="n">is_heterogeneous</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sampled_subgraphs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sampled_csc</span><span class="p">,</span> <span class="n">Dict</span>
         <span class="p">)</span>
@@ -415,7 +427,7 @@
                 <span class="n">blocks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">srcnodes</span><span class="p">[</span><span class="n">node_type</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">NID</span><span class="p">]</span> <span class="o">=</span> <span class="n">reverse_ids</span>
             <span class="c1"># Assign reverse edges ids.</span>
             <span class="k">for</span> <span class="n">block</span><span class="p">,</span> <span class="n">subgraph</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">blocks</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampled_subgraphs</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">subgraph</span><span class="o">.</span><span class="n">original_edge_ids</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">subgraph</span><span class="o">.</span><span class="n">original_edge_ids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">for</span> <span class="p">(</span>
                         <span class="n">edge_type</span><span class="p">,</span>
                         <span class="n">reverse_ids</span><span class="p">,</span>
@@ -492,19 +504,36 @@
 
 <div class="viewcode-block" id="MiniBatch.to">
 <a class="viewcode-back" href="../../../generated/dgl.graphbolt.MiniBatch.html#dgl.graphbolt.MiniBatch.to">[docs]</a>
-    <span class="k">def</span> <span class="nf">to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">):</span>  <span class="c1"># pylint: disable=invalid-name</span>
+    <span class="k">def</span> <span class="nf">to</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">non_blocking</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">):</span>  <span class="c1"># pylint: disable=invalid-name</span>
 <span class="w">        </span><span class="sd">"""Copy `MiniBatch` to the specified device using reflection."""</span>
 
-        <span class="k">def</span> <span class="nf">_to</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">"to"</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span>
+        <span class="n">copy_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">apply_to</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">non_blocking</span><span class="o">=</span><span class="n">non_blocking</span><span class="p">)</span>
 
         <span class="n">transfer_attrs</span> <span class="o">=</span> <span class="n">get_nonproperty_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">transfer_attrs</span><span class="p">:</span>
             <span class="c1"># Only copy member variables.</span>
-            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">recursive_apply</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">),</span> <span class="n">_to</span><span class="p">))</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">recursive_apply</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">),</span> <span class="n">copy_fn</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="MiniBatch.pin_memory">
+<a class="viewcode-back" href="../../../generated/dgl.graphbolt.MiniBatch.html#dgl.graphbolt.MiniBatch.pin_memory">[docs]</a>
+    <span class="k">def</span> <span class="nf">pin_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Copy `MiniBatch` to the pinned memory using reflection."""</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"pinned"</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MiniBatch.is_pinned">
+<a class="viewcode-back" href="../../../generated/dgl.graphbolt.MiniBatch.html#dgl.graphbolt.MiniBatch.is_pinned">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_pinned</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Check whether `SampledSubgraph` is pinned using reflection."""</span>
+
+        <span class="k">return</span> <span class="n">is_object_pinned</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 </div>
 
 
@@ -564,8 +593,8 @@
 <div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
 <span class="rst-current-version" data-toggle="rst-current-version">
 <span class="fa fa-book"> Read the Docs</span>
-            v: 1.1.x
-            <span class="fa fa-caret-down"></span>
+<span id="version-placeholder">v: latest</span>
+<span class="fa fa-caret-down"></span>
 </span>
 <div class="rst-other-versions">
 <dl>
@@ -587,8 +616,7 @@
 </div>
 <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 假设 branches.json 位于同目录下
-            fetch('branches.json')
+            fetch('/dgl_docs/branches.json')
                 .then(response => response.json())
                 .then(data => {
                     var versionListDiv = document.getElementById('version-list');
@@ -602,6 +630,29 @@
                     });
                 })
                 .catch(error => console.error('Error loading branches:', error));
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            // 获取当前路径
+            var path = window.location.pathname;
+            var versionPlaceholder = document.getElementById('version-placeholder');
+
+            // 检查路径中是否包含 'en'
+            if (path.includes('/en/')) {
+                // 提取 'en' 后的文件夹作为版本号
+                var parts = path.split('/en/');
+                if (parts[1]) {
+                    var folders = parts[1].split('/');
+                    if (folders.length > 0 && folders[0]) {
+                        versionPlaceholder.textContent = 'v: ' + folders[0];
+                    } else {
+                        versionPlaceholder.textContent = 'v: latest';
+                    }
+                } else {
+                    versionPlaceholder.textContent = 'v: latest';
+                }
+            } else {
+                versionPlaceholder.textContent = 'v: latest';
+            }
         });
     </script>
 

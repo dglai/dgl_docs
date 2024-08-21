@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Understand Graph Attention Network — DGL 2.1.0 documentation</title>
+<title>Understand Graph Attention Network — DGL 2.0.0 documentation</title>
 <link href="../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,13 +19,12 @@
   <![endif]-->
 <script src="../../../_static/jquery.js?v=5d32c60e"></script>
 <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../../../_static/documentation_options.js?v=20623aea"></script>
+<script src="../../../_static/documentation_options.js?v=51b770b3"></script>
 <script src="../../../_static/doctools.js?v=9a2dae69"></script>
 <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../../../_static/copybutton.js?v=ccdb6887"></script>
 <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
 <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
 <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <script src="../../../_static/js/theme.js"></script>
@@ -43,7 +42,7 @@
             DGL
           </a>
 <div class="version">
-                2.1.0
+                2.0.0
               </div>
 <div role="search">
 <form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -64,7 +63,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guide_cn/index.html">用户指南【包含过时信息】</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guide_ko/index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../graphtransformer/index.html">🆕 Tutorial: Graph Transformer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/sparse/index.html">Tutorials: dgl.sparse</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cpu/index.html">Training on CPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../multi/index.html">Training on Multiple GPUs</a></li>
@@ -94,6 +92,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.geometry.html">dgl.geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.graphbolt.html">🆕 dgl.graphbolt</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn-tensorflow.html">dgl.nn (TensorFlow)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn-mxnet.html">dgl.nn (MXNet)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn.functional.html">dgl.nn.functional</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.ops.html">dgl.ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.optim.html">dgl.optim</a></li>
@@ -455,36 +455,36 @@ Done loading data from cached files.
   return _methods._mean(a, axis=axis, dtype=dtype,
 /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages/numpy/_core/_methods.py:138: RuntimeWarning: invalid value encountered in scalar divide
   ret = ret.dtype.type(ret / rcount)
-Epoch 00000 | Loss 1.9443 | Time(s) nan
-Epoch 00001 | Loss 1.9425 | Time(s) nan
-Epoch 00002 | Loss 1.9407 | Time(s) nan
-Epoch 00003 | Loss 1.9389 | Time(s) 0.7164
-Epoch 00004 | Loss 1.9371 | Time(s) 0.7412
-Epoch 00005 | Loss 1.9353 | Time(s) 0.7347
-Epoch 00006 | Loss 1.9335 | Time(s) 0.7035
-Epoch 00007 | Loss 1.9317 | Time(s) 0.6963
-Epoch 00008 | Loss 1.9299 | Time(s) 0.7257
-Epoch 00009 | Loss 1.9281 | Time(s) 0.7317
-Epoch 00010 | Loss 1.9263 | Time(s) 0.7247
-Epoch 00011 | Loss 1.9245 | Time(s) 0.7143
-Epoch 00012 | Loss 1.9226 | Time(s) 0.7374
-Epoch 00013 | Loss 1.9208 | Time(s) 0.7271
-Epoch 00014 | Loss 1.9189 | Time(s) 0.7281
-Epoch 00015 | Loss 1.9171 | Time(s) 0.7228
-Epoch 00016 | Loss 1.9152 | Time(s) 0.7388
-Epoch 00017 | Loss 1.9133 | Time(s) 0.7376
-Epoch 00018 | Loss 1.9114 | Time(s) 0.7350
-Epoch 00019 | Loss 1.9095 | Time(s) 0.7313
-Epoch 00020 | Loss 1.9076 | Time(s) 0.7349
-Epoch 00021 | Loss 1.9057 | Time(s) 0.7291
-Epoch 00022 | Loss 1.9037 | Time(s) 0.7316
-Epoch 00023 | Loss 1.9018 | Time(s) 0.7271
-Epoch 00024 | Loss 1.8998 | Time(s) 0.7286
-Epoch 00025 | Loss 1.8978 | Time(s) 0.7232
-Epoch 00026 | Loss 1.8958 | Time(s) 0.7277
-Epoch 00027 | Loss 1.8938 | Time(s) 0.7227
-Epoch 00028 | Loss 1.8918 | Time(s) 0.7250
-Epoch 00029 | Loss 1.8898 | Time(s) 0.7252
+Epoch 00000 | Loss 1.9468 | Time(s) nan
+Epoch 00001 | Loss 1.9450 | Time(s) nan
+Epoch 00002 | Loss 1.9432 | Time(s) nan
+Epoch 00003 | Loss 1.9414 | Time(s) 0.8205
+Epoch 00004 | Loss 1.9396 | Time(s) 0.7525
+Epoch 00005 | Loss 1.9378 | Time(s) 0.7174
+Epoch 00006 | Loss 1.9360 | Time(s) 0.7030
+Epoch 00007 | Loss 1.9342 | Time(s) 0.7198
+Epoch 00008 | Loss 1.9324 | Time(s) 0.7218
+Epoch 00009 | Loss 1.9307 | Time(s) 0.7173
+Epoch 00010 | Loss 1.9289 | Time(s) 0.7081
+Epoch 00011 | Loss 1.9270 | Time(s) 0.7012
+Epoch 00012 | Loss 1.9252 | Time(s) 0.6969
+Epoch 00013 | Loss 1.9234 | Time(s) 0.6986
+Epoch 00014 | Loss 1.9216 | Time(s) 0.6908
+Epoch 00015 | Loss 1.9198 | Time(s) 0.6924
+Epoch 00016 | Loss 1.9179 | Time(s) 0.6985
+Epoch 00017 | Loss 1.9161 | Time(s) 0.6948
+Epoch 00018 | Loss 1.9142 | Time(s) 0.6963
+Epoch 00019 | Loss 1.9123 | Time(s) 0.6930
+Epoch 00020 | Loss 1.9104 | Time(s) 0.6932
+Epoch 00021 | Loss 1.9086 | Time(s) 0.6904
+Epoch 00022 | Loss 1.9066 | Time(s) 0.6889
+Epoch 00023 | Loss 1.9047 | Time(s) 0.6829
+Epoch 00024 | Loss 1.9028 | Time(s) 0.6785
+Epoch 00025 | Loss 1.9009 | Time(s) 0.6850
+Epoch 00026 | Loss 1.8989 | Time(s) 0.6849
+Epoch 00027 | Loss 1.8970 | Time(s) 0.6849
+Epoch 00028 | Loss 1.8950 | Time(s) 0.6836
+Epoch 00029 | Loss 1.8930 | Time(s) 0.6853
 </pre></div>
 </div>
 </section>
@@ -636,7 +636,7 @@ check out the full example.</p>
 <li><p>See the optimized <a class="reference external" href="https://github.com/dmlc/dgl/blob/master/examples/pytorch/gat/gat.py">full example</a>.</p></li>
 <li><p>The next tutorial describes how to speedup GAT models by parallelizing multiple attention heads and SPMV optimization.</p></li>
 </ul>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 21.824 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 20.553 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-models-1-gnn-9-gat-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/30dde79d1418f8a8224fa315d0f97a95/9_gat.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">9_gat.ipynb</span></code></a></p>

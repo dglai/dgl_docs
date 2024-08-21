@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>dgl.distributed.partition — DGL 2.3.1 documentation</title>
+<title>dgl.distributed.partition — DGL 2.4 documentation</title>
 <link href="../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,7 +19,7 @@
   <![endif]-->
 <script src="../../../_static/jquery.js?v=5d32c60e"></script>
 <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../../../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../../../_static/documentation_options.js?v=9caaf7ed"></script>
 <script src="../../../_static/doctools.js?v=9a2dae69"></script>
 <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -39,7 +39,7 @@
             DGL
           </a>
 <div class="version">
-                2.3.1
+                2.4
               </div>
 <div role="search">
 <form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -123,11 +123,15 @@
 <h1>Source code for dgl.distributed.partition</h1><div class="highlight"><pre>
 <span></span><span class="sd">"""Functions for partitions. """</span>
 
+<span class="kn">import</span> <span class="nn">concurrent</span>
+<span class="kn">import</span> <span class="nn">concurrent.futures</span>
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -1512,6 +1516,178 @@
     <span class="k">return</span> <span class="n">data</span>
 
 
+<span class="c1"># Utility functions.</span>
+<span class="k">def</span> <span class="nf">is_homogeneous</span><span class="p">(</span><span class="n">ntypes</span><span class="p">,</span> <span class="n">etypes</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Checks if the provided ntypes and etypes form a homogeneous graph."""</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">ntypes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">etypes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+
+
+<span class="k">def</span> <span class="nf">init_type_per_edge</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">gpb</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Initialize edge ids for every edge type."""</span>
+    <span class="n">etype_ids</span> <span class="o">=</span> <span class="n">gpb</span><span class="o">.</span><span class="n">map_to_per_etype</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">EID</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">etype_ids</span>
+
+
+<span class="k">def</span> <span class="nf">gb_convert_single_dgl_partition</span><span class="p">(</span>
+    <span class="n">part_id</span><span class="p">,</span>
+    <span class="n">graph_formats</span><span class="p">,</span>
+    <span class="n">part_config</span><span class="p">,</span>
+    <span class="n">store_eids</span><span class="p">,</span>
+    <span class="n">store_inner_node</span><span class="p">,</span>
+    <span class="n">store_inner_edge</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Converts a single DGL partition to GraphBolt.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    part_id : int</span>
+<span class="sd">        The numerical ID of the partition to convert.</span>
+<span class="sd">    graph_formats : str or list[str], optional</span>
+<span class="sd">        Save partitions in specified formats. It could be any combination of</span>
+<span class="sd">        `coo`, `csc`. As `csc` format is mandatory for `FusedCSCSamplingGraph`,</span>
+<span class="sd">        it is not necessary to specify this argument. It's mainly for</span>
+<span class="sd">        specifying `coo` format to save edge ID mapping and destination node</span>
+<span class="sd">        IDs. If not specified, whether to save `coo` format is determined by</span>
+<span class="sd">        the availability of the format in DGL partitions. Default: None.</span>
+<span class="sd">    store_eids : bool, optional</span>
+<span class="sd">        Whether to store edge IDs in the new graph. Default: True.</span>
+<span class="sd">    store_inner_node : bool, optional</span>
+<span class="sd">        Whether to store inner node mask in the new graph. Default: False.</span>
+<span class="sd">    store_inner_edge : bool, optional</span>
+<span class="sd">        Whether to store inner edge mask in the new graph. Default: False.</span>
+<span class="sd">    """</span>
+    <span class="n">debug_mode</span> <span class="o">=</span> <span class="s2">"DGL_DIST_DEBUG"</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span>
+    <span class="k">if</span> <span class="n">debug_mode</span><span class="p">:</span>
+        <span class="n">dgl_warning</span><span class="p">(</span>
+            <span class="s2">"Running in debug mode which means all attributes of DGL partitions"</span>
+            <span class="s2">" will be saved to the new format."</span>
+        <span class="p">)</span>
+
+    <span class="n">part_meta</span> <span class="o">=</span> <span class="n">_load_part_config</span><span class="p">(</span><span class="n">part_config</span><span class="p">)</span>
+    <span class="n">num_parts</span> <span class="o">=</span> <span class="n">part_meta</span><span class="p">[</span><span class="s2">"num_parts"</span><span class="p">]</span>
+
+    <span class="n">graph</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">gpb</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">load_partition</span><span class="p">(</span>
+        <span class="n">part_config</span><span class="p">,</span> <span class="n">part_id</span><span class="p">,</span> <span class="n">load_feats</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">ntypes</span><span class="p">,</span> <span class="n">etypes</span> <span class="o">=</span> <span class="n">load_partition_book</span><span class="p">(</span><span class="n">part_config</span><span class="p">,</span> <span class="n">part_id</span><span class="p">)</span>
+    <span class="n">is_homo</span> <span class="o">=</span> <span class="n">is_homogeneous</span><span class="p">(</span><span class="n">ntypes</span><span class="p">,</span> <span class="n">etypes</span><span class="p">)</span>
+    <span class="n">node_type_to_id</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="kc">None</span> <span class="k">if</span> <span class="n">is_homo</span> <span class="k">else</span> <span class="p">{</span><span class="n">ntype</span><span class="p">:</span> <span class="n">ntid</span> <span class="k">for</span> <span class="n">ntid</span><span class="p">,</span> <span class="n">ntype</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ntypes</span><span class="p">)}</span>
+    <span class="p">)</span>
+    <span class="n">edge_type_to_id</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">is_homo</span>
+        <span class="k">else</span> <span class="p">{</span>
+            <span class="n">gb</span><span class="o">.</span><span class="n">etype_tuple_to_str</span><span class="p">(</span><span class="n">etype</span><span class="p">):</span> <span class="n">etid</span> <span class="k">for</span> <span class="n">etype</span><span class="p">,</span> <span class="n">etid</span> <span class="ow">in</span> <span class="n">etypes</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+    <span class="c1"># Obtain CSC indtpr and indices.</span>
+    <span class="n">indptr</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">edge_ids</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">adj_tensors</span><span class="p">(</span><span class="s2">"csc"</span><span class="p">)</span>
+
+    <span class="c1"># Save node attributes. Detailed attributes are shown below.</span>
+    <span class="c1">#  DGL_GB\Attributes  dgl.NID("_ID")  dgl.NTYPE("_TYPE")  "inner_node"  "part_id"</span>
+    <span class="c1">#  DGL_Homograph           ✅                🚫                  ✅          ✅</span>
+    <span class="c1">#  GB_Homograph            ✅                🚫               optional       🚫</span>
+    <span class="c1">#  DGL_Heterograph         ✅                ✅                  ✅          ✅</span>
+    <span class="c1">#  GB_Heterograph          ✅                🚫               optional       🚫</span>
+    <span class="n">required_node_attrs</span> <span class="o">=</span> <span class="p">[</span><span class="n">NID</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">store_inner_node</span><span class="p">:</span>
+        <span class="n">required_node_attrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"inner_node"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">debug_mode</span><span class="p">:</span>
+        <span class="n">required_node_attrs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">node_attributes</span> <span class="o">=</span> <span class="p">{</span><span class="n">attr</span><span class="p">:</span> <span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">required_node_attrs</span><span class="p">}</span>
+
+    <span class="c1"># Save edge attributes. Detailed attributes are shown below.</span>
+    <span class="c1">#  DGL_GB\Attributes  dgl.EID("_ID")  dgl.ETYPE("_TYPE")  "inner_edge"</span>
+    <span class="c1">#  DGL_Homograph           ✅               🚫                  ✅</span>
+    <span class="c1">#  GB_Homograph         optional            🚫               optional</span>
+    <span class="c1">#  DGL_Heterograph         ✅               ✅                  ✅</span>
+    <span class="c1">#  GB_Heterograph       optional            ✅               optional</span>
+    <span class="n">type_per_edge</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_homo</span><span class="p">:</span>
+        <span class="n">type_per_edge</span> <span class="o">=</span> <span class="n">init_type_per_edge</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">gpb</span><span class="p">)[</span><span class="n">edge_ids</span><span class="p">]</span>
+        <span class="n">type_per_edge</span> <span class="o">=</span> <span class="n">type_per_edge</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">RESERVED_FIELD_DTYPE</span><span class="p">[</span><span class="n">ETYPE</span><span class="p">])</span>
+    <span class="n">required_edge_attrs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">store_eids</span><span class="p">:</span>
+        <span class="n">required_edge_attrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">EID</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">store_inner_edge</span><span class="p">:</span>
+        <span class="n">required_edge_attrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"inner_edge"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">debug_mode</span><span class="p">:</span>
+        <span class="n">required_edge_attrs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">edata</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">edge_attributes</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">attr</span><span class="p">:</span> <span class="n">graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">attr</span><span class="p">][</span><span class="n">edge_ids</span><span class="p">]</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">required_edge_attrs</span>
+    <span class="p">}</span>
+    <span class="c1"># When converting DGLGraph to FusedCSCSamplingGraph, edge IDs are</span>
+    <span class="c1"># re-ordered(actually FusedCSCSamplingGraph does not have edge IDs</span>
+    <span class="c1"># in nature). So we need to save such re-order info for any</span>
+    <span class="c1"># operations that uses original local edge IDs. For now, this is</span>
+    <span class="c1"># required by `DistGraph.find_edges()` for link prediction tasks.</span>
+    <span class="c1">#</span>
+    <span class="c1"># What's more, in order to find the dst nodes efficiently, we save</span>
+    <span class="c1"># dst nodes directly in the edge attributes.</span>
+    <span class="c1">#</span>
+    <span class="c1"># So we require additional `(2 * E) * dtype` space in total.</span>
+    <span class="k">if</span> <span class="n">graph_formats</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">graph_formats</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">graph_formats</span> <span class="o">=</span> <span class="p">[</span><span class="n">graph_formats</span><span class="p">]</span>
+    <span class="n">save_coo</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">graph_formats</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s2">"coo"</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">formats</span><span class="p">()[</span><span class="s2">"created"</span><span class="p">]</span>
+    <span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">graph_formats</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s2">"coo"</span> <span class="ow">in</span> <span class="n">graph_formats</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">save_coo</span><span class="p">:</span>
+        <span class="n">edge_attributes</span><span class="p">[</span><span class="n">DGL2GB_EID</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">edge_ids</span><span class="p">)</span>
+        <span class="n">edge_attributes</span><span class="p">[</span><span class="n">GB_DST_ID</span><span class="p">]</span> <span class="o">=</span> <span class="n">gb</span><span class="o">.</span><span class="n">expand_indptr</span><span class="p">(</span>
+            <span class="n">indptr</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">indices</span><span class="o">.</span><span class="n">dtype</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Cast various data to minimum dtype.</span>
+    <span class="c1"># Cast 1: indptr.</span>
+    <span class="n">indptr</span> <span class="o">=</span> <span class="n">_cast_to_minimum_dtype</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">num_edges</span><span class="p">(),</span> <span class="n">indptr</span><span class="p">)</span>
+    <span class="c1"># Cast 2: indices.</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">_cast_to_minimum_dtype</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">(),</span> <span class="n">indices</span><span class="p">)</span>
+    <span class="c1"># Cast 3: type_per_edge.</span>
+    <span class="n">type_per_edge</span> <span class="o">=</span> <span class="n">_cast_to_minimum_dtype</span><span class="p">(</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">etypes</span><span class="p">),</span> <span class="n">type_per_edge</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="n">ETYPE</span>
+    <span class="p">)</span>
+    <span class="c1"># Cast 4: node/edge_attributes.</span>
+    <span class="n">predicates</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">NID</span><span class="p">:</span> <span class="n">part_meta</span><span class="p">[</span><span class="s2">"num_nodes"</span><span class="p">],</span>
+        <span class="s2">"part_id"</span><span class="p">:</span> <span class="n">num_parts</span><span class="p">,</span>
+        <span class="n">NTYPE</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">ntypes</span><span class="p">),</span>
+        <span class="n">EID</span><span class="p">:</span> <span class="n">part_meta</span><span class="p">[</span><span class="s2">"num_edges"</span><span class="p">],</span>
+        <span class="n">ETYPE</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">etypes</span><span class="p">),</span>
+        <span class="n">DGL2GB_EID</span><span class="p">:</span> <span class="n">part_meta</span><span class="p">[</span><span class="s2">"num_edges"</span><span class="p">],</span>
+        <span class="n">GB_DST_ID</span><span class="p">:</span> <span class="n">part_meta</span><span class="p">[</span><span class="s2">"num_nodes"</span><span class="p">],</span>
+    <span class="p">}</span>
+    <span class="k">for</span> <span class="n">attributes</span> <span class="ow">in</span> <span class="p">[</span><span class="n">node_attributes</span><span class="p">,</span> <span class="n">edge_attributes</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">predicates</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">attributes</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">_cast_to_minimum_dtype</span><span class="p">(</span>
+                <span class="n">predicates</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">attributes</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">field</span><span class="o">=</span><span class="n">key</span>
+            <span class="p">)</span>
+
+    <span class="n">csc_graph</span> <span class="o">=</span> <span class="n">gb</span><span class="o">.</span><span class="n">fused_csc_sampling_graph</span><span class="p">(</span>
+        <span class="n">indptr</span><span class="p">,</span>
+        <span class="n">indices</span><span class="p">,</span>
+        <span class="n">node_type_offset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">type_per_edge</span><span class="o">=</span><span class="n">type_per_edge</span><span class="p">,</span>
+        <span class="n">node_attributes</span><span class="o">=</span><span class="n">node_attributes</span><span class="p">,</span>
+        <span class="n">edge_attributes</span><span class="o">=</span><span class="n">edge_attributes</span><span class="p">,</span>
+        <span class="n">node_type_to_id</span><span class="o">=</span><span class="n">node_type_to_id</span><span class="p">,</span>
+        <span class="n">edge_type_to_id</span><span class="o">=</span><span class="n">edge_type_to_id</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">orig_graph_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">part_config</span><span class="p">),</span>
+        <span class="n">part_meta</span><span class="p">[</span><span class="sa">f</span><span class="s2">"part-</span><span class="si">{</span><span class="n">part_id</span><span class="si">}</span><span class="s2">"</span><span class="p">][</span><span class="s2">"part_graph"</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="n">csc_graph_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">orig_graph_path</span><span class="p">),</span> <span class="s2">"fused_csc_sampling_graph.pt"</span>
+    <span class="p">)</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">csc_graph</span><span class="p">,</span> <span class="n">csc_graph_path</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">csc_graph_path</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">part_config</span><span class="p">))</span>
+    <span class="c1"># Update graph path.</span>
+
+
 <div class="viewcode-block" id="dgl_partition_to_graphbolt">
 <a class="viewcode-back" href="../../../generated/dgl.distributed.dgl_partition_to_graphbolt.html#dgl.distributed.dgl_partition_to_graphbolt">[docs]</a>
 <span class="k">def</span> <span class="nf">dgl_partition_to_graphbolt</span><span class="p">(</span>
@@ -1521,6 +1697,7 @@
     <span class="n">store_inner_node</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">store_inner_edge</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">graph_formats</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Convert partitions of dgl to FusedCSCSamplingGraph of GraphBolt.</span>
 
@@ -1548,6 +1725,9 @@
 <span class="sd">        specifying `coo` format to save edge ID mapping and destination node</span>
 <span class="sd">        IDs. If not specified, whether to save `coo` format is determined by</span>
 <span class="sd">        the availability of the format in DGL partitions. Default: None.</span>
+<span class="sd">    n_jobs: int</span>
+<span class="sd">        Number of parallel jobs to run during partition conversion. Max parallelism</span>
+<span class="sd">        is determined by the partition count.</span>
 <span class="sd">    """</span>
     <span class="n">debug_mode</span> <span class="o">=</span> <span class="s2">"DGL_DIST_DEBUG"</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span>
     <span class="k">if</span> <span class="n">debug_mode</span><span class="p">:</span>
@@ -1559,14 +1739,6 @@
     <span class="n">new_part_meta</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">part_meta</span><span class="p">)</span>
     <span class="n">num_parts</span> <span class="o">=</span> <span class="n">part_meta</span><span class="p">[</span><span class="s2">"num_parts"</span><span class="p">]</span>
 
-    <span class="c1"># Utility functions.</span>
-    <span class="k">def</span> <span class="nf">is_homogeneous</span><span class="p">(</span><span class="n">ntypes</span><span class="p">,</span> <span class="n">etypes</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">ntypes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">etypes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-
-    <span class="k">def</span> <span class="nf">init_type_per_edge</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">gpb</span><span class="p">):</span>
-        <span class="n">etype_ids</span> <span class="o">=</span> <span class="n">gpb</span><span class="o">.</span><span class="n">map_to_per_etype</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">EID</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">etype_ids</span>
-
     <span class="c1"># [Rui] DGL partitions are always saved as homogeneous graphs even though</span>
     <span class="c1"># the original graph is heterogeneous. But heterogeneous information like</span>
     <span class="c1"># node/edge types are saved as node/edge data alongside with partitions.</span>
@@ -1577,134 +1749,40 @@
     <span class="c1"># We can simply pass None to it.</span>
 
     <span class="c1"># Iterate over partitions.</span>
+    <span class="n">convert_with_format</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
+        <span class="n">gb_convert_single_dgl_partition</span><span class="p">,</span>
+        <span class="n">graph_formats</span><span class="o">=</span><span class="n">graph_formats</span><span class="p">,</span>
+        <span class="n">part_config</span><span class="o">=</span><span class="n">part_config</span><span class="p">,</span>
+        <span class="n">store_eids</span><span class="o">=</span><span class="n">store_eids</span><span class="p">,</span>
+        <span class="n">store_inner_node</span><span class="o">=</span><span class="n">store_inner_node</span><span class="p">,</span>
+        <span class="n">store_inner_edge</span><span class="o">=</span><span class="n">store_inner_edge</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="c1"># Need to create entirely new interpreters, because we call C++ downstream</span>
+    <span class="c1"># See https://docs.python.org/3.12/library/multiprocessing.html#contexts-and-start-methods</span>
+    <span class="c1"># and https://pybind11.readthedocs.io/en/stable/advanced/misc.html#global-interpreter-lock-gil</span>
+    <span class="n">rel_path_results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">n_jobs</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">num_parts</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">mp_ctx</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">get_context</span><span class="p">(</span><span class="s2">"spawn"</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">ProcessPoolExecutor</span><span class="p">(</span>  <span class="c1"># pylint: disable=unexpected-keyword-arg</span>
+            <span class="n">max_workers</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">num_parts</span><span class="p">,</span> <span class="n">n_jobs</span><span class="p">),</span>
+            <span class="n">mp_context</span><span class="o">=</span><span class="n">mp_ctx</span><span class="p">,</span>
+        <span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
+            <span class="n">futures</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">part_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_parts</span><span class="p">):</span>
+                <span class="n">futures</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">convert_with_format</span><span class="p">,</span> <span class="n">part_id</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">part_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_parts</span><span class="p">):</span>
+            <span class="n">rel_path_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">futures</span><span class="p">[</span><span class="n">part_id</span><span class="p">]</span><span class="o">.</span><span class="n">result</span><span class="p">())</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># If running single-threaded, avoid spawning new interpreter, which is slow</span>
+        <span class="k">for</span> <span class="n">part_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_parts</span><span class="p">):</span>
+            <span class="n">rel_path_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">convert_with_format</span><span class="p">(</span><span class="n">part_id</span><span class="p">))</span>
+
     <span class="k">for</span> <span class="n">part_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_parts</span><span class="p">):</span>
-        <span class="n">graph</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">gpb</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">load_partition</span><span class="p">(</span>
-            <span class="n">part_config</span><span class="p">,</span> <span class="n">part_id</span><span class="p">,</span> <span class="n">load_feats</span><span class="o">=</span><span class="kc">False</span>
-        <span class="p">)</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">ntypes</span><span class="p">,</span> <span class="n">etypes</span> <span class="o">=</span> <span class="n">load_partition_book</span><span class="p">(</span><span class="n">part_config</span><span class="p">,</span> <span class="n">part_id</span><span class="p">)</span>
-        <span class="n">is_homo</span> <span class="o">=</span> <span class="n">is_homogeneous</span><span class="p">(</span><span class="n">ntypes</span><span class="p">,</span> <span class="n">etypes</span><span class="p">)</span>
-        <span class="n">node_type_to_id</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="kc">None</span>
-            <span class="k">if</span> <span class="n">is_homo</span>
-            <span class="k">else</span> <span class="p">{</span><span class="n">ntype</span><span class="p">:</span> <span class="n">ntid</span> <span class="k">for</span> <span class="n">ntid</span><span class="p">,</span> <span class="n">ntype</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ntypes</span><span class="p">)}</span>
-        <span class="p">)</span>
-        <span class="n">edge_type_to_id</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="kc">None</span>
-            <span class="k">if</span> <span class="n">is_homo</span>
-            <span class="k">else</span> <span class="p">{</span>
-                <span class="n">gb</span><span class="o">.</span><span class="n">etype_tuple_to_str</span><span class="p">(</span><span class="n">etype</span><span class="p">):</span> <span class="n">etid</span>
-                <span class="k">for</span> <span class="n">etype</span><span class="p">,</span> <span class="n">etid</span> <span class="ow">in</span> <span class="n">etypes</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-            <span class="p">}</span>
-        <span class="p">)</span>
-        <span class="c1"># Obtain CSC indtpr and indices.</span>
-        <span class="n">indptr</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">edge_ids</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">adj_tensors</span><span class="p">(</span><span class="s2">"csc"</span><span class="p">)</span>
-
-        <span class="c1"># Save node attributes. Detailed attributes are shown below.</span>
-        <span class="c1">#  DGL_GB\Attributes  dgl.NID("_ID")  dgl.NTYPE("_TYPE")  "inner_node"  "part_id"</span>
-        <span class="c1">#  DGL_Homograph           ✅                🚫                  ✅          ✅</span>
-        <span class="c1">#  GB_Homograph            ✅                🚫               optional       🚫</span>
-        <span class="c1">#  DGL_Heterograph         ✅                ✅                  ✅          ✅</span>
-        <span class="c1">#  GB_Heterograph          ✅                🚫               optional       🚫</span>
-        <span class="n">required_node_attrs</span> <span class="o">=</span> <span class="p">[</span><span class="n">NID</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">store_inner_node</span><span class="p">:</span>
-            <span class="n">required_node_attrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"inner_node"</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">debug_mode</span><span class="p">:</span>
-            <span class="n">required_node_attrs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-        <span class="n">node_attributes</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="n">attr</span><span class="p">:</span> <span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">required_node_attrs</span>
-        <span class="p">}</span>
-
-        <span class="c1"># Save edge attributes. Detailed attributes are shown below.</span>
-        <span class="c1">#  DGL_GB\Attributes  dgl.EID("_ID")  dgl.ETYPE("_TYPE")  "inner_edge"</span>
-        <span class="c1">#  DGL_Homograph           ✅               🚫                  ✅</span>
-        <span class="c1">#  GB_Homograph         optional            🚫               optional</span>
-        <span class="c1">#  DGL_Heterograph         ✅               ✅                  ✅</span>
-        <span class="c1">#  GB_Heterograph       optional            ✅               optional</span>
-        <span class="n">type_per_edge</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_homo</span><span class="p">:</span>
-            <span class="n">type_per_edge</span> <span class="o">=</span> <span class="n">init_type_per_edge</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">gpb</span><span class="p">)[</span><span class="n">edge_ids</span><span class="p">]</span>
-            <span class="n">type_per_edge</span> <span class="o">=</span> <span class="n">type_per_edge</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">RESERVED_FIELD_DTYPE</span><span class="p">[</span><span class="n">ETYPE</span><span class="p">])</span>
-        <span class="n">required_edge_attrs</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="n">store_eids</span><span class="p">:</span>
-            <span class="n">required_edge_attrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">EID</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">store_inner_edge</span><span class="p">:</span>
-            <span class="n">required_edge_attrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"inner_edge"</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">debug_mode</span><span class="p">:</span>
-            <span class="n">required_edge_attrs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">edata</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-        <span class="n">edge_attributes</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="n">attr</span><span class="p">:</span> <span class="n">graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">attr</span><span class="p">][</span><span class="n">edge_ids</span><span class="p">]</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">required_edge_attrs</span>
-        <span class="p">}</span>
-        <span class="c1"># When converting DGLGraph to FusedCSCSamplingGraph, edge IDs are</span>
-        <span class="c1"># re-ordered(actually FusedCSCSamplingGraph does not have edge IDs</span>
-        <span class="c1"># in nature). So we need to save such re-order info for any</span>
-        <span class="c1"># operations that uses original local edge IDs. For now, this is</span>
-        <span class="c1"># required by `DistGraph.find_edges()` for link prediction tasks.</span>
-        <span class="c1">#</span>
-        <span class="c1"># What's more, in order to find the dst nodes efficiently, we save</span>
-        <span class="c1"># dst nodes directly in the edge attributes.</span>
-        <span class="c1">#</span>
-        <span class="c1"># So we require additional `(2 * E) * dtype` space in total.</span>
-        <span class="k">if</span> <span class="n">graph_formats</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">graph_formats</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">graph_formats</span> <span class="o">=</span> <span class="p">[</span><span class="n">graph_formats</span><span class="p">]</span>
-        <span class="n">save_coo</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">graph_formats</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s2">"coo"</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">formats</span><span class="p">()[</span><span class="s2">"created"</span><span class="p">]</span>
-        <span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">graph_formats</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s2">"coo"</span> <span class="ow">in</span> <span class="n">graph_formats</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">save_coo</span><span class="p">:</span>
-            <span class="n">edge_attributes</span><span class="p">[</span><span class="n">DGL2GB_EID</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">edge_ids</span><span class="p">)</span>
-            <span class="n">edge_attributes</span><span class="p">[</span><span class="n">GB_DST_ID</span><span class="p">]</span> <span class="o">=</span> <span class="n">gb</span><span class="o">.</span><span class="n">expand_indptr</span><span class="p">(</span>
-                <span class="n">indptr</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">indices</span><span class="o">.</span><span class="n">dtype</span>
-            <span class="p">)</span>
-
-        <span class="c1"># Cast various data to minimum dtype.</span>
-        <span class="c1"># Cast 1: indptr.</span>
-        <span class="n">indptr</span> <span class="o">=</span> <span class="n">_cast_to_minimum_dtype</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">num_edges</span><span class="p">(),</span> <span class="n">indptr</span><span class="p">)</span>
-        <span class="c1"># Cast 2: indices.</span>
-        <span class="n">indices</span> <span class="o">=</span> <span class="n">_cast_to_minimum_dtype</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">(),</span> <span class="n">indices</span><span class="p">)</span>
-        <span class="c1"># Cast 3: type_per_edge.</span>
-        <span class="n">type_per_edge</span> <span class="o">=</span> <span class="n">_cast_to_minimum_dtype</span><span class="p">(</span>
-            <span class="nb">len</span><span class="p">(</span><span class="n">etypes</span><span class="p">),</span> <span class="n">type_per_edge</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="n">ETYPE</span>
-        <span class="p">)</span>
-        <span class="c1"># Cast 4: node/edge_attributes.</span>
-        <span class="n">predicates</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="n">NID</span><span class="p">:</span> <span class="n">part_meta</span><span class="p">[</span><span class="s2">"num_nodes"</span><span class="p">],</span>
-            <span class="s2">"part_id"</span><span class="p">:</span> <span class="n">num_parts</span><span class="p">,</span>
-            <span class="n">NTYPE</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">ntypes</span><span class="p">),</span>
-            <span class="n">EID</span><span class="p">:</span> <span class="n">part_meta</span><span class="p">[</span><span class="s2">"num_edges"</span><span class="p">],</span>
-            <span class="n">ETYPE</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">etypes</span><span class="p">),</span>
-            <span class="n">DGL2GB_EID</span><span class="p">:</span> <span class="n">part_meta</span><span class="p">[</span><span class="s2">"num_edges"</span><span class="p">],</span>
-            <span class="n">GB_DST_ID</span><span class="p">:</span> <span class="n">part_meta</span><span class="p">[</span><span class="s2">"num_nodes"</span><span class="p">],</span>
-        <span class="p">}</span>
-        <span class="k">for</span> <span class="n">attributes</span> <span class="ow">in</span> <span class="p">[</span><span class="n">node_attributes</span><span class="p">,</span> <span class="n">edge_attributes</span><span class="p">]:</span>
-            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">predicates</span><span class="p">:</span>
-                    <span class="k">continue</span>
-                <span class="n">attributes</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">_cast_to_minimum_dtype</span><span class="p">(</span>
-                    <span class="n">predicates</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">attributes</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">field</span><span class="o">=</span><span class="n">key</span>
-                <span class="p">)</span>
-
-        <span class="n">csc_graph</span> <span class="o">=</span> <span class="n">gb</span><span class="o">.</span><span class="n">fused_csc_sampling_graph</span><span class="p">(</span>
-            <span class="n">indptr</span><span class="p">,</span>
-            <span class="n">indices</span><span class="p">,</span>
-            <span class="n">node_type_offset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">type_per_edge</span><span class="o">=</span><span class="n">type_per_edge</span><span class="p">,</span>
-            <span class="n">node_attributes</span><span class="o">=</span><span class="n">node_attributes</span><span class="p">,</span>
-            <span class="n">edge_attributes</span><span class="o">=</span><span class="n">edge_attributes</span><span class="p">,</span>
-            <span class="n">node_type_to_id</span><span class="o">=</span><span class="n">node_type_to_id</span><span class="p">,</span>
-            <span class="n">edge_type_to_id</span><span class="o">=</span><span class="n">edge_type_to_id</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="n">orig_graph_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">part_config</span><span class="p">),</span>
-            <span class="n">part_meta</span><span class="p">[</span><span class="sa">f</span><span class="s2">"part-</span><span class="si">{</span><span class="n">part_id</span><span class="si">}</span><span class="s2">"</span><span class="p">][</span><span class="s2">"part_graph"</span><span class="p">],</span>
-        <span class="p">)</span>
-        <span class="n">csc_graph_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">orig_graph_path</span><span class="p">),</span> <span class="s2">"fused_csc_sampling_graph.pt"</span>
-        <span class="p">)</span>
-        <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">csc_graph</span><span class="p">,</span> <span class="n">csc_graph_path</span><span class="p">)</span>
-
         <span class="c1"># Update graph path.</span>
         <span class="n">new_part_meta</span><span class="p">[</span><span class="sa">f</span><span class="s2">"part-</span><span class="si">{</span><span class="n">part_id</span><span class="si">}</span><span class="s2">"</span><span class="p">][</span>
             <span class="s2">"part_graph_graphbolt"</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">csc_graph_path</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">part_config</span><span class="p">))</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="n">rel_path_results</span><span class="p">[</span><span class="n">part_id</span><span class="p">]</span>
 
     <span class="c1"># Save dtype info into partition config.</span>
     <span class="c1"># [TODO][Rui] Always use int64_t for node/edge IDs in GraphBolt. See more</span>
@@ -1737,8 +1815,8 @@
 <div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
 <span class="rst-current-version" data-toggle="rst-current-version">
 <span class="fa fa-book"> Read the Docs</span>
-            v: 1.1.x
-            <span class="fa fa-caret-down"></span>
+<span id="version-placeholder">v: latest</span>
+<span class="fa fa-caret-down"></span>
 </span>
 <div class="rst-other-versions">
 <dl>
@@ -1760,8 +1838,7 @@
 </div>
 <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 假设 branches.json 位于同目录下
-            fetch('branches.json')
+            fetch('/dgl_docs/branches.json')
                 .then(response => response.json())
                 .then(data => {
                     var versionListDiv = document.getElementById('version-list');
@@ -1775,6 +1852,29 @@
                     });
                 })
                 .catch(error => console.error('Error loading branches:', error));
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            // 获取当前路径
+            var path = window.location.pathname;
+            var versionPlaceholder = document.getElementById('version-placeholder');
+
+            // 检查路径中是否包含 'en'
+            if (path.includes('/en/')) {
+                // 提取 'en' 后的文件夹作为版本号
+                var parts = path.split('/en/');
+                if (parts[1]) {
+                    var folders = parts[1].split('/');
+                    if (folders.length > 0 && folders[0]) {
+                        versionPlaceholder.textContent = 'v: ' + folders[0];
+                    } else {
+                        versionPlaceholder.textContent = 'v: latest';
+                    }
+                } else {
+                    versionPlaceholder.textContent = 'v: latest';
+                }
+            } else {
+                versionPlaceholder.textContent = 'v: latest';
+            }
         });
     </script>
 

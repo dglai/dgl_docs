@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>OnDiskDataset for Heterogeneous Graph — DGL 2.1.0 documentation</title>
+<title>OnDiskDataset for Heterogeneous Graph — DGL 2.0.0 documentation</title>
 <link href="../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -20,13 +20,12 @@
   <![endif]-->
 <script src="../_static/jquery.js?v=5d32c60e"></script>
 <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../_static/documentation_options.js?v=20623aea"></script>
+<script src="../_static/documentation_options.js?v=51b770b3"></script>
 <script src="../_static/doctools.js?v=9a2dae69"></script>
 <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../_static/copybutton.js?v=ccdb6887"></script>
 <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
 <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
 <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <script src="../_static/js/theme.js"></script>
@@ -44,7 +43,7 @@
             DGL
           </a>
 <div class="version">
-                2.1.0
+                2.0.0
               </div>
 <div role="search">
 <form action="../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -76,7 +75,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guide_cn/index.html">用户指南【包含过时信息】</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guide_ko/index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../graphtransformer/index.html">🆕 Tutorial: Graph Transformer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/sparse/index.html">Tutorials: dgl.sparse</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/cpu/index.html">Training on CPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/multi/index.html">Training on Multiple GPUs</a></li>
@@ -94,6 +92,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.geometry.html">dgl.geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.graphbolt.html">🆕 dgl.graphbolt</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/nn-tensorflow.html">dgl.nn (TensorFlow)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/nn-mxnet.html">dgl.nn (MXNet)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/python/nn.functional.html">dgl.nn.functional</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.ops.html">dgl.ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.optim.html">dgl.optim</a></li>
@@ -236,8 +236,8 @@ Created base directory: ./ondisk_dataset_heterograph
 </div>
 <section id="Generate-graph-structure-data">
 <h3>Generate graph structure data<a class="headerlink" href="#Generate-graph-structure-data" title="Link to this heading"></a></h3>
-<p>For heterogeneous graph, we need to save different edge edges(namely node pairs) into separate <strong>Numpy</strong> or <strong>CSV</strong> files.</p>
-<p>Note: - when saving to <strong>Numpy</strong>, the array requires to be in shape of <code class="docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">N)</span></code>. This format is recommended as constructing graph from it is much faster than <strong>CSV</strong> file. - when saving to <strong>CSV</strong> file, do not save index and header.</p>
+<p>For heterogeneous graph, we need to save different edge edges(namely node pairs) into separate <strong>CSV</strong> files.</p>
+<p><strong>Note</strong>: when saving to file, do not save index and header.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -277,19 +277,19 @@ Created base directory: ./ondisk_dataset_heterograph
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Part of [user:like:item] edges: [[183 710]
- [137 844]
- [619 115]
- [853 460]
- [826 849]]
+Part of [user:like:item] edges: [[876 679]
+ [381 764]
+ [497 217]
+ [645 998]
+ [552 696]]
 
 [user:like:item] edges are saved into ./ondisk_dataset_heterograph/like-edges.csv
 
-Part of [user:follow:user] edges: [[901 244]
- [912 707]
- [492 538]
- [ 69 571]
- [ 81 681]]
+Part of [user:follow:user] edges: [[919 905]
+ [270 460]
+ [310 371]
+ [ 49 151]
+ [628 336]]
 
 [user:follow:user] edges are saved into ./ondisk_dataset_heterograph/follow-edges.csv
 
@@ -366,44 +366,47 @@ Part of [user:follow:user] edges: [[901 244]
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Part of node[user] feature [feat_0]: [[0.55564974 0.08672063 0.5541091  0.49247112 0.97432802]
- [0.94363595 0.82137043 0.74072367 0.44937146 0.23319017]
- [0.61387643 0.02951739 0.0953209  0.31816211 0.29804005]]
+Part of node[user] feature [feat_0]: [[0.30964583 0.54999637 0.79173114 0.32136837 0.85422607]
+ [0.20697336 0.69542147 0.56757777 0.52536414 0.583665  ]
+ [0.10325511 0.81127651 0.64146582 0.48764134 0.60285695]]
 Node[user] feature [feat_0] is saved to ./ondisk_dataset_heterograph/node-user-feat-0.npy
 
-Part of node[user] feature [feat_1]: tensor([[0.0753, 0.9412, 0.7237, 0.8406, 0.7443],
-        [0.3670, 0.1601, 0.2561, 0.1658, 0.0784],
-        [0.7498, 0.4256, 0.7051, 0.9575, 0.8941]])
+Part of node[user] feature [feat_1]: tensor([[0.3223, 0.6505, 0.8475, 0.4106, 0.3368],
+        [0.4557, 0.7345, 0.7588, 0.5080, 0.8429],
+        [0.5961, 0.3281, 0.3703, 0.6314, 0.9096]])
 Node[user] feature [feat_1] is saved to ./ondisk_dataset_heterograph/node-user-feat-1.pt
 
-Part of node[item] feature [feat_0]: [[0.85602599 0.54039286 0.68266478 0.5122025  0.19584162]
- [0.28430455 0.43725382 0.24114895 0.28527223 0.71297272]
- [0.71511315 0.48935862 0.71029149 0.37720319 0.40493226]]
+Part of node[item] feature [feat_0]: [[8.27302605e-01 9.29798708e-01 5.16378170e-01 7.09689528e-04
+  1.47037499e-01]
+ [7.30531932e-01 1.35636730e-01 7.48692285e-01 3.12278144e-01
+  8.77389341e-01]
+ [9.70051698e-01 1.87167864e-01 8.27459186e-01 2.52413935e-01
+  8.02763358e-01]]
 Node[item] feature [feat_0] is saved to ./ondisk_dataset_heterograph/node-item-feat-0.npy
 
-Part of node[item] feature [feat_1]: tensor([[0.9433, 0.9772, 0.0985, 0.9752, 0.4809],
-        [0.2628, 0.0764, 0.0982, 0.6972, 0.1616],
-        [0.9759, 0.8803, 0.4412, 0.3128, 0.8583]])
+Part of node[item] feature [feat_1]: tensor([[0.3589, 0.7553, 0.1131, 0.9071, 0.0754],
+        [0.1261, 0.3040, 0.0764, 0.7407, 0.6225],
+        [0.0788, 0.5323, 0.7127, 0.2840, 0.4052]])
 Node[item] feature [feat_1] is saved to ./ondisk_dataset_heterograph/node-item-feat-1.pt
 
-Part of edge[user:like:item] feature [feat_0]: [[0.9479159  0.59817265 0.40219521 0.43944977 0.03217436]
- [0.68297456 0.19639274 0.10001767 0.0826446  0.71890266]
- [0.03466816 0.41080735 0.01787338 0.32525892 0.6742467 ]]
+Part of edge[user:like:item] feature [feat_0]: [[0.37861402 0.63024135 0.90062741 0.97632073 0.99726486]
+ [0.36202837 0.55610047 0.48987803 0.92136998 0.11351548]
+ [0.68300463 0.8065533  0.72114097 0.91092727 0.12217606]]
 Edge[user:like:item] feature [feat_0] is saved to ./ondisk_dataset_heterograph/edge-like-feat-0.npy
 
-Part of edge[user:like:item] feature [feat_1]: tensor([[0.9141, 0.3203, 0.6696, 0.6609, 0.6919],
-        [0.9650, 0.2111, 0.7709, 0.2649, 0.2789],
-        [0.9631, 0.1883, 0.2092, 0.3506, 0.5999]])
+Part of edge[user:like:item] feature [feat_1]: tensor([[0.5665, 0.3014, 0.9406, 0.0064, 0.6804],
+        [0.9443, 0.2891, 0.3527, 0.8075, 0.7079],
+        [0.8430, 0.5730, 0.3633, 0.4236, 0.1406]])
 Edge[user:like:item] feature [feat_1] is saved to ./ondisk_dataset_heterograph/edge-like-feat-1.pt
 
-Part of edge[user:follow:user] feature [feat_0]: [[0.60648324 0.03734838 0.33470745 0.62209377 0.87930858]
- [0.14509744 0.90839896 0.08057611 0.07348158 0.54740435]
- [0.63601046 0.40401922 0.15548421 0.9505292  0.50527753]]
+Part of edge[user:follow:user] feature [feat_0]: [[0.9900506  0.9752589  0.8494416  0.95152447 0.20069633]
+ [0.42635265 0.33582821 0.33353792 0.51713972 0.26027955]
+ [0.32730917 0.75315721 0.89103065 0.83913682 0.81591333]]
 Edge[user:follow:user] feature [feat_0] is saved to ./ondisk_dataset_heterograph/edge-follow-feat-0.npy
 
-Part of edge[user:follow:user] feature [feat_1]: tensor([[0.6203, 0.6392, 0.1359, 0.3370, 0.1647],
-        [0.0014, 0.5687, 0.4660, 0.6206, 0.1364],
-        [0.4700, 0.3225, 0.5005, 0.8459, 0.4815]])
+Part of edge[user:follow:user] feature [feat_1]: tensor([[0.8627, 0.1383, 0.5522, 0.9632, 0.2597],
+        [0.5253, 0.8425, 0.0103, 0.8981, 0.7529],
+        [0.3359, 0.0862, 0.5998, 0.2757, 0.1550]])
 Edge[user:follow:user] feature [feat_1] is saved to ./ondisk_dataset_heterograph/edge-follow-feat-1.pt
 
 </pre></div></div>
@@ -521,40 +524,40 @@ Edge[user:follow:user] feature [feat_1] is saved to ./ondisk_dataset_heterograph
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Part of train ids[user] for node classification: [872 330 453]
+Part of train ids[user] for node classification: [265 177 259]
 NC train ids[user] are saved to ./ondisk_dataset_heterograph/nc-train-user-ids.npy
 
-Part of train labels[user] for node classification: tensor([2, 4, 2])
+Part of train labels[user] for node classification: tensor([8, 3, 4])
 NC train labels[user] are saved to ./ondisk_dataset_heterograph/nc-train-user-labels.pt
 
-Part of train ids[item] for node classification: [855 165 951]
+Part of train ids[item] for node classification: [632 337 946]
 NC train ids[item] are saved to ./ondisk_dataset_heterograph/nc-train-item-ids.npy
 
-Part of train labels[item] for node classification: tensor([0, 1, 6])
+Part of train labels[item] for node classification: tensor([5, 3, 7])
 NC train labels[item] are saved to ./ondisk_dataset_heterograph/nc-train-item-labels.pt
 
-Part of val ids[user] for node classification: [764 260 665]
+Part of val ids[user] for node classification: [204 515 689]
 NC val ids[user] are saved to ./ondisk_dataset_heterograph/nc-val-user-ids.npy
 
-Part of val labels[user] for node classification: tensor([5, 7, 2])
+Part of val labels[user] for node classification: tensor([7, 9, 1])
 NC val labels[user] are saved to ./ondisk_dataset_heterograph/nc-val-user-labels.pt
 
-Part of val ids[item] for node classification: [229 445 678]
+Part of val ids[item] for node classification: [ 86 758 873]
 NC val ids[item] are saved to ./ondisk_dataset_heterograph/nc-val-item-ids.npy
 
-Part of val labels[item] for node classification: tensor([6, 4, 6])
+Part of val labels[item] for node classification: tensor([3, 0, 7])
 NC val labels[item] are saved to ./ondisk_dataset_heterograph/nc-val-item-labels.pt
 
-Part of test ids[user] for node classification: [137 532 639]
+Part of test ids[user] for node classification: [104 768 913]
 NC test ids[user] are saved to ./ondisk_dataset_heterograph/nc-test-user-ids.npy
 
-Part of test labels[user] for node classification: tensor([3, 2, 8])
+Part of test labels[user] for node classification: tensor([4, 9, 2])
 NC test labels[user] are saved to ./ondisk_dataset_heterograph/nc-test-user-labels.pt
 
-Part of test ids[item] for node classification: [879 585 749]
+Part of test ids[item] for node classification: [643 961 343]
 NC test ids[item] are saved to ./ondisk_dataset_heterograph/nc-test-item-ids.npy
 
-Part of test labels[item] for node classification: tensor([7, 1, 1])
+Part of test labels[item] for node classification: tensor([8, 8, 3])
 NC test labels[item] are saved to ./ondisk_dataset_heterograph/nc-test-item-labels.pt
 
 </pre></div></div>
@@ -649,50 +652,50 @@ NC test labels[item] are saved to ./ondisk_dataset_heterograph/nc-test-item-labe
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Part of train node pairs[user:like:item] for link prediction: [[183 710]
- [137 844]
- [619 115]]
+Part of train node pairs[user:like:item] for link prediction: [[876 679]
+ [381 764]
+ [497 217]]
 LP train node pairs[user:like:item] are saved to ./ondisk_dataset_heterograph/lp-train-like-node-pairs.npy
 
-Part of train node pairs[user:follow:user] for link prediction: [[901 244]
- [912 707]
- [492 538]]
+Part of train node pairs[user:follow:user] for link prediction: [[919 905]
+ [270 460]
+ [310 371]]
 LP train node pairs[user:follow:user] are saved to ./ondisk_dataset_heterograph/lp-train-follow-node-pairs.npy
 
-Part of val node pairs[user:like:item] for link prediction: [[404 985]
- [519 472]
- [401 299]]
+Part of val node pairs[user:like:item] for link prediction: [[468 387]
+ [920 416]
+ [925 717]]
 LP val node pairs[user:like:item] are saved to ./ondisk_dataset_heterograph/lp-val-like-node-pairs.npy
 
-Part of val negative dsts[user:like:item] for link prediction: tensor([[865, 627, 957,  57, 167, 911, 316, 508, 171, 382],
-        [686,  38, 692, 671, 347,  35, 977, 599, 170, 524],
-        [827, 532, 785, 939, 615, 211, 249, 950, 267, 107]])
+Part of val negative dsts[user:like:item] for link prediction: tensor([[896, 380, 978, 377, 860, 561, 802, 312, 422,  90],
+        [280, 785, 615, 484, 364, 742, 480, 989, 270,   2],
+        [788, 871, 268, 955, 892, 214, 639, 169, 898, 703]])
 LP val negative dsts[user:like:item] are saved to ./ondisk_dataset_heterograph/lp-val-like-neg-dsts.pt
 
-Part of val node pairs[user:follow:user] for link prediction: [[ 60 106]
- [468 609]
- [ 95 954]]
+Part of val node pairs[user:follow:user] for link prediction: [[800 195]
+ [286 965]
+ [852 443]]
 LP val node pairs[user:follow:user] are saved to ./ondisk_dataset_heterograph/lp-val-follow-node-pairs.npy
 
-Part of val negative dsts[user:follow:user] for link prediction: tensor([[553, 150,  15, 641, 871, 770, 761, 872, 929, 662],
-        [744, 240, 972, 674, 855, 976, 395, 814, 406, 136],
-        [851, 597, 585, 989, 114, 670, 194, 108, 465,  47]])
+Part of val negative dsts[user:follow:user] for link prediction: tensor([[386, 617, 271,   4, 369, 264, 457, 655, 779, 759],
+        [920,  22, 483, 694, 218, 979, 347,  25, 859, 667],
+        [446, 274, 942, 243, 818, 602, 645, 458,  44, 578]])
 LP val negative dsts[user:follow:user] are saved to ./ondisk_dataset_heterograph/lp-val-follow-neg-dsts.pt
 
-Part of test node pairs[user:like:item] for link prediction: [512  62]
+Part of test node pairs[user:like:item] for link prediction: [939 360]
 LP test node pairs[user:like:item] are saved to ./ondisk_dataset_heterograph/lp-test-like-node-pairs.npy
 
-Part of test negative dsts[user:like:item] for link prediction: tensor([[933, 519, 445, 540, 354, 475, 381, 687,  98, 981],
-        [527, 690, 353, 102, 136, 126, 972, 326,  37,  79],
-        [134, 599, 179,  19, 850, 532, 315, 581, 258, 526]])
+Part of test negative dsts[user:like:item] for link prediction: tensor([[298, 546, 442, 420, 117, 955, 923, 451, 490, 592],
+        [139, 566, 419, 598,   2, 283, 951, 883, 566, 621],
+        [247, 787, 346, 989, 626, 829, 733, 860, 117,  10]])
 LP test negative dsts[user:like:item] are saved to ./ondisk_dataset_heterograph/lp-test-like-neg-dsts.pt
 
-Part of test node pairs[user:follow:user] for link prediction: [374 929]
+Part of test node pairs[user:follow:user] for link prediction: [992 541]
 LP test node pairs[user:follow:user] are saved to ./ondisk_dataset_heterograph/lp-test-follow-node-pairs.npy
 
-Part of test negative dsts[user:follow:user] for link prediction: tensor([[606, 506, 453, 453, 610, 220, 912, 865,  99, 461],
-        [291, 479, 497,  73, 604, 920, 731, 122, 826, 906],
-        [521, 237, 792, 139, 145, 801, 115, 725,  33, 577]])
+Part of test negative dsts[user:follow:user] for link prediction: tensor([[732, 810, 471, 385, 654, 719, 864, 204, 926, 143],
+        [464, 485, 461, 964, 908, 522, 544, 901, 311, 128],
+        [713, 591,  51, 620, 995, 273,  35, 485, 747,  94]])
 LP test negative dsts[user:follow:user] are saved to ./ondisk_dataset_heterograph/lp-test-follow-neg-dsts.pt
 
 </pre></div></div>
@@ -899,441 +902,388 @@ LP test negative dsts[user:follow:user] are saved to ./ondisk_dataset_heterograp
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
+<div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-The on-disk dataset is re-preprocessing, so the existing preprocessed dataset has been removed.
-Start to preprocess the on-disk dataset.
-Finish preprocessing the on-disk dataset.
-Loaded graph: FusedCSCSamplingGraph(csc_indptr=tensor([    0,    11,    22,  ..., 19984, 19993, 20000], dtype=torch.int32),
-                      indices=tensor([1013, 1407, 1121,  ..., 1947, 1767, 1042], dtype=torch.int32),
-                      total_num_nodes=2000, num_edges={'user:follow:user': 10000, 'user:like:item': 10000},
-                      node_type_offset=tensor([   0, 1000, 2000], dtype=torch.int32),
-                      type_per_edge=tensor([1, 1, 1,  ..., 0, 0, 0], dtype=torch.uint8),
-                      node_type_to_id={'item': 0, 'user': 1},
-                      edge_type_to_id={'user:follow:user': 0, 'user:like:item': 1},)
+The dataset is already preprocessed.
+Loaded graph: FusedCSCSamplingGraph(csc_indptr=tensor([    0,    12,    30,  ..., 19978, 19990, 20000], dtype=torch.int32),
+                      indices=tensor([1285, 1863, 1129,  ..., 1968, 1226, 1668], dtype=torch.int32),
+                      num_nodes=2000, num_edges={'user:follow:user': 10000, 'user:like:item': 10000}, node_type_offset=tensor([   0, 1000, 2000], dtype=torch.int32), type_per_edge=tensor([1, 1, 1,  ..., 0, 0, 0], dtype=torch.uint8), node_type_to_id={'item': 0, 'user': 1}, edge_type_to_id={'user:follow:user': 0, 'user:like:item': 1})
 
-Loaded feature store: TorchBasedFeatureStore(
-    {(&lt;OnDiskFeatureDataDomain.NODE: 'node'&gt;, 'user', 'feat_0'): TorchBasedFeature(
-        feature=tensor([[0.5556, 0.0867, 0.5541, 0.4925, 0.9743],
-                        [0.9436, 0.8214, 0.7407, 0.4494, 0.2332],
-                        [0.6139, 0.0295, 0.0953, 0.3182, 0.2980],
-                        ...,
-                        [0.4110, 0.2922, 0.2128, 0.2419, 0.8580],
-                        [0.5618, 0.1932, 0.6613, 0.9699, 0.1073],
-                        [0.2366, 0.5843, 0.9860, 0.9680, 0.4506]], dtype=torch.float64),
-        metadata={},
-    ), (&lt;OnDiskFeatureDataDomain.NODE: 'node'&gt;, 'user', 'feat_1'): TorchBasedFeature(
-        feature=tensor([[0.0753, 0.9412, 0.7237, 0.8406, 0.7443],
-                        [0.3670, 0.1601, 0.2561, 0.1658, 0.0784],
-                        [0.7498, 0.4256, 0.7051, 0.9575, 0.8941],
-                        ...,
-                        [0.3325, 0.6808, 0.2120, 0.0495, 0.5281],
-                        [0.3410, 0.2934, 0.3827, 0.1893, 0.5797],
-                        [0.8680, 0.5174, 0.7521, 0.8162, 0.5831]]),
-        metadata={},
-    ), (&lt;OnDiskFeatureDataDomain.NODE: 'node'&gt;, 'item', 'feat_0'): TorchBasedFeature(
-        feature=tensor([[0.8560, 0.5404, 0.6827, 0.5122, 0.1958],
-                        [0.2843, 0.4373, 0.2411, 0.2853, 0.7130],
-                        [0.7151, 0.4894, 0.7103, 0.3772, 0.4049],
-                        ...,
-                        [0.9585, 0.3649, 0.3026, 0.0715, 0.4094],
-                        [0.0753, 0.3200, 0.7668, 0.2683, 0.3102],
-                        [0.8154, 0.2762, 0.5670, 0.9080, 0.8136]], dtype=torch.float64),
-        metadata={},
-    ), (&lt;OnDiskFeatureDataDomain.NODE: 'node'&gt;, 'item', 'feat_1'): TorchBasedFeature(
-        feature=tensor([[0.9433, 0.9772, 0.0985, 0.9752, 0.4809],
-                        [0.2628, 0.0764, 0.0982, 0.6972, 0.1616],
-                        [0.9759, 0.8803, 0.4412, 0.3128, 0.8583],
-                        ...,
-                        [0.3999, 0.6054, 0.2797, 0.6721, 0.6613],
-                        [0.8905, 0.7982, 0.3626, 0.4477, 0.3417],
-                        [0.2580, 0.6876, 0.5270, 0.5687, 0.9305]]),
-        metadata={},
-    ), (&lt;OnDiskFeatureDataDomain.EDGE: 'edge'&gt;, 'user:like:item', 'feat_0'): TorchBasedFeature(
-        feature=tensor([[0.9479, 0.5982, 0.4022, 0.4394, 0.0322],
-                        [0.6830, 0.1964, 0.1000, 0.0826, 0.7189],
-                        [0.0347, 0.4108, 0.0179, 0.3253, 0.6742],
-                        ...,
-                        [0.6445, 0.8413, 0.9309, 0.0805, 0.8295],
-                        [0.0132, 0.7807, 0.8483, 0.6206, 0.0895],
-                        [0.8018, 0.0835, 0.5375, 0.1717, 0.8546]], dtype=torch.float64),
-        metadata={},
-    ), (&lt;OnDiskFeatureDataDomain.EDGE: 'edge'&gt;, 'user:like:item', 'feat_1'): TorchBasedFeature(
-        feature=tensor([[0.9141, 0.3203, 0.6696, 0.6609, 0.6919],
-                        [0.9650, 0.2111, 0.7709, 0.2649, 0.2789],
-                        [0.9631, 0.1883, 0.2092, 0.3506, 0.5999],
-                        ...,
-                        [0.8331, 0.2895, 0.3707, 0.6542, 0.0165],
-                        [0.2401, 0.4798, 0.2880, 0.6075, 0.0519],
-                        [0.1184, 0.3674, 0.2415, 0.1782, 0.3879]]),
-        metadata={},
-    ), (&lt;OnDiskFeatureDataDomain.EDGE: 'edge'&gt;, 'user:follow:user', 'feat_0'): TorchBasedFeature(
-        feature=tensor([[0.6065, 0.0373, 0.3347, 0.6221, 0.8793],
-                        [0.1451, 0.9084, 0.0806, 0.0735, 0.5474],
-                        [0.6360, 0.4040, 0.1555, 0.9505, 0.5053],
-                        ...,
-                        [0.7709, 0.4226, 0.7039, 0.5270, 0.6325],
-                        [0.0429, 0.5723, 0.1762, 0.8758, 0.0128],
-                        [0.9265, 0.0415, 0.8418, 0.6987, 0.1635]], dtype=torch.float64),
-        metadata={},
-    ), (&lt;OnDiskFeatureDataDomain.EDGE: 'edge'&gt;, 'user:follow:user', 'feat_1'): TorchBasedFeature(
-        feature=tensor([[0.6203, 0.6392, 0.1359, 0.3370, 0.1647],
-                        [0.0014, 0.5687, 0.4660, 0.6206, 0.1364],
-                        [0.4700, 0.3225, 0.5005, 0.8459, 0.4815],
-                        ...,
-                        [0.8695, 0.6997, 0.9497, 0.6002, 0.0743],
-                        [0.4988, 0.3973, 0.3126, 0.4706, 0.0390],
-                        [0.2064, 0.2058, 0.7879, 0.6749, 0.9875]]),
-        metadata={},
-    )}
+Loaded feature store: TorchBasedFeatureStore{(&lt;OnDiskFeatureDataDomain.NODE: 'node'&gt;, 'user', 'feat_0'): TorchBasedFeature(feature=tensor([[0.9003, 0.1766, 0.0067, 0.9527, 0.9177],
+                                                        [0.2945, 0.5866, 0.8393, 0.2707, 0.6509],
+                                                        [0.5088, 0.9980, 0.5103, 0.2334, 0.0938],
+                                                        ...,
+                                                        [0.3978, 0.6956, 0.3256, 0.3475, 0.7376],
+                                                        [0.7720, 0.9718, 0.5891, 0.1268, 0.4006],
+                                                        [0.2095, 0.3630, 0.4662, 0.0960, 0.5415]], dtype=torch.float64),
+                                        metadata={},
+                      ), (&lt;OnDiskFeatureDataDomain.NODE: 'node'&gt;, 'user', 'feat_1'): TorchBasedFeature(feature=tensor([[0.2186, 0.3136, 0.1307, 0.9758, 0.9439],
+                                                        [0.6412, 0.2680, 0.6048, 0.6162, 0.5283],
+                                                        [0.2391, 0.6051, 0.1176, 0.7164, 0.8818],
+                                                        ...,
+                                                        [0.5156, 0.7295, 0.2015, 0.1098, 0.3725],
+                                                        [0.0095, 0.8726, 0.1276, 0.6964, 0.9375],
+                                                        [0.0314, 0.3978, 0.2664, 0.2034, 0.5561]]),
+                                        metadata={},
+                      ), (&lt;OnDiskFeatureDataDomain.NODE: 'node'&gt;, 'item', 'feat_0'): TorchBasedFeature(feature=tensor([[0.1896, 0.8957, 0.1248, 0.0946, 0.9630],
+                                                        [0.9009, 0.8778, 0.8492, 0.9950, 0.7291],
+                                                        [0.9637, 0.9929, 0.6573, 0.0630, 0.1471],
+                                                        ...,
+                                                        [0.0945, 0.1298, 0.8960, 0.5123, 0.4139],
+                                                        [0.3474, 0.3332, 0.3455, 0.7820, 0.7507],
+                                                        [0.4844, 0.4520, 0.8424, 0.8775, 0.0639]], dtype=torch.float64),
+                                        metadata={},
+                      ), (&lt;OnDiskFeatureDataDomain.NODE: 'node'&gt;, 'item', 'feat_1'): TorchBasedFeature(feature=tensor([[0.9225, 0.3611, 0.4855, 0.4473, 0.2030],
+                                                        [0.1873, 0.1819, 0.2019, 0.8564, 0.4483],
+                                                        [0.1798, 0.6516, 0.6069, 0.6915, 0.6848],
+                                                        ...,
+                                                        [0.6617, 0.0242, 0.3686, 0.1251, 0.4342],
+                                                        [0.2601, 0.3553, 0.4522, 0.4450, 0.3926],
+                                                        [0.2066, 0.1924, 0.2499, 0.7460, 0.0121]]),
+                                        metadata={},
+                      ), (&lt;OnDiskFeatureDataDomain.EDGE: 'edge'&gt;, 'user:like:item', 'feat_0'): TorchBasedFeature(feature=tensor([[0.3568, 0.3851, 0.3161, 0.7307, 0.1624],
+                                                        [0.4665, 0.1540, 0.1844, 0.9446, 0.5131],
+                                                        [0.2085, 0.4273, 0.6521, 0.1818, 0.7272],
+                                                        ...,
+                                                        [0.4488, 0.4025, 0.2541, 0.7677, 0.3394],
+                                                        [0.6525, 0.5334, 0.6139, 0.1337, 0.3808],
+                                                        [0.0316, 0.6019, 0.8467, 0.2910, 0.3461]], dtype=torch.float64),
+                                        metadata={},
+                      ), (&lt;OnDiskFeatureDataDomain.EDGE: 'edge'&gt;, 'user:like:item', 'feat_1'): TorchBasedFeature(feature=tensor([[0.2128, 0.7575, 0.8675, 0.6439, 0.8775],
+                                                        [0.2614, 0.1866, 0.1773, 0.1425, 0.3610],
+                                                        [0.3236, 0.8714, 0.4628, 0.6004, 0.7727],
+                                                        ...,
+                                                        [0.9603, 0.4629, 0.6817, 0.7015, 0.6970],
+                                                        [0.1620, 0.5465, 0.2846, 0.5264, 0.6005],
+                                                        [0.7379, 0.2059, 0.9922, 0.4159, 0.6014]]),
+                                        metadata={},
+                      ), (&lt;OnDiskFeatureDataDomain.EDGE: 'edge'&gt;, 'user:follow:user', 'feat_0'): TorchBasedFeature(feature=tensor([[0.0114, 0.2352, 0.7059, 0.8729, 0.1724],
+                                                        [0.7790, 0.6452, 0.3853, 0.0877, 0.1942],
+                                                        [0.0661, 0.3807, 0.9104, 0.5733, 0.1325],
+                                                        ...,
+                                                        [0.0492, 0.9870, 0.2428, 0.5669, 0.0453],
+                                                        [0.3567, 0.3860, 0.5831, 0.9305, 0.1653],
+                                                        [0.2597, 0.9518, 0.2196, 0.0864, 0.1760]], dtype=torch.float64),
+                                        metadata={},
+                      ), (&lt;OnDiskFeatureDataDomain.EDGE: 'edge'&gt;, 'user:follow:user', 'feat_1'): TorchBasedFeature(feature=tensor([[0.1976, 0.0019, 0.0650, 0.0449, 0.4830],
+                                                        [0.6444, 0.5618, 0.7952, 0.4541, 0.0235],
+                                                        [0.3693, 0.4954, 0.2899, 0.9077, 0.1983],
+                                                        ...,
+                                                        [0.7408, 0.9713, 0.2726, 0.3072, 0.5790],
+                                                        [0.6534, 0.6962, 0.2320, 0.6569, 0.7640],
+                                                        [0.0187, 0.1187, 0.3509, 0.3390, 0.2323]]),
+                                        metadata={},
+                      )}
+
+Loaded node classification task: OnDiskTask(validation_set=ItemSetDict(items={'user': ItemSet(items=(tensor([601, 505,  76,  98, 793, 518, 401, 175, 447, 955,  39, 714, 579, 361,
+                                                                  533, 264, 341, 507, 540, 857, 788, 776, 750,   6,  71, 269, 990, 501,
+                                                                  389, 535, 528, 807, 323,  79, 939, 809, 197, 453, 689, 511, 491, 154,
+                                                                  625, 354, 566, 981, 409, 246, 920, 387, 589,  15, 694, 379, 769, 615,
+                                                                  211, 273, 796, 987, 329, 344, 278, 580, 988, 785, 126, 441, 728,  59,
+                                                                  397, 563, 968, 606, 325, 758, 230, 403, 879, 856, 124, 622, 774, 812,
+                                                                    2, 391, 199, 552, 959, 600, 658, 761, 521, 105, 151, 386, 814, 297,
+                                                                  272,  72, 882, 931, 642, 363, 326, 284, 738,  61, 828, 648, 628, 644,
+                                                                  433, 598,  99, 985, 367, 488, 384,  65, 993, 964, 482,  90, 836, 252,
+                                                                  422, 688, 687, 548, 568, 162, 310, 710, 842, 434, 610, 928, 534, 770,
+                                                                  172, 954, 922,  25, 346, 889, 485, 846, 853, 476, 470, 764, 921, 287,
+                                                                  665, 724,  29, 461, 254, 160, 652, 343, 309, 980, 342, 244, 159, 655,
+                                                                  754, 120, 529, 591, 335, 678, 643, 539, 649, 314, 270, 331, 259, 467,
+                                                                  998, 288, 198, 885, 603, 757, 997, 871, 417, 216, 412, 833, 775, 170,
+                                                                  224, 156,  70, 365], dtype=torch.int32), tensor([5, 7, 6, 9, 9, 9, 3, 6, 8, 7, 9, 7, 9, 4, 6, 1, 0, 8, 9, 5, 0, 6, 8, 4,
+                                                                  9, 2, 5, 8, 6, 6, 1, 5, 9, 6, 8, 4, 2, 0, 1, 9, 4, 3, 9, 7, 3, 7, 5, 4,
+                                                                  7, 6, 7, 4, 3, 4, 6, 5, 0, 6, 2, 3, 2, 7, 6, 4, 7, 0, 1, 5, 0, 5, 4, 2,
+                                                                  2, 7, 3, 7, 5, 0, 8, 0, 1, 7, 4, 1, 4, 5, 6, 9, 8, 0, 4, 8, 8, 7, 6, 2,
+                                                                  5, 4, 4, 5, 9, 9, 1, 1, 9, 9, 8, 1, 6, 5, 1, 5, 4, 9, 3, 4, 4, 8, 3, 8,
+                                                                  6, 8, 0, 9, 6, 9, 5, 7, 8, 8, 9, 1, 8, 0, 7, 2, 0, 0, 7, 8, 6, 9, 3, 3,
+                                                                  2, 8, 1, 1, 8, 8, 4, 9, 8, 6, 6, 7, 0, 8, 2, 8, 4, 5, 4, 5, 1, 2, 1, 5,
+                                                                  6, 6, 3, 3, 7, 0, 7, 7, 9, 4, 2, 0, 8, 8, 6, 1, 4, 6, 5, 3, 7, 7, 2, 8,
+                                                                  4, 7, 5, 4, 7, 8, 7, 4])),
+                                                    names=('seeds', 'labels'),
+                                            ), 'item': ItemSet(items=(tensor([640, 827, 652, 794, 142, 250, 113, 132, 528, 786, 458, 567, 854, 457,
+                                                                  708, 428, 378, 902, 798, 155, 724, 547, 337, 487,   9, 620,  64, 933,
+                                                                   72, 121, 366, 754, 941, 196,  97, 678, 268, 339, 938, 128, 475,  91,
+                                                                    3,  24, 150, 447, 463, 920, 692, 921, 828, 312, 631, 948, 296, 292,
+                                                                  465, 497, 490, 814, 844, 881, 165, 510, 563, 242, 519, 853, 117, 664,
+                                                                  700, 267,  80, 453, 485, 658, 779, 277, 847,  53, 367, 357, 400, 605,
+                                                                   30, 313,  60, 133, 451, 349, 673, 101, 989, 261, 670, 722,   2, 937,
+                                                                  329, 566, 343,  40, 592, 353, 887, 711, 256, 517, 943, 878, 650, 162,
+                                                                  577, 253, 265, 255, 109, 780, 293, 319, 651,  21, 818, 364, 576, 707,
+                                                                  623, 332, 480, 750, 372, 286, 356, 123, 184, 464, 748, 397, 721, 492,
+                                                                    7,  37, 655, 747,  15, 241, 248, 429, 849, 756, 185, 656, 896, 899,
+                                                                  618, 898, 848, 717, 377, 726, 365, 687, 478, 327, 186, 300, 934, 140,
+                                                                  971,  99, 529, 438, 203, 370, 795, 611, 695, 251, 386, 500, 324, 907,
+                                                                  699, 904, 565, 369, 832,  90, 811, 416, 209, 641,  54, 578, 106, 512,
+                                                                  903, 838, 891, 667], dtype=torch.int32), tensor([3, 1, 4, 4, 6, 7, 8, 4, 4, 2, 0, 7, 9, 9, 7, 1, 8, 2, 3, 7, 1, 6, 3, 9,
+                                                                  0, 4, 8, 3, 7, 8, 7, 3, 9, 0, 8, 7, 8, 5, 4, 4, 2, 0, 5, 3, 6, 1, 3, 5,
+                                                                  9, 5, 1, 8, 1, 8, 5, 5, 9, 0, 7, 5, 7, 0, 7, 6, 5, 4, 4, 3, 8, 7, 0, 6,
+                                                                  7, 8, 8, 8, 9, 4, 4, 0, 2, 2, 3, 0, 4, 4, 9, 2, 5, 7, 2, 8, 8, 2, 6, 8,
+                                                                  4, 0, 3, 1, 1, 0, 6, 0, 5, 2, 4, 8, 2, 3, 8, 6, 8, 3, 2, 6, 1, 9, 6, 0,
+                                                                  4, 5, 4, 0, 9, 2, 3, 9, 3, 7, 0, 6, 2, 9, 0, 4, 4, 8, 8, 4, 6, 9, 0, 7,
+                                                                  3, 7, 5, 0, 3, 0, 1, 2, 9, 0, 7, 2, 2, 7, 0, 6, 8, 3, 9, 0, 1, 2, 2, 8,
+                                                                  3, 3, 6, 0, 6, 4, 6, 8, 3, 9, 6, 8, 7, 0, 3, 2, 0, 1, 3, 9, 1, 6, 1, 8,
+                                                                  4, 2, 3, 0, 6, 1, 2, 7])),
+                                                    names=('seeds', 'labels'),
+                                            )},
+                                      names=('seeds', 'labels'),
+                          ),
+           train_set=ItemSetDict(items={'user': ItemSet(items=(tensor([ 60, 468, 683, 916, 561, 456,  63, 651, 784, 282, 228, 755, 698, 330,
+                                                             549, 626, 257, 933,  14, 913, 671, 165,  62, 748, 943, 747,  18, 102,
+                                                             526, 660, 108, 768, 588, 745, 149, 337, 245, 893, 421, 393, 203, 250,
+                                                             766, 878,  91, 786, 777, 479, 168, 839, 163, 888, 532, 504, 439, 932,
+                                                              68, 838, 875, 292, 994, 822, 395, 865, 726,  66, 353, 654, 948, 137,
+                                                             594, 207, 974, 712, 492, 704,  21, 407, 818, 870, 805, 349, 475, 663,
+                                                              27,  86,  53, 139, 918, 146, 440, 132, 719, 261, 202, 821, 260,  38,
+                                                              69, 605, 898, 685,  20, 557, 978, 235,  26, 645, 190, 983, 830, 210,
+                                                             901, 321, 217, 542, 531, 952, 503, 347, 301, 677, 620,  73, 484, 411,
+                                                             709, 657,  42, 174, 624, 364, 472, 623, 352, 802, 223,  41, 415, 201,
+                                                             155, 200, 556, 905, 753, 795, 722, 263, 782, 350, 896, 864, 912, 184,
+                                                             424, 145, 460, 152, 977, 317, 225, 103, 717, 131, 153,  49,   5, 242,
+                                                             394, 267, 274, 780, 942, 463, 883, 141, 791, 443, 551, 961, 497, 662,
+                                                             596, 730, 360, 570, 377, 739, 740, 900, 702, 400, 280, 494, 909, 872,
+                                                             737, 903, 946, 374, 268, 438, 560,  44, 845, 684, 327, 204, 169, 522,
+                                                             816, 881,  64, 995, 984, 676, 701, 973, 607, 848, 926, 586, 732, 550,
+                                                             506, 800, 941, 996, 469, 708, 147, 976,  48, 134, 844, 924, 811, 214,
+                                                             298, 405, 917, 696, 358, 813, 193, 425, 351,  97, 543, 629, 107,  43,
+                                                             682, 316, 950, 763, 465,  75, 790, 303, 585, 406, 876, 371, 490, 418,
+                                                             661, 602, 972, 765, 886, 183, 313, 164,  10,  55, 609, 859, 823, 517,
+                                                             451, 398, 587, 428, 801, 618, 832, 449, 574, 229, 399, 559, 817, 703,
+                                                             515, 279, 454,  30, 674, 368, 471,  17, 890, 466, 742, 858, 963, 735,
+                                                             953,  24, 650, 375, 277, 567, 427, 635,  34,  54, 553, 380, 258, 115,
+                                                             834, 390, 302, 448, 213, 965, 396, 669,  58, 861, 129, 392, 286, 806,
+                                                              23, 158, 285, 824, 369,  95, 237, 691, 144, 283, 530, 437, 810, 414,
+                                                             195,  83,  16, 512, 835, 462, 432, 906, 308, 604, 825, 826, 266, 220,
+                                                             592, 771, 334, 894, 546, 851, 733, 798, 291, 999,  74, 218,  93, 716,
+                                                             877, 117, 458, 621, 519, 319, 442, 627, 797, 781, 372,  81, 281, 827,
+                                                             581, 935, 672, 695, 536, 547, 496, 614, 736,  22, 113, 743, 575, 123,
+                                                             713, 929, 249, 991, 516, 947, 723,  31, 294, 241, 239, 385, 969, 783,
+                                                             362, 318, 619,  89,  52, 744, 194, 481, 118, 646, 966, 307, 639, 899,
+                                                             336, 597,  35, 699, 315, 498, 862, 265, 537, 841, 808, 305, 590, 612,
+                                                             680, 986, 887, 271, 478, 206, 638, 799, 209, 248,  11, 837, 236, 148,
+                                                             196, 348, 843,  77, 524, 119, 502, 971, 854, 720, 188, 135, 895, 388,
+                                                             227, 312, 746, 705, 616, 452, 166, 700, 880, 578, 176, 849, 219, 192,
+                                                             222, 907, 711, 727, 382, 520, 104,   0, 459, 840, 681, 892, 958, 789,
+                                                             982, 611,   3, 866, 930, 122, 173,  57, 455,  84, 804, 324, 150, 179,
+                                                             867, 989, 630, 186, 262, 381, 554, 656, 760, 311, 891, 121, 483, 693,
+                                                             100, 423, 632, 238, 370, 402,  32, 527,  51, 752, 951, 332, 779, 136,
+                                                             495, 234, 180, 232, 640, 673, 276, 759, 576, 477,   1, 914, 707, 181,
+                                                             829, 212, 670, 359,  12, 819, 355, 487, 408, 569,  96, 582, 473, 500,
+                                                             345, 675,   7, 185, 171, 960, 486, 366, 106, 436, 847, 637,  87, 884,
+                                                              67, 715, 869, 659, 820, 187, 489, 419, 357, 378,  13, 850],
+                                                            dtype=torch.int32), tensor([8, 2, 1, 4, 9, 1, 7, 9, 3, 8, 7, 6, 0, 4, 1, 4, 6, 3, 8, 8, 9, 0, 9, 4,
+                                                             5, 5, 1, 4, 9, 0, 5, 3, 0, 4, 1, 1, 2, 1, 9, 2, 9, 8, 9, 5, 2, 3, 5, 5,
+                                                             9, 3, 2, 4, 9, 0, 5, 6, 8, 9, 7, 7, 9, 4, 0, 8, 3, 7, 1, 9, 5, 8, 8, 3,
+                                                             3, 9, 1, 0, 7, 0, 1, 6, 6, 5, 1, 4, 0, 0, 1, 3, 3, 3, 4, 6, 9, 1, 9, 5,
+                                                             3, 1, 6, 0, 7, 9, 7, 7, 0, 2, 1, 2, 7, 2, 3, 1, 2, 8, 7, 9, 3, 3, 4, 0,
+                                                             1, 2, 1, 5, 1, 8, 0, 1, 9, 4, 6, 0, 3, 4, 1, 7, 3, 9, 0, 3, 0, 7, 0, 0,
+                                                             1, 1, 1, 3, 8, 6, 3, 9, 9, 6, 4, 8, 3, 8, 2, 7, 0, 5, 1, 9, 4, 4, 3, 6,
+                                                             8, 2, 2, 1, 4, 2, 2, 2, 9, 8, 1, 0, 8, 0, 3, 5, 3, 5, 0, 6, 9, 0, 7, 6,
+                                                             0, 8, 1, 3, 5, 5, 5, 5, 4, 1, 8, 8, 9, 0, 4, 3, 8, 2, 5, 0, 0, 1, 2, 4,
+                                                             2, 7, 0, 3, 2, 3, 2, 5, 3, 0, 3, 9, 4, 5, 7, 9, 6, 8, 1, 3, 7, 7, 2, 9,
+                                                             2, 6, 4, 6, 6, 7, 1, 3, 3, 3, 6, 4, 0, 5, 1, 3, 3, 5, 5, 6, 8, 5, 2, 4,
+                                                             1, 9, 9, 1, 9, 3, 2, 6, 9, 9, 1, 5, 9, 6, 1, 4, 7, 7, 2, 7, 8, 4, 1, 8,
+                                                             7, 8, 0, 0, 6, 1, 5, 0, 3, 9, 9, 0, 5, 5, 2, 8, 3, 0, 0, 0, 2, 9, 7, 8,
+                                                             3, 7, 8, 5, 5, 0, 2, 3, 5, 1, 7, 9, 4, 4, 7, 3, 1, 7, 8, 2, 5, 2, 5, 9,
+                                                             9, 4, 1, 6, 1, 6, 2, 0, 2, 4, 0, 8, 3, 3, 5, 3, 0, 1, 0, 0, 1, 9, 4, 1,
+                                                             6, 3, 6, 1, 2, 8, 8, 6, 4, 3, 9, 8, 2, 4, 9, 2, 3, 1, 1, 1, 2, 4, 7, 4,
+                                                             4, 7, 7, 1, 4, 4, 7, 3, 0, 5, 4, 9, 9, 4, 8, 5, 8, 8, 7, 9, 9, 4, 0, 2,
+                                                             0, 1, 2, 8, 1, 1, 4, 2, 6, 1, 1, 0, 0, 2, 6, 1, 2, 6, 4, 8, 4, 4, 9, 9,
+                                                             3, 4, 8, 2, 4, 4, 4, 0, 3, 8, 4, 4, 0, 2, 3, 8, 3, 7, 5, 1, 9, 5, 8, 4,
+                                                             1, 4, 3, 4, 6, 4, 0, 5, 5, 6, 9, 3, 7, 6, 6, 7, 3, 9, 4, 0, 3, 2, 6, 4,
+                                                             3, 0, 7, 1, 2, 0, 5, 0, 5, 6, 8, 3, 0, 4, 2, 3, 5, 1, 3, 1, 3, 2, 0, 9,
+                                                             6, 0, 7, 3, 1, 4, 5, 0, 7, 1, 6, 9, 4, 1, 1, 5, 9, 4, 4, 4, 3, 1, 9, 9,
+                                                             0, 1, 1, 7, 1, 1, 9, 9, 9, 9, 6, 6, 5, 4, 2, 9, 8, 2, 4, 6, 1, 0, 1, 3,
+                                                             1, 4, 9, 5, 9, 5, 1, 0, 3, 8, 5, 7, 4, 5, 8, 1, 3, 5, 6, 3, 6, 3, 8, 1,
+                                                             1, 1, 4, 5, 4, 0, 5, 0, 0, 2, 9, 2, 4, 7, 5, 7, 7, 8, 2, 0, 0, 8, 7, 1])),
+                                               names=('seeds', 'labels'),
+                                       ), 'item': ItemSet(items=(tensor([593, 696, 893,  88, 662, 591, 745, 271, 178, 135, 782, 976, 114, 630,
+                                                             987,  83, 752, 781, 991, 138, 862, 736, 610, 569, 508, 913,  89, 379,
+                                                             238, 621, 584, 156, 587, 173, 645, 701, 170, 389, 833, 391, 880,  73,
+                                                             303, 503, 614,  11, 686, 462, 894, 139, 919, 579, 154, 115, 571, 883,
+                                                             730, 406, 613, 147, 951, 239,  51, 227, 182, 180, 978,  33, 494, 616,
+                                                             469, 776, 315, 526,  42, 284, 916,   5, 573, 456, 317, 215, 146, 624,
+                                                             628, 657, 148, 698,  43, 769, 668, 444, 962, 886, 385, 483, 685, 136,
+                                                             262, 164, 240, 858, 759,  76, 820, 301, 693, 413, 731, 835, 445, 468,
+                                                              95, 167, 496, 194, 466, 206, 851, 237, 276, 504, 644, 102, 505, 638,
+                                                              81, 602, 788, 310, 223, 599, 355, 755, 513, 931, 908,  34, 803, 103,
+                                                             410, 476, 627, 714, 322, 679, 551, 922, 990, 766, 177, 742, 363, 141,
+                                                             785, 166, 348, 819, 401, 484, 702, 193,  27, 900, 454,  13, 282, 764,
+                                                             440, 331, 997, 342, 212, 603, 432, 233, 171, 405,  49, 543, 489, 906,
+                                                             718, 986, 615, 876, 404, 340, 144, 964, 172, 360, 274, 229, 368, 855,
+                                                              84, 149, 527,  39, 536, 995, 449, 884,  85, 895, 839, 412, 201, 725,
+                                                             553, 288, 514, 110, 953, 207, 235,  29, 715,  69, 387, 982, 254, 690,
+                                                             973, 909, 865, 710, 882, 532,  19, 972, 911, 586, 330, 608, 646, 275,
+                                                             959, 222, 845,  17, 706, 443, 799, 161, 467, 260,  28, 831, 105, 393,
+                                                             864, 408, 974, 482, 205, 996, 846, 347, 232, 688, 607, 810, 151, 760,
+                                                             649, 583, 225, 392, 601, 892, 671, 533, 160, 926,  47, 935, 856, 637,
+                                                             719, 617, 134, 263, 954, 122, 351, 181, 870, 112, 236, 809, 402, 507,
+                                                             642, 245, 192, 470, 361, 396, 137, 217, 932, 979, 143, 407, 875, 821,
+                                                              45, 949, 246, 210, 606, 174, 967, 647, 376, 594, 118, 244, 294, 474,
+                                                             417, 985, 733,  36, 901, 104, 448, 697, 336, 877, 791, 580, 572, 789,
+                                                             159, 643, 289, 279, 168, 936, 842, 382, 435, 189, 541, 415, 306, 861,
+                                                             942, 459, 709,  96, 681,  55, 298, 905, 950, 716, 958, 674, 600, 843,
+                                                             419,  75, 200, 965, 247, 346, 636, 219, 969, 977, 992, 421,   8, 374,
+                                                             204, 152, 968,  70, 632, 981,  82,  63, 307, 264, 822, 743, 639, 857,
+                                                             281, 220, 765, 867, 176, 582, 596, 473, 612, 768, 975, 910, 712, 836,
+                                                             316, 930, 734, 595, 208, 278, 837, 422, 784, 359, 314, 334, 352, 295,
+                                                             738, 530, 689, 495, 720, 999, 338, 226, 956, 850, 705, 634, 955, 502,
+                                                             257, 335, 554, 807, 326, 111, 358, 442, 477, 570, 488, 305, 830, 609,
+                                                              12, 744, 498,  52, 258, 549, 914, 249, 304, 556, 947, 749, 434, 757,
+                                                             912, 661, 461, 729,  62, 523,  32,  86, 287, 806, 555,  87, 659,  71,
+                                                             557, 426, 562, 524, 581, 945,  93, 424, 460, 124, 829, 481,  58, 381,
+                                                             778,  26, 648, 590, 694, 604, 169, 808, 270, 100, 723, 823, 129, 534,
+                                                             431, 550, 663, 228, 762,  65, 344,  46, 479,  56, 179, 998, 509, 472,
+                                                             266, 272, 960, 158, 625, 575, 758, 869, 666, 437,  57, 622,   4, 629,
+                                                             506,  50, 501, 816, 927, 994, 825, 732, 826, 439, 328, 680, 834, 728,
+                                                             515, 783, 548, 540, 787, 957, 735, 980, 917, 885, 216, 928,  67,  16,
+                                                             414, 763, 399, 653, 297, 797, 983, 425, 323, 585, 291, 269, 321, 703,
+                                                             889, 940, 739, 802, 568, 535, 175, 433, 915, 683,  66, 345,  48, 224,
+                                                             771,  23, 522, 188, 970, 195, 546, 441, 308,  22, 325, 521],
+                                                            dtype=torch.int32), tensor([1, 1, 7, 7, 7, 7, 8, 5, 4, 9, 3, 9, 8, 9, 0, 6, 3, 8, 8, 6, 9, 6, 8, 0,
+                                                             4, 9, 0, 2, 3, 4, 4, 0, 0, 4, 2, 7, 4, 7, 9, 7, 7, 9, 8, 7, 2, 1, 2, 4,
+                                                             3, 3, 6, 5, 0, 7, 7, 2, 7, 4, 5, 1, 5, 4, 2, 7, 5, 2, 2, 9, 9, 5, 0, 2,
+                                                             8, 6, 7, 8, 4, 5, 8, 7, 0, 5, 3, 9, 9, 6, 7, 3, 8, 8, 2, 6, 4, 3, 6, 5,
+                                                             4, 8, 7, 0, 8, 3, 0, 3, 1, 3, 7, 6, 8, 0, 0, 7, 3, 0, 0, 5, 7, 9, 4, 2,
+                                                             3, 0, 0, 5, 2, 8, 8, 4, 8, 4, 1, 2, 8, 4, 9, 5, 4, 8, 2, 0, 6, 4, 3, 3,
+                                                             8, 2, 8, 7, 4, 1, 2, 6, 8, 2, 5, 2, 3, 9, 0, 1, 9, 4, 9, 5, 6, 5, 4, 6,
+                                                             3, 0, 3, 9, 2, 5, 1, 9, 4, 4, 0, 5, 3, 4, 3, 2, 2, 3, 0, 8, 6, 5, 1, 0,
+                                                             5, 9, 9, 9, 3, 1, 3, 5, 1, 0, 6, 9, 4, 2, 2, 0, 9, 5, 2, 2, 1, 9, 7, 8,
+                                                             3, 7, 6, 0, 6, 5, 6, 5, 4, 0, 4, 5, 6, 1, 3, 6, 6, 0, 2, 6, 4, 7, 0, 7,
+                                                             7, 6, 9, 0, 1, 7, 2, 1, 3, 9, 2, 9, 9, 4, 9, 6, 2, 3, 5, 0, 4, 1, 5, 0,
+                                                             9, 4, 5, 2, 4, 2, 7, 6, 5, 7, 4, 8, 3, 7, 8, 0, 0, 1, 9, 1, 9, 8, 2, 4,
+                                                             2, 9, 0, 4, 1, 7, 2, 0, 7, 8, 7, 3, 1, 5, 0, 6, 8, 6, 6, 5, 1, 9, 9, 2,
+                                                             2, 2, 1, 2, 3, 1, 0, 2, 7, 5, 8, 6, 5, 6, 3, 9, 0, 8, 0, 8, 5, 3, 7, 9,
+                                                             1, 8, 3, 7, 7, 1, 3, 1, 2, 6, 7, 9, 2, 1, 1, 8, 3, 6, 8, 1, 9, 4, 4, 0,
+                                                             6, 9, 6, 1, 1, 1, 8, 8, 8, 7, 7, 4, 9, 8, 8, 7, 5, 1, 1, 7, 4, 4, 0, 0,
+                                                             5, 7, 5, 3, 1, 3, 7, 4, 5, 4, 7, 6, 4, 9, 7, 9, 7, 6, 0, 1, 5, 4, 2, 6,
+                                                             8, 1, 4, 3, 8, 1, 5, 2, 7, 9, 6, 4, 2, 9, 0, 7, 6, 4, 5, 0, 2, 5, 2, 8,
+                                                             6, 9, 9, 7, 7, 3, 4, 4, 1, 0, 6, 1, 7, 5, 2, 1, 3, 6, 6, 8, 9, 8, 9, 8,
+                                                             0, 5, 0, 5, 4, 6, 0, 1, 3, 8, 1, 2, 3, 2, 9, 0, 2, 6, 5, 7, 3, 6, 7, 8,
+                                                             4, 2, 0, 8, 4, 4, 1, 6, 8, 7, 2, 8, 7, 2, 7, 9, 9, 9, 2, 1, 8, 7, 1, 6,
+                                                             0, 7, 1, 1, 8, 5, 8, 4, 9, 6, 1, 6, 7, 4, 9, 2, 6, 5, 6, 2, 0, 9, 5, 9,
+                                                             8, 9, 1, 7, 9, 1, 6, 1, 1, 6, 0, 8, 8, 9, 7, 0, 2, 9, 5, 3, 8, 2, 7, 4,
+                                                             9, 2, 9, 7, 1, 1, 0, 0, 4, 3, 9, 2, 3, 3, 2, 5, 6, 4, 1, 4, 3, 2, 3, 2,
+                                                             5, 6, 0, 6, 7, 3, 1, 2, 4, 6, 1, 6, 3, 7, 9, 6, 6, 4, 5, 6, 3, 9, 8, 2])),
+                                               names=('seeds', 'labels'),
+                                       )},
+                                 names=('seeds', 'labels'),
+                     ),
+           test_set=ItemSetDict(items={'user': ItemSet(items=(tensor([430, 787, 571,  40, 109, 934, 868,  36, 794, 293, 668,  47, 815, 679,
+                                                            510, 904, 445,  78, 189, 444,   8, 718,  88, 416, 584, 831, 957, 111,
+                                                            653, 306, 773, 233, 431, 410, 112, 545, 633,   9, 205, 778, 583, 975,
+                                                            429, 339, 101, 706,  19, 167, 792, 636,  82, 446,  80, 936, 253, 116,
+                                                            593, 721, 608, 300, 320,  28, 541, 138, 617,  45, 992, 182, 725, 962,
+                                                            902, 555, 544,  46, 243, 289, 979, 911, 762, 525, 333, 404, 356, 256,
+                                                            221,  94, 852, 373, 208, 690, 667, 641, 897, 464, 513, 664, 508, 133,
+                                                            523, 595, 457,  33, 647,  37, 910, 304, 514, 177, 562, 940, 613, 949,
+                                                            127, 426, 340, 803, 128, 923, 140, 290, 143, 538, 275, 938, 322, 915,
+                                                            130, 937, 157, 565, 751, 970, 874, 741, 376, 919, 863, 945, 338, 191,
+                                                            420, 577, 860, 967, 927, 215, 110, 558,  50, 474, 251, 731, 749,   4,
+                                                            666, 299, 729, 692, 686, 413, 255, 572, 383,  85, 450, 734, 573, 114,
+                                                             56, 697, 564, 956, 240, 509, 226, 435, 499, 125, 480, 295, 599, 767,
+                                                            908, 756, 296, 944, 178, 772, 231, 493, 925,  92, 328, 631, 873, 855,
+                                                            161, 634, 247, 142], dtype=torch.int32), tensor([2, 9, 8, 7, 3, 4, 1, 6, 7, 4, 4, 7, 4, 1, 6, 1, 5, 5, 2, 3, 7, 4, 0, 8,
+                                                            1, 1, 5, 5, 9, 9, 3, 9, 7, 1, 6, 5, 9, 5, 8, 2, 8, 5, 9, 1, 5, 5, 4, 9,
+                                                            0, 7, 9, 0, 6, 1, 4, 1, 9, 3, 4, 5, 5, 0, 1, 7, 3, 3, 0, 1, 1, 0, 6, 3,
+                                                            7, 3, 2, 6, 9, 5, 7, 8, 8, 6, 4, 5, 3, 6, 7, 8, 6, 4, 5, 7, 5, 8, 6, 4,
+                                                            1, 1, 9, 8, 0, 7, 6, 8, 8, 8, 4, 1, 3, 9, 5, 9, 4, 1, 1, 6, 7, 4, 3, 7,
+                                                            4, 0, 2, 1, 4, 4, 5, 2, 4, 7, 0, 4, 1, 5, 7, 8, 3, 4, 0, 3, 9, 2, 6, 7,
+                                                            2, 0, 5, 9, 5, 2, 2, 7, 8, 0, 3, 5, 0, 2, 6, 5, 0, 3, 9, 9, 5, 9, 3, 3,
+                                                            6, 3, 7, 9, 1, 6, 6, 9, 4, 3, 1, 0, 3, 8, 2, 8, 0, 1, 8, 2, 3, 1, 5, 1,
+                                                            3, 3, 1, 6, 9, 2, 0, 1])),
+                                              names=('seeds', 'labels'),
+                                      ), 'item': ItemSet(items=(tensor([430,  31, 741, 423, 290, 375, 234, 197, 525, 373, 654, 518, 285, 350,
+                                                             68, 163, 126, 868, 388, 660, 737, 772, 871, 944, 318, 545, 538, 398,
+                                                            924, 888, 746,  35, 153, 840, 131, 544, 383, 198, 371,  98, 108, 890,
+                                                            299, 190,  78, 341, 420, 516, 574, 704, 672, 872, 537, 952, 684, 320,
+                                                            380,   6, 588, 211, 125, 395, 280, 311, 993, 897, 542, 214, 191, 866,
+                                                            564, 273, 761, 539, 302, 774,  92,  74, 403, 558, 213, 815, 619, 918,
+                                                            790, 669, 988, 676, 218, 333, 221, 552, 691, 727, 589, 187, 394,  77,
+                                                            390, 767, 491, 713,  14, 471, 796, 801, 824,  79, 183, 243, 682, 635,
+                                                            966, 984, 362, 804, 561, 511, 751, 427, 792, 946, 598, 157, 455, 770,
+                                                            873, 793, 775, 230, 520, 559, 961, 805, 863, 963,  61, 283,  41,  18,
+                                                            626, 199, 925, 450, 202, 411, 531, 633, 436, 874,  44, 120, 354, 116,
+                                                            130, 677, 665,  25, 252, 753, 119, 939, 800,  59, 384, 879, 740, 773,
+                                                            929,   0, 560, 675, 777,  20, 859, 923, 817, 452, 493, 597, 418, 409,
+                                                            486, 107,  94, 852, 812, 309, 841, 145, 813,  10, 499, 127,  38, 231,
+                                                            446, 860, 259,   1], dtype=torch.int32), tensor([8, 0, 3, 7, 6, 5, 6, 7, 1, 6, 8, 0, 7, 8, 2, 7, 9, 1, 2, 5, 3, 8, 6, 0,
+                                                            8, 5, 6, 2, 0, 2, 3, 4, 9, 6, 7, 5, 3, 8, 5, 6, 4, 3, 7, 9, 4, 8, 1, 0,
+                                                            9, 5, 4, 5, 5, 5, 7, 0, 2, 6, 7, 4, 6, 8, 2, 6, 6, 5, 7, 9, 0, 7, 9, 4,
+                                                            5, 3, 2, 1, 3, 3, 1, 3, 8, 0, 5, 3, 2, 4, 8, 2, 6, 9, 1, 0, 0, 5, 0, 2,
+                                                            5, 3, 3, 6, 9, 3, 5, 5, 4, 6, 8, 4, 9, 5, 9, 1, 3, 3, 2, 0, 1, 1, 1, 3,
+                                                            4, 8, 1, 1, 7, 2, 1, 3, 2, 3, 1, 5, 1, 0, 6, 9, 4, 9, 2, 8, 9, 6, 9, 7,
+                                                            7, 9, 3, 6, 0, 2, 6, 2, 0, 0, 6, 8, 0, 1, 8, 0, 4, 1, 4, 7, 0, 6, 6, 7,
+                                                            9, 4, 8, 8, 0, 7, 3, 6, 8, 2, 1, 8, 2, 4, 5, 6, 9, 1, 4, 9, 4, 8, 6, 4,
+                                                            6, 7, 8, 0, 7, 6, 4, 0])),
+                                              names=('seeds', 'labels'),
+                                      )},
+                                names=('seeds', 'labels'),
+                    ),
+           metadata={'name': 'node_classification', 'num_classes': 10},
 )
 
-Loaded node classification task: OnDiskTask(validation_set=ItemSetDict(
-               itemsets={'user': ItemSet(
-                            items=(tensor([764, 260, 665, 819,  21, 312, 957, 511, 648, 101, 570, 711, 431,  58,
-                                441, 895, 475, 851, 707, 257, 103,  50, 572, 852, 236, 995, 420, 742,
-                                 92, 760, 334, 254, 315, 737, 591, 672,  51, 802, 409, 935, 773, 745,
-                                 12, 601, 102,  18, 949, 421, 463, 574, 117, 167, 469,  99, 987, 205,
-                                705, 104, 332, 452, 597, 371, 702,  87, 492, 931, 466, 220, 181, 796,
-                                661, 473, 517, 906, 458, 731, 926, 874, 924, 460, 267, 346, 880,  24,
-                                616, 385, 900, 646, 160, 754, 714, 309,  42, 395, 539, 921,  16, 600,
-                                367, 948, 159, 296, 536, 508,  56, 113, 218, 890, 971, 587, 911, 861,
-                                533, 786,  82, 210,  57, 419,  75, 768, 482, 435,  34, 497, 781,  32,
-                                770, 437, 626,  29, 593, 713, 424, 942, 284,  74, 571, 195,  48, 320,
-                                651, 356, 372, 675, 280,  69, 162, 789, 718, 272, 105, 706, 573, 476,
-                                523, 694, 465, 423, 311,  91, 775, 669, 177, 558, 239, 349, 384, 979,
-                                581, 352, 697, 563, 750, 703, 292, 355, 213,   5, 142, 206, 345, 632,
-                                510, 207, 885, 791, 683, 140, 442, 382, 812, 193, 116,  28, 833, 689,
-                                347, 215, 756, 153], dtype=torch.int32), tensor([5, 7, 2, 6, 2, 9, 3, 4, 2, 3, 2, 3, 0, 0, 7, 0, 0, 7, 8, 5, 3, 5, 9, 7,
-                                2, 4, 8, 0, 4, 3, 0, 6, 9, 1, 1, 0, 5, 5, 0, 6, 5, 9, 6, 5, 5, 9, 8, 9,
-                                9, 8, 0, 5, 2, 5, 6, 2, 6, 1, 4, 2, 8, 4, 8, 8, 0, 5, 2, 6, 3, 8, 0, 7,
-                                8, 3, 8, 6, 6, 5, 8, 9, 8, 9, 9, 0, 8, 5, 6, 7, 8, 3, 1, 4, 9, 4, 2, 1,
-                                6, 6, 1, 7, 0, 2, 5, 5, 8, 8, 6, 9, 0, 3, 4, 2, 8, 2, 1, 1, 6, 7, 2, 5,
-                                9, 4, 7, 8, 0, 8, 0, 7, 7, 9, 3, 7, 1, 2, 6, 1, 7, 2, 8, 4, 1, 5, 3, 1,
-                                8, 3, 8, 3, 2, 1, 0, 7, 6, 1, 9, 7, 7, 3, 8, 5, 6, 5, 2, 3, 8, 6, 6, 4,
-                                2, 5, 7, 7, 9, 2, 6, 2, 2, 7, 3, 5, 7, 8, 5, 1, 9, 8, 0, 7, 9, 8, 8, 8,
-                                9, 4, 3, 5, 0, 2, 6, 4])),
-                            names=('seed_nodes', 'labels'),
-                        ), 'item': ItemSet(
-                            items=(tensor([229, 445, 678, 754, 264, 382, 120, 375, 486, 964, 975, 163, 439, 671,
-                                442, 470,  66, 615, 524, 187, 827, 423, 292, 766, 427,  76, 920, 840,
-                                473, 416, 411, 645, 588, 775, 625, 825, 449,  28, 321,  59, 514, 949,
-                                456, 866, 204, 697, 602, 959, 194, 419, 967, 641, 803, 783, 208, 453,
-                                219, 699, 683, 872, 854, 620, 136, 636, 330, 305, 931,  62, 428, 885,
-                                150, 220, 173, 142, 649,  27,  88, 909, 262, 488, 981, 908, 810, 271,
-                                196, 127,  80,  35, 607, 638,  60, 960, 693, 925,   8, 466,  34, 225,
-                                121, 580, 988,  42, 692, 623, 240, 874, 495, 293, 509, 200, 587,  73,
-                                267, 361, 795, 278, 562, 758,   3, 489, 329, 551,  31, 882, 541, 178,
-                                711, 530, 135, 695, 984, 762, 979, 350, 472, 703, 821, 129, 216, 952,
-                                 11, 818, 476, 670,  54, 765, 895, 247, 689, 482, 161, 205, 847, 531,
-                                464, 399, 941, 523, 372,  57, 559, 534, 552, 198, 342, 673, 373, 838,
-                                930, 848, 297,  71, 255, 418, 845, 475, 455, 429, 132, 873,  12, 597,
-                                834, 747, 569, 104, 654, 876,  91, 149, 681, 179, 612, 812, 993, 265,
-                                 18, 769, 180, 954], dtype=torch.int32), tensor([6, 4, 6, 4, 3, 7, 9, 2, 8, 0, 4, 5, 6, 5, 4, 0, 6, 9, 7, 5, 3, 9, 4, 9,
-                                6, 6, 0, 8, 3, 0, 6, 7, 8, 6, 5, 6, 1, 2, 1, 2, 5, 5, 9, 9, 2, 6, 0, 4,
-                                6, 7, 8, 3, 5, 9, 2, 1, 7, 1, 0, 3, 8, 7, 4, 5, 7, 8, 5, 3, 9, 5, 5, 2,
-                                7, 2, 9, 2, 7, 2, 6, 8, 0, 9, 5, 6, 8, 0, 4, 5, 4, 2, 7, 2, 1, 5, 1, 3,
-                                9, 3, 4, 6, 2, 9, 2, 1, 8, 6, 8, 8, 8, 9, 7, 5, 5, 2, 7, 3, 0, 6, 0, 0,
-                                2, 7, 0, 8, 9, 6, 9, 0, 8, 5, 4, 0, 1, 7, 5, 2, 0, 1, 8, 8, 6, 6, 8, 8,
-                                1, 8, 9, 6, 1, 4, 3, 7, 3, 0, 1, 7, 1, 0, 8, 7, 7, 7, 0, 2, 5, 3, 9, 6,
-                                8, 3, 8, 4, 3, 7, 6, 7, 1, 3, 5, 4, 3, 9, 6, 5, 2, 6, 4, 0, 3, 9, 6, 9,
-                                5, 8, 1, 3, 2, 3, 7, 5])),
-                            names=('seed_nodes', 'labels'),
-                        )},
-               names=('seed_nodes', 'labels'),
-           ),
-           train_set=ItemSetDict(
-               itemsets={'user': ItemSet(
-                            items=(tensor([872, 330, 453, 682, 961, 397, 114, 725, 456, 803, 224, 493, 358, 685,
-                                291, 881, 432, 856, 145, 148, 766, 295, 686, 141, 549, 720, 674,   9,
-                                383,   6, 293, 410, 201, 902, 108,  35, 265, 251, 507, 300, 361, 552,
-                                857, 617, 109, 440, 604, 767, 736, 478, 131, 354, 821, 978, 613, 126,
-                                792, 266, 258, 605, 481, 717, 679, 647, 932, 524, 467, 200, 290, 579,
-                                566, 555, 780, 338, 417,  61, 999, 506, 125,  37, 744, 502, 804, 514,
-                                710, 123, 980, 927, 401, 363, 739, 394, 522, 531, 759, 446, 542, 487,
-                                793, 326,  67, 550, 733, 698, 543, 700, 554, 439, 273, 724, 588, 649,
-                                831,  27, 174, 853, 501, 560, 183, 715, 864, 484, 813, 425, 871, 944,
-                                379, 119,   8,   4, 134, 998, 658, 375, 344, 596,  23, 708, 787, 451,
-                                582, 505, 168, 529, 666, 735, 237, 457, 302, 411, 808,  39, 189, 299,
-                                405,  45, 342, 977, 241,  47, 762, 190, 728, 527, 954, 946, 426, 965,
-                                540, 673, 308, 681, 578,  26, 380, 396, 654,  86, 219, 589, 301, 157,
-                                369, 983, 322, 729, 952, 337, 152,  85,  70, 428, 307, 842, 612, 279,
-                                122, 984, 699, 849, 521,  98, 526, 678, 845, 740, 611, 100, 498, 615,
-                                343, 973, 870, 223, 680, 656, 204, 719, 388, 610, 693, 414,  19, 559,
-                                784, 964,  97, 841,  38, 788, 811, 232, 144, 240,  54, 530, 389, 544,
-                                807, 513, 652, 415, 671, 289, 278, 918, 896, 897, 408, 495, 903, 129,
-                                684, 738, 629, 359, 377,  88, 785, 734, 323, 235, 569, 173, 655, 228,
-                                772, 499, 400, 270,  40, 908, 914, 243, 283, 869, 592, 169, 185, 988,
-                                305, 112,  80, 982, 817, 261, 758, 191, 858, 726, 370,  25, 865, 509,
-                                198, 688, 528, 324, 557, 798, 351, 250, 314,  53, 504, 913, 110,  66,
-                                951, 722,  62, 938,  72, 967, 268, 933, 450, 336, 416,  76, 262, 934,
-                                192, 166, 846, 966,  14, 519, 230, 771, 628, 606, 348, 855, 607, 941,
-                                525, 585, 418, 806, 327, 518, 925, 945, 325, 986, 561, 118, 887, 155,
-                                182, 365, 631,  36, 637, 242, 676, 930, 879, 843, 403,  41, 328, 893,
-                                659, 602, 609, 136, 548, 477, 161, 146, 520,  33, 564, 449, 106, 886,
-                                264, 614, 917, 618, 297, 430,  31, 165, 923, 827, 799, 398,  78, 304,
-                                 73, 776, 335, 963, 990, 915, 947, 790, 962, 253, 175, 130, 176, 310,
-                                709,  89, 209, 277, 660, 981, 704, 695, 404, 378, 687, 516, 444, 820,
-                                 95, 969, 816, 535,   1, 486, 862, 840,  60, 753, 860, 515, 752, 406,
-                                199, 644, 133, 755, 810,  96, 188, 822, 584, 172, 916,  22, 625, 286,
-                                907, 244, 875, 743, 883, 829, 208, 894, 252, 854, 838, 282,  77,  65,
-                                727, 815, 595, 619, 576,  81, 950, 534, 623,  84, 662, 226, 620, 271,
-                                496, 366, 976, 716, 956, 696, 955, 434, 541, 464, 164, 586, 316, 474,
-                                668, 818, 186,  83, 828, 993, 774, 621, 211, 633, 994, 751, 653, 809,
-                                825, 635, 730, 147, 485, 747, 847,  64, 438, 212, 650,  17, 281, 135,
-                                413, 298, 427, 565, 919, 901, 877, 374, 922, 373, 835, 436, 836, 331,
-                                490,  63, 494, 545, 422, 761, 741, 227, 968, 970, 783,   2,  71, 795,
-                                749, 538, 471, 645, 500, 599, 350, 150, 194,  68, 959, 567, 638, 797,
-                                248, 245, 556,  93, 929, 263, 910,  11, 221, 891,  15, 468, 171, 124,
-                                670, 989, 721, 664, 255, 376, 712, 868, 642, 848, 898, 472, 216, 407,
-                                306, 859, 480, 844, 826, 580, 690, 461, 975, 121, 634, 677],
-                               dtype=torch.int32), tensor([2, 4, 2, 6, 4, 3, 4, 7, 5, 4, 1, 6, 0, 8, 2, 3, 4, 7, 0, 8, 8, 6, 0, 9,
-                                7, 5, 5, 8, 9, 3, 6, 6, 9, 5, 2, 0, 2, 3, 9, 1, 2, 1, 0, 2, 1, 0, 2, 4,
-                                1, 0, 5, 3, 7, 8, 1, 6, 6, 0, 3, 5, 2, 9, 4, 4, 2, 4, 2, 7, 0, 7, 8, 1,
-                                6, 2, 8, 4, 1, 4, 7, 3, 6, 2, 5, 9, 3, 3, 7, 8, 0, 2, 2, 6, 9, 8, 5, 8,
-                                8, 3, 6, 1, 2, 3, 7, 3, 0, 3, 3, 1, 4, 2, 8, 2, 9, 6, 9, 6, 1, 7, 9, 0,
-                                7, 5, 6, 2, 9, 1, 1, 6, 0, 9, 8, 1, 1, 8, 6, 1, 7, 7, 7, 0, 8, 4, 9, 5,
-                                2, 1, 0, 9, 7, 9, 8, 7, 1, 4, 1, 8, 8, 8, 4, 8, 0, 5, 9, 1, 5, 6, 0, 3,
-                                2, 4, 7, 9, 2, 0, 5, 0, 1, 9, 8, 3, 3, 6, 0, 9, 6, 3, 7, 2, 3, 1, 4, 2,
-                                4, 3, 0, 6, 3, 6, 4, 6, 4, 5, 0, 1, 0, 1, 0, 0, 0, 4, 8, 0, 5, 1, 0, 5,
-                                4, 0, 9, 8, 1, 0, 7, 9, 1, 9, 8, 8, 1, 2, 9, 2, 4, 8, 9, 8, 9, 8, 9, 0,
-                                3, 1, 9, 2, 3, 6, 6, 1, 5, 0, 6, 4, 5, 3, 8, 7, 9, 8, 3, 3, 2, 6, 8, 3,
-                                5, 9, 8, 3, 6, 2, 5, 4, 8, 9, 2, 1, 9, 2, 4, 2, 7, 2, 3, 8, 2, 4, 4, 5,
-                                5, 2, 3, 6, 4, 0, 8, 8, 2, 8, 4, 7, 2, 2, 1, 1, 8, 6, 8, 0, 4, 9, 0, 0,
-                                7, 1, 6, 2, 8, 3, 4, 8, 0, 9, 3, 8, 6, 9, 7, 2, 9, 0, 6, 5, 9, 6, 6, 7,
-                                7, 7, 8, 2, 5, 9, 6, 8, 9, 7, 5, 2, 2, 2, 5, 6, 6, 8, 4, 0, 4, 5, 9, 8,
-                                6, 7, 7, 9, 9, 2, 7, 7, 0, 2, 6, 6, 1, 1, 2, 4, 3, 0, 6, 3, 5, 5, 2, 7,
-                                0, 7, 5, 8, 5, 1, 0, 2, 2, 0, 3, 6, 0, 0, 3, 8, 6, 3, 5, 7, 1, 1, 5, 7,
-                                3, 6, 1, 2, 1, 2, 9, 1, 3, 3, 1, 7, 7, 3, 7, 7, 8, 2, 2, 5, 9, 3, 1, 2,
-                                2, 0, 9, 1, 6, 1, 6, 6, 8, 0, 5, 2, 6, 3, 4, 0, 6, 8, 1, 5, 1, 4, 8, 3,
-                                9, 3, 0, 4, 6, 1, 4, 0, 1, 1, 9, 8, 3, 2, 9, 3, 9, 8, 8, 7, 4, 1, 1, 6,
-                                7, 9, 2, 6, 7, 1, 0, 4, 0, 2, 4, 7, 7, 3, 6, 3, 7, 4, 9, 8, 3, 2, 2, 2,
-                                6, 3, 0, 4, 6, 4, 9, 7, 4, 5, 9, 3, 2, 2, 4, 7, 1, 5, 8, 8, 2, 0, 2, 7,
-                                7, 2, 7, 8, 1, 7, 6, 5, 4, 8, 0, 8, 5, 2, 4, 5, 0, 0, 8, 2, 4, 2, 2, 3,
-                                7, 9, 1, 2, 8, 8, 7, 0, 3, 2, 6, 1, 7, 6, 1, 1, 4, 8, 3, 1, 5, 7, 5, 1,
-                                8, 6, 1, 3, 5, 6, 4, 7, 2, 3, 9, 5, 8, 2, 9, 6, 1, 6, 5, 0, 2, 2, 8, 3])),
-                            names=('seed_nodes', 'labels'),
-                        ), 'item': ItemSet(
-                            items=(tensor([855, 165, 951, 799, 955, 915, 522, 386, 553, 214, 497, 817, 279, 596,
-                                479, 107, 380, 227, 784, 228,  70, 202, 616,  78, 508, 130, 513,  90,
-                                674, 986, 160, 426,   5, 394, 252, 430, 310,   2, 504, 190, 254, 884,
-                                877, 996, 331, 656, 814, 325, 140,  84, 507, 778, 944, 397, 768, 790,
-                                767, 568, 369, 666, 730, 245, 640, 535, 123,  93, 972, 735,  77, 143,
-                                 98, 496, 802, 807,  68, 548, 787, 937, 669,  40, 933, 474, 409, 529,
-                                487, 888, 718,  58, 280, 591, 460, 533, 294,  61, 865, 567, 728, 450,
-                                 79, 170, 792, 157,  72, 407, 650, 608, 100, 579, 304,   7, 791, 273,
-                                 46,  52, 741, 108, 935, 191, 461, 870, 904, 370, 664,  19, 396, 408,
-                                910, 849, 746, 965, 584, 980, 753, 410, 441, 113, 313, 226,  87, 438,
-                                299, 702, 902, 913, 166, 614, 736,  43, 355, 146, 526, 905, 221, 668,
-                                281, 748, 715, 789, 235, 823, 719, 835, 122, 824, 841, 603, 492, 936,
-                                723, 896, 432, 454,  64, 312, 484, 333, 357, 801, 353, 819, 891, 288,
-                                575, 532, 737, 519, 850, 237, 771, 549, 521, 796, 557, 809, 583, 156,
-                                968, 328, 371, 388, 571, 138, 593, 901, 451, 323,  67, 912, 644, 544,
-                                402,  92, 958, 617, 276, 109, 564, 707, 797,  97, 206, 114, 284, 816,
-                                621, 133, 842, 675,  69, 696, 946, 690, 222, 863, 517,  36, 525, 337,
-                                832, 256, 183, 667, 351, 367,  26, 528, 987, 712,  41, 716,  56, 344,
-                                999, 458,  75, 852, 296, 853, 556,  30, 911, 176, 485, 626, 691, 452,
-                                246, 889, 828, 574,  23, 898,  47, 563, 970, 536, 633, 413, 463, 431,
-                                285, 742,  33, 112, 655,  94, 662, 128, 558, 253, 857, 687, 573, 932,
-                                302, 859, 940, 831, 116,  50, 349, 605, 186, 657, 545, 275, 192,  10,
-                                542, 249, 319, 630, 209,  15, 554,   9, 347,  89, 934, 581, 364, 332,
-                                134, 927, 308, 231, 774,  85, 327, 500, 961, 244, 153, 880, 177, 826,
-                                167, 242, 963, 269, 217, 918, 172, 663, 259, 105, 820, 772, 858, 680,
-                                147, 733, 518, 720, 867, 334, 897, 830, 251, 786, 886, 985, 892,  53,
-                                215, 906, 782, 739, 189, 417, 389, 760, 356, 320, 437, 957, 942, 713,
-                                717, 440, 125, 653, 745, 376, 159, 763, 829, 773, 270, 201, 103, 878,
-                                118, 336,  24, 300, 462, 434, 756,  14, 494, 781, 929, 493, 117, 811,
-                                481, 137, 595, 643, 311, 477, 303, 404, 115, 379, 851, 822, 289, 995,
-                                956, 550, 306, 309, 213, 162, 471, 974, 708, 594, 175, 899, 684, 218,
-                                139, 578, 239, 260, 174, 734, 907, 694, 378, 893,  49, 914, 538, 676,
-                                447, 991,  86, 777, 661, 651, 618, 546,  63, 406, 467, 465, 448, 600,
-                                182,  45, 168, 193, 560, 577, 459, 340, 833, 234, 236, 660, 601, 197,
-                                322,  13, 384, 401, 257, 184, 761, 805, 813, 478, 871, 102, 815,  95,
-                                324, 505, 738, 295, 576, 752, 998, 359, 779, 938, 945, 565, 263, 764,
-                                924, 709, 232, 443, 282, 381, 943, 921, 158,  17, 659, 224, 101, 511,
-                                374, 539, 425, 635,  16, 731, 637, 480, 862, 141, 248, 547, 598, 274,
-                                672, 422, 286, 788, 185, 446, 377, 391,  48, 757, 808, 648, 861, 770,
-                                740, 335, 755, 983, 582, 724, 629, 971, 869, 606, 341, 978,  55, 520,
-                                345, 392, 604, 491, 744, 701, 686, 798, 152, 903, 272, 354, 106, 395,
-                                 99, 258, 348, 976, 210, 318, 501, 362, 468, 844, 611, 973,  39, 233,
-                                317, 338, 314,  74, 883, 287, 806, 368, 211, 169, 639, 424],
-                               dtype=torch.int32), tensor([0, 1, 6, 0, 7, 7, 5, 6, 8, 0, 9, 5, 7, 4, 7, 2, 6, 2, 3, 3, 9, 6, 4, 9,
-                                8, 0, 0, 8, 6, 7, 9, 2, 6, 9, 7, 6, 7, 5, 7, 1, 3, 7, 2, 8, 8, 5, 2, 7,
-                                2, 6, 6, 2, 0, 7, 3, 9, 6, 4, 5, 2, 9, 3, 0, 8, 3, 4, 1, 7, 9, 8, 1, 7,
-                                3, 2, 9, 1, 2, 7, 7, 0, 5, 7, 8, 7, 7, 5, 0, 9, 5, 3, 5, 7, 3, 8, 8, 0,
-                                3, 9, 7, 6, 7, 3, 5, 6, 9, 6, 1, 3, 2, 3, 0, 2, 8, 6, 1, 3, 9, 9, 3, 7,
-                                4, 2, 0, 3, 8, 3, 8, 1, 6, 6, 1, 1, 9, 7, 0, 5, 2, 4, 9, 6, 6, 2, 4, 6,
-                                3, 3, 1, 9, 0, 0, 8, 7, 6, 2, 3, 3, 3, 6, 2, 1, 3, 4, 3, 2, 9, 7, 8, 3,
-                                6, 5, 0, 1, 7, 4, 1, 1, 6, 8, 4, 4, 2, 3, 2, 6, 5, 0, 8, 6, 1, 9, 3, 1,
-                                8, 4, 0, 8, 5, 9, 1, 5, 6, 9, 5, 0, 3, 7, 1, 8, 8, 7, 6, 5, 5, 9, 3, 9,
-                                4, 1, 9, 3, 8, 4, 5, 6, 1, 0, 6, 8, 3, 3, 4, 3, 3, 5, 0, 6, 4, 0, 3, 6,
-                                1, 5, 3, 7, 0, 7, 2, 5, 9, 2, 7, 1, 9, 0, 0, 5, 1, 0, 8, 6, 7, 7, 6, 8,
-                                5, 8, 2, 3, 1, 5, 2, 6, 9, 0, 8, 9, 2, 6, 8, 5, 6, 1, 4, 0, 3, 7, 0, 7,
-                                7, 9, 5, 8, 2, 5, 2, 3, 6, 1, 0, 5, 5, 1, 6, 9, 9, 7, 6, 8, 9, 9, 5, 6,
-                                5, 3, 8, 2, 0, 8, 6, 3, 0, 8, 3, 2, 3, 3, 4, 8, 3, 1, 0, 0, 6, 5, 9, 1,
-                                6, 5, 9, 2, 0, 9, 4, 9, 4, 5, 1, 7, 8, 6, 6, 7, 4, 1, 7, 9, 1, 0, 8, 7,
-                                7, 1, 8, 9, 6, 0, 7, 8, 1, 5, 5, 7, 9, 3, 7, 4, 1, 6, 7, 9, 6, 4, 8, 6,
-                                0, 7, 4, 0, 7, 2, 2, 1, 4, 7, 9, 3, 3, 9, 4, 3, 2, 7, 0, 0, 1, 3, 3, 9,
-                                2, 8, 9, 9, 8, 7, 8, 5, 0, 9, 3, 4, 1, 6, 8, 8, 8, 0, 8, 1, 4, 1, 0, 1,
-                                5, 4, 8, 6, 8, 4, 7, 3, 9, 3, 1, 3, 2, 4, 2, 0, 7, 2, 3, 2, 6, 5, 8, 8,
-                                1, 8, 3, 9, 0, 3, 5, 0, 4, 3, 0, 5, 2, 9, 8, 0, 0, 9, 3, 5, 5, 6, 5, 4,
-                                2, 4, 8, 8, 3, 7, 4, 4, 4, 0, 3, 1, 1, 7, 8, 1, 9, 2, 8, 5, 0, 8, 3, 7,
-                                2, 6, 5, 7, 1, 4, 4, 4, 4, 6, 9, 2, 6, 3, 4, 6, 4, 0, 1, 0, 5, 4, 5, 6,
-                                3, 0, 7, 4, 8, 4, 3, 4, 7, 9, 5, 8, 4, 1, 5, 2, 1, 1, 3, 5, 7, 8, 2, 8,
-                                9, 3, 5, 6, 4, 7, 7, 1, 6, 4, 3, 1, 1, 9, 9, 0, 4, 5, 0, 5, 9, 5, 3, 4,
-                                8, 2, 1, 4, 4, 7, 6, 2, 8, 3, 7, 5, 4, 4, 0, 2, 3, 5, 1, 3, 8, 1, 6, 0])),
-                            names=('seed_nodes', 'labels'),
-                        )},
-               names=('seed_nodes', 'labels'),
-           ),
-           test_set=ItemSetDict(
-               itemsets={'user': ItemSet(
-                            items=(tensor([137, 532, 639, 362, 158, 551, 353, 238, 294, 202, 691, 454, 196, 381,
-                                 44, 231, 246, 850, 341, 321, 583, 503, 360,   3, 892, 940, 777, 329,
-                                598, 801, 269, 156, 138, 888,  13, 357, 115,  79, 512, 657, 429, 256,
-                                163, 928, 187, 447, 448,  59, 180, 197, 663, 779, 765, 392, 594, 470,
-                                387, 943, 823, 364, 603, 960, 622, 259, 985, 479, 107, 132, 608, 782,
-                                391, 867, 275, 863,  55, 630, 399, 433, 203, 627, 643, 590, 692, 920,
-                                958, 757, 912, 313, 274, 229, 636, 390, 393, 339, 748, 624, 575, 149,
-                                537, 972,  20, 992, 455, 562, 667,  52, 974,  10, 909, 179, 701, 222,
-                                882, 170, 830, 178, 151, 889, 184, 805, 111, 459, 832, 120, 997, 905,
-                                317, 547, 939, 996,   7, 214, 794, 746, 319, 491, 769, 866, 800, 443,
-                                 90, 276, 640, 488,   0,  46, 876, 233, 318, 340, 412, 814, 568, 285,
-                                287, 333, 577, 128,  43, 839, 234, 936, 368, 991, 462, 778, 483, 303,
-                                247, 217, 904, 249, 489, 732, 878, 445, 884, 288, 763, 873, 824,  94,
-                                402, 834, 154,  49, 937, 837, 139, 546,  30, 143, 641, 386, 723, 127,
-                                899, 553, 225, 953], dtype=torch.int32), tensor([3, 2, 8, 1, 0, 2, 6, 4, 6, 2, 1, 6, 8, 1, 7, 0, 1, 3, 5, 5, 8, 4, 4, 9,
-                                0, 7, 8, 2, 5, 0, 6, 4, 4, 4, 9, 9, 9, 4, 6, 4, 7, 5, 0, 8, 9, 8, 9, 3,
-                                7, 4, 1, 0, 9, 8, 9, 1, 5, 2, 0, 8, 5, 2, 4, 2, 7, 6, 5, 6, 2, 8, 8, 9,
-                                0, 6, 9, 4, 2, 8, 4, 1, 3, 3, 2, 3, 9, 7, 9, 8, 3, 5, 2, 2, 6, 6, 4, 8,
-                                0, 9, 0, 2, 9, 1, 8, 2, 4, 7, 3, 8, 7, 9, 7, 3, 9, 2, 5, 0, 6, 4, 2, 3,
-                                4, 9, 5, 3, 6, 3, 3, 7, 5, 7, 4, 5, 8, 4, 4, 9, 6, 5, 7, 4, 0, 2, 6, 4,
-                                1, 9, 3, 2, 4, 2, 2, 3, 6, 9, 1, 6, 6, 4, 1, 2, 8, 2, 9, 4, 8, 0, 9, 9,
-                                4, 7, 2, 9, 6, 8, 7, 0, 9, 0, 2, 5, 8, 4, 5, 0, 2, 5, 5, 4, 1, 8, 3, 2,
-                                0, 4, 7, 5, 0, 8, 5, 9])),
-                            names=('seed_nodes', 'labels'),
-                        ), 'item': ItemSet(
-                            items=(tensor([879, 585, 749, 291, 609, 751, 572, 698, 155, 642, 515, 307, 890, 881,
-                                561,  20, 512, 947, 589, 759, 352, 415, 131, 398, 181, 433,  82, 171,
-                                151, 339, 543, 705, 658, 722, 794, 566, 917, 922, 195, 444, 939, 283,
-                                393, 412, 613, 243, 405, 868, 700, 677, 298, 875, 864, 261, 277, 721,
-                                969, 111, 148, 622, 800, 962, 647,  21, 776, 570, 992,  25, 266, 145,
-                                 83, 997, 506, 230, 994, 837, 301, 900, 483, 119, 919, 360, 250, 989,
-                                 38, 665, 780, 436, 627, 948, 490, 326, 502,   0, 624, 316, 390, 679,
-                                839, 743, 516,  37, 124, 365, 953, 732, 729, 610,   4, 950, 414, 590,
-                                688, 207, 631,  81, 435, 990, 268, 634, 982,  44, 498, 714, 856, 628,
-                                652, 750, 916, 238, 358, 188, 793,  29, 704, 977, 710, 928, 403, 646,
-                                 32, 290, 804, 540, 725, 400, 241, 685, 894, 726, 164,   6, 632, 706,
-                                846,  22, 527, 469, 223, 510, 126, 203, 110, 499, 383, 555,  65, 363,
-                                785, 966, 385, 592,   1, 154, 315, 887, 457, 843, 926, 836, 537, 199,
-                                599, 586, 860, 144, 923, 619, 387, 343,  96, 682, 421,  51, 366, 727,
-                                503, 420, 346, 212], dtype=torch.int32), tensor([7, 1, 1, 2, 3, 4, 4, 3, 2, 9, 6, 0, 3, 8, 9, 5, 3, 1, 3, 1, 8, 1, 5, 9,
-                                3, 1, 0, 1, 2, 6, 3, 5, 5, 0, 6, 6, 5, 4, 3, 0, 7, 5, 8, 7, 8, 7, 7, 7,
-                                3, 1, 8, 5, 5, 9, 9, 4, 7, 6, 1, 5, 9, 1, 1, 2, 5, 9, 6, 5, 8, 0, 0, 9,
-                                0, 1, 7, 4, 4, 5, 6, 2, 4, 2, 7, 4, 0, 7, 9, 0, 0, 9, 7, 6, 8, 5, 2, 8,
-                                7, 8, 6, 2, 4, 6, 8, 9, 4, 8, 6, 4, 4, 9, 5, 8, 7, 4, 6, 6, 1, 3, 6, 5,
-                                9, 0, 7, 1, 7, 3, 4, 4, 3, 1, 3, 2, 5, 4, 3, 1, 4, 7, 6, 5, 0, 9, 9, 5,
-                                4, 0, 1, 3, 0, 5, 9, 9, 1, 3, 8, 8, 2, 8, 0, 0, 9, 1, 8, 2, 3, 9, 9, 0,
-                                0, 5, 0, 0, 6, 4, 0, 9, 7, 7, 5, 1, 3, 6, 4, 5, 5, 0, 1, 6, 9, 8, 3, 1,
-                                7, 1, 3, 3, 5, 2, 9, 1])),
-                            names=('seed_nodes', 'labels'),
-                        )},
-               names=('seed_nodes', 'labels'),
-           ),
-           metadata={'name': 'node_classification', 'num_classes': 10},)
+Loaded link prediction task: OnDiskTask(validation_set=ItemSetDict(items={'user:like:item': ItemSet(items=(tensor([[855, 721],
+                                                                  [463, 468],
+                                                                  [980, 785],
+                                                                  ...,
+                                                                  [768, 136],
+                                                                  [768, 690],
+                                                                  [768, 406]], dtype=torch.int32), tensor([1., 1., 1.,  ..., 0., 0., 0.], dtype=torch.float64), tensor([   0,    1,    2,  ..., 1999, 1999, 1999])),
+                                                    names=('seeds', 'labels', 'indexes'),
+                                            ), 'user:follow:user': ItemSet(items=(tensor([[762, 594],
+                                                                  [929, 303],
+                                                                  [705, 480],
+                                                                  ...,
+                                                                  [996, 469],
+                                                                  [996, 834],
+                                                                  [996, 407]], dtype=torch.int32), tensor([1., 1., 1.,  ..., 0., 0., 0.], dtype=torch.float64), tensor([   0,    1,    2,  ..., 1999, 1999, 1999])),
+                                                    names=('seeds', 'labels', 'indexes'),
+                                            )},
+                                      names=('seeds', 'labels', 'indexes'),
+                          ),
+           train_set=ItemSetDict(items={'user:like:item': ItemSet(items=(tensor([[449, 441],
+                                                             [244, 341],
+                                                             [ 56, 596],
+                                                             ...,
+                                                             [813, 558],
+                                                             [666, 315],
+                                                             [485, 468]], dtype=torch.int32),),
+                                               names=('seeds',),
+                                       ), 'user:follow:user': ItemSet(items=(tensor([[931, 637],
+                                                             [334, 530],
+                                                             [701, 107],
+                                                             ...,
+                                                             [197, 704],
+                                                             [ 20, 645],
+                                                             [289, 298]], dtype=torch.int32),),
+                                               names=('seeds',),
+                                       )},
+                                 names=('seeds',),
+                     ),
+           test_set=ItemSetDict(items={'user:like:item': ItemSet(items=(tensor([[587, 165],
+                                                            [889, 246],
+                                                            [510, 719],
+                                                            ...,
+                                                            [532, 635],
+                                                            [532, 974],
+                                                            [532, 486]], dtype=torch.int32), tensor([1., 1., 1.,  ..., 0., 0., 0.], dtype=torch.float64), tensor([   0,    1,    2,  ..., 1999, 1999, 1999])),
+                                              names=('seeds', 'labels', 'indexes'),
+                                      ), 'user:follow:user': ItemSet(items=(tensor([[315, 103],
+                                                            [969, 497],
+                                                            [775, 654],
+                                                            ...,
+                                                            [825, 629],
+                                                            [825, 683],
+                                                            [825, 619]], dtype=torch.int32), tensor([1., 1., 1.,  ..., 0., 0., 0.], dtype=torch.float64), tensor([   0,    1,    2,  ..., 1999, 1999, 1999])),
+                                              names=('seeds', 'labels', 'indexes'),
+                                      )},
+                                names=('seeds', 'labels', 'indexes'),
+                    ),
+           metadata={'name': 'link_prediction', 'num_classes': 10},
+)
 
-Loaded link prediction task: OnDiskTask(validation_set=ItemSetDict(
-               itemsets={'user:like:item': ItemSet(
-                            items=(tensor([[404, 985],
-                                [519, 472],
-                                [401, 299],
-                                ...,
-                                [274, 820],
-                                [684, 597],
-                                [ 17, 583]], dtype=torch.int32), tensor([[865, 627, 957,  ..., 508, 171, 382],
-                                [686,  38, 692,  ..., 599, 170, 524],
-                                [827, 532, 785,  ..., 950, 267, 107],
-                                ...,
-                                [796, 568, 118,  ..., 355, 901, 973],
-                                [605,  62, 290,  ..., 353,  76, 788],
-                                [866, 811, 874,  ..., 833,  82, 438]], dtype=torch.int32)),
-                            names=('node_pairs', 'negative_dsts'),
-                        ), 'user:follow:user': ItemSet(
-                            items=(tensor([[ 60, 106],
-                                [468, 609],
-                                [ 95, 954],
-                                ...,
-                                [223, 188],
-                                [882, 986],
-                                [200, 817]], dtype=torch.int32), tensor([[553, 150,  15,  ..., 872, 929, 662],
-                                [744, 240, 972,  ..., 814, 406, 136],
-                                [851, 597, 585,  ..., 108, 465,  47],
-                                ...,
-                                [560, 513, 689,  ..., 110, 347, 808],
-                                [120, 908, 114,  ..., 609, 596, 734],
-                                [930,   8, 765,  ...,   1, 605, 420]], dtype=torch.int32)),
-                            names=('node_pairs', 'negative_dsts'),
-                        )},
-               names=('node_pairs', 'negative_dsts'),
-           ),
-           train_set=ItemSetDict(
-               itemsets={'user:like:item': ItemSet(
-                            items=(tensor([[183, 710],
-                                [137, 844],
-                                [619, 115],
-                                ...,
-                                [350, 145],
-                                [ 82, 633],
-                                [338,  78]], dtype=torch.int32),),
-                            names=('node_pairs',),
-                        ), 'user:follow:user': ItemSet(
-                            items=(tensor([[901, 244],
-                                [912, 707],
-                                [492, 538],
-                                ...,
-                                [278, 319],
-                                [637, 934],
-                                [487, 197]], dtype=torch.int32),),
-                            names=('node_pairs',),
-                        )},
-               names=('node_pairs',),
-           ),
-           test_set=ItemSetDict(
-               itemsets={'user:like:item': ItemSet(
-                            items=(tensor([512,  62], dtype=torch.int32), tensor([[933, 519, 445,  ..., 687,  98, 981],
-                                [527, 690, 353,  ..., 326,  37,  79],
-                                [134, 599, 179,  ..., 581, 258, 526],
-                                ...,
-                                [131, 461, 638,  ..., 810, 436, 621],
-                                [962, 883, 789,  ..., 867, 871, 640],
-                                [ 62, 418,  66,  ..., 314, 246, 413]], dtype=torch.int32)),
-                            names=('node_pairs', 'negative_dsts'),
-                        ), 'user:follow:user': ItemSet(
-                            items=(tensor([374, 929], dtype=torch.int32), tensor([[606, 506, 453,  ..., 865,  99, 461],
-                                [291, 479, 497,  ..., 122, 826, 906],
-                                [521, 237, 792,  ..., 725,  33, 577],
-                                ...,
-                                [667, 824,  18,  ..., 279, 177, 532],
-                                [635,  59, 837,  ..., 796, 713, 843],
-                                [ 62,  38, 940,  ..., 864, 459, 499]], dtype=torch.int32)),
-                            names=('node_pairs', 'negative_dsts'),
-                        )},
-               names=('node_pairs', 'negative_dsts'),
-           ),
-           metadata={'name': 'link_prediction', 'num_classes': 10},)
-
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/home/ubuntu/dgl_doc_dev/dgl/python/dgl/graphbolt/impl/ondisk_dataset.py:464: DGLWarning: Edge feature is stored, but edge IDs are not saved.
-  dgl_warning("Edge feature is stored, but edge IDs are not saved.")
 </pre></div></div>
 </div>
 </section>

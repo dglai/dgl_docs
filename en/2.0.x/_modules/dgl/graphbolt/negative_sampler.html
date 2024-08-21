@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>dgl.graphbolt.negative_sampler — DGL 2.1.0 documentation</title>
+<title>dgl.graphbolt.negative_sampler — DGL 2.0.0 documentation</title>
 <link href="../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,13 +19,12 @@
   <![endif]-->
 <script src="../../../_static/jquery.js?v=5d32c60e"></script>
 <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../../../_static/documentation_options.js?v=20623aea"></script>
+<script src="../../../_static/documentation_options.js?v=51b770b3"></script>
 <script src="../../../_static/doctools.js?v=9a2dae69"></script>
 <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../../../_static/copybutton.js?v=ccdb6887"></script>
 <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
 <script src="../../../_static/js/theme.js"></script>
 <link href="../../../genindex.html" rel="index" title="Index"/>
 <link href="../../../search.html" rel="search" title="Search"/>
@@ -39,7 +38,7 @@
             DGL
           </a>
 <div class="version">
-                2.1.0
+                2.0.0
               </div>
 <div role="search">
 <form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -60,7 +59,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guide_cn/index.html">用户指南【包含过时信息】</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guide_ko/index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../graphtransformer/index.html">🆕 Tutorial: Graph Transformer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/sparse/index.html">Tutorials: dgl.sparse</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/cpu/index.html">Training on CPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/multi/index.html">Training on Multiple GPUs</a></li>
@@ -78,6 +76,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.geometry.html">dgl.geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.graphbolt.html">🆕 dgl.graphbolt</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn-tensorflow.html">dgl.nn (TensorFlow)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn-mxnet.html">dgl.nn (MXNet)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn.functional.html">dgl.nn.functional</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.ops.html">dgl.ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.optim.html">dgl.optim</a></li>
@@ -163,9 +163,7 @@
 
     <span class="k">def</span> <span class="nf">_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minibatch</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Generate a mix of positive and negative samples. If `seeds` in</span>
-<span class="sd">        minibatch is not None, `labels` and `indexes` will be constructed</span>
-<span class="sd">        after negative sampling, based on corresponding seeds.</span>
+<span class="sd">        Generate a mix of positive and negative samples.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -182,47 +180,21 @@
 <span class="sd">            An instance of 'MiniBatch' encompasses both positive and negative</span>
 <span class="sd">            samples.</span>
 <span class="sd">        """</span>
-        <span class="k">if</span> <span class="n">minibatch</span><span class="o">.</span><span class="n">seeds</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">node_pairs</span> <span class="o">=</span> <span class="n">minibatch</span><span class="o">.</span><span class="n">node_pairs</span>
-            <span class="k">assert</span> <span class="n">node_pairs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node_pairs</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
-                <span class="n">minibatch</span><span class="o">.</span><span class="n">negative_srcs</span><span class="p">,</span> <span class="n">minibatch</span><span class="o">.</span><span class="n">negative_dsts</span> <span class="o">=</span> <span class="p">{},</span> <span class="p">{}</span>
-                <span class="k">for</span> <span class="n">etype</span><span class="p">,</span> <span class="n">pos_pairs</span> <span class="ow">in</span> <span class="n">node_pairs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_collate</span><span class="p">(</span>
-                        <span class="n">minibatch</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_sample_with_etype</span><span class="p">(</span><span class="n">pos_pairs</span><span class="p">,</span> <span class="n">etype</span><span class="p">),</span>
-                        <span class="n">etype</span><span class="p">,</span>
-                    <span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_collate</span><span class="p">(</span><span class="n">minibatch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample_with_etype</span><span class="p">(</span><span class="n">node_pairs</span><span class="p">))</span>
+        <span class="n">node_pairs</span> <span class="o">=</span> <span class="n">minibatch</span><span class="o">.</span><span class="n">node_pairs</span>
+        <span class="k">assert</span> <span class="n">node_pairs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node_pairs</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+            <span class="n">minibatch</span><span class="o">.</span><span class="n">negative_srcs</span><span class="p">,</span> <span class="n">minibatch</span><span class="o">.</span><span class="n">negative_dsts</span> <span class="o">=</span> <span class="p">{},</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">etype</span><span class="p">,</span> <span class="n">pos_pairs</span> <span class="ow">in</span> <span class="n">node_pairs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_collate</span><span class="p">(</span>
+                    <span class="n">minibatch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample_with_etype</span><span class="p">(</span><span class="n">pos_pairs</span><span class="p">,</span> <span class="n">etype</span><span class="p">),</span> <span class="n">etype</span>
+                <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">seeds</span> <span class="o">=</span> <span class="n">minibatch</span><span class="o">.</span><span class="n">seeds</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">seeds</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">minibatch</span><span class="o">.</span><span class="n">indexes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">minibatch</span><span class="o">.</span><span class="n">indexes</span> <span class="o">=</span> <span class="p">{}</span>
-                <span class="k">if</span> <span class="n">minibatch</span><span class="o">.</span><span class="n">labels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">minibatch</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">{}</span>
-                <span class="k">for</span> <span class="n">etype</span><span class="p">,</span> <span class="n">pos_pairs</span> <span class="ow">in</span> <span class="n">seeds</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                    <span class="p">(</span>
-                        <span class="n">minibatch</span><span class="o">.</span><span class="n">seeds</span><span class="p">[</span><span class="n">etype</span><span class="p">],</span>
-                        <span class="n">minibatch</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="n">etype</span><span class="p">],</span>
-                        <span class="n">minibatch</span><span class="o">.</span><span class="n">indexes</span><span class="p">[</span><span class="n">etype</span><span class="p">],</span>
-                    <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample_with_etype</span><span class="p">(</span>
-                        <span class="n">pos_pairs</span><span class="p">,</span> <span class="n">etype</span><span class="p">,</span> <span class="n">use_seeds</span><span class="o">=</span><span class="kc">True</span>
-                    <span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="p">(</span>
-                    <span class="n">minibatch</span><span class="o">.</span><span class="n">seeds</span><span class="p">,</span>
-                    <span class="n">minibatch</span><span class="o">.</span><span class="n">labels</span><span class="p">,</span>
-                    <span class="n">minibatch</span><span class="o">.</span><span class="n">indexes</span><span class="p">,</span>
-                <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample_with_etype</span><span class="p">(</span><span class="n">seeds</span><span class="p">,</span> <span class="n">use_seeds</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_collate</span><span class="p">(</span><span class="n">minibatch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample_with_etype</span><span class="p">(</span><span class="n">node_pairs</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">minibatch</span>
 
-    <span class="k">def</span> <span class="nf">_sample_with_etype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_pairs</span><span class="p">,</span> <span class="n">etype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_seeds</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_sample_with_etype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_pairs</span><span class="p">,</span> <span class="n">etype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Generate negative pairs for a given etype form positive pairs</span>
-<span class="sd">        for a given etype. If `node_pairs` is a 2D tensor, which represents</span>
-<span class="sd">        `seeds` is used in minibatch, corresponding labels and indexes will be</span>
-<span class="sd">        constructed.</span>
+<span class="sd">        for a given etype.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -235,14 +207,8 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        Tuple[Tensor, Tensor] or Tensor</span>
+<span class="sd">        Tuple[Tensor, Tensor]</span>
 <span class="sd">            A collection of negative node pairs.</span>
-<span class="sd">        Tensor or None</span>
-<span class="sd">            Corresponding labels. If label is True, corresponding edge is</span>
-<span class="sd">            positive. If label is False, corresponding edge is negative.</span>
-<span class="sd">        Tensor or None</span>
-<span class="sd">            Corresponding indexes, indicates to which query an edge belongs.</span>
-
 <span class="sd">        """</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
@@ -252,8 +218,8 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        minibatch : MiniBatch</span>
-<span class="sd">            The input minibatch, which contains positive node pairs, will be</span>
-<span class="sd">            filled with negative information in this function.</span>
+<span class="sd">            The input minibatch, which contains positive node pairs, will be filled</span>
+<span class="sd">            with negative information in this function.</span>
 <span class="sd">        neg_pairs : Tuple[Tensor, Tensor]</span>
 <span class="sd">            A tuple of tensors represents source-destination node pairs of</span>
 <span class="sd">            negative edges, where negative means the edge may not exist in</span>

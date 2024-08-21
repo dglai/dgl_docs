@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>How Does DGL Represent A Graph? — DGL 2.1.0 documentation</title>
+<title>How Does DGL Represent A Graph? — DGL 2.0.0 documentation</title>
 <link href="../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,13 +19,12 @@
   <![endif]-->
 <script src="../../_static/jquery.js?v=5d32c60e"></script>
 <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../../_static/documentation_options.js?v=20623aea"></script>
+<script src="../../_static/documentation_options.js?v=51b770b3"></script>
 <script src="../../_static/doctools.js?v=9a2dae69"></script>
 <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../../_static/copybutton.js?v=ccdb6887"></script>
 <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
 <script src="../../_static/js/theme.js"></script>
 <link href="../../genindex.html" rel="index" title="Index"/>
 <link href="../../search.html" rel="search" title="Search"/>
@@ -41,7 +40,7 @@
             DGL
           </a>
 <div class="version">
-                2.1.0
+                2.0.0
               </div>
 <div role="search">
 <form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -78,7 +77,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../guide_cn/index.html">用户指南【包含过时信息】</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../guide_ko/index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../graphtransformer/index.html">🆕 Tutorial: Graph Transformer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../notebooks/sparse/index.html">Tutorials: dgl.sparse</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cpu/index.html">Training on CPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../multi/index.html">Training on Multiple GPUs</a></li>
@@ -96,6 +94,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.geometry.html">dgl.geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.graphbolt.html">🆕 dgl.graphbolt</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/nn-tensorflow.html">dgl.nn (TensorFlow)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/nn-mxnet.html">dgl.nn (MXNet)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/nn.functional.html">dgl.nn.functional</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.ops.html">dgl.ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.optim.html">dgl.optim</a></li>
@@ -224,11 +224,11 @@ attributes are often called <em>features</em>.</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s2">"a"</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[-0.6829, -0.3198, -0.8651,  0.7386],
-        [ 0.4741,  0.7877,  1.2721, -1.2442],
-        [ 0.6542,  0.2381, -1.9032, -1.1040],
-        [-0.8865,  0.2379,  0.2855, -0.4695],
-        [-1.4988, -0.3535, -1.2792,  0.5122]])
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[ 0.2102, -0.3154, -2.2641,  0.7004],
+        [ 2.9380, -1.5069, -0.3493,  2.0111],
+        [-0.6816,  0.2967, -0.8666,  0.0988],
+        [ 0.5983, -0.1292,  1.5455,  0.5317],
+        [-0.0838, -1.2576, -0.1646,  1.3712]])
 </pre></div>
 </div>
 <div class="admonition note">
@@ -307,18 +307,18 @@ to the subgraph:</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">sg2</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s2">"a"</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[-0.8491, -2.8195,  0.4317],
-        [-0.3869,  0.2502,  0.9353],
-        [ 0.5374,  1.3228, -0.0646]])
-tensor([[-0.6829, -0.3198, -0.8651,  0.7386],
-        [ 0.6542,  0.2381, -1.9032, -1.1040]])
-tensor([[-0.8491, -2.8195,  0.4317],
-        [-0.3869,  0.2502,  0.9353],
-        [ 0.4517,  1.4076,  1.3304],
-        [-0.7335, -1.5790,  0.4456]])
-tensor([[-0.6829, -0.3198, -0.8651,  0.7386],
-        [ 0.4741,  0.7877,  1.2721, -1.2442],
-        [-0.8865,  0.2379,  0.2855, -0.4695]])
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[ 0.1526, -0.3638,  1.3144],
+        [-0.5155,  1.4438,  0.2721],
+        [-2.3435, -0.1555, -0.6658]])
+tensor([[ 0.2102, -0.3154, -2.2641,  0.7004],
+        [-0.6816,  0.2967, -0.8666,  0.0988]])
+tensor([[ 0.1526, -0.3638,  1.3144],
+        [-0.5155,  1.4438,  0.2721],
+        [ 1.7123,  1.6954, -0.8172],
+        [ 0.9155, -0.7653, -0.7547]])
+tensor([[ 0.2102, -0.3154, -2.2641,  0.7004],
+        [ 2.9380, -1.5069, -0.3493,  2.0111],
+        [ 0.5983, -0.1292,  1.5455,  0.5317]])
 </pre></div>
 </div>
 <p>Another common transformation is to add a reverse edge for each edge in
@@ -388,7 +388,7 @@ and
 <span class="c1"># sphinx_gallery_thumbnail_path = '_static/blitz_2_dglgraph.png'</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.020 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.015 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-blitz-2-dglgraph-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/5e754d077c80317655fc1cbae96537f9/2_dglgraph.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">2_dglgraph.ipynb</span></code></a></p>

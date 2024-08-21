@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Line Graph Neural Network — DGL 2.1.0 documentation</title>
+<title>Line Graph Neural Network — DGL 2.0.0 documentation</title>
 <link href="../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,13 +19,12 @@
   <![endif]-->
 <script src="../../../_static/jquery.js?v=5d32c60e"></script>
 <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../../../_static/documentation_options.js?v=20623aea"></script>
+<script src="../../../_static/documentation_options.js?v=51b770b3"></script>
 <script src="../../../_static/doctools.js?v=9a2dae69"></script>
 <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../../../_static/copybutton.js?v=ccdb6887"></script>
 <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
 <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
 <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <script src="../../../_static/js/theme.js"></script>
@@ -43,7 +42,7 @@
             DGL
           </a>
 <div class="version">
-                2.1.0
+                2.0.0
               </div>
 <div role="search">
 <form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -64,7 +63,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guide_cn/index.html">用户指南【包含过时信息】</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guide_ko/index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../graphtransformer/index.html">🆕 Tutorial: Graph Transformer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/sparse/index.html">Tutorials: dgl.sparse</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cpu/index.html">Training on CPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../multi/index.html">Training on Multiple GPUs</a></li>
@@ -94,6 +92,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.geometry.html">dgl.geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.graphbolt.html">🆕 dgl.graphbolt</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn-tensorflow.html">dgl.nn (TensorFlow)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn-mxnet.html">dgl.nn (MXNet)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn.functional.html">dgl.nn.functional</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.ops.html">dgl.ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.optim.html">dgl.optim</a></li>
@@ -245,7 +245,7 @@ than inter-class.</p>
   NumValidationSamples: 500
   NumTestSamples: 1000
 Done loading data from cached files.
-/home/ubuntu/dgl_doc_dev/dgl/tutorials/models/1_gnn/6_line_graph.py:102: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+/home/ubuntu/regression_test/dgl/tutorials/models/1_gnn/6_line_graph.py:102: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
   labels = th.tensor(G.ndata["label"])
 Intra-class edges percent: 0.6994
 </pre></div>
@@ -708,30 +708,30 @@ torch sparse tensor.</p>
     <span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/ubuntu/dgl_doc_dev/dgl/tutorials/models/1_gnn/6_line_graph.py:561: UserWarning: Creating a tensor from a list of numpy.ndarrays is extremely slow. Please consider converting the list to a single numpy.ndarray with numpy.array() before converting to a tensor. (Triggered internally at /home/conda/feedstock_root/build_artifacts/libtorch_1718618105212/work/torch/csrc/utils/tensor_new.cpp:274.)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/ubuntu/regression_test/dgl/tutorials/models/1_gnn/6_line_graph.py:561: UserWarning: Creating a tensor from a list of numpy.ndarrays is extremely slow. Please consider converting the list to a single numpy.ndarray with numpy.array() before converting to a tensor. (Triggered internally at /home/conda/feedstock_root/build_artifacts/libtorch_1718618105212/work/torch/csrc/utils/tensor_new.cpp:274.)
   indices = th.LongTensor([mat.row, mat.col])
-/home/ubuntu/dgl_doc_dev/dgl/tutorials/models/1_gnn/6_line_graph.py:562: UserWarning: torch.sparse.SparseTensor(indices, values, shape, *, device=) is deprecated.  Please use torch.sparse_coo_tensor(indices, values, shape, dtype=, device=). (Triggered internally at /home/conda/feedstock_root/build_artifacts/libtorch_1718618105212/work/torch/csrc/utils/tensor_new.cpp:621.)
+/home/ubuntu/regression_test/dgl/tutorials/models/1_gnn/6_line_graph.py:562: UserWarning: torch.sparse.SparseTensor(indices, values, shape, *, device=) is deprecated.  Please use torch.sparse_coo_tensor(indices, values, shape, dtype=, device=). (Triggered internally at /home/conda/feedstock_root/build_artifacts/libtorch_1718618105212/work/torch/csrc/utils/tensor_new.cpp:621.)
   tensor = th.sparse.FloatTensor(
-Epoch 0 | loss 0.5744 | accuracy 0.6983
-Epoch 1 | loss 0.5042 | accuracy 0.7734
-Epoch 2 | loss 0.4702 | accuracy 0.7821
-Epoch 3 | loss 0.4548 | accuracy 0.7823
-Epoch 4 | loss 0.4725 | accuracy 0.7812
-Epoch 5 | loss 0.4641 | accuracy 0.7801
-Epoch 6 | loss 0.4326 | accuracy 0.8033
-Epoch 7 | loss 0.4218 | accuracy 0.8123
-Epoch 8 | loss 0.4378 | accuracy 0.8109
-Epoch 9 | loss 0.4402 | accuracy 0.8110
-Epoch 10 | loss 0.4379 | accuracy 0.8010
-Epoch 11 | loss 0.4490 | accuracy 0.8039
-Epoch 12 | loss 0.4218 | accuracy 0.8083
-Epoch 13 | loss 0.4250 | accuracy 0.8174
-Epoch 14 | loss 0.4262 | accuracy 0.8033
-Epoch 15 | loss 0.4129 | accuracy 0.8100
-Epoch 16 | loss 0.4161 | accuracy 0.8106
-Epoch 17 | loss 0.4122 | accuracy 0.8129
-Epoch 18 | loss 0.3931 | accuracy 0.8278
-Epoch 19 | loss 0.4309 | accuracy 0.8144
+Epoch 0 | loss 0.5818 | accuracy 0.6865
+Epoch 1 | loss 0.5258 | accuracy 0.7602
+Epoch 2 | loss 0.5031 | accuracy 0.7703
+Epoch 3 | loss 0.4716 | accuracy 0.8035
+Epoch 4 | loss 0.4824 | accuracy 0.7722
+Epoch 5 | loss 0.4683 | accuracy 0.7789
+Epoch 6 | loss 0.4498 | accuracy 0.8025
+Epoch 7 | loss 0.4597 | accuracy 0.7939
+Epoch 8 | loss 0.4574 | accuracy 0.7948
+Epoch 9 | loss 0.4527 | accuracy 0.7935
+Epoch 10 | loss 0.4472 | accuracy 0.7953
+Epoch 11 | loss 0.4304 | accuracy 0.8056
+Epoch 12 | loss 0.4189 | accuracy 0.8065
+Epoch 13 | loss 0.4378 | accuracy 0.7775
+Epoch 14 | loss 0.4733 | accuracy 0.7831
+Epoch 15 | loss 0.4456 | accuracy 0.7926
+Epoch 16 | loss 0.4389 | accuracy 0.7929
+Epoch 17 | loss 0.4319 | accuracy 0.8274
+Epoch 18 | loss 0.4173 | accuracy 0.8122
+Epoch 19 | loss 0.4151 | accuracy 0.8182
 </pre></div>
 </div>
 </section>
@@ -777,7 +777,7 @@ graph API.</p>
 </div>
 <p>You can find the complete code on Github at
 <a class="reference external" href="https://github.com/dmlc/dgl/tree/master/examples/pytorch/line_graph">Community Detection with Graph Neural Networks (CDGNN)</a>.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (3 minutes 7.502 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (2 minutes 56.260 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-models-1-gnn-6-line-graph-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/2ead32b124548ab97ed49d6eb475f30b/6_line_graph.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">6_line_graph.ipynb</span></code></a></p>

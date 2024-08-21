@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Write your own GNN module — DGL 2.1.0 documentation</title>
+<title>Write your own GNN module — DGL 2.0.0 documentation</title>
 <link href="../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,13 +19,12 @@
   <![endif]-->
 <script src="../../_static/jquery.js?v=5d32c60e"></script>
 <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../../_static/documentation_options.js?v=20623aea"></script>
+<script src="../../_static/documentation_options.js?v=51b770b3"></script>
 <script src="../../_static/doctools.js?v=9a2dae69"></script>
 <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../../_static/copybutton.js?v=ccdb6887"></script>
 <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
 <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
 <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <script src="../../_static/js/theme.js"></script>
@@ -43,7 +42,7 @@
             DGL
           </a>
 <div class="version">
-                2.1.0
+                2.0.0
               </div>
 <div role="search">
 <form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -82,7 +81,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../guide_cn/index.html">用户指南【包含过时信息】</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../guide_ko/index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../graphtransformer/index.html">🆕 Tutorial: Graph Transformer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../notebooks/sparse/index.html">Tutorials: dgl.sparse</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cpu/index.html">Training on CPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../multi/index.html">Training on Multiple GPUs</a></li>
@@ -100,6 +98,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.geometry.html">dgl.geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.graphbolt.html">🆕 dgl.graphbolt</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/nn-tensorflow.html">dgl.nn (TensorFlow)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/nn-mxnet.html">dgl.nn (MXNet)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/nn.functional.html">dgl.nn.functional</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.ops.html">dgl.ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.optim.html">dgl.optim</a></li>
@@ -337,46 +337,46 @@ from the introduction tutorial.</p>
   NumValidationSamples: 500
   NumTestSamples: 1000
 Done loading data from cached files.
-In epoch 0, loss: 1.952, val acc: 0.058 (best 0.058), test acc: 0.064 (best 0.064)
-In epoch 5, loss: 1.863, val acc: 0.214 (best 0.214), test acc: 0.224 (best 0.224)
-In epoch 10, loss: 1.704, val acc: 0.528 (best 0.558), test acc: 0.522 (best 0.543)
-In epoch 15, loss: 1.472, val acc: 0.534 (best 0.558), test acc: 0.520 (best 0.543)
-In epoch 20, loss: 1.175, val acc: 0.600 (best 0.600), test acc: 0.576 (best 0.576)
-In epoch 25, loss: 0.851, val acc: 0.642 (best 0.642), test acc: 0.626 (best 0.626)
-In epoch 30, loss: 0.555, val acc: 0.696 (best 0.696), test acc: 0.681 (best 0.681)
-In epoch 35, loss: 0.330, val acc: 0.736 (best 0.736), test acc: 0.731 (best 0.731)
-In epoch 40, loss: 0.188, val acc: 0.746 (best 0.746), test acc: 0.745 (best 0.745)
-In epoch 45, loss: 0.107, val acc: 0.738 (best 0.746), test acc: 0.745 (best 0.745)
-In epoch 50, loss: 0.064, val acc: 0.740 (best 0.746), test acc: 0.744 (best 0.745)
-In epoch 55, loss: 0.041, val acc: 0.734 (best 0.746), test acc: 0.742 (best 0.745)
-In epoch 60, loss: 0.028, val acc: 0.734 (best 0.746), test acc: 0.742 (best 0.745)
-In epoch 65, loss: 0.021, val acc: 0.740 (best 0.746), test acc: 0.746 (best 0.745)
-In epoch 70, loss: 0.017, val acc: 0.740 (best 0.746), test acc: 0.747 (best 0.745)
-In epoch 75, loss: 0.014, val acc: 0.740 (best 0.746), test acc: 0.747 (best 0.745)
-In epoch 80, loss: 0.012, val acc: 0.744 (best 0.746), test acc: 0.749 (best 0.745)
-In epoch 85, loss: 0.010, val acc: 0.744 (best 0.746), test acc: 0.750 (best 0.745)
-In epoch 90, loss: 0.009, val acc: 0.744 (best 0.746), test acc: 0.749 (best 0.745)
-In epoch 95, loss: 0.008, val acc: 0.742 (best 0.746), test acc: 0.750 (best 0.745)
-In epoch 100, loss: 0.007, val acc: 0.742 (best 0.746), test acc: 0.750 (best 0.745)
-In epoch 105, loss: 0.007, val acc: 0.742 (best 0.746), test acc: 0.750 (best 0.745)
-In epoch 110, loss: 0.006, val acc: 0.742 (best 0.746), test acc: 0.750 (best 0.745)
-In epoch 115, loss: 0.006, val acc: 0.742 (best 0.746), test acc: 0.750 (best 0.745)
-In epoch 120, loss: 0.006, val acc: 0.742 (best 0.746), test acc: 0.751 (best 0.745)
-In epoch 125, loss: 0.005, val acc: 0.742 (best 0.746), test acc: 0.751 (best 0.745)
-In epoch 130, loss: 0.005, val acc: 0.744 (best 0.746), test acc: 0.751 (best 0.745)
-In epoch 135, loss: 0.005, val acc: 0.744 (best 0.746), test acc: 0.752 (best 0.745)
-In epoch 140, loss: 0.004, val acc: 0.744 (best 0.746), test acc: 0.753 (best 0.745)
-In epoch 145, loss: 0.004, val acc: 0.744 (best 0.746), test acc: 0.753 (best 0.745)
-In epoch 150, loss: 0.004, val acc: 0.744 (best 0.746), test acc: 0.753 (best 0.745)
-In epoch 155, loss: 0.004, val acc: 0.744 (best 0.746), test acc: 0.753 (best 0.745)
-In epoch 160, loss: 0.004, val acc: 0.742 (best 0.746), test acc: 0.753 (best 0.745)
-In epoch 165, loss: 0.003, val acc: 0.744 (best 0.746), test acc: 0.754 (best 0.745)
-In epoch 170, loss: 0.003, val acc: 0.744 (best 0.746), test acc: 0.754 (best 0.745)
-In epoch 175, loss: 0.003, val acc: 0.744 (best 0.746), test acc: 0.756 (best 0.745)
-In epoch 180, loss: 0.003, val acc: 0.744 (best 0.746), test acc: 0.755 (best 0.745)
-In epoch 185, loss: 0.003, val acc: 0.744 (best 0.746), test acc: 0.755 (best 0.745)
-In epoch 190, loss: 0.003, val acc: 0.742 (best 0.746), test acc: 0.756 (best 0.745)
-In epoch 195, loss: 0.003, val acc: 0.742 (best 0.746), test acc: 0.756 (best 0.745)
+In epoch 0, loss: 1.949, val acc: 0.072 (best 0.072), test acc: 0.091 (best 0.091)
+In epoch 5, loss: 1.863, val acc: 0.146 (best 0.146), test acc: 0.173 (best 0.173)
+In epoch 10, loss: 1.708, val acc: 0.292 (best 0.364), test acc: 0.309 (best 0.397)
+In epoch 15, loss: 1.481, val acc: 0.392 (best 0.392), test acc: 0.391 (best 0.391)
+In epoch 20, loss: 1.194, val acc: 0.554 (best 0.554), test acc: 0.578 (best 0.578)
+In epoch 25, loss: 0.878, val acc: 0.656 (best 0.656), test acc: 0.678 (best 0.678)
+In epoch 30, loss: 0.584, val acc: 0.700 (best 0.700), test acc: 0.715 (best 0.715)
+In epoch 35, loss: 0.355, val acc: 0.706 (best 0.712), test acc: 0.736 (best 0.725)
+In epoch 40, loss: 0.204, val acc: 0.718 (best 0.718), test acc: 0.741 (best 0.741)
+In epoch 45, loss: 0.117, val acc: 0.722 (best 0.722), test acc: 0.749 (best 0.742)
+In epoch 50, loss: 0.070, val acc: 0.728 (best 0.728), test acc: 0.754 (best 0.754)
+In epoch 55, loss: 0.044, val acc: 0.728 (best 0.728), test acc: 0.754 (best 0.754)
+In epoch 60, loss: 0.030, val acc: 0.730 (best 0.730), test acc: 0.758 (best 0.756)
+In epoch 65, loss: 0.022, val acc: 0.732 (best 0.732), test acc: 0.761 (best 0.759)
+In epoch 70, loss: 0.017, val acc: 0.734 (best 0.734), test acc: 0.765 (best 0.765)
+In epoch 75, loss: 0.014, val acc: 0.736 (best 0.736), test acc: 0.768 (best 0.767)
+In epoch 80, loss: 0.012, val acc: 0.738 (best 0.738), test acc: 0.769 (best 0.768)
+In epoch 85, loss: 0.011, val acc: 0.740 (best 0.740), test acc: 0.771 (best 0.771)
+In epoch 90, loss: 0.009, val acc: 0.740 (best 0.740), test acc: 0.772 (best 0.771)
+In epoch 95, loss: 0.009, val acc: 0.744 (best 0.744), test acc: 0.772 (best 0.772)
+In epoch 100, loss: 0.008, val acc: 0.744 (best 0.744), test acc: 0.773 (best 0.772)
+In epoch 105, loss: 0.007, val acc: 0.744 (best 0.744), test acc: 0.774 (best 0.772)
+In epoch 110, loss: 0.007, val acc: 0.742 (best 0.744), test acc: 0.775 (best 0.772)
+In epoch 115, loss: 0.006, val acc: 0.742 (best 0.744), test acc: 0.775 (best 0.772)
+In epoch 120, loss: 0.006, val acc: 0.742 (best 0.744), test acc: 0.775 (best 0.772)
+In epoch 125, loss: 0.005, val acc: 0.744 (best 0.744), test acc: 0.775 (best 0.772)
+In epoch 130, loss: 0.005, val acc: 0.746 (best 0.746), test acc: 0.775 (best 0.775)
+In epoch 135, loss: 0.005, val acc: 0.746 (best 0.746), test acc: 0.776 (best 0.775)
+In epoch 140, loss: 0.005, val acc: 0.746 (best 0.746), test acc: 0.777 (best 0.775)
+In epoch 145, loss: 0.004, val acc: 0.746 (best 0.746), test acc: 0.776 (best 0.775)
+In epoch 150, loss: 0.004, val acc: 0.748 (best 0.748), test acc: 0.777 (best 0.777)
+In epoch 155, loss: 0.004, val acc: 0.750 (best 0.750), test acc: 0.777 (best 0.777)
+In epoch 160, loss: 0.004, val acc: 0.750 (best 0.750), test acc: 0.776 (best 0.777)
+In epoch 165, loss: 0.003, val acc: 0.750 (best 0.750), test acc: 0.774 (best 0.777)
+In epoch 170, loss: 0.003, val acc: 0.750 (best 0.750), test acc: 0.774 (best 0.777)
+In epoch 175, loss: 0.003, val acc: 0.750 (best 0.750), test acc: 0.775 (best 0.777)
+In epoch 180, loss: 0.003, val acc: 0.750 (best 0.750), test acc: 0.774 (best 0.777)
+In epoch 185, loss: 0.003, val acc: 0.750 (best 0.750), test acc: 0.774 (best 0.777)
+In epoch 190, loss: 0.003, val acc: 0.750 (best 0.750), test acc: 0.774 (best 0.777)
+In epoch 195, loss: 0.003, val acc: 0.750 (best 0.750), test acc: 0.774 (best 0.777)
 </pre></div>
 </div>
 </section>
@@ -451,46 +451,46 @@ the model. You can replace it with your own edge weights.</p>
 <span class="n">train</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>In epoch 0, loss: 1.951, val acc: 0.316 (best 0.316), test acc: 0.319 (best 0.319)
-In epoch 5, loss: 1.873, val acc: 0.326 (best 0.478), test acc: 0.313 (best 0.478)
-In epoch 10, loss: 1.724, val acc: 0.190 (best 0.478), test acc: 0.210 (best 0.478)
-In epoch 15, loss: 1.498, val acc: 0.290 (best 0.478), test acc: 0.309 (best 0.478)
-In epoch 20, loss: 1.203, val acc: 0.416 (best 0.478), test acc: 0.408 (best 0.478)
-In epoch 25, loss: 0.873, val acc: 0.534 (best 0.534), test acc: 0.536 (best 0.536)
-In epoch 30, loss: 0.565, val acc: 0.642 (best 0.642), test acc: 0.635 (best 0.635)
-In epoch 35, loss: 0.331, val acc: 0.680 (best 0.680), test acc: 0.691 (best 0.691)
-In epoch 40, loss: 0.183, val acc: 0.698 (best 0.698), test acc: 0.704 (best 0.704)
-In epoch 45, loss: 0.101, val acc: 0.718 (best 0.718), test acc: 0.709 (best 0.709)
-In epoch 50, loss: 0.059, val acc: 0.718 (best 0.718), test acc: 0.713 (best 0.709)
-In epoch 55, loss: 0.037, val acc: 0.720 (best 0.720), test acc: 0.717 (best 0.717)
-In epoch 60, loss: 0.025, val acc: 0.720 (best 0.720), test acc: 0.721 (best 0.717)
-In epoch 65, loss: 0.019, val acc: 0.718 (best 0.720), test acc: 0.723 (best 0.717)
-In epoch 70, loss: 0.015, val acc: 0.718 (best 0.720), test acc: 0.727 (best 0.717)
-In epoch 75, loss: 0.012, val acc: 0.720 (best 0.720), test acc: 0.729 (best 0.717)
-In epoch 80, loss: 0.010, val acc: 0.726 (best 0.726), test acc: 0.731 (best 0.730)
-In epoch 85, loss: 0.009, val acc: 0.726 (best 0.726), test acc: 0.732 (best 0.730)
-In epoch 90, loss: 0.008, val acc: 0.726 (best 0.726), test acc: 0.729 (best 0.730)
-In epoch 95, loss: 0.007, val acc: 0.726 (best 0.726), test acc: 0.729 (best 0.730)
-In epoch 100, loss: 0.007, val acc: 0.726 (best 0.726), test acc: 0.729 (best 0.730)
-In epoch 105, loss: 0.006, val acc: 0.726 (best 0.728), test acc: 0.730 (best 0.729)
-In epoch 110, loss: 0.006, val acc: 0.726 (best 0.728), test acc: 0.730 (best 0.729)
-In epoch 115, loss: 0.005, val acc: 0.726 (best 0.728), test acc: 0.730 (best 0.729)
-In epoch 120, loss: 0.005, val acc: 0.726 (best 0.728), test acc: 0.730 (best 0.729)
-In epoch 125, loss: 0.005, val acc: 0.726 (best 0.728), test acc: 0.730 (best 0.729)
-In epoch 130, loss: 0.005, val acc: 0.726 (best 0.728), test acc: 0.731 (best 0.729)
-In epoch 135, loss: 0.004, val acc: 0.726 (best 0.728), test acc: 0.732 (best 0.729)
-In epoch 140, loss: 0.004, val acc: 0.728 (best 0.728), test acc: 0.732 (best 0.729)
-In epoch 145, loss: 0.004, val acc: 0.732 (best 0.732), test acc: 0.733 (best 0.733)
-In epoch 150, loss: 0.004, val acc: 0.732 (best 0.732), test acc: 0.733 (best 0.733)
-In epoch 155, loss: 0.003, val acc: 0.732 (best 0.732), test acc: 0.733 (best 0.733)
-In epoch 160, loss: 0.003, val acc: 0.732 (best 0.732), test acc: 0.733 (best 0.733)
-In epoch 165, loss: 0.003, val acc: 0.732 (best 0.732), test acc: 0.733 (best 0.733)
-In epoch 170, loss: 0.003, val acc: 0.730 (best 0.732), test acc: 0.734 (best 0.733)
-In epoch 175, loss: 0.003, val acc: 0.730 (best 0.732), test acc: 0.734 (best 0.733)
-In epoch 180, loss: 0.003, val acc: 0.730 (best 0.732), test acc: 0.737 (best 0.733)
-In epoch 185, loss: 0.003, val acc: 0.730 (best 0.732), test acc: 0.738 (best 0.733)
-In epoch 190, loss: 0.003, val acc: 0.730 (best 0.732), test acc: 0.737 (best 0.733)
-In epoch 195, loss: 0.002, val acc: 0.730 (best 0.732), test acc: 0.739 (best 0.733)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>In epoch 0, loss: 1.948, val acc: 0.072 (best 0.072), test acc: 0.091 (best 0.091)
+In epoch 5, loss: 1.872, val acc: 0.378 (best 0.378), test acc: 0.373 (best 0.373)
+In epoch 10, loss: 1.726, val acc: 0.542 (best 0.542), test acc: 0.517 (best 0.517)
+In epoch 15, loss: 1.497, val acc: 0.602 (best 0.602), test acc: 0.568 (best 0.568)
+In epoch 20, loss: 1.200, val acc: 0.630 (best 0.630), test acc: 0.605 (best 0.605)
+In epoch 25, loss: 0.873, val acc: 0.654 (best 0.654), test acc: 0.647 (best 0.647)
+In epoch 30, loss: 0.573, val acc: 0.712 (best 0.712), test acc: 0.688 (best 0.688)
+In epoch 35, loss: 0.345, val acc: 0.758 (best 0.758), test acc: 0.721 (best 0.721)
+In epoch 40, loss: 0.199, val acc: 0.756 (best 0.758), test acc: 0.746 (best 0.721)
+In epoch 45, loss: 0.115, val acc: 0.752 (best 0.758), test acc: 0.748 (best 0.721)
+In epoch 50, loss: 0.069, val acc: 0.752 (best 0.758), test acc: 0.748 (best 0.721)
+In epoch 55, loss: 0.044, val acc: 0.748 (best 0.758), test acc: 0.745 (best 0.721)
+In epoch 60, loss: 0.031, val acc: 0.748 (best 0.758), test acc: 0.746 (best 0.721)
+In epoch 65, loss: 0.023, val acc: 0.746 (best 0.758), test acc: 0.749 (best 0.721)
+In epoch 70, loss: 0.018, val acc: 0.748 (best 0.758), test acc: 0.749 (best 0.721)
+In epoch 75, loss: 0.014, val acc: 0.742 (best 0.758), test acc: 0.748 (best 0.721)
+In epoch 80, loss: 0.012, val acc: 0.746 (best 0.758), test acc: 0.749 (best 0.721)
+In epoch 85, loss: 0.011, val acc: 0.750 (best 0.758), test acc: 0.750 (best 0.721)
+In epoch 90, loss: 0.009, val acc: 0.750 (best 0.758), test acc: 0.751 (best 0.721)
+In epoch 95, loss: 0.009, val acc: 0.750 (best 0.758), test acc: 0.751 (best 0.721)
+In epoch 100, loss: 0.008, val acc: 0.750 (best 0.758), test acc: 0.750 (best 0.721)
+In epoch 105, loss: 0.007, val acc: 0.748 (best 0.758), test acc: 0.752 (best 0.721)
+In epoch 110, loss: 0.007, val acc: 0.748 (best 0.758), test acc: 0.751 (best 0.721)
+In epoch 115, loss: 0.006, val acc: 0.746 (best 0.758), test acc: 0.748 (best 0.721)
+In epoch 120, loss: 0.006, val acc: 0.746 (best 0.758), test acc: 0.748 (best 0.721)
+In epoch 125, loss: 0.005, val acc: 0.744 (best 0.758), test acc: 0.748 (best 0.721)
+In epoch 130, loss: 0.005, val acc: 0.744 (best 0.758), test acc: 0.747 (best 0.721)
+In epoch 135, loss: 0.005, val acc: 0.744 (best 0.758), test acc: 0.747 (best 0.721)
+In epoch 140, loss: 0.004, val acc: 0.744 (best 0.758), test acc: 0.747 (best 0.721)
+In epoch 145, loss: 0.004, val acc: 0.744 (best 0.758), test acc: 0.747 (best 0.721)
+In epoch 150, loss: 0.004, val acc: 0.744 (best 0.758), test acc: 0.746 (best 0.721)
+In epoch 155, loss: 0.004, val acc: 0.744 (best 0.758), test acc: 0.746 (best 0.721)
+In epoch 160, loss: 0.004, val acc: 0.744 (best 0.758), test acc: 0.746 (best 0.721)
+In epoch 165, loss: 0.003, val acc: 0.744 (best 0.758), test acc: 0.748 (best 0.721)
+In epoch 170, loss: 0.003, val acc: 0.744 (best 0.758), test acc: 0.748 (best 0.721)
+In epoch 175, loss: 0.003, val acc: 0.744 (best 0.758), test acc: 0.748 (best 0.721)
+In epoch 180, loss: 0.003, val acc: 0.744 (best 0.758), test acc: 0.748 (best 0.721)
+In epoch 185, loss: 0.003, val acc: 0.744 (best 0.758), test acc: 0.747 (best 0.721)
+In epoch 190, loss: 0.003, val acc: 0.742 (best 0.758), test acc: 0.746 (best 0.721)
+In epoch 195, loss: 0.003, val acc: 0.742 (best 0.758), test acc: 0.746 (best 0.721)
 </pre></div>
 </div>
 </section>
@@ -543,7 +543,7 @@ Code</span></a>.</p></li>
 <span class="c1"># sphinx_gallery_thumbnail_path = '_static/blitz_3_message_passing.png'</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (2 minutes 45.622 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (2 minutes 44.381 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-blitz-3-message-passing-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/825e8f29152dbdc145c3400e2d8588ea/3_message_passing.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">3_message_passing.ipynb</span></code></a></p>

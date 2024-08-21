@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>SampledSubgraph — DGL 2.1.0 documentation</title>
+<title>SampledSubgraph — DGL 2.0.0 documentation</title>
 <link href="../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,13 +19,12 @@
   <![endif]-->
 <script src="../_static/jquery.js?v=5d32c60e"></script>
 <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../_static/documentation_options.js?v=20623aea"></script>
+<script src="../_static/documentation_options.js?v=51b770b3"></script>
 <script src="../_static/doctools.js?v=9a2dae69"></script>
 <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../_static/copybutton.js?v=ccdb6887"></script>
 <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
 <script src="../_static/js/theme.js"></script>
 <link href="../genindex.html" rel="index" title="Index"/>
 <link href="../search.html" rel="search" title="Search"/>
@@ -41,7 +40,7 @@
             DGL
           </a>
 <div class="version">
-                2.1.0
+                2.0.0
               </div>
 <div role="search">
 <form action="../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -62,7 +61,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guide_cn/index.html">用户指南【包含过时信息】</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guide_ko/index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../graphtransformer/index.html">🆕 Tutorial: Graph Transformer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/sparse/index.html">Tutorials: dgl.sparse</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/cpu/index.html">Training on CPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/multi/index.html">Training on Multiple GPUs</a></li>
@@ -105,6 +103,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/nn-tensorflow.html">dgl.nn (TensorFlow)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/nn-mxnet.html">dgl.nn (MXNet)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/python/nn.functional.html">dgl.nn.functional</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.ops.html">dgl.ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.optim.html">dgl.optim</a></li>
@@ -160,21 +160,21 @@ for homogeneous graphs, each field should correspond to its respective
 value type.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.graphbolt.SampledSubgraph.exclude_edges">
-<span class="sig-name descname"><span class="pre">exclude_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.12)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.12)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assume_num_node_within_int32</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dgl/graphbolt/sampled_subgraph.html#SampledSubgraph.exclude_edges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.graphbolt.SampledSubgraph.exclude_edges" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">exclude_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.12)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.12)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assume_num_node_within_int32</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dgl/graphbolt/sampled_subgraph.html#SampledSubgraph.exclude_edges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.graphbolt.SampledSubgraph.exclude_edges" title="Link to this definition"></a></dt>
 <dd><p>Exclude edges from the sampled subgraph.</p>
-<p>This function can be used with sampled subgraphs, regardless of
-whether they have compacted row/column nodes or not. If the original
-subgraph has compacted row or column nodes, the corresponding row or
-column nodes in the returned subgraph will also be compacted.</p>
+<p>This function can be used with sampled subgraphs, regardless of whether they
+have compacted row/column nodes or not. If the original subgraph has
+compacted row or column nodes, the corresponding row or column nodes in the
+returned subgraph will also be compacted.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>self</strong> (<a class="reference internal" href="#dgl.graphbolt.SampledSubgraph" title="dgl.graphbolt.SampledSubgraph"><em>SampledSubgraph</em></a>) – The sampled subgraph.</p></li>
-<li><p><strong>edges</strong> (<em>Union</em><em>[</em><em>Tuple</em><em>[</em><em>torch.Tensor</em><em>, </em><em>torch.Tensor</em><em>]</em><em>,</em>) – Dict[str, Tuple[torch.Tensor, torch.Tensor]]]
+<li><p><strong>edges</strong> (<em>Union</em><em>[</em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>Tuple</em><em>[</em><em>torch.Tensor</em><em>, </em><em>torch.Tensor</em><em>]</em><em>]</em><em>,</em>) – Tuple[torch.Tensor, torch.Tensor]]
 Edges to exclude. If sampled subgraph is homogeneous, then <cite>edges</cite>
 should be a pair of tensors representing the edges to exclude. If
-sampled subgraph is heterogeneous, then <cite>edges</cite> should be a
-dictionary of edge types and the corresponding edges to exclude.</p></li>
+sampled subgraph is heterogeneous, then <cite>edges</cite> should be a dictionary
+of edge types and the corresponding edges to exclude.</p></li>
 <li><p><strong>assume_num_node_within_int32</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – If True, assumes the value of node IDs in the provided <cite>edges</cite> fall
 within the int32 range, which can significantly enhance computation
 speed. Default: True</p></li>
@@ -229,16 +229,19 @@ speed. Default: True</p></li>
 <dd><p>Returns corresponding reverse column node ids the original graph.
 Column’s reverse node ids in the original graph. A graph structure
 can be treated as a coordinated row and column pair, and this is
-the mapped ids of the column.</p>
+the mapped ids of the column.
+- If <cite>original_column_node_ids</cite> is a tensor: It represents the</p>
 <blockquote>
-<div><ul class="simple">
-<li><p>If <cite>original_column_node_ids</cite> is a tensor: It represents the
-original node ids.</p></li>
-<li><p>If <cite>original_column_node_ids</cite> is a dictionary: The keys should be
-node type and the values should be corresponding original
-heterogeneous node ids.</p></li>
-</ul>
+<div><p>original node ids.</p>
 </div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>If <cite>original_column_node_ids</cite> is a dictionary: The keys should be</dt><dd><p>node type and the values should be corresponding original
+heterogeneous node ids.</p>
+</dd>
+</dl>
+</li>
+</ul>
 <p>If present, it means column IDs are compacted, and <cite>sampled_csc</cite>
 column IDs match these compacted ones.</p>
 </dd></dl>
@@ -246,15 +249,20 @@ column IDs match these compacted ones.</p>
 <dt class="sig sig-object py" id="dgl.graphbolt.SampledSubgraph.original_edge_ids">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">original_edge_ids</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dgl.graphbolt.SampledSubgraph.original_edge_ids" title="Link to this definition"></a></dt>
 <dd><p>Returns corresponding reverse edge ids the original graph.
-Reverse edge ids in the original graph. This is useful when edge
-features are needed.</p>
+Reverse edge ids in the original graph. This is useful when edge</p>
 <blockquote>
-<div><ul class="simple">
-<li><p>If <cite>original_edge_ids</cite> is a tensor: It represents the original edge
-ids.</p></li>
-<li><p>If <cite>original_edge_ids</cite> is a dictionary: The keys should be edge
-type and the values should be corresponding original heterogeneous
-edge ids.</p></li>
+<div><p>features are needed.
+- If <cite>original_edge_ids</cite> is a tensor: It represents the</p>
+<blockquote>
+<div><p>original edge ids.</p>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>If <cite>original_edge_ids</cite> is a dictionary: The keys should be</dt><dd><p>edge type and the values should be corresponding original
+heterogeneous edge ids.</p>
+</dd>
+</dl>
+</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -264,61 +272,39 @@ edge ids.</p></li>
 <dd><p>Returns corresponding reverse row node ids the original graph.
 Row’s reverse node ids in the original graph. A graph structure
 can be treated as a coordinated row and column pair, and this is
-the mapped ids of the row.</p>
+the mapped ids of the row.
+- If <cite>original_row_node_ids</cite> is a tensor: It represents the</p>
 <blockquote>
-<div><ul class="simple">
-<li><p>If <cite>original_row_node_ids</cite> is a tensor: It represents the original
-node ids.</p></li>
-<li><p>If <cite>original_row_node_ids</cite> is a dictionary: The keys should be node
-type and the values should be corresponding original heterogeneous
-node ids.</p></li>
-</ul>
+<div><p>original node ids.</p>
 </div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>If <cite>original_row_node_ids</cite> is a dictionary: The keys should be</dt><dd><p>node type and the values should be corresponding original
+heterogeneous node ids.</p>
+</dd>
+</dl>
+</li>
+</ul>
 <p>If present, it means row IDs are compacted, and <cite>sampled_csc</cite>
 row IDs match these compacted ones.</p>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="dgl.graphbolt.SampledSubgraph.sampled_csc">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sampled_csc</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">CSCFormatBase</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">CSCFormatBase</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dgl.graphbolt.SampledSubgraph.sampled_csc" title="Link to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Returns the node pairs representing edges in csc format.</dt><dd><ul class="simple">
-<li><p>If <cite>sampled_csc</cite> is a CSCFormatBase: It should be in the csc
-format. <cite>indptr</cite> stores the index in the data array where each
-column starts. <cite>indices</cite> stores the row indices of the non-zero
-elements.</p></li>
-<li><p>If <cite>sampled_csc</cite> is a dictionary: The keys should be edge type and
-the values should be corresponding node pairs. The ids inside is
-heterogeneous ids.</p></li>
-</ul>
+<dd><p>Returns the node pairs representing edges in csc format.
+- If <cite>sampled_csc</cite> is a CSCFormatBase: It should be in the csc format.</p>
+<blockquote>
+<div><p><cite>indptr</cite> stores the index in the data array where each column
+starts. <cite>indices</cite> stores the row indices of the non-zero elements.</p>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>If <cite>sampled_csc</cite> is a dictionary: The keys should be edge type and</dt><dd><p>the values should be corresponding node pairs. The ids inside
+is heterogeneous ids.</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<ol class="arabic simple">
-<li><p>Homogeneous graph.</p></li>
-</ol>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dgl.graphbolt</span> <span class="k">as</span> <span class="nn">gb</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sampled_csc</span> <span class="o">=</span> <span class="n">gb</span><span class="o">.</span><span class="n">CSCFormatBase</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">indptr</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]),</span>
-<span class="gp">... </span>    <span class="n">indices</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sampled_csc</span><span class="p">)</span>
-<span class="go">CSCFormatBase(indptr=tensor([0, 1, 2, 3]),</span>
-<span class="go">            indices=tensor([0, 1, 2]),</span>
-<span class="go">)</span>
-</pre></div>
-</div>
-<ol class="arabic simple" start="2">
-<li><p>Heterogeneous graph.</p></li>
-</ol>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sampled_csc</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"A:relation:B"</span><span class="p">:</span> <span class="n">gb</span><span class="o">.</span><span class="n">CSCFormatBase</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">indptr</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]),</span>
-<span class="gp">... </span>    <span class="n">indices</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]))}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sampled_csc</span><span class="p">)</span>
-<span class="go">{'A:relation:B': CSCFormatBase(indptr=tensor([0, 1, 2, 3]),</span>
-<span class="go">            indices=tensor([0, 1, 2]),</span>
-<span class="go">)}</span>
-</pre></div>
-</div>
+</li>
+</ul>
 </dd></dl>
 </dd></dl>
 </section>

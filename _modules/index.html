@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Overview: module code — DGL 2.3.1 documentation</title>
+<title>Overview: module code — DGL 2.4 documentation</title>
 <link href="../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,7 +19,7 @@
   <![endif]-->
 <script src="../_static/jquery.js?v=5d32c60e"></script>
 <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../_static/documentation_options.js?v=9caaf7ed"></script>
 <script src="../_static/doctools.js?v=9a2dae69"></script>
 <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -39,7 +39,7 @@
             DGL
           </a>
 <div class="version">
-                2.3.1
+                2.4
               </div>
 <div role="search">
 <form action="../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -186,9 +186,11 @@
 <li><a href="dgl/graphbolt/base.html">dgl.graphbolt.base</a></li>
 <li><a href="dgl/graphbolt/dataloader.html">dgl.graphbolt.dataloader</a></li>
 <li><a href="dgl/graphbolt/dataset.html">dgl.graphbolt.dataset</a></li>
+<li><a href="dgl/graphbolt/external_utils.html">dgl.graphbolt.external_utils</a></li>
 <li><a href="dgl/graphbolt/feature_fetcher.html">dgl.graphbolt.feature_fetcher</a></li>
 <li><a href="dgl/graphbolt/feature_store.html">dgl.graphbolt.feature_store</a></li>
 <li><a href="dgl/graphbolt/impl/basic_feature_store.html">dgl.graphbolt.impl.basic_feature_store</a></li>
+<li><a href="dgl/graphbolt/impl/cpu_cached_feature.html">dgl.graphbolt.impl.cpu_cached_feature</a></li>
 <li><a href="dgl/graphbolt/impl/fused_csc_sampling_graph.html">dgl.graphbolt.impl.fused_csc_sampling_graph</a></li>
 <li><a href="dgl/graphbolt/impl/gpu_cached_feature.html">dgl.graphbolt.impl.gpu_cached_feature</a></li>
 <li><a href="dgl/graphbolt/impl/in_subgraph_sampler.html">dgl.graphbolt.impl.in_subgraph_sampler</a></li>
@@ -196,6 +198,7 @@
 <li><a href="dgl/graphbolt/impl/neighbor_sampler.html">dgl.graphbolt.impl.neighbor_sampler</a></li>
 <li><a href="dgl/graphbolt/impl/ondisk_dataset.html">dgl.graphbolt.impl.ondisk_dataset</a></li>
 <li><a href="dgl/graphbolt/impl/sampled_subgraph_impl.html">dgl.graphbolt.impl.sampled_subgraph_impl</a></li>
+<li><a href="dgl/graphbolt/impl/temporal_neighbor_sampler.html">dgl.graphbolt.impl.temporal_neighbor_sampler</a></li>
 <li><a href="dgl/graphbolt/impl/torch_based_feature_store.html">dgl.graphbolt.impl.torch_based_feature_store</a></li>
 <li><a href="dgl/graphbolt/impl/uniform_negative_sampler.html">dgl.graphbolt.impl.uniform_negative_sampler</a></li>
 <li><a href="dgl/graphbolt/internal/sample_utils.html">dgl.graphbolt.internal.sample_utils</a></li>
@@ -207,7 +210,6 @@
 <li><a href="dgl/graphbolt/sampled_subgraph.html">dgl.graphbolt.sampled_subgraph</a></li>
 <li><a href="dgl/graphbolt/sampling_graph.html">dgl.graphbolt.sampling_graph</a></li>
 <li><a href="dgl/graphbolt/subgraph_sampler.html">dgl.graphbolt.subgraph_sampler</a></li>
-<li><a href="dgl/graphbolt/utils.html">dgl.graphbolt.utils</a></li>
 <li><a href="dgl/heterograph.html">dgl.heterograph</a></li>
 <li><a href="dgl/homophily.html">dgl.homophily</a></li>
 <li><a href="dgl/label_informativeness.html">dgl.label_informativeness</a></li>
@@ -319,8 +321,8 @@
 <div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
 <span class="rst-current-version" data-toggle="rst-current-version">
 <span class="fa fa-book"> Read the Docs</span>
-            v: 1.1.x
-            <span class="fa fa-caret-down"></span>
+<span id="version-placeholder">v: latest</span>
+<span class="fa fa-caret-down"></span>
 </span>
 <div class="rst-other-versions">
 <dl>
@@ -342,8 +344,7 @@
 </div>
 <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 假设 branches.json 位于同目录下
-            fetch('branches.json')
+            fetch('/dgl_docs/branches.json')
                 .then(response => response.json())
                 .then(data => {
                     var versionListDiv = document.getElementById('version-list');
@@ -357,6 +358,29 @@
                     });
                 })
                 .catch(error => console.error('Error loading branches:', error));
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            // 获取当前路径
+            var path = window.location.pathname;
+            var versionPlaceholder = document.getElementById('version-placeholder');
+
+            // 检查路径中是否包含 'en'
+            if (path.includes('/en/')) {
+                // 提取 'en' 后的文件夹作为版本号
+                var parts = path.split('/en/');
+                if (parts[1]) {
+                    var folders = parts[1].split('/');
+                    if (folders.length > 0 && folders[0]) {
+                        versionPlaceholder.textContent = 'v: ' + folders[0];
+                    } else {
+                        versionPlaceholder.textContent = 'v: latest';
+                    }
+                } else {
+                    versionPlaceholder.textContent = 'v: latest';
+                }
+            } else {
+                versionPlaceholder.textContent = 'v: latest';
+            }
         });
     </script>
 

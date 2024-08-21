@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>dgl.graphbolt.impl.uniform_negative_sampler — DGL 2.1.0 documentation</title>
+<title>dgl.graphbolt.impl.uniform_negative_sampler — DGL 2.0.0 documentation</title>
 <link href="../../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,13 +19,12 @@
   <![endif]-->
 <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
 <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../../../../_static/documentation_options.js?v=20623aea"></script>
+<script src="../../../../_static/documentation_options.js?v=51b770b3"></script>
 <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
 <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../../../../_static/copybutton.js?v=ccdb6887"></script>
 <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
 <script src="../../../../_static/js/theme.js"></script>
 <link href="../../../../genindex.html" rel="index" title="Index"/>
 <link href="../../../../search.html" rel="search" title="Search"/>
@@ -39,7 +38,7 @@
             DGL
           </a>
 <div class="version">
-                2.1.0
+                2.0.0
               </div>
 <div role="search">
 <form action="../../../../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -60,7 +59,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../guide_cn/index.html">用户指南【包含过时信息】</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../guide_ko/index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../graphtransformer/index.html">🆕 Tutorial: Graph Transformer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/sparse/index.html">Tutorials: dgl.sparse</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/cpu/index.html">Training on CPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/multi/index.html">Training on Multiple GPUs</a></li>
@@ -78,6 +76,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/python/dgl.geometry.html">dgl.geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/python/dgl.graphbolt.html">🆕 dgl.graphbolt</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/python/nn-tensorflow.html">dgl.nn (TensorFlow)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/python/nn-mxnet.html">dgl.nn (MXNet)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/python/nn.functional.html">dgl.nn.functional</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/python/dgl.ops.html">dgl.ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/python/dgl.optim.html">dgl.optim</a></li>
@@ -123,7 +123,6 @@
 <h1>Source code for dgl.graphbolt.impl.uniform_negative_sampler</h1><div class="highlight"><pre>
 <span></span><span class="sd">"""Uniform negative sampler for GraphBolt."""</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">functional_datapipe</span>
 
 <span class="kn">from</span> <span class="nn">..negative_sampler</span> <span class="kn">import</span> <span class="n">NegativeSampler</span>
@@ -186,52 +185,12 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">datapipe</span><span class="p">,</span> <span class="n">negative_ratio</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">graph</span>
 
-    <span class="k">def</span> <span class="nf">_sample_with_etype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_pairs</span><span class="p">,</span> <span class="n">etype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_seeds</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">use_seeds</span><span class="p">:</span>
-            <span class="k">assert</span> <span class="n">node_pairs</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">node_pairs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span>
-                <span class="s2">"Only tensor with shape N*2 is supported for negative"</span>
-                <span class="o">+</span> <span class="sa">f</span><span class="s2">" sampling, but got </span><span class="si">{</span><span class="n">node_pairs</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">."</span>
-            <span class="p">)</span>
-            <span class="c1"># Sample negative edges, and concatenate positive edges with them.</span>
-            <span class="n">seeds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">sample_negative_edges_uniform_2</span><span class="p">(</span>
-                <span class="n">etype</span><span class="p">,</span>
-                <span class="n">node_pairs</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">negative_ratio</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="c1"># Construct indexes for all node pairs.</span>
-            <span class="n">num_pos_node_pairs</span> <span class="o">=</span> <span class="n">node_pairs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">negative_ratio</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">negative_ratio</span>
-            <span class="n">pos_indexes</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
-                <span class="mi">0</span><span class="p">,</span>
-                <span class="n">num_pos_node_pairs</span><span class="p">,</span>
-                <span class="n">device</span><span class="o">=</span><span class="n">seeds</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="n">neg_indexes</span> <span class="o">=</span> <span class="n">pos_indexes</span><span class="o">.</span><span class="n">repeat_interleave</span><span class="p">(</span><span class="n">negative_ratio</span><span class="p">)</span>
-            <span class="n">indexes</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">pos_indexes</span><span class="p">,</span> <span class="n">neg_indexes</span><span class="p">))</span>
-            <span class="c1"># Construct labels for all node pairs.</span>
-            <span class="n">pos_num</span> <span class="o">=</span> <span class="n">node_pairs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">neg_num</span> <span class="o">=</span> <span class="n">seeds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">pos_num</span>
-            <span class="n">labels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span>
-                <span class="p">(</span>
-                    <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span>
-                        <span class="n">pos_num</span><span class="p">,</span>
-                        <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">,</span>
-                        <span class="n">device</span><span class="o">=</span><span class="n">seeds</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
-                    <span class="p">),</span>
-                    <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
-                        <span class="n">neg_num</span><span class="p">,</span>
-                        <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">,</span>
-                        <span class="n">device</span><span class="o">=</span><span class="n">seeds</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
-                    <span class="p">),</span>
-                <span class="p">),</span>
-            <span class="p">)</span>
-            <span class="k">return</span> <span class="n">seeds</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">indexes</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">sample_negative_edges_uniform</span><span class="p">(</span>
-                <span class="n">etype</span><span class="p">,</span>
-                <span class="n">node_pairs</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">negative_ratio</span><span class="p">,</span>
-            <span class="p">)</span></div>
+    <span class="k">def</span> <span class="nf">_sample_with_etype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_pairs</span><span class="p">,</span> <span class="n">etype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">sample_negative_edges_uniform</span><span class="p">(</span>
+            <span class="n">etype</span><span class="p">,</span>
+            <span class="n">node_pairs</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">negative_ratio</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 </pre></div>
 </div>

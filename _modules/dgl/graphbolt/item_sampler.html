@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>dgl.graphbolt.item_sampler — DGL 2.3.1 documentation</title>
+<title>dgl.graphbolt.item_sampler — DGL 2.4 documentation</title>
 <link href="../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,7 +19,7 @@
   <![endif]-->
 <script src="../../../_static/jquery.js?v=5d32c60e"></script>
 <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../../../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../../../_static/documentation_options.js?v=9caaf7ed"></script>
 <script src="../../../_static/doctools.js?v=9a2dae69"></script>
 <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -39,7 +39,7 @@
             DGL
           </a>
 <div class="version">
-                2.3.1
+                2.4
               </div>
 <div role="search">
 <form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -129,11 +129,10 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torch.distributed</span> <span class="k">as</span> <span class="nn">dist</span>
-<span class="kn">from</span> <span class="nn">torchdata.datapipes.iter</span> <span class="kn">import</span> <span class="n">IterDataPipe</span>
-
-<span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">dgl_warning</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">IterDataPipe</span>
 
 <span class="kn">from</span> <span class="nn">.internal</span> <span class="kn">import</span> <span class="n">calculate_range</span>
+<span class="kn">from</span> <span class="nn">.internal_utils</span> <span class="kn">import</span> <span class="n">gb_warning</span>
 <span class="kn">from</span> <span class="nn">.itemset</span> <span class="kn">import</span> <span class="n">HeteroItemSet</span><span class="p">,</span> <span class="n">ItemSet</span>
 <span class="kn">from</span> <span class="nn">.minibatch</span> <span class="kn">import</span> <span class="n">MiniBatch</span>
 
@@ -161,7 +160,7 @@
 <span class="sd">        A minibatch.</span>
 <span class="sd">    """</span>
     <span class="k">if</span> <span class="n">names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">dgl_warning</span><span class="p">(</span>
+        <span class="n">gb_warning</span><span class="p">(</span>
             <span class="s2">"Failed to map item list to `MiniBatch` as the names of items are "</span>
             <span class="s2">"not provided. Please provide a customized `MiniBatcher`. "</span>
             <span class="s2">"The item list is returned as is."</span>
@@ -214,7 +213,7 @@
             <span class="n">init_data</span><span class="p">[</span><span class="s2">"seeds"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos_seeds</span>
     <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">init_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">minibatch</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-            <span class="n">dgl_warning</span><span class="p">(</span>
+            <span class="n">gb_warning</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">"Unknown item name '</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">' is detected and added into "</span>
                 <span class="s2">"`MiniBatch`. You probably need to provide a customized "</span>
                 <span class="s2">"`MiniBatcher`."</span>
@@ -238,9 +237,9 @@
 <span class="sd">    pairs with negative sources/destinations.</span>
 
 <span class="sd">    Note: This class `ItemSampler` is not decorated with</span>
-<span class="sd">    `torchdata.datapipes.functional_datapipe` on purpose. This indicates it</span>
+<span class="sd">    `torch.utils.data.functional_datapipe` on purpose. This indicates it</span>
 <span class="sd">    does not support function-like call. But any iterable datapipes from</span>
-<span class="sd">    `torchdata` can be further appended.</span>
+<span class="sd">    `torch.utils.data.datapipes` can be further appended.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -321,7 +320,7 @@
 <span class="sd">        compacted_seeds=None, blocks=None,)</span>
 
 <span class="sd">    5. Further process batches with other datapipes such as</span>
-<span class="sd">    :class:`torchdata.datapipes.iter.Mapper`.</span>
+<span class="sd">    :class:`torch.utils.data.datapipes.iter.Mapper`.</span>
 
 <span class="sd">    &gt;&gt;&gt; item_set = gb.ItemSet(torch.arange(0, 10))</span>
 <span class="sd">    &gt;&gt;&gt; data_pipe = gb.ItemSampler(item_set, 4)</span>
@@ -494,9 +493,9 @@
 <span class="sd">    of items.</span>
 
 <span class="sd">    Note: This class `DistributedItemSampler` is not decorated with</span>
-<span class="sd">    `torchdata.datapipes.functional_datapipe` on purpose. This indicates it</span>
+<span class="sd">    `torch.utils.data.functional_datapipe` on purpose. This indicates it</span>
 <span class="sd">    does not support function-like call. But any iterable datapipes from</span>
-<span class="sd">    `torchdata` can be further appended.</span>
+<span class="sd">    `torch.utils.data.datapipes` can be further appended.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -787,8 +786,8 @@
 <div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
 <span class="rst-current-version" data-toggle="rst-current-version">
 <span class="fa fa-book"> Read the Docs</span>
-            v: 1.1.x
-            <span class="fa fa-caret-down"></span>
+<span id="version-placeholder">v: latest</span>
+<span class="fa fa-caret-down"></span>
 </span>
 <div class="rst-other-versions">
 <dl>
@@ -810,8 +809,7 @@
 </div>
 <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 假设 branches.json 位于同目录下
-            fetch('branches.json')
+            fetch('/dgl_docs/branches.json')
                 .then(response => response.json())
                 .then(data => {
                     var versionListDiv = document.getElementById('version-list');
@@ -825,6 +823,29 @@
                     });
                 })
                 .catch(error => console.error('Error loading branches:', error));
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            // 获取当前路径
+            var path = window.location.pathname;
+            var versionPlaceholder = document.getElementById('version-placeholder');
+
+            // 检查路径中是否包含 'en'
+            if (path.includes('/en/')) {
+                // 提取 'en' 后的文件夹作为版本号
+                var parts = path.split('/en/');
+                if (parts[1]) {
+                    var folders = parts[1].split('/');
+                    if (folders.length > 0 && folders[0]) {
+                        versionPlaceholder.textContent = 'v: ' + folders[0];
+                    } else {
+                        versionPlaceholder.textContent = 'v: latest';
+                    }
+                } else {
+                    versionPlaceholder.textContent = 'v: latest';
+                }
+            } else {
+                versionPlaceholder.textContent = 'v: latest';
+            }
         });
     </script>
 

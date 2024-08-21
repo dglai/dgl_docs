@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>dgl.distributed.dist_graph — DGL 2.1.0 documentation</title>
+<title>dgl.distributed.dist_graph — DGL 2.0.0 documentation</title>
 <link href="../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,13 +19,12 @@
   <![endif]-->
 <script src="../../../_static/jquery.js?v=5d32c60e"></script>
 <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../../../_static/documentation_options.js?v=20623aea"></script>
+<script src="../../../_static/documentation_options.js?v=51b770b3"></script>
 <script src="../../../_static/doctools.js?v=9a2dae69"></script>
 <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../../../_static/copybutton.js?v=ccdb6887"></script>
 <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
 <script src="../../../_static/js/theme.js"></script>
 <link href="../../../genindex.html" rel="index" title="Index"/>
 <link href="../../../search.html" rel="search" title="Search"/>
@@ -39,7 +38,7 @@
             DGL
           </a>
 <div class="version">
-                2.1.0
+                2.0.0
               </div>
 <div role="search">
 <form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -60,7 +59,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guide_cn/index.html">用户指南【包含过时信息】</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guide_ko/index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../graphtransformer/index.html">🆕 Tutorial: Graph Transformer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/sparse/index.html">Tutorials: dgl.sparse</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/cpu/index.html">Training on CPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/multi/index.html">Training on Multiple GPUs</a></li>
@@ -78,6 +76,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.geometry.html">dgl.geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.graphbolt.html">🆕 dgl.graphbolt</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn-tensorflow.html">dgl.nn (TensorFlow)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn-mxnet.html">dgl.nn (MXNet)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn.functional.html">dgl.nn.functional</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.ops.html">dgl.ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.optim.html">dgl.optim</a></li>
@@ -131,7 +131,7 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">F</span><span class="p">,</span> <span class="n">graphbolt</span> <span class="k">as</span> <span class="n">gb</span><span class="p">,</span> <span class="n">heterograph_index</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">F</span><span class="p">,</span> <span class="n">heterograph_index</span>
 <span class="kn">from</span> <span class="nn">.._ffi.ndarray</span> <span class="kn">import</span> <span class="n">empty_shared_mem</span>
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">ALL</span><span class="p">,</span> <span class="n">DGLError</span><span class="p">,</span> <span class="n">EID</span><span class="p">,</span> <span class="n">ETYPE</span><span class="p">,</span> <span class="n">is_all</span><span class="p">,</span> <span class="n">NID</span>
 <span class="kn">from</span> <span class="nn">..convert</span> <span class="kn">import</span> <span class="n">graph</span> <span class="k">as</span> <span class="n">dgl_graph</span><span class="p">,</span> <span class="n">heterograph</span> <span class="k">as</span> <span class="n">dgl_heterograph</span>
@@ -173,7 +173,6 @@
 <span class="p">)</span>
 
 <span class="n">INIT_GRAPH</span> <span class="o">=</span> <span class="mi">800001</span>
-<span class="n">QUERY_IF_USE_GRAPHBOLT</span> <span class="o">=</span> <span class="mi">800002</span>
 
 
 <span class="k">class</span> <span class="nc">InitGraphRequest</span><span class="p">(</span><span class="n">rpc</span><span class="o">.</span><span class="n">Request</span><span class="p">):</span>
@@ -195,9 +194,7 @@
 
     <span class="k">def</span> <span class="nf">process_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">server_state</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">server_state</span><span class="o">.</span><span class="n">graph</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">server_state</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">_get_graph_from_shared_mem</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_graph_name</span><span class="p">,</span> <span class="n">server_state</span><span class="o">.</span><span class="n">use_graphbolt</span>
-            <span class="p">)</span>
+            <span class="n">server_state</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">_get_graph_from_shared_mem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_graph_name</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">InitGraphResponse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_graph_name</span><span class="p">)</span>
 
 
@@ -214,35 +211,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_graph_name</span> <span class="o">=</span> <span class="n">state</span>
 
 
-<span class="k">class</span> <span class="nc">QueryIfUseGraphBoltRequest</span><span class="p">(</span><span class="n">rpc</span><span class="o">.</span><span class="n">Request</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Query if use GraphBolt."""</span>
-
-    <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="kc">None</span>
-
-    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-        <span class="k">pass</span>
-
-    <span class="k">def</span> <span class="nf">process_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">server_state</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">QueryIfUseGraphBoltResponse</span><span class="p">(</span><span class="n">server_state</span><span class="o">.</span><span class="n">use_graphbolt</span><span class="p">)</span>
-
-
-<span class="k">class</span> <span class="nc">QueryIfUseGraphBoltResponse</span><span class="p">(</span><span class="n">rpc</span><span class="o">.</span><span class="n">Response</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Ack the query request about if use GraphBolt."""</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">use_graphbolt</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_use_graphbolt</span> <span class="o">=</span> <span class="n">use_graphbolt</span>
-
-    <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_graphbolt</span>
-
-    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_use_graphbolt</span> <span class="o">=</span> <span class="n">state</span>
-
-
-<span class="k">def</span> <span class="nf">_copy_graph_to_shared_mem</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">graph_name</span><span class="p">,</span> <span class="n">graph_format</span><span class="p">,</span> <span class="n">use_graphbolt</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">use_graphbolt</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">copy_to_shared_memory</span><span class="p">(</span><span class="n">graph_name</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_copy_graph_to_shared_mem</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">graph_name</span><span class="p">,</span> <span class="n">graph_format</span><span class="p">):</span>
     <span class="n">new_g</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">shared_memory</span><span class="p">(</span><span class="n">graph_name</span><span class="p">,</span> <span class="n">formats</span><span class="o">=</span><span class="n">graph_format</span><span class="p">)</span>
     <span class="c1"># We should share the node/edge data to the client explicitly instead of putting them</span>
     <span class="c1"># in the KVStore because some of the node/edge data may be duplicated.</span>
@@ -305,15 +274,13 @@
     <span class="k">return</span> <span class="n">exist_shared_mem_array</span><span class="p">(</span><span class="n">_get_edata_path</span><span class="p">(</span><span class="n">graph_name</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
 
 
-<span class="k">def</span> <span class="nf">_get_graph_from_shared_mem</span><span class="p">(</span><span class="n">graph_name</span><span class="p">,</span> <span class="n">use_graphbolt</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_get_graph_from_shared_mem</span><span class="p">(</span><span class="n">graph_name</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Get the graph from the DistGraph server.</span>
 
 <span class="sd">    The DistGraph server puts the graph structure of the local partition in the shared memory.</span>
 <span class="sd">    The client can access the graph structure and some metadata on nodes and edges directly</span>
 <span class="sd">    through shared memory to reduce the overhead of data access.</span>
 <span class="sd">    """</span>
-    <span class="k">if</span> <span class="n">use_graphbolt</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">gb</span><span class="o">.</span><span class="n">load_from_shared_memory</span><span class="p">(</span><span class="n">graph_name</span><span class="p">)</span>
     <span class="n">g</span><span class="p">,</span> <span class="n">ntypes</span><span class="p">,</span> <span class="n">etypes</span> <span class="o">=</span> <span class="n">heterograph_index</span><span class="o">.</span><span class="n">create_heterograph_from_shared_memory</span><span class="p">(</span>
         <span class="n">graph_name</span>
     <span class="p">)</span>
@@ -454,30 +421,6 @@
         <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="n">reprs</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_format_partition</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">graph_format</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Format the partition to the specified format."""</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">gb</span><span class="o">.</span><span class="n">FusedCSCSamplingGraph</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">graph</span>
-    <span class="c1"># formatting dtype</span>
-    <span class="c1"># TODO(Rui) Formatting forcely is not a perfect solution.</span>
-    <span class="c1">#   We'd better store all dtypes when mapping to shared memory</span>
-    <span class="c1">#   and map back with original dtypes.</span>
-    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="n">RESERVED_FIELD_DTYPE</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">:</span>
-            <span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">dtype</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">edata</span><span class="p">:</span>
-            <span class="n">graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">dtype</span><span class="p">)</span>
-    <span class="c1"># Create the graph formats specified the users.</span>
-    <span class="nb">print</span><span class="p">(</span>
-        <span class="s2">"Start to create specified graph formats which may take "</span>
-        <span class="s2">"non-trivial time."</span>
-    <span class="p">)</span>
-    <span class="n">graph</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">formats</span><span class="p">(</span><span class="n">graph_format</span><span class="p">)</span>
-    <span class="n">graph</span><span class="o">.</span><span class="n">create_formats_</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Finished creating specified graph formats: </span><span class="si">{</span><span class="n">graph_format</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">graph</span>
-
-
 <span class="k">class</span> <span class="nc">DistGraphServer</span><span class="p">(</span><span class="n">KVServer</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""The DistGraph server.</span>
 
@@ -510,8 +453,6 @@
 <span class="sd">        Disable shared memory.</span>
 <span class="sd">    graph_format : str or list of str</span>
 <span class="sd">        The graph formats.</span>
-<span class="sd">    use_graphbolt : bool</span>
-<span class="sd">        Whether to load GraphBolt partition. Default: False.</span>
 <span class="sd">    """</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -523,7 +464,6 @@
         <span class="n">part_config</span><span class="p">,</span>
         <span class="n">disable_shared_mem</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">graph_format</span><span class="o">=</span><span class="p">(</span><span class="s2">"csc"</span><span class="p">,</span> <span class="s2">"coo"</span><span class="p">),</span>
-        <span class="n">use_graphbolt</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">DistGraphServer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">server_id</span><span class="o">=</span><span class="n">server_id</span><span class="p">,</span>
@@ -533,7 +473,6 @@
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ip_config</span> <span class="o">=</span> <span class="n">ip_config</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_servers</span> <span class="o">=</span> <span class="n">num_servers</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">use_graphbolt</span> <span class="o">=</span> <span class="n">use_graphbolt</span>
         <span class="c1"># Load graph partition data.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_backup_server</span><span class="p">():</span>
             <span class="c1"># The backup server doesn't load the graph partition. It'll initialized afterwards.</span>
@@ -551,17 +490,32 @@
                 <span class="n">graph_name</span><span class="p">,</span>
                 <span class="n">ntypes</span><span class="p">,</span>
                 <span class="n">etypes</span><span class="p">,</span>
-            <span class="p">)</span> <span class="o">=</span> <span class="n">load_partition</span><span class="p">(</span>
-                <span class="n">part_config</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">part_id</span><span class="p">,</span>
-                <span class="n">load_feats</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                <span class="n">use_graphbolt</span><span class="o">=</span><span class="n">use_graphbolt</span><span class="p">,</span>
-            <span class="p">)</span>
+            <span class="p">)</span> <span class="o">=</span> <span class="n">load_partition</span><span class="p">(</span><span class="n">part_config</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">part_id</span><span class="p">,</span> <span class="n">load_feats</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">"load "</span> <span class="o">+</span> <span class="n">graph_name</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">client_g</span> <span class="o">=</span> <span class="n">_format_partition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client_g</span><span class="p">,</span> <span class="n">graph_format</span><span class="p">)</span>
+            <span class="c1"># formatting dtype</span>
+            <span class="c1"># TODO(Rui) Formatting forcely is not a perfect solution.</span>
+            <span class="c1">#   We'd better store all dtypes when mapping to shared memory</span>
+            <span class="c1">#   and map back with original dtypes.</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="n">RESERVED_FIELD_DTYPE</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">client_g</span><span class="o">.</span><span class="n">ndata</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">client_g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">client_g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">dtype</span>
+                    <span class="p">)</span>
+                <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">client_g</span><span class="o">.</span><span class="n">edata</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">client_g</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">client_g</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">dtype</span>
+                    <span class="p">)</span>
+            <span class="c1"># Create the graph formats specified the users.</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">"Start to create specified graph formats which may take "</span>
+                <span class="s2">"non-trivial time."</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">client_g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client_g</span><span class="o">.</span><span class="n">formats</span><span class="p">(</span><span class="n">graph_format</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">client_g</span><span class="o">.</span><span class="n">create_formats_</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"Finished creating specified graph formats."</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">disable_shared_mem</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">client_g</span> <span class="o">=</span> <span class="n">_copy_graph_to_shared_mem</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">client_g</span><span class="p">,</span> <span class="n">graph_name</span><span class="p">,</span> <span class="n">graph_format</span><span class="p">,</span> <span class="n">use_graphbolt</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">client_g</span><span class="p">,</span> <span class="n">graph_name</span><span class="p">,</span> <span class="n">graph_format</span>
                 <span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">disable_shared_mem</span><span class="p">:</span>
@@ -622,7 +576,6 @@
             <span class="n">kv_store</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
             <span class="n">local_g</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client_g</span><span class="p">,</span>
             <span class="n">partition_book</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gpb</span><span class="p">,</span>
-            <span class="n">use_graphbolt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">use_graphbolt</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span>
             <span class="s2">"start graph service on server </span><span class="si">{}</span><span class="s2"> for part </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -717,8 +670,6 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph_name</span><span class="p">,</span> <span class="n">gpb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">part_config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">graph_name</span> <span class="o">=</span> <span class="n">graph_name</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"DGL_DIST_MODE"</span><span class="p">,</span> <span class="s2">"standalone"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"standalone"</span><span class="p">:</span>
-            <span class="c1"># "GraphBolt is not supported in standalone mode."</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_use_graphbolt</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="k">assert</span> <span class="p">(</span>
                 <span class="n">part_config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
             <span class="p">),</span> <span class="s2">"When running in the standalone model, the partition config file is required"</span>
@@ -756,10 +707,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">map_shared_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gpb</span><span class="p">)</span>
             <span class="n">rpc</span><span class="o">.</span><span class="n">set_num_client</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># Query the main server about whether GraphBolt is used.</span>
-            <span class="n">rpc</span><span class="o">.</span><span class="n">send_request</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">QueryIfUseGraphBoltRequest</span><span class="p">())</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_use_graphbolt</span> <span class="o">=</span> <span class="n">rpc</span><span class="o">.</span><span class="n">recv_response</span><span class="p">()</span><span class="o">.</span><span class="n">_use_graphbolt</span>
-
             <span class="bp">self</span><span class="o">.</span><span class="n">_init</span><span class="p">(</span><span class="n">gpb</span><span class="p">)</span>
             <span class="c1"># Tell the backup servers to load the graph structure from shared memory.</span>
             <span class="k">for</span> <span class="n">server_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">num_servers</span><span class="p">):</span>
@@ -770,16 +717,25 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_init_ndata_store</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_init_edata_store</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_init_metadata</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_nodes</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_edges</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">part_md</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gpb</span><span class="o">.</span><span class="n">metadata</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_num_nodes</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">part_md</span><span class="p">[</span><span class="s2">"num_nodes"</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_num_edges</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">part_md</span><span class="p">[</span><span class="s2">"num_edges"</span><span class="p">])</span>
+
+        <span class="c1"># When we store node/edge types in a list, they are stored in the order of type IDs.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ntype_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">ntype</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ntype</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">)}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_etype_map</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">etype</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">etype</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">canonical_etypes</span><span class="p">)</span>
+        <span class="p">}</span>
 
     <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gpb</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">get_kvstore</span><span class="p">()</span>
         <span class="k">assert</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="p">),</span> <span class="s2">"Distributed module is not initialized. Please call dgl.distributed.initialize."</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_g</span> <span class="o">=</span> <span class="n">_get_graph_from_shared_mem</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">graph_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_graphbolt</span>
-        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_g</span> <span class="o">=</span> <span class="n">_get_graph_from_shared_mem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph_name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_gpb</span> <span class="o">=</span> <span class="n">get_shared_mem_partition_book</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph_name</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gpb</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_gpb</span> <span class="o">=</span> <span class="n">gpb</span>
@@ -835,29 +791,20 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_edata_store</span><span class="p">[</span><span class="n">etype</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
 
-    <span class="k">def</span> <span class="nf">_init_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gpb</span>
+
+    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph_name</span><span class="p">,</span> <span class="n">gpb</span> <span class="o">=</span> <span class="n">state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init</span><span class="p">(</span><span class="n">gpb</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_ndata_store</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_edata_store</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_num_nodes</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_num_edges</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">part_md</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gpb</span><span class="o">.</span><span class="n">metadata</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_num_nodes</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">part_md</span><span class="p">[</span><span class="s2">"num_nodes"</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_num_edges</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">part_md</span><span class="p">[</span><span class="s2">"num_edges"</span><span class="p">])</span>
-
-        <span class="c1"># When we store node/edge types in a list, they are stored in the order of type IDs.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_ntype_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">ntype</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ntype</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntypes</span><span class="p">)}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_etype_map</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="n">etype</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">etype</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">canonical_etypes</span><span class="p">)</span>
-        <span class="p">}</span>
-
-    <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gpb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_graphbolt</span>
-
-    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">graph_name</span><span class="p">,</span> <span class="n">gpb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_graphbolt</span> <span class="o">=</span> <span class="n">state</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_init</span><span class="p">(</span><span class="n">gpb</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_init_ndata_store</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_init_edata_store</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_init_metadata</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">local_partition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -928,12 +875,7 @@
 <span class="sd">        int</span>
 <span class="sd">        """</span>
         <span class="c1"># TODO(da?): describe when self._g is None and idtype shouldn't be called.</span>
-        <span class="c1"># For GraphBolt partition, we use the global node ID's dtype.</span>
-        <span class="k">return</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">get_partition_book</span><span class="p">()</span><span class="o">.</span><span class="n">global_nid_dtype</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_graphbolt</span>
-            <span class="k">else</span> <span class="n">F</span><span class="o">.</span><span class="n">int64</span>
-        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">F</span><span class="o">.</span><span class="n">int64</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">device</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1433,9 +1375,6 @@
 <span class="sd">        tensor</span>
 <span class="sd">            The destination node ID array.</span>
 <span class="sd">        """</span>
-        <span class="k">assert</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_use_graphbolt</span> <span class="ow">is</span> <span class="kc">False</span>
-        <span class="p">),</span> <span class="s2">"find_edges is not supported in GraphBolt."</span>
         <span class="k">if</span> <span class="n">etype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">assert</span> <span class="p">(</span>
                 <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">etypes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
@@ -1602,16 +1541,10 @@
                 <span class="n">replace</span><span class="o">=</span><span class="n">replace</span><span class="p">,</span>
                 <span class="n">etype_sorted</span><span class="o">=</span><span class="n">etype_sorted</span><span class="p">,</span>
                 <span class="n">prob</span><span class="o">=</span><span class="n">prob</span><span class="p">,</span>
-                <span class="n">use_graphbolt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_use_graphbolt</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">frontier</span> <span class="o">=</span> <span class="n">graph_services</span><span class="o">.</span><span class="n">sample_neighbors</span><span class="p">(</span>
-                <span class="bp">self</span><span class="p">,</span>
-                <span class="n">seed_nodes</span><span class="p">,</span>
-                <span class="n">fanout</span><span class="p">,</span>
-                <span class="n">replace</span><span class="o">=</span><span class="n">replace</span><span class="p">,</span>
-                <span class="n">prob</span><span class="o">=</span><span class="n">prob</span><span class="p">,</span>
-                <span class="n">use_graphbolt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_use_graphbolt</span><span class="p">,</span>
+                <span class="bp">self</span><span class="p">,</span> <span class="n">seed_nodes</span><span class="p">,</span> <span class="n">fanout</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="n">replace</span><span class="p">,</span> <span class="n">prob</span><span class="o">=</span><span class="n">prob</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">frontier</span>
 
@@ -2040,11 +1973,6 @@
 
 
 <span class="n">rpc</span><span class="o">.</span><span class="n">register_service</span><span class="p">(</span><span class="n">INIT_GRAPH</span><span class="p">,</span> <span class="n">InitGraphRequest</span><span class="p">,</span> <span class="n">InitGraphResponse</span><span class="p">)</span>
-<span class="n">rpc</span><span class="o">.</span><span class="n">register_service</span><span class="p">(</span>
-    <span class="n">QUERY_IF_USE_GRAPHBOLT</span><span class="p">,</span>
-    <span class="n">QueryIfUseGraphBoltRequest</span><span class="p">,</span>
-    <span class="n">QueryIfUseGraphBoltResponse</span><span class="p">,</span>
-<span class="p">)</span>
 </pre></div>
 </div>
 </div>

@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Graph Transformer in a Nutshell — DGL 2.3.1 documentation</title>
+<title>Graph Transformer in a Nutshell — DGL 2.4 documentation</title>
 <link href="../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -20,7 +20,7 @@
   <![endif]-->
 <script src="../../_static/jquery.js?v=5d32c60e"></script>
 <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../../_static/documentation_options.js?v=9caaf7ed"></script>
 <script src="../../_static/doctools.js?v=9a2dae69"></script>
 <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -44,7 +44,7 @@
             DGL
           </a>
 <div class="version">
-                2.3.1
+                2.4
               </div>
 <div role="search">
 <form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -172,7 +172,7 @@ generalize the transformer neural architecture to graph-structured data. Here, w
 <div class="math notranslate nohighlight">
 \[\text{SparseAttn}(Q, K, V, A) = \text{softmax}(\frac{(QK^T) \circ A}{\sqrt{d}})V,\]</div>
 <p>where <span class="math notranslate nohighlight">\(Q, K, V ∈\mathbb{R}^{N\times d}\)</span> are query feature, key feature, and value feature, respectively. <span class="math notranslate nohighlight">\(A\in[0,1]^{N\times N}\)</span> is the adjacency matrix of the input graph. <span class="math notranslate nohighlight">\((QK^T)\circ A\)</span> means that the multiplication of query matrix and key matrix is followed by a Hadamard product (or element-wise multiplication) with the sparse adjacency matrix as illustrated in the figure below:</p>
-<p><img alt="fdb9c54844ae483da4cdc5d9c25719e7" class="no-scaled-link" src="https://drive.google.com/uc?id=1OgMAewLR3Z1vz5y4J8aPRSeaU3g8iQfX" style="width: 500px;"/></p>
+<p><img alt="92db5b3ab0bc4da7acaaf1e57fbae077" class="no-scaled-link" src="https://drive.google.com/uc?id=1OgMAewLR3Z1vz5y4J8aPRSeaU3g8iQfX" style="width: 500px;"/></p>
 <p>Essentially, only the attention scores between connected nodes are computed according to the sparsity of <span class="math notranslate nohighlight">\(A\)</span>. This operation is also called <em>Sampled Dense Dense Matrix Multiplication (SDDMM)</em>.</p>
 <p>Enjoying the <a class="reference external" href="https://docs.dgl.ai/en/latest/generated/dgl.sparse.bsddmm.html">batched SDDMM API</a> in DGL, we can parallel the computation on multiple attention heads (different representation subspaces).</p>
 <div class="nbinput nblast docutils container">
@@ -235,7 +235,7 @@ generalize the transformer neural architecture to graph-structured data. Here, w
 <section id="Graph-Transformer-Layer">
 <h2>Graph Transformer Layer<a class="headerlink" href="#Graph-Transformer-Layer" title="Link to this heading"></a></h2>
 <p>The GT layer is composed of Multi-head Attention, Batch Norm, and Feed-forward Network, connected by residual links as in vanilla transformer.</p>
-<p><img alt="1a397b55e2d74e81abbe43555cbcd951" class="no-scaled-link" src="https://drive.google.com/uc?id=1cm-Ijw7bUQIOkoTKn5MQ3m4-66JqCsMz" style="width: 300px;"/></p>
+<p><img alt="298377fd56de46b783a33ee397a8a5f9" class="no-scaled-link" src="https://drive.google.com/uc?id=1cm-Ijw7bUQIOkoTKn5MQ3m4-66JqCsMz" style="width: 300px;"/></p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -483,8 +483,8 @@ Epoch: 019, Loss: 0.0093, Val: 0.7356, Test: 0.5561
 <div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
 <span class="rst-current-version" data-toggle="rst-current-version">
 <span class="fa fa-book"> Read the Docs</span>
-            v: 1.1.x
-            <span class="fa fa-caret-down"></span>
+<span id="version-placeholder">v: latest</span>
+<span class="fa fa-caret-down"></span>
 </span>
 <div class="rst-other-versions">
 <dl>
@@ -506,8 +506,7 @@ Epoch: 019, Loss: 0.0093, Val: 0.7356, Test: 0.5561
 </div>
 <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 假设 branches.json 位于同目录下
-            fetch('branches.json')
+            fetch('/dgl_docs/branches.json')
                 .then(response => response.json())
                 .then(data => {
                     var versionListDiv = document.getElementById('version-list');
@@ -521,6 +520,29 @@ Epoch: 019, Loss: 0.0093, Val: 0.7356, Test: 0.5561
                     });
                 })
                 .catch(error => console.error('Error loading branches:', error));
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            // 获取当前路径
+            var path = window.location.pathname;
+            var versionPlaceholder = document.getElementById('version-placeholder');
+
+            // 检查路径中是否包含 'en'
+            if (path.includes('/en/')) {
+                // 提取 'en' 后的文件夹作为版本号
+                var parts = path.split('/en/');
+                if (parts[1]) {
+                    var folders = parts[1].split('/');
+                    if (folders.length > 0 && folders[0]) {
+                        versionPlaceholder.textContent = 'v: ' + folders[0];
+                    } else {
+                        versionPlaceholder.textContent = 'v: latest';
+                    }
+                } else {
+                    versionPlaceholder.textContent = 'v: latest';
+                }
+            } else {
+                versionPlaceholder.textContent = 'v: latest';
+            }
         });
     </script>
 

@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+
+<html class="writer-html5" data-content_root="../../" lang="en">
+<head>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>API Reference — DGL 1.1.3 documentation</title>
+<link href="../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+<script src="../../_static/jquery.js?v=5d32c60e"></script>
+<script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../../_static/documentation_options.js?v=cb7bf70b"></script>
+<script src="../../_static/doctools.js?v=9a2dae69"></script>
+<script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+<script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../_static/js/theme.js"></script>
+<link href="../../genindex.html" rel="index" title="Index"/>
+<link href="../../search.html" rel="search" title="Search"/>
+</head>
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../../index.html">
+            DGL
+          </a>
+<div class="version">
+                1.1.3
+              </div>
+<div role="search">
+<form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
+</div>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Install and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/blitz/index.html">A Blitz Introduction to DGL</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Materials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide_cn/index.html">用户指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide_ko/index.html">사용자 가이드</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/sparse/index.html">🆕 Tutorials: dgl.sparse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/large/index.html">Stochastic Training of GNNs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/cpu/index.html">Training on CPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/multi/index.html">Training on Multiple GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/dist/index.html">Distributed training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/models/index.html">Paper Study with DGL</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dgl.html">dgl</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgl.data.html">dgl.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgl.dataloading.html">dgl.dataloading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgl.DGLGraph.html">dgl.DGLGraph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgl.distributed.html">dgl.distributed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgl.function.html">dgl.function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgl.geometry.html">dgl.geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nn-tensorflow.html">dgl.nn (TensorFlow)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nn-mxnet.html">dgl.nn (MXNet)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nn.functional.html">dgl.nn.functional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgl.ops.html">dgl.ops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgl.optim.html">dgl.optim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgl.sampling.html">dgl.sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgl.sparse_v0.html">🆕 dgl.sparse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgl.multiprocessing.html">dgl.multiprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transforms.html">dgl.transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="udf.html">User-defined Functions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute.html">Contribute to DGL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer/ffi.html">DGL Foreign Function Interface (FFI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../performance.html">Performance Benchmarks</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Misc</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../env_var.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resources.html">Resources</a></li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../../index.html"></a></li>
+<li class="breadcrumb-item active">API Reference</li>
+<li class="wy-breadcrumbs-aside">
+<a href="../../_sources/api/python/index.rst.txt" rel="nofollow"> View page source</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<section id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dgl.html">dgl</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dgl.html#graph-create-ops">Graph Create Ops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.html#subgraph-extraction-ops">Subgraph Extraction Ops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.html#graph-transform-ops">Graph Transform Ops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.html#graph-positional-encoding-ops">Graph Positional Encoding Ops:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.html#graph-partition-utilities">Graph Partition Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.html#batching-and-reading-out-ops">Batching and Reading Out Ops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.html#adjacency-related-utilities">Adjacency Related Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.html#graph-traversal-message-propagation">Graph Traversal &amp; Message Propagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.html#homophily-measures">Homophily Measures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.html#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dgl.data.html">dgl.data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dgl.data.html#base-class">Base Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.data.html#node-prediction-datasets">Node Prediction Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.data.html#edge-prediction-datasets">Edge Prediction Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.data.html#graph-prediction-datasets">Graph Prediction Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.data.html#dataset-adapters">Dataset adapters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.data.html#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dgl.dataloading.html">dgl.dataloading</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dgl.dataloading.html#dataloaders">DataLoaders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.dataloading.html#samplers">Samplers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.dataloading.html#sampler-transformations">Sampler Transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.dataloading.html#negative-samplers-for-link-prediction">Negative Samplers for Link Prediction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.dataloading.html#utility-class-and-functions-for-feature-prefetching">Utility Class and Functions for Feature Prefetching</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dgl.DGLGraph.html">dgl.DGLGraph</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dgl.DGLGraph.html#dgl.DGLGraph"><code class="docutils literal notranslate"><span class="pre">DGLGraph</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.DGLGraph.html#querying-metagraph-structure">Querying metagraph structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.DGLGraph.html#querying-graph-structure">Querying graph structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.DGLGraph.html#querying-and-manipulating-sparse-format">Querying and manipulating sparse format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.DGLGraph.html#querying-and-manipulating-node-edge-id-type">Querying and manipulating node/edge ID type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.DGLGraph.html#using-node-edge-features">Using Node/edge features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.DGLGraph.html#transforming-graph">Transforming graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.DGLGraph.html#adjacency-and-incidence-matrix">Adjacency and incidence matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.DGLGraph.html#computing-with-dglgraph">Computing with DGLGraph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.DGLGraph.html#querying-and-manipulating-batch-information">Querying and manipulating batch information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.DGLGraph.html#mutating-topology">Mutating topology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.DGLGraph.html#device-control">Device Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.DGLGraph.html#misc">Misc</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dgl.distributed.html">dgl.distributed</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dgl.distributed.html#initialization">Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.distributed.html#distributed-graph">Distributed Graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.distributed.html#distributed-tensor">Distributed Tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.distributed.html#distributed-node-embedding">Distributed Node Embedding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.distributed.html#distributed-embedding-optimizer">Distributed embedding optimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.distributed.html#distributed-workload-split">Distributed workload split</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.distributed.html#distributed-sampling">Distributed Sampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.distributed.html#partition">Partition</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dgl.function.html">dgl.function</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dgl.function.html#dgl-built-in-function">DGL Built-in Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.function.html#message-functions">Message functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.function.html#reduce-functions">Reduce functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nn-pytorch.html">dgl.nn (PyTorch)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="nn-pytorch.html#conv-layers">Conv Layers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn-pytorch.html#cugraph-conv-layers">CuGraph Conv Layers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn-pytorch.html#dense-conv-layers">Dense Conv Layers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn-pytorch.html#global-pooling-layers">Global Pooling Layers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn-pytorch.html#score-modules-for-link-prediction-and-knowledge-graph-completion">Score Modules for Link Prediction and Knowledge Graph Completion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn-pytorch.html#heterogeneous-learning-modules">Heterogeneous Learning Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn-pytorch.html#utility-modules">Utility Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn-pytorch.html#network-embedding-modules">Network Embedding Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn-pytorch.html#utility-modules-for-graph-transformer">Utility Modules for Graph Transformer</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nn-tensorflow.html">dgl.nn (TensorFlow)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="nn-tensorflow.html#conv-layers">Conv Layers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn-tensorflow.html#global-pooling-layers">Global Pooling Layers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn-tensorflow.html#heterogeneous-learning-modules">Heterogeneous Learning Modules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nn-mxnet.html">dgl.nn (MXNet)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="nn-mxnet.html#conv-layers">Conv Layers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn-mxnet.html#dense-conv-layers">Dense Conv Layers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn-mxnet.html#global-pooling-layers">Global Pooling Layers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn-mxnet.html#heterogeneous-learning-modules">Heterogeneous Learning Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn-mxnet.html#utility-modules">Utility Modules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dgl.ops.html">dgl.ops</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dgl.ops.html#gspmm-functions">GSpMM functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.ops.html#gsddmm-functions">GSDDMM functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.ops.html#segment-reduce-module">Segment Reduce Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.ops.html#gathermm-and-segmentmm-module">GatherMM and SegmentMM Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.ops.html#supported-data-types">Supported Data types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.ops.html#relation-with-message-passing-apis">Relation with Message Passing APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dgl.sampling.html">dgl.sampling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dgl.sampling.html#random-walk">Random walk</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.sampling.html#neighbor-sampling">Neighbor sampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgl.sampling.html#negative-sampling">Negative sampling</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="udf.html">User-defined Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="udf.html#edge-wise-user-defined-function">Edge-wise User-defined Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="udf.html#node-wise-user-defined-function">Node-wise User-defined Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="udf.html#degree-bucketing-for-message-passing-with-user-defined-functions">Degree Bucketing for Message Passing with User Defined Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="transforms.html">dgl.transforms</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/dgl.transforms.BaseTransform.html">BaseTransform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/dgl.transforms.Compose.html">Compose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/dgl.transforms.AddSelfLoop.html">AddSelfLoop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/dgl.transforms.RemoveSelfLoop.html">RemoveSelfLoop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/dgl.transforms.AddReverse.html">AddReverse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/dgl.transforms.ToSimple.html">ToSimple</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/dgl.transforms.LineGraph.html">LineGraph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/dgl.transforms.KHopGraph.html">KHopGraph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/dgl.transforms.AddMetaPaths.html">AddMetaPaths</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/dgl.transforms.GCNNorm.html">GCNNorm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/dgl.transforms.PPR.html">PPR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/dgl.transforms.HeatKernel.html">HeatKernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/dgl.transforms.GDC.html">GDC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/dgl.transforms.NodeShuffle.html">NodeShuffle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/dgl.transforms.DropNode.html">DropNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/dgl.transforms.DropEdge.html">DropEdge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/dgl.transforms.AddEdge.html">AddEdge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/dgl.transforms.RandomWalkPE.html">RandomWalkPE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/dgl.transforms.LapPE.html">LapPE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/dgl.transforms.FeatMask.html">FeatMask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/dgl.transforms.RowFeatNormalizer.html">RowFeatNormalizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/dgl.transforms.SIGNDiffusion.html">SIGNDiffusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/dgl.transforms.ToLevi.html">ToLevi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/dgl.transforms.SVDPE.html">SVDPE</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</div>
+</div>
+<footer>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+<span id="version-placeholder">v: latest</span>
+<span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('/dgl_docs/branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            // 获取当前路径
+            var path = window.location.pathname;
+            var versionPlaceholder = document.getElementById('version-placeholder');
+
+            // 检查路径中是否包含 'en'
+            if (path.includes('/en/')) {
+                // 提取 'en' 后的文件夹作为版本号
+                var parts = path.split('/en/');
+                if (parts[1]) {
+                    var folders = parts[1].split('/');
+                    if (folders.length > 0 && folders[0]) {
+                        versionPlaceholder.textContent = 'v: ' + folders[0];
+                    } else {
+                        versionPlaceholder.textContent = 'v: latest';
+                    }
+                } else {
+                    versionPlaceholder.textContent = 'v: latest';
+                }
+            } else {
+                versionPlaceholder.textContent = 'v: latest';
+            }
+        });
+    </script>
+
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+</body>
+</html>

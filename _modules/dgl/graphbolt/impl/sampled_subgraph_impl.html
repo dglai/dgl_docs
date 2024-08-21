@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>dgl.graphbolt.impl.sampled_subgraph_impl — DGL 2.3.1 documentation</title>
+<title>dgl.graphbolt.impl.sampled_subgraph_impl — DGL 2.4 documentation</title>
 <link href="../../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,7 +19,7 @@
   <![endif]-->
 <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
 <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../../../../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../../../../_static/documentation_options.js?v=9caaf7ed"></script>
 <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
 <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -39,7 +39,7 @@
             DGL
           </a>
 <div class="version">
-                2.3.1
+                2.4
               </div>
 <div role="search">
 <form action="../../../../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -129,7 +129,7 @@
 <span class="kn">import</span> <span class="nn">torch</span>
 
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">CSCFormatBase</span><span class="p">,</span> <span class="n">etype_str_to_tuple</span>
-<span class="kn">from</span> <span class="nn">..internal</span> <span class="kn">import</span> <span class="n">get_attributes</span>
+<span class="kn">from</span> <span class="nn">..internal_utils</span> <span class="kn">import</span> <span class="n">get_attributes</span>
 <span class="kn">from</span> <span class="nn">..sampled_subgraph</span> <span class="kn">import</span> <span class="n">SampledSubgraph</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"SampledSubgraphImpl"</span><span class="p">]</span>
@@ -170,6 +170,10 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">original_row_node_ids</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">original_edge_ids</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1"># Used to fetch sampled_csc.indices if it is missing.</span>
+    <span class="n">_edge_ids_in_fused_csc_sampling_graph</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
+        <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sampled_csc</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
@@ -178,22 +182,37 @@
                     <span class="nb">isinstance</span><span class="p">(</span><span class="n">etype</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
                     <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">etype_str_to_tuple</span><span class="p">(</span><span class="n">etype</span><span class="p">))</span> <span class="o">==</span> <span class="mi">3</span>
                 <span class="p">),</span> <span class="s2">"Edge type should be a string in format of str:str:str."</span>
-                <span class="k">assert</span> <span class="p">(</span>
-                    <span class="n">pair</span><span class="o">.</span><span class="n">indptr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">pair</span><span class="o">.</span><span class="n">indices</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="p">),</span> <span class="s2">"Node pair should be have indptr and indice."</span>
-                <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pair</span><span class="o">.</span><span class="n">indptr</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
-                    <span class="n">pair</span><span class="o">.</span><span class="n">indices</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
-                <span class="p">),</span> <span class="s2">"Nodes in pairs should be of type torch.Tensor."</span>
+                <span class="k">assert</span> <span class="n">pair</span><span class="o">.</span><span class="n">indptr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
+                    <span class="n">pair</span><span class="o">.</span><span class="n">indptr</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+                <span class="p">),</span> <span class="s2">"Node pair should be have indptr of type torch.Tensor."</span>
+                <span class="c1"># For CUDA, indices may be None because it will be fetched later.</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">pair</span><span class="o">.</span><span class="n">indptr</span><span class="o">.</span><span class="n">is_cuda</span> <span class="ow">or</span> <span class="n">pair</span><span class="o">.</span><span class="n">indices</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+                        <span class="n">pair</span><span class="o">.</span><span class="n">indices</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+                    <span class="p">),</span> <span class="s2">"Node pair should be have indices of type torch.Tensor."</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_edge_ids_in_fused_csc_sampling_graph</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                            <span class="n">etype</span><span class="p">,</span> <span class="kc">None</span>
+                        <span class="p">),</span>
+                        <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+                    <span class="p">),</span> <span class="s2">"When indices is missing, sampled edge ids needs to be provided."</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">assert</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">sampled_csc</span><span class="o">.</span><span class="n">indptr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampled_csc</span><span class="o">.</span><span class="n">indices</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="p">),</span> <span class="s2">"Node pair should be have indptr and indice."</span>
-            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampled_csc</span><span class="o">.</span><span class="n">indptr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">sampled_csc</span><span class="o">.</span><span class="n">indptr</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
-            <span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">sampled_csc</span><span class="o">.</span><span class="n">indices</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
-            <span class="p">),</span> <span class="s2">"Nodes in pairs should be of type torch.Tensor."</span>
+            <span class="p">),</span> <span class="s2">"Node pair should be have torch.Tensor indptr."</span>
+            <span class="c1"># For CUDA, indices may be None because it will be fetched later.</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampled_csc</span><span class="o">.</span><span class="n">indptr</span><span class="o">.</span><span class="n">is_cuda</span>
+                <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampled_csc</span><span class="o">.</span><span class="n">indices</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="p">):</span>
+                <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">sampled_csc</span><span class="o">.</span><span class="n">indices</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+                <span class="p">),</span> <span class="s2">"Node pair should have a torch.Tensor indices."</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_edge_ids_in_fused_csc_sampling_graph</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+                <span class="p">),</span> <span class="s2">"When indices is missing, sampled edge ids needs to be provided."</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">_sampled_subgraph_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"SampledSubgraphImpl"</span><span class="p">)</span></div>
@@ -207,6 +226,8 @@
     <span class="n">attributes</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
 
     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="s2">"_edge_ids_in_fused_csc_sampling_graph"</span><span class="p">:</span>
+            <span class="k">continue</span>
         <span class="n">val</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">sampled_subgraph</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">_add_indent</span><span class="p">(</span><span class="n">_str</span><span class="p">,</span> <span class="n">indent</span><span class="p">):</span>
@@ -243,8 +264,8 @@
 <div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
 <span class="rst-current-version" data-toggle="rst-current-version">
 <span class="fa fa-book"> Read the Docs</span>
-            v: 1.1.x
-            <span class="fa fa-caret-down"></span>
+<span id="version-placeholder">v: latest</span>
+<span class="fa fa-caret-down"></span>
 </span>
 <div class="rst-other-versions">
 <dl>
@@ -266,8 +287,7 @@
 </div>
 <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 假设 branches.json 位于同目录下
-            fetch('branches.json')
+            fetch('/dgl_docs/branches.json')
                 .then(response => response.json())
                 .then(data => {
                     var versionListDiv = document.getElementById('version-list');
@@ -281,6 +301,29 @@
                     });
                 })
                 .catch(error => console.error('Error loading branches:', error));
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            // 获取当前路径
+            var path = window.location.pathname;
+            var versionPlaceholder = document.getElementById('version-placeholder');
+
+            // 检查路径中是否包含 'en'
+            if (path.includes('/en/')) {
+                // 提取 'en' 后的文件夹作为版本号
+                var parts = path.split('/en/');
+                if (parts[1]) {
+                    var folders = parts[1].split('/');
+                    if (folders.length > 0 && folders[0]) {
+                        versionPlaceholder.textContent = 'v: ' + folders[0];
+                    } else {
+                        versionPlaceholder.textContent = 'v: latest';
+                    }
+                } else {
+                    versionPlaceholder.textContent = 'v: latest';
+                }
+            } else {
+                versionPlaceholder.textContent = 'v: latest';
+            }
         });
     </script>
 

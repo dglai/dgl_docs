@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+
+<html class="writer-html5" data-content_root="../../" lang="en">
+<head>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Stochastic Training of GNN for Link Prediction — DGL 1.1.3 documentation</title>
+<link href="../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+<script src="../../_static/jquery.js?v=5d32c60e"></script>
+<script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../../_static/documentation_options.js?v=cb7bf70b"></script>
+<script src="../../_static/doctools.js?v=9a2dae69"></script>
+<script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+<script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../_static/js/theme.js"></script>
+<link href="../../genindex.html" rel="index" title="Index"/>
+<link href="../../search.html" rel="search" title="Search"/>
+<link href="L4_message_passing.html" rel="next" title="Writing GNN Modules for Stochastic GNN Training"/>
+<link href="L1_large_node_classification.html" rel="prev" title="Training GNN with Neighbor Sampling for Node Classification"/>
+</head>
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../../index.html">
+            DGL
+          </a>
+<div class="version">
+                1.1.3
+              </div>
+<div role="search">
+<form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
+</div>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Install and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../blitz/index.html">A Blitz Introduction to DGL</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Materials</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide_cn/index.html">用户指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide_ko/index.html">사용자 가이드</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/sparse/index.html">🆕 Tutorials: dgl.sparse</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Stochastic Training of GNNs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="L0_neighbor_sampling_overview.html">Introduction of Neighbor Sampling for GNN Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="L1_large_node_classification.html">Training GNN with Neighbor Sampling for Node Classification</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Stochastic Training of GNN for Link Prediction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="L4_message_passing.html">Writing GNN Modules for Stochastic GNN Training</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cpu/index.html">Training on CPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../multi/index.html">Training on Multiple GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dist/index.html">Distributed training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models/index.html">Paper Study with DGL</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.html">dgl</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.data.html">dgl.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.dataloading.html">dgl.dataloading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.DGLGraph.html">dgl.DGLGraph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.distributed.html">dgl.distributed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.function.html">dgl.function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.geometry.html">dgl.geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/nn-tensorflow.html">dgl.nn (TensorFlow)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/nn-mxnet.html">dgl.nn (MXNet)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/nn.functional.html">dgl.nn.functional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.ops.html">dgl.ops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.optim.html">dgl.optim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.sampling.html">dgl.sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.sparse_v0.html">🆕 dgl.sparse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.multiprocessing.html">dgl.multiprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/transforms.html">dgl.transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/udf.html">User-defined Functions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute.html">Contribute to DGL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer/ffi.html">DGL Foreign Function Interface (FFI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../performance.html">Performance Benchmarks</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Misc</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../env_var.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resources.html">Resources</a></li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../../index.html"></a></li>
+<li class="breadcrumb-item"><a href="index.html">Stochastic Training of GNNs</a></li>
+<li class="breadcrumb-item active">Stochastic Training of GNN for Link Prediction</li>
+<li class="wy-breadcrumbs-aside">
+<a href="../../_sources/tutorials/large/L2_large_link_prediction.rst.txt" rel="nofollow"> View page source</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-tutorials-large-l2-large-link-prediction-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="stochastic-training-of-gnn-for-link-prediction">
+<span id="sphx-glr-tutorials-large-l2-large-link-prediction-py"></span><h1>Stochastic Training of GNN for Link Prediction<a class="headerlink" href="#stochastic-training-of-gnn-for-link-prediction" title="Link to this heading"></a></h1>
+<p>This tutorial will show how to train a multi-layer GraphSAGE for link
+prediction on <code class="docutils literal notranslate"><span class="pre">ogbn-arxiv</span></code> provided by <a class="reference external" href="https://ogb.stanford.edu/">Open Graph Benchmark
+(OGB)</a>. The dataset
+contains around 170 thousand nodes and 1 million edges.</p>
+<p>By the end of this tutorial, you will be able to</p>
+<ul class="simple">
+<li><p>Train a GNN model for link prediction on a single GPU with DGL’s
+neighbor sampling components.</p></li>
+</ul>
+<p>This tutorial assumes that you have read the <a class="reference internal" href="L0_neighbor_sampling_overview.html"><span class="doc">Introduction of Neighbor
+Sampling for GNN Training</span></a> and <a class="reference internal" href="L1_large_node_classification.html"><span class="doc">Neighbor
+Sampling for Node Classification</span></a>.</p>
+<section id="link-prediction-overview">
+<h2>Link Prediction Overview<a class="headerlink" href="#link-prediction-overview" title="Link to this heading"></a></h2>
+<p>Link prediction requires the model to predict the probability of
+existence of an edge. This tutorial does so by computing a dot product
+between the representations of both incident nodes.</p>
+<div class="math notranslate nohighlight">
+\[\hat{y}_{u\sim v} = \sigma(h_u^T h_v)\]</div>
+<p>It then minimizes the following binary cross entropy loss.</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{L} = -\sum_{u\sim v\in \mathcal{D}}\left( y_{u\sim v}\log(\hat{y}_{u\sim v}) + (1-y_{u\sim v})\log(1-\hat{y}_{u\sim v})) \right)\]</div>
+<p>This is identical to the link prediction formulation in <a class="reference internal" href="../blitz/4_link_predict.html"><span class="doc">the previous
+tutorial on link prediction</span></a>.</p>
+</section>
+<section id="loading-dataset">
+<h2>Loading Dataset<a class="headerlink" href="#loading-dataset" title="Link to this heading"></a></h2>
+<p>This tutorial loads the dataset from the <code class="docutils literal notranslate"><span class="pre">ogb</span></code> package as in the
+<a class="reference internal" href="L1_large_node_classification.html"><span class="doc">previous tutorial</span></a>.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<a class="sphx-glr-backref-module-os sphx-glr-backref-type-py-data" href="https://docs.python.org/3/library/os.html#os.environ" title="os.environ"><span class="n">os</span><span class="o">.</span><span class="n">environ</span></a><span class="p">[</span><span class="s2">"DGLBACKEND"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"pytorch"</span>
+<span class="kn">import</span> <span class="nn">dgl</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">ogb.nodeproppred</span> <span class="kn">import</span> <span class="n">DglNodePropPredDataset</span>
+
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">DglNodePropPredDataset</span><span class="p">(</span><span class="s2">"ogbn-arxiv"</span><span class="p">)</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">device</span></a> <span class="o">=</span> <span class="s2">"cpu"</span>  <span class="c1"># change to 'cuda' for GPU</span>
+
+<span class="n">graph</span><span class="p">,</span> <span class="n">node_labels</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1"># Add reverse edges since ogbn-arxiv is unidirectional.</span>
+<span class="n">graph</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">add_reverse_edges</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">node_labels</span><span class="p">)</span>
+
+<span class="n">node_features</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"feat"</span><span class="p">]</span>
+<span class="n">node_labels</span> <span class="o">=</span> <span class="n">node_labels</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_features</span></a> <span class="o">=</span> <span class="n">node_features</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_classes</span></a> <span class="o">=</span> <span class="p">(</span><span class="n">node_labels</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Number of classes:"</span><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_classes</span></a><span class="p">)</span>
+
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict"><span class="n">idx_split</span></a> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">get_idx_split</span><span class="p">()</span>
+<span class="n">train_nids</span> <span class="o">=</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict"><span class="n">idx_split</span></a><span class="p">[</span><span class="s2">"train"</span><span class="p">]</span>
+<span class="n">valid_nids</span> <span class="o">=</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict"><span class="n">idx_split</span></a><span class="p">[</span><span class="s2">"valid"</span><span class="p">]</span>
+<span class="n">test_nids</span> <span class="o">=</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict"><span class="n">idx_split</span></a><span class="p">[</span><span class="s2">"test"</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Graph(num_nodes=169343, num_edges=2332486,
+      ndata_schemes={'year': Scheme(shape=(1,), dtype=torch.int64), 'feat': Scheme(shape=(128,), dtype=torch.float32)}
+      edata_schemes={})
+tensor([[ 4],
+        [ 5],
+        [28],
+        ...,
+        [10],
+        [ 4],
+        [ 1]])
+Number of classes: 40
+</pre></div>
+</div>
+</section>
+<section id="defining-neighbor-sampler-and-data-loader-in-dgl">
+<h2>Defining Neighbor Sampler and Data Loader in DGL<a class="headerlink" href="#defining-neighbor-sampler-and-data-loader-in-dgl" title="Link to this heading"></a></h2>
+<p>Different from the <a class="reference internal" href="../blitz/4_link_predict.html"><span class="doc">link prediction tutorial for full
+graph</span></a>, a common practice to train GNN on large graphs is
+to iterate over the edges
+in minibatches, since computing the probability of all edges is usually
+impossible. For each minibatch of edges, you compute the output
+representation of their incident nodes using neighbor sampling and GNN,
+in a similar fashion introduced in the <a class="reference internal" href="L1_large_node_classification.html"><span class="doc">large-scale node classification
+tutorial</span></a>.</p>
+<p>DGL provides <code class="docutils literal notranslate"><span class="pre">dgl.dataloading.as_edge_prediction_sampler</span></code> to
+iterate over edges for edge classification or link prediction tasks.</p>
+<p>To perform link prediction, you need to specify a negative sampler. DGL
+provides builtin negative samplers such as
+<code class="docutils literal notranslate"><span class="pre">dgl.dataloading.negative_sampler.Uniform</span></code>.  Here this tutorial uniformly
+draws 5 negative examples per positive example.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">negative_sampler</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">dataloading</span><span class="o">.</span><span class="n">negative_sampler</span><span class="o">.</span><span class="n">Uniform</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>After defining the negative sampler, one can then define the edge data
+loader with neighbor sampling.  To create an <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code> for
+link prediction, provide a neighbor sampler object as well as the negative
+sampler object created above.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">sampler</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">dataloading</span><span class="o">.</span><span class="n">NeighborSampler</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="n">sampler</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">dataloading</span><span class="o">.</span><span class="n">as_edge_prediction_sampler</span><span class="p">(</span>
+    <span class="n">sampler</span><span class="p">,</span> <span class="n">negative_sampler</span><span class="o">=</span><span class="n">negative_sampler</span>
+<span class="p">)</span>
+<span class="n">train_dataloader</span> <span class="o">=</span> <a class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic"><span class="n">dgl</span><span class="o">.</span><span class="n">dataloading</span><span class="o">.</span><span class="n">DataLoader</span></a><span class="p">(</span>
+    <span class="c1"># The following arguments are specific to DataLoader.</span>
+    <span class="n">graph</span><span class="p">,</span>  <span class="c1"># The graph</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">num_edges</span><span class="p">()),</span>  <span class="c1"># The edges to iterate over</span>
+    <span class="n">sampler</span><span class="p">,</span>  <span class="c1"># The neighbor sampler</span>
+    <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">device</span></a><span class="o">=</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">device</span></a><span class="p">,</span>  <span class="c1"># Put the MFGs on CPU or GPU</span>
+    <span class="c1"># The following arguments are inherited from PyTorch DataLoader.</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>  <span class="c1"># Batch size</span>
+    <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Whether to shuffle the nodes for every epoch</span>
+    <span class="n">drop_last</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># Whether to drop the last incomplete batch</span>
+    <span class="n">num_workers</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># Number of sampler processes</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>You can peek one minibatch from <code class="docutils literal notranslate"><span class="pre">train_dataloader</span></code> and see what it
+will give you.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">input_nodes</span><span class="p">,</span> <span class="n">pos_graph</span><span class="p">,</span> <span class="n">neg_graph</span><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">mfgs</span></a> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">train_dataloader</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Number of input nodes:"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_nodes</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">"Positive graph # nodes:"</span><span class="p">,</span>
+    <span class="n">pos_graph</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">(),</span>
+    <span class="s2">"# edges:"</span><span class="p">,</span>
+    <span class="n">pos_graph</span><span class="o">.</span><span class="n">num_edges</span><span class="p">(),</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">"Negative graph # nodes:"</span><span class="p">,</span>
+    <span class="n">neg_graph</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">(),</span>
+    <span class="s2">"# edges:"</span><span class="p">,</span>
+    <span class="n">neg_graph</span><span class="o">.</span><span class="n">num_edges</span><span class="p">(),</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">mfgs</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/ubuntu/regression_test/dgl/python/dgl/dataloading/dataloader.py:1149: DGLWarning: Dataloader CPU affinity opt is not enabled, consider switching it on (see enable_cpu_affinity() or CPU best practices for DGL [https://docs.dgl.ai/tutorials/cpu/cpu_best_practises.html])
+  dgl_warning(
+Number of input nodes: 56913
+Positive graph # nodes: 6899 # edges: 1024
+Negative graph # nodes: 6899 # edges: 5120
+[Block(num_src_nodes=56913, num_dst_nodes=23724, num_edges=88348), Block(num_src_nodes=23724, num_dst_nodes=6899, num_edges=24136)]
+</pre></div>
+</div>
+<p>The example minibatch consists of four elements.</p>
+<p>The first element is an ID tensor for the input nodes, i.e., nodes
+whose input features are needed on the first GNN layer for this minibatch.</p>
+<p>The second element and the third element are the positive graph and the
+negative graph for this minibatch.
+The concept of positive and negative graphs have been introduced in the
+<a class="reference internal" href="../blitz/4_link_predict.html"><span class="doc">full-graph link prediction tutorial</span></a>.  In minibatch
+training, the positive graph and the negative graph only contain nodes
+necessary for computing the pair-wise scores of positive and negative examples
+in the current minibatch.</p>
+<p>The last element is a list of <a class="reference internal" href="L0_neighbor_sampling_overview.html"><span class="doc">MFGs</span></a>
+storing the computation dependencies for each GNN layer.
+The MFGs are used to compute the GNN outputs of the nodes
+involved in positive/negative graph.</p>
+</section>
+<section id="defining-model-for-node-representation">
+<h2>Defining Model for Node Representation<a class="headerlink" href="#defining-model-for-node-representation" title="Link to this heading"></a></h2>
+<p>The model is almost identical to the one in the <a class="reference internal" href="L1_large_node_classification.html"><span class="doc">node classification
+tutorial</span></a>. The only difference is
+that since you are doing link prediction, the output dimension will not
+be the number of classes in the dataset.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+<span class="kn">from</span> <span class="nn">dgl.nn</span> <span class="kn">import</span> <span class="n">SAGEConv</span>
+
+
+<span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_feats</span><span class="p">,</span> <span class="n">h_feats</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Model</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span> <span class="o">=</span> <span class="n">SAGEConv</span><span class="p">(</span><span class="n">in_feats</span><span class="p">,</span> <span class="n">h_feats</span><span class="p">,</span> <span class="n">aggregator_type</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span> <span class="o">=</span> <span class="n">SAGEConv</span><span class="p">(</span><span class="n">h_feats</span><span class="p">,</span> <span class="n">h_feats</span><span class="p">,</span> <span class="n">aggregator_type</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h_feats</span> <span class="o">=</span> <span class="n">h_feats</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">mfgs</span></a><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">h_dst</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">mfgs</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">num_dst_nodes</span><span class="p">()]</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">mfgs</span></a><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">h_dst</span><span class="p">))</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="n">h_dst</span> <span class="o">=</span> <span class="n">h</span><span class="p">[:</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">mfgs</span></a><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">num_dst_nodes</span><span class="p">()]</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">mfgs</span></a><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">h_dst</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">h</span>
+
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_features</span></a><span class="p">,</span> <span class="mi">128</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">device</span></a><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="defining-the-score-predictor-for-edges">
+<h2>Defining the Score Predictor for Edges<a class="headerlink" href="#defining-the-score-predictor-for-edges" title="Link to this heading"></a></h2>
+<p>After getting the node representation necessary for the minibatch, the
+last thing to do is to predict the score of the edges and non-existent
+edges in the sampled minibatch.</p>
+<p>The following score predictor, copied from the <a class="reference internal" href="../blitz/4_link_predict.html"><span class="doc">link prediction
+tutorial</span></a>, takes a dot product between the
+incident nodes’ representations.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dgl.function</span> <span class="k">as</span> <span class="nn">fn</span>
+
+
+<span class="k">class</span> <span class="nc">DotPredictor</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">g</span><span class="o">.</span><span class="n">local_scope</span><span class="p">():</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"h"</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
+            <span class="c1"># Compute a new edge feature named 'score' by a dot-product between the</span>
+            <span class="c1"># source node feature 'h' and destination node feature 'h'.</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">apply_edges</span><span class="p">(</span><span class="n">fn</span><span class="o">.</span><span class="n">u_dot_v</span><span class="p">(</span><span class="s2">"h"</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">,</span> <span class="s2">"score"</span><span class="p">))</span>
+            <span class="c1"># u_dot_v returns a 1-element vector for each edge so you need to squeeze it.</span>
+            <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s2">"score"</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="evaluating-performance-with-unsupervised-learning-optional">
+<h2>Evaluating Performance with Unsupervised Learning (Optional)<a class="headerlink" href="#evaluating-performance-with-unsupervised-learning-optional" title="Link to this heading"></a></h2>
+<p>There are various ways to evaluate the performance of link prediction.
+This tutorial follows the practice of <a class="reference external" href="https://cs.stanford.edu/people/jure/pubs/graphsage-nips17.pdf">GraphSAGE
+paper</a>.
+Basically, it first trains a GNN via link prediction, and get an embedding
+for each node.  Then it trains a downstream classifier on top of this
+embedding and compute the accuracy as an assessment of the embedding
+quality.</p>
+<p>To obtain the representations of all the nodes, this tutorial uses
+neighbor sampling as introduced in the <a class="reference internal" href="L1_large_node_classification.html"><span class="doc">node classification
+tutorial</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you would like to obtain node representations without
+neighbor sampling during inference, please refer to this <a class="reference internal" href="../../guide/minibatch-inference.html#guide-minibatch-inference"><span class="std std-ref">user
+guide</span></a>.</p>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inference</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">node_features</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">())</span>
+
+        <span class="n">sampler</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">dataloading</span><span class="o">.</span><span class="n">NeighborSampler</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+        <span class="n">train_dataloader</span> <span class="o">=</span> <a class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic"><span class="n">dgl</span><span class="o">.</span><span class="n">dataloading</span><span class="o">.</span><span class="n">DataLoader</span></a><span class="p">(</span>
+            <span class="n">graph</span><span class="p">,</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">()),</span>
+            <span class="n">sampler</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
+            <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">drop_last</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+            <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">device</span></a><span class="o">=</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">device</span></a><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">input_nodes</span><span class="p">,</span> <span class="n">output_nodes</span><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">mfgs</span></a> <span class="ow">in</span> <span class="n">train_dataloader</span><span class="p">:</span>
+            <span class="c1"># feature copy from CPU to GPU takes place here</span>
+            <span class="n">inputs</span> <span class="o">=</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">mfgs</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">srcdata</span><span class="p">[</span><span class="s2">"feat"</span><span class="p">]</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">mfgs</span></a><span class="p">,</span> <span class="n">inputs</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+
+<span class="kn">import</span> <span class="nn">sklearn.metrics</span>
+
+
+<span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="n">emb</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">train_nids</span><span class="p">,</span> <span class="n">valid_nids</span><span class="p">,</span> <span class="n">test_nids</span><span class="p">):</span>
+    <span class="n">classifier</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">emb</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_classes</span></a><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">device</span></a><span class="p">)</span>
+    <span class="n">opt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">LBFGS</span><span class="p">(</span><span class="n">classifier</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">compute_loss</span><span class="p">():</span>
+        <span class="n">pred</span> <span class="o">=</span> <span class="n">classifier</span><span class="p">(</span><span class="n">emb</span><span class="p">[</span><span class="n">train_nids</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">device</span></a><span class="p">))</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">label</span><span class="p">[</span><span class="n">train_nids</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">device</span></a><span class="p">))</span>
+        <span class="k">return</span> <span class="n">loss</span>
+
+    <span class="k">def</span> <span class="nf">closure</span><span class="p">():</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">compute_loss</span><span class="p">()</span>
+        <span class="n">opt</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">loss</span>
+
+    <span class="n">prev_loss</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
+        <span class="n">opt</span><span class="o">.</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">step</span></a><span class="p">(</span><span class="n">closure</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">compute_loss</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="k">if</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://numpy.org/doc/stable/reference/generated/numpy.ufunc.html#numpy.ufunc" title="numpy.ufunc"><span class="n">np</span><span class="o">.</span><span class="n">abs</span></a><span class="p">(</span><span class="n">loss</span> <span class="o">-</span> <span class="n">prev_loss</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-4</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">"Converges at iteration"</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">prev_loss</span> <span class="o">=</span> <span class="n">loss</span>
+
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">pred</span> <span class="o">=</span> <span class="n">classifier</span><span class="p">(</span><span class="n">emb</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">device</span></a><span class="p">))</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">label</span>
+        <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">valid_acc</span></a> <span class="o">=</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span>
+            <span class="n">label</span><span class="p">[</span><span class="n">valid_nids</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">pred</span><span class="p">[</span><span class="n">valid_nids</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="p">)</span>
+        <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">test_acc</span></a> <span class="o">=</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span>
+            <span class="n">label</span><span class="p">[</span><span class="n">test_nids</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">pred</span><span class="p">[</span><span class="n">test_nids</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">valid_acc</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">test_acc</span></a>
+</pre></div>
+</div>
+</section>
+<section id="defining-training-loop">
+<h2>Defining Training Loop<a class="headerlink" href="#defining-training-loop" title="Link to this heading"></a></h2>
+<p>The following initializes the model and defines the optimizer.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">node_features</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">128</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">device</span></a><span class="p">)</span>
+<span class="n">predictor</span> <span class="o">=</span> <span class="n">DotPredictor</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">device</span></a><span class="p">)</span>
+<span class="n">opt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">predictor</span><span class="o">.</span><span class="n">parameters</span><span class="p">()))</span>
+
+
+<span class="kn">import</span> <span class="nn">sklearn.metrics</span>
+</pre></div>
+</div>
+<p>The following is the training loop for link prediction and
+evaluation, and also saves the model that performs the best on the
+validation set:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tqdm</span>
+
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">best_accuracy</span></a> <span class="o">=</span> <span class="mi">0</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">best_model_path</span></a> <span class="o">=</span> <span class="s2">"model.pt"</span>
+<span class="k">for</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">epoch</span></a> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="n">train_dataloader</span><span class="p">)</span> <span class="k">as</span> <span class="n">tq</span><span class="p">:</span>
+        <span class="k">for</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">step</span></a><span class="p">,</span> <span class="p">(</span><span class="n">input_nodes</span><span class="p">,</span> <span class="n">pos_graph</span><span class="p">,</span> <span class="n">neg_graph</span><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">mfgs</span></a><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tq</span><span class="p">):</span>
+            <span class="c1"># feature copy from CPU to GPU takes place here</span>
+            <span class="n">inputs</span> <span class="o">=</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">mfgs</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">srcdata</span><span class="p">[</span><span class="s2">"feat"</span><span class="p">]</span>
+
+            <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">mfgs</span></a><span class="p">,</span> <span class="n">inputs</span><span class="p">)</span>
+            <span class="n">pos_score</span> <span class="o">=</span> <span class="n">predictor</span><span class="p">(</span><span class="n">pos_graph</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span>
+            <span class="n">neg_score</span> <span class="o">=</span> <span class="n">predictor</span><span class="p">(</span><span class="n">neg_graph</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span>
+
+            <span class="n">score</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">pos_score</span><span class="p">,</span> <span class="n">neg_score</span><span class="p">])</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">pos_score</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">neg_score</span><span class="p">)]</span>
+            <span class="p">)</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">binary_cross_entropy_with_logits</span><span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+
+            <span class="n">opt</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+            <span class="n">opt</span><span class="o">.</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">step</span></a><span class="p">()</span>
+
+            <span class="n">tq</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">({</span><span class="s2">"loss"</span><span class="p">:</span> <span class="s2">"</span><span class="si">%.03f</span><span class="s2">"</span> <span class="o">%</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()},</span> <span class="n">refresh</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">step</span></a> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">500</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+                <span class="n">emb</span> <span class="o">=</span> <span class="n">inference</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">node_features</span><span class="p">)</span>
+                <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">valid_acc</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">test_acc</span></a> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span>
+                    <span class="n">emb</span><span class="p">,</span> <span class="n">node_labels</span><span class="p">,</span> <span class="n">train_nids</span><span class="p">,</span> <span class="n">valid_nids</span><span class="p">,</span> <span class="n">test_nids</span>
+                <span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="s2">"Epoch </span><span class="si">{}</span><span class="s2"> Validation Accuracy </span><span class="si">{}</span><span class="s2"> Test Accuracy </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">epoch</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">valid_acc</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">test_acc</span></a>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">best_accuracy</span></a> <span class="o">&lt;</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">valid_acc</span></a><span class="p">:</span>
+                    <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">best_accuracy</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#float" title="builtins.float"><span class="n">valid_acc</span></a>
+                    <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">best_model_path</span></a><span class="p">)</span>
+                <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+
+                <span class="c1"># Note that this tutorial do not train the whole model to the end.</span>
+                <span class="k">break</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/2278 [00:00&lt;?, ?it/s]
+  0%|          | 1/2278 [00:00&lt;24:14,  1.57it/s, loss=29.347]
+  0%|          | 2/2278 [00:01&lt;26:20,  1.44it/s, loss=21.212]
+  0%|          | 3/2278 [00:02&lt;25:21,  1.50it/s, loss=15.085]
+  0%|          | 4/2278 [00:02&lt;24:47,  1.53it/s, loss=10.567]
+  0%|          | 5/2278 [00:03&lt;25:15,  1.50it/s, loss=7.282]
+  0%|          | 6/2278 [00:04&lt;25:27,  1.49it/s, loss=5.055]
+  0%|          | 7/2278 [00:04&lt;25:18,  1.50it/s, loss=3.560]
+  0%|          | 8/2278 [00:05&lt;25:39,  1.47it/s, loss=2.625]
+  0%|          | 9/2278 [00:06&lt;25:29,  1.48it/s, loss=2.101]
+  0%|          | 10/2278 [00:06&lt;25:53,  1.46it/s, loss=1.841]
+  0%|          | 11/2278 [00:07&lt;24:54,  1.52it/s, loss=1.668]
+  1%|          | 12/2278 [00:08&lt;25:22,  1.49it/s, loss=1.571]
+  1%|          | 13/2278 [00:08&lt;25:33,  1.48it/s, loss=1.450]
+  1%|          | 14/2278 [00:09&lt;25:01,  1.51it/s, loss=1.332]
+  1%|          | 15/2278 [00:10&lt;25:12,  1.50it/s, loss=1.220]
+  1%|          | 16/2278 [00:10&lt;25:18,  1.49it/s, loss=1.122]
+  1%|          | 17/2278 [00:11&lt;25:28,  1.48it/s, loss=1.033]
+  1%|          | 18/2278 [00:12&lt;25:53,  1.45it/s, loss=0.974]
+  1%|          | 19/2278 [00:12&lt;26:09,  1.44it/s, loss=0.909]
+  1%|          | 20/2278 [00:13&lt;27:00,  1.39it/s, loss=0.886]
+  1%|          | 21/2278 [00:14&lt;26:17,  1.43it/s, loss=0.855]
+  1%|          | 22/2278 [00:14&lt;25:59,  1.45it/s, loss=0.842]
+  1%|          | 23/2278 [00:15&lt;26:26,  1.42it/s, loss=0.836]
+  1%|          | 24/2278 [00:16&lt;26:24,  1.42it/s, loss=0.819]
+  1%|          | 25/2278 [00:17&lt;27:07,  1.38it/s, loss=0.810]
+  1%|          | 26/2278 [00:17&lt;26:56,  1.39it/s, loss=0.803]
+  1%|          | 27/2278 [00:18&lt;25:38,  1.46it/s, loss=0.789]
+  1%|          | 28/2278 [00:19&lt;26:00,  1.44it/s, loss=0.796]
+  1%|▏         | 29/2278 [00:19&lt;25:47,  1.45it/s, loss=0.792]
+  1%|▏         | 30/2278 [00:20&lt;25:50,  1.45it/s, loss=0.772]
+  1%|▏         | 31/2278 [00:21&lt;25:02,  1.50it/s, loss=0.767]
+  1%|▏         | 32/2278 [00:21&lt;25:27,  1.47it/s, loss=0.753]
+  1%|▏         | 33/2278 [00:22&lt;26:07,  1.43it/s, loss=0.750]
+  1%|▏         | 34/2278 [00:23&lt;26:41,  1.40it/s, loss=0.743]
+  2%|▏         | 35/2278 [00:24&lt;26:04,  1.43it/s, loss=0.738]
+  2%|▏         | 36/2278 [00:24&lt;25:22,  1.47it/s, loss=0.737]
+  2%|▏         | 37/2278 [00:25&lt;25:03,  1.49it/s, loss=0.735]
+  2%|▏         | 38/2278 [00:25&lt;24:09,  1.55it/s, loss=0.725]
+  2%|▏         | 39/2278 [00:26&lt;24:44,  1.51it/s, loss=0.717]
+  2%|▏         | 40/2278 [00:27&lt;24:25,  1.53it/s, loss=0.720]
+  2%|▏         | 41/2278 [00:27&lt;24:00,  1.55it/s, loss=0.716]
+  2%|▏         | 42/2278 [00:28&lt;24:46,  1.50it/s, loss=0.710]
+  2%|▏         | 43/2278 [00:29&lt;24:28,  1.52it/s, loss=0.708]
+  2%|▏         | 44/2278 [00:29&lt;24:46,  1.50it/s, loss=0.712]
+  2%|▏         | 45/2278 [00:30&lt;24:51,  1.50it/s, loss=0.694]
+  2%|▏         | 46/2278 [00:31&lt;24:35,  1.51it/s, loss=0.699]
+  2%|▏         | 47/2278 [00:31&lt;24:34,  1.51it/s, loss=0.691]
+  2%|▏         | 48/2278 [00:32&lt;25:01,  1.49it/s, loss=0.698]
+  2%|▏         | 49/2278 [00:33&lt;24:47,  1.50it/s, loss=0.692]
+  2%|▏         | 50/2278 [00:33&lt;24:41,  1.50it/s, loss=0.686]
+  2%|▏         | 51/2278 [00:34&lt;24:57,  1.49it/s, loss=0.687]
+  2%|▏         | 52/2278 [00:35&lt;24:41,  1.50it/s, loss=0.679]
+  2%|▏         | 53/2278 [00:35&lt;24:27,  1.52it/s, loss=0.689]
+  2%|▏         | 54/2278 [00:36&lt;25:52,  1.43it/s, loss=0.681]
+  2%|▏         | 55/2278 [00:37&lt;25:32,  1.45it/s, loss=0.678]
+  2%|▏         | 56/2278 [00:37&lt;24:58,  1.48it/s, loss=0.679]
+  3%|▎         | 57/2278 [00:38&lt;25:31,  1.45it/s, loss=0.683]
+  3%|▎         | 58/2278 [00:39&lt;25:38,  1.44it/s, loss=0.677]
+  3%|▎         | 59/2278 [00:40&lt;26:20,  1.40it/s, loss=0.681]
+  3%|▎         | 60/2278 [00:40&lt;25:54,  1.43it/s, loss=0.672]
+  3%|▎         | 61/2278 [00:41&lt;24:44,  1.49it/s, loss=0.679]
+  3%|▎         | 62/2278 [00:42&lt;24:31,  1.51it/s, loss=0.677]
+  3%|▎         | 63/2278 [00:42&lt;23:55,  1.54it/s, loss=0.675]
+  3%|▎         | 64/2278 [00:43&lt;23:40,  1.56it/s, loss=0.682]
+  3%|▎         | 65/2278 [00:44&lt;24:19,  1.52it/s, loss=0.670]
+  3%|▎         | 66/2278 [00:44&lt;25:06,  1.47it/s, loss=0.675]
+  3%|▎         | 67/2278 [00:45&lt;25:03,  1.47it/s, loss=0.673]
+  3%|▎         | 68/2278 [00:45&lt;23:53,  1.54it/s, loss=0.669]
+  3%|▎         | 69/2278 [00:46&lt;24:09,  1.52it/s, loss=0.668]
+  3%|▎         | 70/2278 [00:47&lt;24:32,  1.50it/s, loss=0.676]
+  3%|▎         | 71/2278 [00:48&lt;24:59,  1.47it/s, loss=0.669]
+  3%|▎         | 72/2278 [00:48&lt;25:05,  1.46it/s, loss=0.673]
+  3%|▎         | 73/2278 [00:49&lt;25:17,  1.45it/s, loss=0.670]
+  3%|▎         | 74/2278 [00:50&lt;24:27,  1.50it/s, loss=0.672]
+  3%|▎         | 75/2278 [00:50&lt;24:15,  1.51it/s, loss=0.674]
+  3%|▎         | 76/2278 [00:51&lt;25:19,  1.45it/s, loss=0.668]
+  3%|▎         | 77/2278 [00:52&lt;25:57,  1.41it/s, loss=0.664]
+  3%|▎         | 78/2278 [00:52&lt;25:36,  1.43it/s, loss=0.677]
+  3%|▎         | 79/2278 [00:53&lt;25:45,  1.42it/s, loss=0.672]
+  4%|▎         | 80/2278 [00:54&lt;24:53,  1.47it/s, loss=0.671]
+  4%|▎         | 81/2278 [00:54&lt;24:50,  1.47it/s, loss=0.667]
+  4%|▎         | 82/2278 [00:55&lt;24:20,  1.50it/s, loss=0.667]
+  4%|▎         | 83/2278 [00:56&lt;24:20,  1.50it/s, loss=0.673]
+  4%|▎         | 84/2278 [00:56&lt;24:47,  1.48it/s, loss=0.672]
+  4%|▎         | 85/2278 [00:57&lt;24:44,  1.48it/s, loss=0.669]
+  4%|▍         | 86/2278 [00:58&lt;24:56,  1.46it/s, loss=0.676]
+  4%|▍         | 87/2278 [00:59&lt;25:23,  1.44it/s, loss=0.668]
+  4%|▍         | 88/2278 [00:59&lt;25:11,  1.45it/s, loss=0.668]
+  4%|▍         | 89/2278 [01:00&lt;25:27,  1.43it/s, loss=0.666]
+  4%|▍         | 90/2278 [01:01&lt;25:09,  1.45it/s, loss=0.673]
+  4%|▍         | 91/2278 [01:01&lt;24:37,  1.48it/s, loss=0.668]
+  4%|▍         | 92/2278 [01:02&lt;24:21,  1.50it/s, loss=0.672]
+  4%|▍         | 93/2278 [01:03&lt;24:21,  1.50it/s, loss=0.672]
+  4%|▍         | 94/2278 [01:03&lt;24:35,  1.48it/s, loss=0.670]
+  4%|▍         | 95/2278 [01:04&lt;24:34,  1.48it/s, loss=0.669]
+  4%|▍         | 96/2278 [01:05&lt;24:18,  1.50it/s, loss=0.661]
+  4%|▍         | 97/2278 [01:05&lt;23:52,  1.52it/s, loss=0.668]
+  4%|▍         | 98/2278 [01:06&lt;24:06,  1.51it/s, loss=0.665]
+  4%|▍         | 99/2278 [01:07&lt;24:02,  1.51it/s, loss=0.675]
+  4%|▍         | 100/2278 [01:07&lt;23:39,  1.53it/s, loss=0.670]
+  4%|▍         | 101/2278 [01:08&lt;23:43,  1.53it/s, loss=0.666]
+  4%|▍         | 102/2278 [01:08&lt;23:57,  1.51it/s, loss=0.666]
+  5%|▍         | 103/2278 [01:09&lt;23:58,  1.51it/s, loss=0.669]
+  5%|▍         | 104/2278 [01:10&lt;24:00,  1.51it/s, loss=0.671]
+  5%|▍         | 105/2278 [01:11&lt;24:25,  1.48it/s, loss=0.671]
+  5%|▍         | 106/2278 [01:11&lt;25:01,  1.45it/s, loss=0.663]
+  5%|▍         | 107/2278 [01:12&lt;24:35,  1.47it/s, loss=0.665]
+  5%|▍         | 108/2278 [01:13&lt;23:52,  1.51it/s, loss=0.666]
+  5%|▍         | 109/2278 [01:13&lt;23:22,  1.55it/s, loss=0.665]
+  5%|▍         | 110/2278 [01:14&lt;24:32,  1.47it/s, loss=0.668]
+  5%|▍         | 111/2278 [01:15&lt;24:23,  1.48it/s, loss=0.669]
+  5%|▍         | 112/2278 [01:15&lt;25:02,  1.44it/s, loss=0.669]
+  5%|▍         | 113/2278 [01:16&lt;25:11,  1.43it/s, loss=0.665]
+  5%|▌         | 114/2278 [01:17&lt;25:40,  1.40it/s, loss=0.671]
+  5%|▌         | 115/2278 [01:17&lt;24:55,  1.45it/s, loss=0.667]
+  5%|▌         | 116/2278 [01:18&lt;25:08,  1.43it/s, loss=0.671]
+  5%|▌         | 117/2278 [01:19&lt;25:31,  1.41it/s, loss=0.667]
+  5%|▌         | 118/2278 [01:20&lt;24:59,  1.44it/s, loss=0.666]
+  5%|▌         | 119/2278 [01:20&lt;25:36,  1.41it/s, loss=0.669]
+  5%|▌         | 120/2278 [01:21&lt;25:22,  1.42it/s, loss=0.664]
+  5%|▌         | 121/2278 [01:22&lt;24:42,  1.45it/s, loss=0.666]
+  5%|▌         | 122/2278 [01:22&lt;24:28,  1.47it/s, loss=0.666]
+  5%|▌         | 123/2278 [01:23&lt;24:44,  1.45it/s, loss=0.669]
+  5%|▌         | 124/2278 [01:24&lt;24:24,  1.47it/s, loss=0.665]
+  5%|▌         | 125/2278 [01:24&lt;24:11,  1.48it/s, loss=0.667]
+  6%|▌         | 126/2278 [01:25&lt;24:20,  1.47it/s, loss=0.666]
+  6%|▌         | 127/2278 [01:26&lt;23:53,  1.50it/s, loss=0.664]
+  6%|▌         | 128/2278 [01:26&lt;23:47,  1.51it/s, loss=0.665]
+  6%|▌         | 129/2278 [01:27&lt;23:30,  1.52it/s, loss=0.668]
+  6%|▌         | 130/2278 [01:28&lt;23:10,  1.55it/s, loss=0.666]
+  6%|▌         | 131/2278 [01:28&lt;23:39,  1.51it/s, loss=0.666]
+  6%|▌         | 132/2278 [01:29&lt;23:21,  1.53it/s, loss=0.665]
+  6%|▌         | 133/2278 [01:30&lt;23:43,  1.51it/s, loss=0.665]
+  6%|▌         | 134/2278 [01:30&lt;24:01,  1.49it/s, loss=0.664]
+  6%|▌         | 135/2278 [01:31&lt;23:59,  1.49it/s, loss=0.664]
+  6%|▌         | 136/2278 [01:32&lt;24:14,  1.47it/s, loss=0.670]
+  6%|▌         | 137/2278 [01:32&lt;24:06,  1.48it/s, loss=0.669]
+  6%|▌         | 138/2278 [01:33&lt;23:52,  1.49it/s, loss=0.667]
+  6%|▌         | 139/2278 [01:34&lt;23:45,  1.50it/s, loss=0.670]
+  6%|▌         | 140/2278 [01:34&lt;23:46,  1.50it/s, loss=0.665]
+  6%|▌         | 141/2278 [01:35&lt;23:52,  1.49it/s, loss=0.670]
+  6%|▌         | 142/2278 [01:36&lt;24:11,  1.47it/s, loss=0.670]
+  6%|▋         | 143/2278 [01:36&lt;23:18,  1.53it/s, loss=0.665]
+  6%|▋         | 144/2278 [01:37&lt;23:12,  1.53it/s, loss=0.666]
+  6%|▋         | 145/2278 [01:38&lt;23:39,  1.50it/s, loss=0.664]
+  6%|▋         | 146/2278 [01:38&lt;23:35,  1.51it/s, loss=0.667]
+  6%|▋         | 147/2278 [01:39&lt;23:11,  1.53it/s, loss=0.665]
+  6%|▋         | 148/2278 [01:40&lt;23:33,  1.51it/s, loss=0.665]
+  7%|▋         | 149/2278 [01:40&lt;23:29,  1.51it/s, loss=0.660]
+  7%|▋         | 150/2278 [01:41&lt;23:50,  1.49it/s, loss=0.667]
+  7%|▋         | 151/2278 [01:42&lt;23:39,  1.50it/s, loss=0.662]
+  7%|▋         | 152/2278 [01:42&lt;23:45,  1.49it/s, loss=0.663]
+  7%|▋         | 153/2278 [01:43&lt;23:52,  1.48it/s, loss=0.664]
+  7%|▋         | 154/2278 [01:44&lt;24:52,  1.42it/s, loss=0.665]
+  7%|▋         | 155/2278 [01:44&lt;24:10,  1.46it/s, loss=0.665]
+  7%|▋         | 156/2278 [01:45&lt;24:00,  1.47it/s, loss=0.664]
+  7%|▋         | 157/2278 [01:46&lt;24:29,  1.44it/s, loss=0.670]
+  7%|▋         | 158/2278 [01:46&lt;23:53,  1.48it/s, loss=0.662]
+  7%|▋         | 159/2278 [01:47&lt;23:58,  1.47it/s, loss=0.661]
+  7%|▋         | 160/2278 [01:48&lt;23:42,  1.49it/s, loss=0.672]
+  7%|▋         | 161/2278 [01:48&lt;23:38,  1.49it/s, loss=0.668]
+  7%|▋         | 162/2278 [01:49&lt;23:23,  1.51it/s, loss=0.668]
+  7%|▋         | 163/2278 [01:50&lt;23:35,  1.49it/s, loss=0.664]
+  7%|▋         | 164/2278 [01:50&lt;24:00,  1.47it/s, loss=0.666]
+  7%|▋         | 165/2278 [01:51&lt;23:43,  1.48it/s, loss=0.660]
+  7%|▋         | 166/2278 [01:52&lt;24:01,  1.47it/s, loss=0.669]
+  7%|▋         | 167/2278 [01:52&lt;24:04,  1.46it/s, loss=0.666]
+  7%|▋         | 168/2278 [01:53&lt;24:20,  1.44it/s, loss=0.664]
+  7%|▋         | 169/2278 [01:54&lt;24:00,  1.46it/s, loss=0.671]
+  7%|▋         | 170/2278 [01:54&lt;23:35,  1.49it/s, loss=0.664]
+  8%|▊         | 171/2278 [01:55&lt;23:52,  1.47it/s, loss=0.668]
+  8%|▊         | 172/2278 [01:56&lt;24:34,  1.43it/s, loss=0.671]
+  8%|▊         | 173/2278 [01:57&lt;23:56,  1.47it/s, loss=0.662]
+  8%|▊         | 174/2278 [01:57&lt;23:26,  1.50it/s, loss=0.665]
+  8%|▊         | 175/2278 [01:58&lt;23:08,  1.51it/s, loss=0.662]
+  8%|▊         | 176/2278 [01:59&lt;23:19,  1.50it/s, loss=0.666]
+  8%|▊         | 177/2278 [01:59&lt;24:07,  1.45it/s, loss=0.667]
+  8%|▊         | 178/2278 [02:00&lt;24:10,  1.45it/s, loss=0.667]
+  8%|▊         | 179/2278 [02:01&lt;23:27,  1.49it/s, loss=0.661]
+  8%|▊         | 180/2278 [02:01&lt;23:49,  1.47it/s, loss=0.666]
+  8%|▊         | 181/2278 [02:02&lt;24:11,  1.44it/s, loss=0.660]
+  8%|▊         | 182/2278 [02:03&lt;24:38,  1.42it/s, loss=0.667]
+  8%|▊         | 183/2278 [02:03&lt;24:11,  1.44it/s, loss=0.668]
+  8%|▊         | 184/2278 [02:04&lt;24:15,  1.44it/s, loss=0.661]
+  8%|▊         | 185/2278 [02:05&lt;23:52,  1.46it/s, loss=0.665]
+  8%|▊         | 186/2278 [02:05&lt;24:12,  1.44it/s, loss=0.666]
+  8%|▊         | 187/2278 [02:06&lt;23:31,  1.48it/s, loss=0.664]
+  8%|▊         | 188/2278 [02:07&lt;23:55,  1.46it/s, loss=0.661]
+  8%|▊         | 189/2278 [02:07&lt;22:45,  1.53it/s, loss=0.661]
+  8%|▊         | 190/2278 [02:08&lt;22:40,  1.53it/s, loss=0.658]
+  8%|▊         | 191/2278 [02:09&lt;23:37,  1.47it/s, loss=0.663]
+  8%|▊         | 192/2278 [02:09&lt;23:12,  1.50it/s, loss=0.667]
+  8%|▊         | 193/2278 [02:10&lt;24:01,  1.45it/s, loss=0.661]
+  9%|▊         | 194/2278 [02:11&lt;23:32,  1.48it/s, loss=0.666]
+  9%|▊         | 195/2278 [02:11&lt;23:26,  1.48it/s, loss=0.665]
+  9%|▊         | 196/2278 [02:12&lt;23:39,  1.47it/s, loss=0.665]
+  9%|▊         | 197/2278 [02:13&lt;23:13,  1.49it/s, loss=0.665]
+  9%|▊         | 198/2278 [02:13&lt;23:04,  1.50it/s, loss=0.657]
+  9%|▊         | 199/2278 [02:14&lt;23:30,  1.47it/s, loss=0.661]
+  9%|▉         | 200/2278 [02:15&lt;22:59,  1.51it/s, loss=0.660]
+  9%|▉         | 201/2278 [02:15&lt;22:51,  1.51it/s, loss=0.664]
+  9%|▉         | 202/2278 [02:16&lt;23:12,  1.49it/s, loss=0.664]
+  9%|▉         | 203/2278 [02:17&lt;23:29,  1.47it/s, loss=0.663]
+  9%|▉         | 204/2278 [02:18&lt;23:18,  1.48it/s, loss=0.666]
+  9%|▉         | 205/2278 [02:18&lt;23:11,  1.49it/s, loss=0.665]
+  9%|▉         | 206/2278 [02:19&lt;22:33,  1.53it/s, loss=0.663]
+  9%|▉         | 207/2278 [02:20&lt;23:39,  1.46it/s, loss=0.664]
+  9%|▉         | 208/2278 [02:20&lt;23:28,  1.47it/s, loss=0.665]
+  9%|▉         | 209/2278 [02:21&lt;23:39,  1.46it/s, loss=0.663]
+  9%|▉         | 210/2278 [02:22&lt;24:07,  1.43it/s, loss=0.670]
+  9%|▉         | 211/2278 [02:22&lt;23:35,  1.46it/s, loss=0.660]
+  9%|▉         | 212/2278 [02:23&lt;23:50,  1.44it/s, loss=0.671]
+  9%|▉         | 213/2278 [02:24&lt;23:28,  1.47it/s, loss=0.660]
+  9%|▉         | 214/2278 [02:24&lt;23:30,  1.46it/s, loss=0.666]
+  9%|▉         | 215/2278 [02:25&lt;23:47,  1.44it/s, loss=0.665]
+  9%|▉         | 216/2278 [02:26&lt;22:52,  1.50it/s, loss=0.666]
+ 10%|▉         | 217/2278 [02:26&lt;23:36,  1.45it/s, loss=0.661]
+ 10%|▉         | 218/2278 [02:27&lt;22:51,  1.50it/s, loss=0.666]
+ 10%|▉         | 219/2278 [02:28&lt;23:10,  1.48it/s, loss=0.665]
+ 10%|▉         | 220/2278 [02:28&lt;23:00,  1.49it/s, loss=0.661]
+ 10%|▉         | 221/2278 [02:29&lt;23:01,  1.49it/s, loss=0.665]
+ 10%|▉         | 222/2278 [02:30&lt;23:28,  1.46it/s, loss=0.664]
+ 10%|▉         | 223/2278 [02:30&lt;23:06,  1.48it/s, loss=0.662]
+ 10%|▉         | 224/2278 [02:31&lt;23:39,  1.45it/s, loss=0.663]
+ 10%|▉         | 225/2278 [02:32&lt;23:58,  1.43it/s, loss=0.663]
+ 10%|▉         | 226/2278 [02:33&lt;23:21,  1.46it/s, loss=0.661]
+ 10%|▉         | 227/2278 [02:33&lt;23:54,  1.43it/s, loss=0.661]
+ 10%|█         | 228/2278 [02:34&lt;23:29,  1.45it/s, loss=0.661]
+ 10%|█         | 229/2278 [02:35&lt;23:21,  1.46it/s, loss=0.661]
+ 10%|█         | 230/2278 [02:35&lt;22:45,  1.50it/s, loss=0.662]
+ 10%|█         | 231/2278 [02:36&lt;23:20,  1.46it/s, loss=0.666]
+ 10%|█         | 232/2278 [02:37&lt;23:28,  1.45it/s, loss=0.664]
+ 10%|█         | 233/2278 [02:37&lt;23:54,  1.43it/s, loss=0.661]
+ 10%|█         | 234/2278 [02:38&lt;24:05,  1.41it/s, loss=0.662]
+ 10%|█         | 235/2278 [02:39&lt;24:02,  1.42it/s, loss=0.658]
+ 10%|█         | 236/2278 [02:40&lt;23:50,  1.43it/s, loss=0.666]
+ 10%|█         | 237/2278 [02:40&lt;23:25,  1.45it/s, loss=0.666]
+ 10%|█         | 238/2278 [02:41&lt;22:58,  1.48it/s, loss=0.664]
+ 10%|█         | 239/2278 [02:42&lt;23:15,  1.46it/s, loss=0.664]
+ 11%|█         | 240/2278 [02:42&lt;23:14,  1.46it/s, loss=0.662]
+ 11%|█         | 241/2278 [02:43&lt;22:49,  1.49it/s, loss=0.662]
+ 11%|█         | 242/2278 [02:43&lt;22:20,  1.52it/s, loss=0.662]
+ 11%|█         | 243/2278 [02:44&lt;22:42,  1.49it/s, loss=0.663]
+ 11%|█         | 244/2278 [02:45&lt;23:06,  1.47it/s, loss=0.666]
+ 11%|█         | 245/2278 [02:46&lt;23:33,  1.44it/s, loss=0.665]
+ 11%|█         | 246/2278 [02:46&lt;23:23,  1.45it/s, loss=0.667]
+ 11%|█         | 247/2278 [02:47&lt;22:40,  1.49it/s, loss=0.669]
+ 11%|█         | 248/2278 [02:48&lt;22:29,  1.50it/s, loss=0.665]
+ 11%|█         | 249/2278 [02:48&lt;22:24,  1.51it/s, loss=0.661]
+ 11%|█         | 250/2278 [02:49&lt;22:50,  1.48it/s, loss=0.664]
+ 11%|█         | 251/2278 [02:50&lt;23:16,  1.45it/s, loss=0.667]
+ 11%|█         | 252/2278 [02:50&lt;23:21,  1.45it/s, loss=0.663]
+ 11%|█         | 253/2278 [02:51&lt;22:47,  1.48it/s, loss=0.660]
+ 11%|█         | 254/2278 [02:52&lt;22:39,  1.49it/s, loss=0.666]
+ 11%|█         | 255/2278 [02:52&lt;22:49,  1.48it/s, loss=0.663]
+ 11%|█         | 256/2278 [02:53&lt;22:40,  1.49it/s, loss=0.664]
+ 11%|█▏        | 257/2278 [02:54&lt;22:57,  1.47it/s, loss=0.658]
+ 11%|█▏        | 258/2278 [02:54&lt;23:08,  1.45it/s, loss=0.660]
+ 11%|█▏        | 259/2278 [02:55&lt;23:11,  1.45it/s, loss=0.666]
+ 11%|█▏        | 260/2278 [02:56&lt;22:51,  1.47it/s, loss=0.662]
+ 11%|█▏        | 261/2278 [02:56&lt;23:09,  1.45it/s, loss=0.657]
+ 12%|█▏        | 262/2278 [02:57&lt;23:07,  1.45it/s, loss=0.659]
+ 12%|█▏        | 263/2278 [02:58&lt;23:11,  1.45it/s, loss=0.664]
+ 12%|█▏        | 264/2278 [02:58&lt;22:43,  1.48it/s, loss=0.665]
+ 12%|█▏        | 265/2278 [02:59&lt;22:58,  1.46it/s, loss=0.660]
+ 12%|█▏        | 266/2278 [03:00&lt;22:14,  1.51it/s, loss=0.658]
+ 12%|█▏        | 267/2278 [03:01&lt;22:49,  1.47it/s, loss=0.653]
+ 12%|█▏        | 268/2278 [03:01&lt;22:25,  1.49it/s, loss=0.664]
+ 12%|█▏        | 269/2278 [03:02&lt;22:38,  1.48it/s, loss=0.666]
+ 12%|█▏        | 270/2278 [03:03&lt;22:55,  1.46it/s, loss=0.664]
+ 12%|█▏        | 271/2278 [03:03&lt;22:46,  1.47it/s, loss=0.659]
+ 12%|█▏        | 272/2278 [03:04&lt;22:29,  1.49it/s, loss=0.663]
+ 12%|█▏        | 273/2278 [03:05&lt;22:29,  1.49it/s, loss=0.667]
+ 12%|█▏        | 274/2278 [03:05&lt;22:46,  1.47it/s, loss=0.656]
+ 12%|█▏        | 275/2278 [03:06&lt;21:55,  1.52it/s, loss=0.662]
+ 12%|█▏        | 276/2278 [03:06&lt;21:32,  1.55it/s, loss=0.658]
+ 12%|█▏        | 277/2278 [03:07&lt;21:40,  1.54it/s, loss=0.664]
+ 12%|█▏        | 278/2278 [03:08&lt;22:10,  1.50it/s, loss=0.664]
+ 12%|█▏        | 279/2278 [03:09&lt;22:52,  1.46it/s, loss=0.662]
+ 12%|█▏        | 280/2278 [03:09&lt;22:34,  1.48it/s, loss=0.662]
+ 12%|█▏        | 281/2278 [03:10&lt;22:47,  1.46it/s, loss=0.657]
+ 12%|█▏        | 282/2278 [03:11&lt;22:51,  1.46it/s, loss=0.656]
+ 12%|█▏        | 283/2278 [03:11&lt;23:20,  1.42it/s, loss=0.662]
+ 12%|█▏        | 284/2278 [03:12&lt;23:45,  1.40it/s, loss=0.666]
+ 13%|█▎        | 285/2278 [03:13&lt;23:05,  1.44it/s, loss=0.659]
+ 13%|█▎        | 286/2278 [03:13&lt;23:22,  1.42it/s, loss=0.658]
+ 13%|█▎        | 287/2278 [03:14&lt;23:02,  1.44it/s, loss=0.658]
+ 13%|█▎        | 288/2278 [03:15&lt;22:47,  1.45it/s, loss=0.660]
+ 13%|█▎        | 289/2278 [03:15&lt;22:33,  1.47it/s, loss=0.663]
+ 13%|█▎        | 290/2278 [03:16&lt;22:19,  1.48it/s, loss=0.662]
+ 13%|█▎        | 291/2278 [03:17&lt;22:52,  1.45it/s, loss=0.663]
+ 13%|█▎        | 292/2278 [03:18&lt;22:21,  1.48it/s, loss=0.657]
+ 13%|█▎        | 293/2278 [03:18&lt;22:34,  1.47it/s, loss=0.662]
+ 13%|█▎        | 294/2278 [03:19&lt;21:41,  1.52it/s, loss=0.663]
+ 13%|█▎        | 295/2278 [03:20&lt;22:06,  1.50it/s, loss=0.669]
+ 13%|█▎        | 296/2278 [03:20&lt;22:25,  1.47it/s, loss=0.660]
+ 13%|█▎        | 297/2278 [03:21&lt;22:40,  1.46it/s, loss=0.662]
+ 13%|█▎        | 298/2278 [03:22&lt;22:09,  1.49it/s, loss=0.663]
+ 13%|█▎        | 299/2278 [03:22&lt;22:01,  1.50it/s, loss=0.658]
+ 13%|█▎        | 300/2278 [03:23&lt;22:24,  1.47it/s, loss=0.661]
+ 13%|█▎        | 301/2278 [03:24&lt;22:38,  1.46it/s, loss=0.658]
+ 13%|█▎        | 302/2278 [03:24&lt;22:47,  1.44it/s, loss=0.658]
+ 13%|█▎        | 303/2278 [03:25&lt;22:27,  1.47it/s, loss=0.664]
+ 13%|█▎        | 304/2278 [03:26&lt;22:40,  1.45it/s, loss=0.665]
+ 13%|█▎        | 305/2278 [03:26&lt;22:28,  1.46it/s, loss=0.661]
+ 13%|█▎        | 306/2278 [03:27&lt;22:29,  1.46it/s, loss=0.661]
+ 13%|█▎        | 307/2278 [03:28&lt;22:01,  1.49it/s, loss=0.659]
+ 14%|█▎        | 308/2278 [03:28&lt;22:02,  1.49it/s, loss=0.659]
+ 14%|█▎        | 309/2278 [03:29&lt;21:43,  1.51it/s, loss=0.664]
+ 14%|█▎        | 310/2278 [03:30&lt;21:21,  1.54it/s, loss=0.653]
+ 14%|█▎        | 311/2278 [03:30&lt;21:25,  1.53it/s, loss=0.663]
+ 14%|█▎        | 312/2278 [03:31&lt;21:12,  1.55it/s, loss=0.665]
+ 14%|█▎        | 313/2278 [03:32&lt;21:36,  1.52it/s, loss=0.661]
+ 14%|█▍        | 314/2278 [03:32&lt;22:21,  1.46it/s, loss=0.668]
+ 14%|█▍        | 315/2278 [03:33&lt;22:20,  1.46it/s, loss=0.663]
+ 14%|█▍        | 316/2278 [03:34&lt;22:04,  1.48it/s, loss=0.660]
+ 14%|█▍        | 317/2278 [03:34&lt;21:44,  1.50it/s, loss=0.656]
+ 14%|█▍        | 318/2278 [03:35&lt;21:39,  1.51it/s, loss=0.663]
+ 14%|█▍        | 319/2278 [03:36&lt;21:59,  1.49it/s, loss=0.663]
+ 14%|█▍        | 320/2278 [03:36&lt;22:00,  1.48it/s, loss=0.662]
+ 14%|█▍        | 321/2278 [03:37&lt;22:10,  1.47it/s, loss=0.661]
+ 14%|█▍        | 322/2278 [03:38&lt;21:45,  1.50it/s, loss=0.659]
+ 14%|█▍        | 323/2278 [03:38&lt;22:17,  1.46it/s, loss=0.663]
+ 14%|█▍        | 324/2278 [03:39&lt;22:03,  1.48it/s, loss=0.666]
+ 14%|█▍        | 325/2278 [03:40&lt;21:33,  1.51it/s, loss=0.662]
+ 14%|█▍        | 326/2278 [03:40&lt;21:41,  1.50it/s, loss=0.656]
+ 14%|█▍        | 327/2278 [03:41&lt;21:35,  1.51it/s, loss=0.663]
+ 14%|█▍        | 328/2278 [03:42&lt;21:03,  1.54it/s, loss=0.661]
+ 14%|█▍        | 329/2278 [03:42&lt;21:15,  1.53it/s, loss=0.663]
+ 14%|█▍        | 330/2278 [03:43&lt;21:34,  1.51it/s, loss=0.663]
+ 15%|█▍        | 331/2278 [03:44&lt;21:23,  1.52it/s, loss=0.661]
+ 15%|█▍        | 332/2278 [03:44&lt;20:55,  1.55it/s, loss=0.663]
+ 15%|█▍        | 333/2278 [03:45&lt;21:02,  1.54it/s, loss=0.658]
+ 15%|█▍        | 334/2278 [03:46&lt;20:45,  1.56it/s, loss=0.667]
+ 15%|█▍        | 335/2278 [03:46&lt;20:38,  1.57it/s, loss=0.669]
+ 15%|█▍        | 336/2278 [03:47&lt;20:56,  1.55it/s, loss=0.658]
+ 15%|█▍        | 337/2278 [03:48&lt;21:09,  1.53it/s, loss=0.660]
+ 15%|█▍        | 338/2278 [03:48&lt;21:38,  1.49it/s, loss=0.668]
+ 15%|█▍        | 339/2278 [03:49&lt;21:46,  1.48it/s, loss=0.659]
+ 15%|█▍        | 340/2278 [03:50&lt;21:37,  1.49it/s, loss=0.659]
+ 15%|█▍        | 341/2278 [03:50&lt;21:34,  1.50it/s, loss=0.655]
+ 15%|█▌        | 342/2278 [03:51&lt;21:17,  1.52it/s, loss=0.657]
+ 15%|█▌        | 343/2278 [03:52&lt;21:35,  1.49it/s, loss=0.660]
+ 15%|█▌        | 344/2278 [03:52&lt;21:51,  1.47it/s, loss=0.659]
+ 15%|█▌        | 345/2278 [03:53&lt;21:26,  1.50it/s, loss=0.652]
+ 15%|█▌        | 346/2278 [03:54&lt;21:44,  1.48it/s, loss=0.657]
+ 15%|█▌        | 347/2278 [03:54&lt;21:54,  1.47it/s, loss=0.658]
+ 15%|█▌        | 348/2278 [03:55&lt;21:46,  1.48it/s, loss=0.660]
+ 15%|█▌        | 349/2278 [03:56&lt;21:28,  1.50it/s, loss=0.661]
+ 15%|█▌        | 350/2278 [03:56&lt;21:33,  1.49it/s, loss=0.660]
+ 15%|█▌        | 351/2278 [03:57&lt;21:12,  1.51it/s, loss=0.656]
+ 15%|█▌        | 352/2278 [03:58&lt;21:57,  1.46it/s, loss=0.659]
+ 15%|█▌        | 353/2278 [03:58&lt;21:30,  1.49it/s, loss=0.659]
+ 16%|█▌        | 354/2278 [03:59&lt;21:29,  1.49it/s, loss=0.655]
+ 16%|█▌        | 355/2278 [04:00&lt;21:33,  1.49it/s, loss=0.655]
+ 16%|█▌        | 356/2278 [04:00&lt;21:38,  1.48it/s, loss=0.661]
+ 16%|█▌        | 357/2278 [04:01&lt;21:30,  1.49it/s, loss=0.660]
+ 16%|█▌        | 358/2278 [04:02&lt;21:24,  1.49it/s, loss=0.656]
+ 16%|█▌        | 359/2278 [04:02&lt;21:43,  1.47it/s, loss=0.660]
+ 16%|█▌        | 360/2278 [04:03&lt;21:08,  1.51it/s, loss=0.659]
+ 16%|█▌        | 361/2278 [04:04&lt;21:15,  1.50it/s, loss=0.655]
+ 16%|█▌        | 362/2278 [04:04&lt;21:10,  1.51it/s, loss=0.666]
+ 16%|█▌        | 363/2278 [04:05&lt;21:38,  1.48it/s, loss=0.662]
+ 16%|█▌        | 364/2278 [04:06&lt;21:13,  1.50it/s, loss=0.659]
+ 16%|█▌        | 365/2278 [04:06&lt;21:15,  1.50it/s, loss=0.660]
+ 16%|█▌        | 366/2278 [04:07&lt;22:03,  1.44it/s, loss=0.654]
+ 16%|█▌        | 367/2278 [04:08&lt;21:48,  1.46it/s, loss=0.662]
+ 16%|█▌        | 368/2278 [04:08&lt;21:31,  1.48it/s, loss=0.656]
+ 16%|█▌        | 369/2278 [04:09&lt;21:02,  1.51it/s, loss=0.659]
+ 16%|█▌        | 370/2278 [04:10&lt;21:05,  1.51it/s, loss=0.659]
+ 16%|█▋        | 371/2278 [04:10&lt;21:41,  1.47it/s, loss=0.663]
+ 16%|█▋        | 372/2278 [04:11&lt;21:42,  1.46it/s, loss=0.664]
+ 16%|█▋        | 373/2278 [04:12&lt;21:33,  1.47it/s, loss=0.656]
+ 16%|█▋        | 374/2278 [04:12&lt;21:39,  1.46it/s, loss=0.656]
+ 16%|█▋        | 375/2278 [04:13&lt;21:20,  1.49it/s, loss=0.663]
+ 17%|█▋        | 376/2278 [04:14&lt;21:54,  1.45it/s, loss=0.658]
+ 17%|█▋        | 377/2278 [04:14&lt;21:22,  1.48it/s, loss=0.656]
+ 17%|█▋        | 378/2278 [04:15&lt;20:55,  1.51it/s, loss=0.658]
+ 17%|█▋        | 379/2278 [04:16&lt;20:54,  1.51it/s, loss=0.663]
+ 17%|█▋        | 380/2278 [04:16&lt;20:46,  1.52it/s, loss=0.654]
+ 17%|█▋        | 381/2278 [04:17&lt;21:15,  1.49it/s, loss=0.662]
+ 17%|█▋        | 382/2278 [04:18&lt;21:33,  1.47it/s, loss=0.659]
+ 17%|█▋        | 383/2278 [04:19&lt;21:25,  1.47it/s, loss=0.659]
+ 17%|█▋        | 384/2278 [04:19&lt;21:07,  1.49it/s, loss=0.661]
+ 17%|█▋        | 385/2278 [04:20&lt;20:47,  1.52it/s, loss=0.658]
+ 17%|█▋        | 386/2278 [04:20&lt;20:58,  1.50it/s, loss=0.662]
+ 17%|█▋        | 387/2278 [04:21&lt;20:49,  1.51it/s, loss=0.652]
+ 17%|█▋        | 388/2278 [04:22&lt;21:01,  1.50it/s, loss=0.662]
+ 17%|█▋        | 389/2278 [04:22&lt;20:36,  1.53it/s, loss=0.657]
+ 17%|█▋        | 390/2278 [04:23&lt;20:42,  1.52it/s, loss=0.657]
+ 17%|█▋        | 391/2278 [04:24&lt;22:02,  1.43it/s, loss=0.660]
+ 17%|█▋        | 392/2278 [04:25&lt;21:30,  1.46it/s, loss=0.661]
+ 17%|█▋        | 393/2278 [04:25&lt;21:51,  1.44it/s, loss=0.658]
+ 17%|█▋        | 394/2278 [04:26&lt;21:33,  1.46it/s, loss=0.657]
+ 17%|█▋        | 395/2278 [04:27&lt;21:26,  1.46it/s, loss=0.659]
+ 17%|█▋        | 396/2278 [04:27&lt;21:19,  1.47it/s, loss=0.657]
+ 17%|█▋        | 397/2278 [04:28&lt;21:20,  1.47it/s, loss=0.661]
+ 17%|█▋        | 398/2278 [04:29&lt;21:54,  1.43it/s, loss=0.656]
+ 18%|█▊        | 399/2278 [04:29&lt;21:31,  1.46it/s, loss=0.657]
+ 18%|█▊        | 400/2278 [04:30&lt;21:06,  1.48it/s, loss=0.660]
+ 18%|█▊        | 401/2278 [04:31&lt;20:59,  1.49it/s, loss=0.658]
+ 18%|█▊        | 402/2278 [04:31&lt;21:36,  1.45it/s, loss=0.659]
+ 18%|█▊        | 403/2278 [04:32&lt;21:31,  1.45it/s, loss=0.661]
+ 18%|█▊        | 404/2278 [04:33&lt;21:02,  1.48it/s, loss=0.654]
+ 18%|█▊        | 405/2278 [04:33&lt;20:47,  1.50it/s, loss=0.655]
+ 18%|█▊        | 406/2278 [04:34&lt;21:02,  1.48it/s, loss=0.661]
+ 18%|█▊        | 407/2278 [04:35&lt;20:30,  1.52it/s, loss=0.659]
+ 18%|█▊        | 408/2278 [04:35&lt;21:08,  1.47it/s, loss=0.655]
+ 18%|█▊        | 409/2278 [04:36&lt;21:22,  1.46it/s, loss=0.655]
+ 18%|█▊        | 410/2278 [04:37&lt;21:06,  1.47it/s, loss=0.663]
+ 18%|█▊        | 411/2278 [04:37&lt;21:03,  1.48it/s, loss=0.664]
+ 18%|█▊        | 412/2278 [04:38&lt;20:51,  1.49it/s, loss=0.658]
+ 18%|█▊        | 413/2278 [04:39&lt;20:26,  1.52it/s, loss=0.658]
+ 18%|█▊        | 414/2278 [04:39&lt;20:50,  1.49it/s, loss=0.656]
+ 18%|█▊        | 415/2278 [04:40&lt;20:51,  1.49it/s, loss=0.657]
+ 18%|█▊        | 416/2278 [04:41&lt;21:12,  1.46it/s, loss=0.658]
+ 18%|█▊        | 417/2278 [04:42&lt;21:55,  1.41it/s, loss=0.658]
+ 18%|█▊        | 418/2278 [04:42&lt;21:52,  1.42it/s, loss=0.656]
+ 18%|█▊        | 419/2278 [04:43&lt;21:40,  1.43it/s, loss=0.653]
+ 18%|█▊        | 420/2278 [04:44&lt;21:02,  1.47it/s, loss=0.655]
+ 18%|█▊        | 421/2278 [04:44&lt;21:05,  1.47it/s, loss=0.656]
+ 19%|█▊        | 422/2278 [04:45&lt;20:46,  1.49it/s, loss=0.657]
+ 19%|█▊        | 423/2278 [04:46&lt;20:43,  1.49it/s, loss=0.654]
+ 19%|█▊        | 424/2278 [04:46&lt;20:29,  1.51it/s, loss=0.656]
+ 19%|█▊        | 425/2278 [04:47&lt;20:32,  1.50it/s, loss=0.649]
+ 19%|█▊        | 426/2278 [04:48&lt;20:07,  1.53it/s, loss=0.657]
+ 19%|█▊        | 427/2278 [04:48&lt;20:23,  1.51it/s, loss=0.658]
+ 19%|█▉        | 428/2278 [04:49&lt;20:25,  1.51it/s, loss=0.650]
+ 19%|█▉        | 429/2278 [04:50&lt;20:46,  1.48it/s, loss=0.649]
+ 19%|█▉        | 430/2278 [04:50&lt;20:31,  1.50it/s, loss=0.658]
+ 19%|█▉        | 431/2278 [04:51&lt;20:36,  1.49it/s, loss=0.655]
+ 19%|█▉        | 432/2278 [04:52&lt;20:35,  1.49it/s, loss=0.653]
+ 19%|█▉        | 433/2278 [04:52&lt;20:58,  1.47it/s, loss=0.660]
+ 19%|█▉        | 434/2278 [04:53&lt;20:50,  1.47it/s, loss=0.656]
+ 19%|█▉        | 435/2278 [04:54&lt;21:01,  1.46it/s, loss=0.659]
+ 19%|█▉        | 436/2278 [04:54&lt;20:47,  1.48it/s, loss=0.652]
+ 19%|█▉        | 437/2278 [04:55&lt;20:08,  1.52it/s, loss=0.658]
+ 19%|█▉        | 438/2278 [04:56&lt;20:27,  1.50it/s, loss=0.659]
+ 19%|█▉        | 439/2278 [04:56&lt;20:39,  1.48it/s, loss=0.654]
+ 19%|█▉        | 440/2278 [04:57&lt;20:20,  1.51it/s, loss=0.653]
+ 19%|█▉        | 441/2278 [04:58&lt;20:19,  1.51it/s, loss=0.653]
+ 19%|█▉        | 442/2278 [04:58&lt;20:26,  1.50it/s, loss=0.655]
+ 19%|█▉        | 443/2278 [04:59&lt;20:16,  1.51it/s, loss=0.656]
+ 19%|█▉        | 444/2278 [05:00&lt;20:02,  1.52it/s, loss=0.655]
+ 20%|█▉        | 445/2278 [05:00&lt;20:51,  1.46it/s, loss=0.654]
+ 20%|█▉        | 446/2278 [05:01&lt;21:35,  1.41it/s, loss=0.666]
+ 20%|█▉        | 447/2278 [05:02&lt;21:23,  1.43it/s, loss=0.656]
+ 20%|█▉        | 448/2278 [05:02&lt;21:15,  1.43it/s, loss=0.662]
+ 20%|█▉        | 449/2278 [05:03&lt;20:46,  1.47it/s, loss=0.658]
+ 20%|█▉        | 450/2278 [05:04&lt;20:34,  1.48it/s, loss=0.653]
+ 20%|█▉        | 451/2278 [05:05&lt;21:01,  1.45it/s, loss=0.658]
+ 20%|█▉        | 452/2278 [05:05&lt;20:57,  1.45it/s, loss=0.658]
+ 20%|█▉        | 453/2278 [05:06&lt;20:42,  1.47it/s, loss=0.656]
+ 20%|█▉        | 454/2278 [05:07&lt;20:47,  1.46it/s, loss=0.653]
+ 20%|█▉        | 455/2278 [05:07&lt;20:56,  1.45it/s, loss=0.655]
+ 20%|██        | 456/2278 [05:08&lt;20:52,  1.45it/s, loss=0.651]
+ 20%|██        | 457/2278 [05:09&lt;20:25,  1.49it/s, loss=0.657]
+ 20%|██        | 458/2278 [05:09&lt;20:11,  1.50it/s, loss=0.653]
+ 20%|██        | 459/2278 [05:10&lt;20:22,  1.49it/s, loss=0.653]
+ 20%|██        | 460/2278 [05:11&lt;20:16,  1.49it/s, loss=0.653]
+ 20%|██        | 461/2278 [05:11&lt;20:41,  1.46it/s, loss=0.655]
+ 20%|██        | 462/2278 [05:12&lt;20:59,  1.44it/s, loss=0.654]
+ 20%|██        | 463/2278 [05:13&lt;20:29,  1.48it/s, loss=0.655]
+ 20%|██        | 464/2278 [05:13&lt;20:36,  1.47it/s, loss=0.652]
+ 20%|██        | 465/2278 [05:14&lt;20:53,  1.45it/s, loss=0.652]
+ 20%|██        | 466/2278 [05:15&lt;20:50,  1.45it/s, loss=0.656]
+ 21%|██        | 467/2278 [05:15&lt;21:07,  1.43it/s, loss=0.657]
+ 21%|██        | 468/2278 [05:16&lt;20:39,  1.46it/s, loss=0.654]
+ 21%|██        | 469/2278 [05:17&lt;20:27,  1.47it/s, loss=0.650]
+ 21%|██        | 470/2278 [05:17&lt;20:53,  1.44it/s, loss=0.652]
+ 21%|██        | 471/2278 [05:18&lt;20:36,  1.46it/s, loss=0.651]
+ 21%|██        | 472/2278 [05:19&lt;20:03,  1.50it/s, loss=0.662]
+ 21%|██        | 473/2278 [05:19&lt;19:59,  1.51it/s, loss=0.655]
+ 21%|██        | 474/2278 [05:20&lt;20:01,  1.50it/s, loss=0.655]
+ 21%|██        | 475/2278 [05:21&lt;20:09,  1.49it/s, loss=0.659]
+ 21%|██        | 476/2278 [05:21&lt;20:01,  1.50it/s, loss=0.658]
+ 21%|██        | 477/2278 [05:22&lt;20:20,  1.48it/s, loss=0.657]
+ 21%|██        | 478/2278 [05:23&lt;20:02,  1.50it/s, loss=0.656]
+ 21%|██        | 479/2278 [05:24&lt;20:50,  1.44it/s, loss=0.663]
+ 21%|██        | 480/2278 [05:24&lt;21:02,  1.42it/s, loss=0.655]
+ 21%|██        | 481/2278 [05:25&lt;20:52,  1.44it/s, loss=0.658]
+ 21%|██        | 482/2278 [05:26&lt;20:58,  1.43it/s, loss=0.651]
+ 21%|██        | 483/2278 [05:26&lt;20:43,  1.44it/s, loss=0.655]
+ 21%|██        | 484/2278 [05:27&lt;20:28,  1.46it/s, loss=0.657]
+ 21%|██▏       | 485/2278 [05:28&lt;19:54,  1.50it/s, loss=0.653]
+ 21%|██▏       | 486/2278 [05:28&lt;19:18,  1.55it/s, loss=0.655]
+ 21%|██▏       | 487/2278 [05:29&lt;19:29,  1.53it/s, loss=0.653]
+ 21%|██▏       | 488/2278 [05:30&lt;19:23,  1.54it/s, loss=0.653]
+ 21%|██▏       | 489/2278 [05:30&lt;18:56,  1.57it/s, loss=0.652]
+ 22%|██▏       | 490/2278 [05:31&lt;19:28,  1.53it/s, loss=0.652]
+ 22%|██▏       | 491/2278 [05:32&lt;19:33,  1.52it/s, loss=0.651]
+ 22%|██▏       | 492/2278 [05:32&lt;19:46,  1.51it/s, loss=0.654]
+ 22%|██▏       | 493/2278 [05:33&lt;19:50,  1.50it/s, loss=0.654]
+ 22%|██▏       | 494/2278 [05:34&lt;19:43,  1.51it/s, loss=0.656]
+ 22%|██▏       | 495/2278 [05:34&lt;19:44,  1.50it/s, loss=0.655]
+ 22%|██▏       | 496/2278 [05:35&lt;19:53,  1.49it/s, loss=0.660]
+ 22%|██▏       | 497/2278 [05:36&lt;19:36,  1.51it/s, loss=0.650]
+ 22%|██▏       | 498/2278 [05:36&lt;19:48,  1.50it/s, loss=0.649]
+ 22%|██▏       | 499/2278 [05:37&lt;20:02,  1.48it/s, loss=0.656]Converges at iteration 11
+Epoch 0 Validation Accuracy 0.07664686734454176 Test Accuracy 0.05898812830483715
+
+ 22%|██▏       | 499/2278 [07:15&lt;25:50,  1.15it/s, loss=0.654]
+</pre></div>
+</div>
+</section>
+<section id="evaluating-performance-with-link-prediction-optional">
+<h2>Evaluating Performance with Link Prediction (Optional)<a class="headerlink" href="#evaluating-performance-with-link-prediction-optional" title="Link to this heading"></a></h2>
+<p>In practice, it is more common to evaluate the link prediction
+model to see whether it can predict new edges. There are different
+evaluation metrics such as
+<a class="reference external" href="https://en.wikipedia.org/wiki/Receiver_operating_characteristic#Area_under_the_curve">AUC</a>
+or <a class="reference external" href="https://en.wikipedia.org/wiki/Evaluation_measures_(information_retrieval)">various metrics from information retrieval</a>.
+Ultimately, they require the model to predict one scalar score given
+a node pair among a set of node pairs.</p>
+<p>Assuming that you have the following test set with labels, where
+<code class="docutils literal notranslate"><span class="pre">test_pos_src</span></code> and <code class="docutils literal notranslate"><span class="pre">test_pos_dst</span></code> are ground truth node pairs
+with edges in between (or <em>positive</em> pairs), and <code class="docutils literal notranslate"><span class="pre">test_neg_src</span></code>
+and <code class="docutils literal notranslate"><span class="pre">test_neg_dst</span></code> are ground truth node pairs without edges
+in between (or <em>negative</em> pairs).</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Positive pairs</span>
+<span class="c1"># These are randomly generated as an example.  You will need to</span>
+<span class="c1"># replace them with your own ground truth.</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">n_test_pos</span></a> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">test_pos_src</span><span class="p">,</span> <span class="n">test_pos_dst</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">(),</span> <span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">n_test_pos</span></a><span class="p">,)),</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">(),</span> <span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">n_test_pos</span></a><span class="p">,)),</span>
+<span class="p">)</span>
+<span class="c1"># Negative pairs.  Likewise, you will need to replace them with your</span>
+<span class="c1"># own ground truth.</span>
+<span class="n">test_neg_src</span> <span class="o">=</span> <span class="n">test_pos_src</span>
+<span class="n">test_neg_dst</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">(),</span> <span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">n_test_pos</span></a><span class="p">,))</span>
+</pre></div>
+</div>
+<p>First you need to compute the node representations for all the nodes
+with the <code class="docutils literal notranslate"><span class="pre">inference</span></code> method above:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">node_reprs</span> <span class="o">=</span> <span class="n">inference</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">node_features</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/ubuntu/regression_test/dgl/python/dgl/dataloading/dataloader.py:1149: DGLWarning: Dataloader CPU affinity opt is not enabled, consider switching it on (see enable_cpu_affinity() or CPU best practices for DGL [https://docs.dgl.ai/tutorials/cpu/cpu_best_practises.html])
+  dgl_warning(
+</pre></div>
+</div>
+<p>Since the predictor is a dot product, you can now easily compute the
+score of positive and negative test pairs to compute metrics such
+as AUC:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">h_pos_src</span> <span class="o">=</span> <span class="n">node_reprs</span><span class="p">[</span><span class="n">test_pos_src</span><span class="p">]</span>
+<span class="n">h_pos_dst</span> <span class="o">=</span> <span class="n">node_reprs</span><span class="p">[</span><span class="n">test_pos_dst</span><span class="p">]</span>
+<span class="n">h_neg_src</span> <span class="o">=</span> <span class="n">node_reprs</span><span class="p">[</span><span class="n">test_neg_src</span><span class="p">]</span>
+<span class="n">h_neg_dst</span> <span class="o">=</span> <span class="n">node_reprs</span><span class="p">[</span><span class="n">test_neg_dst</span><span class="p">]</span>
+<span class="n">score_pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">h_pos_src</span> <span class="o">*</span> <span class="n">h_pos_dst</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">score_neg</span> <span class="o">=</span> <span class="p">(</span><span class="n">h_neg_src</span> <span class="o">*</span> <span class="n">h_neg_dst</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">test_preds</span></a> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">score_pos</span><span class="p">,</span> <span class="n">score_neg</span><span class="p">])</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">test_labels</span></a> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">score_pos</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">score_neg</span><span class="p">)])</span>
+    <span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<span class="p">)</span>
+
+<a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute" href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64"><span class="n">auc</span></a> <span class="o">=</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">roc_auc_score</span><span class="p">(</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">test_labels</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">test_preds</span></a><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Link Prediction AUC:"</span><span class="p">,</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute" href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64"><span class="n">auc</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Link Prediction AUC: 0.503379
+</pre></div>
+</div>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
+<p>In this tutorial, you have learned how to train a multi-layer GraphSAGE
+for link prediction with neighbor sampling.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Thumbnail credits: Link Prediction with Neo4j, Mark Needham</span>
+<span class="c1"># sphinx_gallery_thumbnail_path = '_static/blitz_4_link_predict.png'</span>
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (8 minutes 8.517 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-large-l2-large-link-prediction-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/e6f5a1a75dd013e69f7b7f95463ba374/L2_large_link_prediction.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">L2_large_link_prediction.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/33161faadbe6125864100658b0e6157b/L2_large_link_prediction.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">L2_large_link_prediction.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/6c0d9d562b2dd77747f123c4408050d5/L2_large_link_prediction.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">L2_large_link_prediction.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+</div>
+</div>
+<footer><div aria-label="Footer" class="rst-footer-buttons" role="navigation">
+<a accesskey="p" class="btn btn-neutral float-left" href="L1_large_node_classification.html" rel="prev" title="Training GNN with Neighbor Sampling for Node Classification"><span aria-hidden="true" class="fa fa-arrow-circle-left"></span> Previous</a>
+<a accesskey="n" class="btn btn-neutral float-right" href="L4_message_passing.html" rel="next" title="Writing GNN Modules for Stochastic GNN Training">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
+</div>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+<span id="version-placeholder">v: latest</span>
+<span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('/dgl_docs/branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            // 获取当前路径
+            var path = window.location.pathname;
+            var versionPlaceholder = document.getElementById('version-placeholder');
+
+            // 检查路径中是否包含 'en'
+            if (path.includes('/en/')) {
+                // 提取 'en' 后的文件夹作为版本号
+                var parts = path.split('/en/');
+                if (parts[1]) {
+                    var folders = parts[1].split('/');
+                    if (folders.length > 0 && folders[0]) {
+                        versionPlaceholder.textContent = 'v: ' + folders[0];
+                    } else {
+                        versionPlaceholder.textContent = 'v: latest';
+                    }
+                } else {
+                    versionPlaceholder.textContent = 'v: latest';
+                }
+            } else {
+                versionPlaceholder.textContent = 'v: latest';
+            }
+        });
+    </script>
+
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+</body>
+</html>

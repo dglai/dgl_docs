@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>dgl.graphbolt.impl.ondisk_dataset — DGL 2.3.1 documentation</title>
+<title>dgl.graphbolt.impl.ondisk_dataset — DGL 2.4 documentation</title>
 <link href="../../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,7 +19,7 @@
   <![endif]-->
 <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
 <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../../../../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../../../../_static/documentation_options.js?v=9caaf7ed"></script>
 <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
 <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -39,7 +39,7 @@
             DGL
           </a>
 <div class="version">
-                2.3.1
+                2.4
               </div>
 <div role="search">
 <form action="../../../../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -136,17 +136,20 @@
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">yaml</span>
 
-<span class="kn">from</span> <span class="nn">...base</span> <span class="kn">import</span> <span class="n">dgl_warning</span>
-<span class="kn">from</span> <span class="nn">...data.utils</span> <span class="kn">import</span> <span class="n">download</span><span class="p">,</span> <span class="n">extract_archive</span>
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">etype_str_to_tuple</span><span class="p">,</span> <span class="n">ORIGINAL_EDGE_ID</span>
 <span class="kn">from</span> <span class="nn">..dataset</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">Task</span>
 <span class="kn">from</span> <span class="nn">..internal</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">calculate_dir_hash</span><span class="p">,</span>
     <span class="n">check_dataset_change</span><span class="p">,</span>
     <span class="n">copy_or_convert_data</span><span class="p">,</span>
-    <span class="n">get_attributes</span><span class="p">,</span>
     <span class="n">read_data</span><span class="p">,</span>
     <span class="n">read_edges</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">..internal_utils</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">download</span><span class="p">,</span>
+    <span class="n">extract_archive</span><span class="p">,</span>
+    <span class="n">gb_warning</span><span class="p">,</span>
+    <span class="n">get_attributes</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">..itemset</span> <span class="kn">import</span> <span class="n">HeteroItemSet</span><span class="p">,</span> <span class="n">ItemSet</span>
 <span class="kn">from</span> <span class="nn">..sampling_graph</span> <span class="kn">import</span> <span class="n">SamplingGraph</span>
@@ -580,7 +583,7 @@
                 <span class="n">is_feature</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">has_edge_feature_data</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">include_original_edge_id</span><span class="p">:</span>
-            <span class="n">dgl_warning</span><span class="p">(</span><span class="s2">"Edge feature is stored, but edge IDs are not saved."</span><span class="p">)</span>
+            <span class="n">gb_warning</span><span class="p">(</span><span class="s2">"Edge feature is stored, but edge IDs are not saved."</span><span class="p">)</span>
 
     <span class="c1"># 6. Save tasks and train/val/test split according to the output_config.</span>
     <span class="k">if</span> <span class="n">input_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tasks"</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
@@ -959,7 +962,7 @@
         <span class="k">if</span> <span class="n">selected_tasks</span><span class="p">:</span>
             <span class="n">not_found_tasks</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">selected_tasks</span><span class="p">)</span> <span class="o">-</span> <span class="n">task_names</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">not_found_tasks</span><span class="p">):</span>
-                <span class="n">dgl_warning</span><span class="p">(</span>
+                <span class="n">gb_warning</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">"Below tasks are not found in YAML: </span><span class="si">{</span><span class="n">not_found_tasks</span><span class="si">}</span><span class="s2">. Skipped."</span>
                 <span class="p">)</span>
         <span class="k">return</span> <span class="n">ret</span>
@@ -1015,7 +1018,7 @@
 
     <span class="k">def</span> <span class="nf">_init_all_nodes_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">ItemSet</span><span class="p">,</span> <span class="n">HeteroItemSet</span><span class="p">]:</span>
         <span class="k">if</span> <span class="n">graph</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">dgl_warning</span><span class="p">(</span>
+            <span class="n">gb_warning</span><span class="p">(</span>
                 <span class="s2">"`all_nodes_set` is returned as None, since graph is None."</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
@@ -1189,8 +1192,8 @@
 <div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
 <span class="rst-current-version" data-toggle="rst-current-version">
 <span class="fa fa-book"> Read the Docs</span>
-            v: 1.1.x
-            <span class="fa fa-caret-down"></span>
+<span id="version-placeholder">v: latest</span>
+<span class="fa fa-caret-down"></span>
 </span>
 <div class="rst-other-versions">
 <dl>
@@ -1212,8 +1215,7 @@
 </div>
 <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 假设 branches.json 位于同目录下
-            fetch('branches.json')
+            fetch('/dgl_docs/branches.json')
                 .then(response => response.json())
                 .then(data => {
                     var versionListDiv = document.getElementById('version-list');
@@ -1227,6 +1229,29 @@
                     });
                 })
                 .catch(error => console.error('Error loading branches:', error));
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            // 获取当前路径
+            var path = window.location.pathname;
+            var versionPlaceholder = document.getElementById('version-placeholder');
+
+            // 检查路径中是否包含 'en'
+            if (path.includes('/en/')) {
+                // 提取 'en' 后的文件夹作为版本号
+                var parts = path.split('/en/');
+                if (parts[1]) {
+                    var folders = parts[1].split('/');
+                    if (folders.length > 0 && folders[0]) {
+                        versionPlaceholder.textContent = 'v: ' + folders[0];
+                    } else {
+                        versionPlaceholder.textContent = 'v: latest';
+                    }
+                } else {
+                    versionPlaceholder.textContent = 'v: latest';
+                }
+            } else {
+                versionPlaceholder.textContent = 'v: latest';
+            }
         });
     </script>
 

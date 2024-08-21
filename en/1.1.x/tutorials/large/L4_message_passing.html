@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+
+<html class="writer-html5" data-content_root="../../" lang="en">
+<head>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Writing GNN Modules for Stochastic GNN Training — DGL 1.1.3 documentation</title>
+<link href="../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+<script src="../../_static/jquery.js?v=5d32c60e"></script>
+<script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../../_static/documentation_options.js?v=cb7bf70b"></script>
+<script src="../../_static/doctools.js?v=9a2dae69"></script>
+<script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+<script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../_static/js/theme.js"></script>
+<link href="../../genindex.html" rel="index" title="Index"/>
+<link href="../../search.html" rel="search" title="Search"/>
+<link href="../cpu/index.html" rel="next" title="Training on CPUs"/>
+<link href="L2_large_link_prediction.html" rel="prev" title="Stochastic Training of GNN for Link Prediction"/>
+</head>
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../../index.html">
+            DGL
+          </a>
+<div class="version">
+                1.1.3
+              </div>
+<div role="search">
+<form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
+</div>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Install and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../blitz/index.html">A Blitz Introduction to DGL</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Materials</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide_cn/index.html">用户指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide_ko/index.html">사용자 가이드</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/sparse/index.html">🆕 Tutorials: dgl.sparse</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Stochastic Training of GNNs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="L0_neighbor_sampling_overview.html">Introduction of Neighbor Sampling for GNN Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="L1_large_node_classification.html">Training GNN with Neighbor Sampling for Node Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="L2_large_link_prediction.html">Stochastic Training of GNN for Link Prediction</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Writing GNN Modules for Stochastic GNN Training</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cpu/index.html">Training on CPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../multi/index.html">Training on Multiple GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dist/index.html">Distributed training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models/index.html">Paper Study with DGL</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.html">dgl</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.data.html">dgl.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.dataloading.html">dgl.dataloading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.DGLGraph.html">dgl.DGLGraph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.distributed.html">dgl.distributed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.function.html">dgl.function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.geometry.html">dgl.geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/nn-tensorflow.html">dgl.nn (TensorFlow)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/nn-mxnet.html">dgl.nn (MXNet)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/nn.functional.html">dgl.nn.functional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.ops.html">dgl.ops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.optim.html">dgl.optim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.sampling.html">dgl.sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.sparse_v0.html">🆕 dgl.sparse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.multiprocessing.html">dgl.multiprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/transforms.html">dgl.transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/udf.html">User-defined Functions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute.html">Contribute to DGL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer/ffi.html">DGL Foreign Function Interface (FFI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../performance.html">Performance Benchmarks</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Misc</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../env_var.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resources.html">Resources</a></li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../../index.html"></a></li>
+<li class="breadcrumb-item"><a href="index.html">Stochastic Training of GNNs</a></li>
+<li class="breadcrumb-item active">Writing GNN Modules for Stochastic GNN Training</li>
+<li class="wy-breadcrumbs-aside">
+<a href="../../_sources/tutorials/large/L4_message_passing.rst.txt" rel="nofollow"> View page source</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-tutorials-large-l4-message-passing-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="writing-gnn-modules-for-stochastic-gnn-training">
+<span id="sphx-glr-tutorials-large-l4-message-passing-py"></span><h1>Writing GNN Modules for Stochastic GNN Training<a class="headerlink" href="#writing-gnn-modules-for-stochastic-gnn-training" title="Link to this heading"></a></h1>
+<p>All GNN modules DGL provides support stochastic GNN training. This
+tutorial teaches you how to write your own graph neural network module
+for stochastic GNN training. It assumes that</p>
+<ol class="arabic simple">
+<li><p>You know <a class="reference internal" href="../blitz/3_message_passing.html"><span class="doc">how to write GNN modules for full graph
+training</span></a>.</p></li>
+<li><p>You know <a class="reference internal" href="L1_large_node_classification.html"><span class="doc">how stochastic GNN training pipeline
+works</span></a>.</p></li>
+</ol>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<a class="sphx-glr-backref-module-os sphx-glr-backref-type-py-data" href="https://docs.python.org/3/library/os.html#os.environ" title="os.environ"><span class="n">os</span><span class="o">.</span><span class="n">environ</span></a><span class="p">[</span><span class="s2">"DGLBACKEND"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"pytorch"</span>
+<span class="kn">import</span> <span class="nn">dgl</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">ogb.nodeproppred</span> <span class="kn">import</span> <span class="n">DglNodePropPredDataset</span>
+
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">DglNodePropPredDataset</span><span class="p">(</span><span class="s2">"ogbn-arxiv"</span><span class="p">)</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">device</span></a> <span class="o">=</span> <span class="s2">"cpu"</span>  <span class="c1"># change to 'cuda' for GPU</span>
+
+<span class="n">graph</span><span class="p">,</span> <span class="n">node_labels</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1"># Add reverse edges since ogbn-arxiv is unidirectional.</span>
+<span class="n">graph</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">add_reverse_edges</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+<span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"label"</span><span class="p">]</span> <span class="o">=</span> <span class="n">node_labels</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict"><span class="n">idx_split</span></a> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">get_idx_split</span><span class="p">()</span>
+<span class="n">train_nids</span> <span class="o">=</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict"><span class="n">idx_split</span></a><span class="p">[</span><span class="s2">"train"</span><span class="p">]</span>
+<span class="n">node_features</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"feat"</span><span class="p">]</span>
+
+<span class="n">sampler</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">dataloading</span><span class="o">.</span><span class="n">MultiLayerNeighborSampler</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="n">train_dataloader</span> <span class="o">=</span> <a class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic"><span class="n">dgl</span><span class="o">.</span><span class="n">dataloading</span><span class="o">.</span><span class="n">DataLoader</span></a><span class="p">(</span>
+    <span class="n">graph</span><span class="p">,</span>
+    <span class="n">train_nids</span><span class="p">,</span>
+    <span class="n">sampler</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
+    <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">drop_last</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">num_workers</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">input_nodes</span><span class="p">,</span> <span class="n">output_nodes</span><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">mfgs</span></a> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">train_dataloader</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/ubuntu/regression_test/dgl/python/dgl/dataloading/dataloader.py:1149: DGLWarning: Dataloader CPU affinity opt is not enabled, consider switching it on (see enable_cpu_affinity() or CPU best practices for DGL [https://docs.dgl.ai/tutorials/cpu/cpu_best_practises.html])
+  dgl_warning(
+</pre></div>
+</div>
+<section id="dgl-bipartite-graph-introduction">
+<h2>DGL Bipartite Graph Introduction<a class="headerlink" href="#dgl-bipartite-graph-introduction" title="Link to this heading"></a></h2>
+<p>In the previous tutorials, you have seen the concept <em>message flow graph</em>
+(MFG), where nodes are divided into two parts.  It is a kind of (directional)
+bipartite graph.
+This section introduces how you can manipulate (directional) bipartite
+graphs.</p>
+<p>You can access the source node features and destination node features via
+<code class="docutils literal notranslate"><span class="pre">srcdata</span></code> and <code class="docutils literal notranslate"><span class="pre">dstdata</span></code> attributes:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">mfg</span> <span class="o">=</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">mfgs</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mfg</span><span class="o">.</span><span class="n">srcdata</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mfg</span><span class="o">.</span><span class="n">dstdata</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>{'year': tensor([[2012],
+        [2005],
+        [2017],
+        ...,
+        [2016],
+        [2019],
+        [2013]]), 'feat': tensor([[-0.2499,  0.0816, -0.2050,  ...,  0.1772, -0.0037, -0.1385],
+        [-0.1328, -0.0230, -0.3176,  ...,  0.2551, -0.0154, -0.1845],
+        [-0.1971,  0.0486, -0.1542,  ...,  0.2636, -0.1327, -0.1153],
+        ...,
+        [-0.0202, -0.0115, -0.1186,  ...,  0.0388, -0.0367, -0.2552],
+        [-0.2438, -0.0769, -0.1433,  ...,  0.2487,  0.0461, -0.2322],
+        [-0.1881, -0.1303, -0.1616,  ...,  0.1449, -0.0206, -0.2042]]), 'label': tensor([10,  9,  6,  ...,  8,  8,  8]), '_ID': tensor([ 91536, 147912,  48252,  ..., 132630, 114520,  27538])}
+{'year': tensor([[2012],
+        [2005],
+        [2017],
+        ...,
+        [2013],
+        [2013],
+        [2012]]), 'feat': tensor([[-0.2499,  0.0816, -0.2050,  ...,  0.1772, -0.0037, -0.1385],
+        [-0.1328, -0.0230, -0.3176,  ...,  0.2551, -0.0154, -0.1845],
+        [-0.1971,  0.0486, -0.1542,  ...,  0.2636, -0.1327, -0.1153],
+        ...,
+        [-0.0505,  0.0756,  0.0345,  ...,  0.1021, -0.0694, -0.1370],
+        [-0.0642,  0.0185, -0.0669,  ..., -0.0339,  0.0901, -0.2412],
+        [-0.2430, -0.0085, -0.1640,  ...,  0.2104,  0.0122, -0.2150]]), 'label': tensor([10,  9,  6,  ...,  8,  8, 28]), '_ID': tensor([ 91536, 147912,  48252,  ...,  62046,  35824,  54056])}
+</pre></div>
+</div>
+<p>It also has <code class="docutils literal notranslate"><span class="pre">num_src_nodes</span></code> and <code class="docutils literal notranslate"><span class="pre">num_dst_nodes</span></code> functions to query
+how many source nodes and destination nodes exist in the bipartite graph:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">mfg</span><span class="o">.</span><span class="n">num_src_nodes</span><span class="p">(),</span> <span class="n">mfg</span><span class="o">.</span><span class="n">num_dst_nodes</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>12658 4034
+</pre></div>
+</div>
+<p>You can assign features to <code class="docutils literal notranslate"><span class="pre">srcdata</span></code> and <code class="docutils literal notranslate"><span class="pre">dstdata</span></code> just as what you
+will do with <code class="docutils literal notranslate"><span class="pre">ndata</span></code> on the graphs you have seen earlier:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">mfg</span><span class="o">.</span><span class="n">srcdata</span><span class="p">[</span><span class="s2">"x"</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">mfg</span><span class="o">.</span><span class="n">num_src_nodes</span><span class="p">(),</span> <span class="n">mfg</span><span class="o">.</span><span class="n">num_dst_nodes</span><span class="p">())</span>
+<span class="n">dst_feat</span> <span class="o">=</span> <span class="n">mfg</span><span class="o">.</span><span class="n">dstdata</span><span class="p">[</span><span class="s2">"feat"</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Also, since the bipartite graphs are constructed by DGL, you can
+retrieve the source node IDs (i.e. those that are required to compute the
+output) and destination node IDs (i.e. those whose representations the
+current GNN layer should compute) as follows.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">mfg</span><span class="o">.</span><span class="n">srcdata</span><span class="p">[</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span></a><span class="p">],</span> <span class="n">mfg</span><span class="o">.</span><span class="n">dstdata</span><span class="p">[</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span></a><span class="p">]</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([ 91536, 147912,  48252,  ..., 132630, 114520,  27538]), tensor([ 91536, 147912,  48252,  ...,  62046,  35824,  54056]))
+</pre></div>
+</div>
+</section>
+<section id="writing-gnn-modules-for-bipartite-graphs-for-stochastic-training">
+<h2>Writing GNN Modules for Bipartite Graphs for Stochastic Training<a class="headerlink" href="#writing-gnn-modules-for-bipartite-graphs-for-stochastic-training" title="Link to this heading"></a></h2>
+<p>Recall that the MFGs yielded by the <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code>
+have the property that the first few source nodes are
+always identical to the destination nodes:</p>
+<p><img alt="image1" src="https://data.dgl.ai/tutorial/img/bipartite.gif"/></p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span>
+        <span class="n">mfg</span><span class="o">.</span><span class="n">srcdata</span><span class="p">[</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span></a><span class="p">][:</span> <span class="n">mfg</span><span class="o">.</span><span class="n">num_dst_nodes</span><span class="p">()],</span> <span class="n">mfg</span><span class="o">.</span><span class="n">dstdata</span><span class="p">[</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">dgl</span><span class="o">.</span><span class="n">NID</span></a><span class="p">]</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+<p>Suppose you have obtained the source node representations
+<span class="math notranslate nohighlight">\(h_u^{(l-1)}\)</span>:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">mfg</span><span class="o">.</span><span class="n">srcdata</span><span class="p">[</span><span class="s2">"h"</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">mfg</span><span class="o">.</span><span class="n">num_src_nodes</span><span class="p">(),</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Recall that DGL provides the <cite>update_all</cite> interface for expressing how
+to compute messages and how to aggregate them on the nodes that receive
+them. This concept naturally applies to bipartite graphs like MFGs – message
+computation happens on the edges between source and destination nodes of
+the edges, and message aggregation happens on the destination nodes.</p>
+<p>For example, suppose the message function copies the source feature
+(i.e. <span class="math notranslate nohighlight">\(M^{(l)}\left(h_v^{(l-1)}, h_u^{(l-1)}, e_{u\to v}^{(l-1)}\right) = h_v^{(l-1)}\)</span>),
+and the reduce function averages the received messages.  Performing
+such message passing computation on a bipartite graph is no different than
+on a full graph:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dgl.function</span> <span class="k">as</span> <span class="nn">fn</span>
+
+<span class="n">mfg</span><span class="o">.</span><span class="n">update_all</span><span class="p">(</span><span class="n">message_func</span><span class="o">=</span><span class="n">fn</span><span class="o">.</span><span class="n">copy_u</span><span class="p">(</span><span class="s2">"h"</span><span class="p">,</span> <span class="s2">"m"</span><span class="p">),</span> <span class="n">reduce_func</span><span class="o">=</span><span class="n">fn</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s2">"m"</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">))</span>
+<span class="n">m_v</span> <span class="o">=</span> <span class="n">mfg</span><span class="o">.</span><span class="n">dstdata</span><span class="p">[</span><span class="s2">"h"</span><span class="p">]</span>
+<span class="n">m_v</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[ 1.5369e-01, -1.1547e-01, -1.0543e+00,  ...,  1.1854e-01,
+         -3.7053e-01,  1.3311e+00],
+        [ 1.5540e+00, -2.8892e-02,  8.1796e-01,  ...,  1.3075e+00,
+          1.3444e+00, -8.6263e-01],
+        [ 2.8441e+00,  2.0406e-01,  1.0065e+00,  ...,  5.1147e-01,
+         -4.5191e-01, -1.8164e+00],
+        ...,
+        [-4.0999e-04,  1.9808e-01,  9.7506e-01,  ..., -2.1715e-02,
+         -3.7697e-01,  2.6505e-01],
+        [ 3.4669e-01, -1.0271e+00, -7.5798e-02,  ...,  3.5594e-01,
+          9.5552e-02,  4.7655e-01],
+        [ 1.3696e+00,  2.2930e-01, -3.0430e-01,  ...,  4.0343e-01,
+          3.1116e-01,  3.3454e-01]])
+</pre></div>
+</div>
+<p>Putting them together, you can implement a GraphSAGE convolution for
+training with neighbor sampling as follows (the differences to the <a class="reference internal" href="../blitz/3_message_passing.html"><span class="doc">full graph
+counterpart</span></a> are highlighted with arrows <code class="docutils literal notranslate"><span class="pre">&lt;---</span></code>)</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+<span class="kn">import</span> <span class="nn">tqdm</span>
+
+
+<span class="k">class</span> <span class="nc">SAGEConv</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Graph convolution module used by the GraphSAGE model.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    in_feat : int</span>
+<span class="sd">        Input feature size.</span>
+<span class="sd">    out_feat : int</span>
+<span class="sd">        Output feature size.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_feat</span><span class="p">,</span> <span class="n">out_feat</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SAGEConv</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># A linear submodule for projecting the input and neighbor feature to the output.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_feat</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">out_feat</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Forward computation</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        g : Graph</span>
+<span class="sd">            The input MFG.</span>
+<span class="sd">        h : (Tensor, Tensor)</span>
+<span class="sd">            The feature of source nodes and destination nodes as a pair of Tensors.</span>
+<span class="sd">        """</span>
+        <span class="k">with</span> <span class="n">g</span><span class="o">.</span><span class="n">local_scope</span><span class="p">():</span>
+            <span class="n">h_src</span><span class="p">,</span> <span class="n">h_dst</span> <span class="o">=</span> <span class="n">h</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">srcdata</span><span class="p">[</span><span class="s2">"h"</span><span class="p">]</span> <span class="o">=</span> <span class="n">h_src</span>  <span class="c1"># &lt;---</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">dstdata</span><span class="p">[</span><span class="s2">"h"</span><span class="p">]</span> <span class="o">=</span> <span class="n">h_dst</span>  <span class="c1"># &lt;---</span>
+            <span class="c1"># update_all is a message passing API.</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">update_all</span><span class="p">(</span><span class="n">fn</span><span class="o">.</span><span class="n">copy_u</span><span class="p">(</span><span class="s2">"h"</span><span class="p">,</span> <span class="s2">"m"</span><span class="p">),</span> <span class="n">fn</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s2">"m"</span><span class="p">,</span> <span class="s2">"h_N"</span><span class="p">))</span>
+            <span class="n">h_N</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">dstdata</span><span class="p">[</span><span class="s2">"h_N"</span><span class="p">]</span>
+            <span class="n">h_total</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">h_dst</span><span class="p">,</span> <span class="n">h_N</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># &lt;---</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">h_total</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_feats</span><span class="p">,</span> <span class="n">h_feats</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Model</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span> <span class="o">=</span> <span class="n">SAGEConv</span><span class="p">(</span><span class="n">in_feats</span><span class="p">,</span> <span class="n">h_feats</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span> <span class="o">=</span> <span class="n">SAGEConv</span><span class="p">(</span><span class="n">h_feats</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">mfgs</span></a><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">h_dst</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">mfgs</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">num_dst_nodes</span><span class="p">()]</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">mfgs</span></a><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">h_dst</span><span class="p">))</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="n">h_dst</span> <span class="o">=</span> <span class="n">h</span><span class="p">[:</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">mfgs</span></a><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">num_dst_nodes</span><span class="p">()]</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">mfgs</span></a><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">h_dst</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">h</span>
+
+
+<span class="n">sampler</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">dataloading</span><span class="o">.</span><span class="n">MultiLayerNeighborSampler</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="n">train_dataloader</span> <span class="o">=</span> <a class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic"><span class="n">dgl</span><span class="o">.</span><span class="n">dataloading</span><span class="o">.</span><span class="n">DataLoader</span></a><span class="p">(</span>
+    <span class="n">graph</span><span class="p">,</span>
+    <span class="n">train_nids</span><span class="p">,</span>
+    <span class="n">sampler</span><span class="p">,</span>
+    <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">device</span></a><span class="o">=</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">device</span></a><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
+    <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">drop_last</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">num_workers</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"feat"</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">128</span><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">dataset</span><span class="o">.</span><span class="n">num_classes</span></a><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str"><span class="n">device</span></a><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="n">train_dataloader</span><span class="p">)</span> <span class="k">as</span> <span class="n">tq</span><span class="p">:</span>
+    <span class="k">for</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">step</span></a><span class="p">,</span> <span class="p">(</span><span class="n">input_nodes</span><span class="p">,</span> <span class="n">output_nodes</span><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">mfgs</span></a><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tq</span><span class="p">):</span>
+        <span class="n">inputs</span> <span class="o">=</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">mfgs</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">srcdata</span><span class="p">[</span><span class="s2">"feat"</span><span class="p">]</span>
+        <span class="n">labels</span> <span class="o">=</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">mfgs</span></a><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">dstdata</span><span class="p">[</span><span class="s2">"label"</span><span class="p">]</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">mfgs</span></a><span class="p">,</span> <span class="n">inputs</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/89 [00:00&lt;?, ?it/s]
+  1%|          | 1/89 [00:00&lt;00:13,  6.42it/s]
+  2%|▏         | 2/89 [00:00&lt;00:22,  3.95it/s]
+  3%|▎         | 3/89 [00:00&lt;00:22,  3.86it/s]
+  4%|▍         | 4/89 [00:01&lt;00:23,  3.68it/s]
+  6%|▌         | 5/89 [00:01&lt;00:22,  3.70it/s]
+  7%|▋         | 6/89 [00:01&lt;00:23,  3.58it/s]
+  8%|▊         | 7/89 [00:01&lt;00:22,  3.65it/s]
+  9%|▉         | 8/89 [00:02&lt;00:21,  3.69it/s]
+ 10%|█         | 9/89 [00:02&lt;00:22,  3.51it/s]
+ 11%|█         | 10/89 [00:02&lt;00:22,  3.50it/s]
+ 12%|█▏        | 11/89 [00:03&lt;00:22,  3.45it/s]
+ 13%|█▎        | 12/89 [00:03&lt;00:22,  3.45it/s]
+ 15%|█▍        | 13/89 [00:03&lt;00:21,  3.49it/s]
+ 16%|█▌        | 14/89 [00:03&lt;00:20,  3.59it/s]
+ 17%|█▋        | 15/89 [00:04&lt;00:20,  3.70it/s]
+ 18%|█▊        | 16/89 [00:04&lt;00:19,  3.73it/s]
+ 19%|█▉        | 17/89 [00:04&lt;00:19,  3.76it/s]
+ 20%|██        | 18/89 [00:04&lt;00:19,  3.72it/s]
+ 21%|██▏       | 19/89 [00:05&lt;00:18,  3.79it/s]
+ 22%|██▏       | 20/89 [00:05&lt;00:17,  3.90it/s]
+ 24%|██▎       | 21/89 [00:05&lt;00:17,  3.84it/s]
+ 25%|██▍       | 22/89 [00:05&lt;00:17,  3.82it/s]
+ 26%|██▌       | 23/89 [00:06&lt;00:17,  3.78it/s]
+ 27%|██▋       | 24/89 [00:06&lt;00:17,  3.66it/s]
+ 28%|██▊       | 25/89 [00:06&lt;00:17,  3.73it/s]
+ 29%|██▉       | 26/89 [00:07&lt;00:16,  3.77it/s]
+ 30%|███       | 27/89 [00:07&lt;00:16,  3.75it/s]
+ 31%|███▏      | 28/89 [00:07&lt;00:15,  3.83it/s]
+ 33%|███▎      | 29/89 [00:07&lt;00:15,  3.84it/s]
+ 34%|███▎      | 30/89 [00:08&lt;00:15,  3.93it/s]
+ 35%|███▍      | 31/89 [00:08&lt;00:14,  3.98it/s]
+ 36%|███▌      | 32/89 [00:08&lt;00:14,  3.94it/s]
+ 37%|███▋      | 33/89 [00:08&lt;00:14,  3.94it/s]
+ 38%|███▊      | 34/89 [00:09&lt;00:15,  3.59it/s]
+ 39%|███▉      | 35/89 [00:09&lt;00:15,  3.51it/s]
+ 40%|████      | 36/89 [00:09&lt;00:15,  3.53it/s]
+ 42%|████▏     | 37/89 [00:09&lt;00:14,  3.56it/s]
+ 43%|████▎     | 38/89 [00:10&lt;00:14,  3.61it/s]
+ 44%|████▍     | 39/89 [00:10&lt;00:14,  3.55it/s]
+ 45%|████▍     | 40/89 [00:10&lt;00:13,  3.57it/s]
+ 46%|████▌     | 41/89 [00:11&lt;00:13,  3.45it/s]
+ 47%|████▋     | 42/89 [00:11&lt;00:13,  3.49it/s]
+ 48%|████▊     | 43/89 [00:11&lt;00:12,  3.54it/s]
+ 49%|████▉     | 44/89 [00:12&lt;00:13,  3.34it/s]
+ 51%|█████     | 45/89 [00:12&lt;00:12,  3.46it/s]
+ 52%|█████▏    | 46/89 [00:12&lt;00:12,  3.51it/s]
+ 53%|█████▎    | 47/89 [00:12&lt;00:11,  3.51it/s]
+ 54%|█████▍    | 48/89 [00:13&lt;00:11,  3.51it/s]
+ 55%|█████▌    | 49/89 [00:13&lt;00:11,  3.46it/s]
+ 56%|█████▌    | 50/89 [00:13&lt;00:10,  3.59it/s]
+ 57%|█████▋    | 51/89 [00:13&lt;00:10,  3.54it/s]
+ 58%|█████▊    | 52/89 [00:14&lt;00:10,  3.64it/s]
+ 60%|█████▉    | 53/89 [00:14&lt;00:09,  3.67it/s]
+ 61%|██████    | 54/89 [00:14&lt;00:09,  3.58it/s]
+ 62%|██████▏   | 55/89 [00:15&lt;00:09,  3.55it/s]
+ 63%|██████▎   | 56/89 [00:15&lt;00:09,  3.54it/s]
+ 64%|██████▍   | 57/89 [00:15&lt;00:08,  3.59it/s]
+ 65%|██████▌   | 58/89 [00:15&lt;00:08,  3.62it/s]
+ 66%|██████▋   | 59/89 [00:16&lt;00:08,  3.72it/s]
+ 67%|██████▋   | 60/89 [00:16&lt;00:07,  3.77it/s]
+ 69%|██████▊   | 61/89 [00:16&lt;00:07,  3.52it/s]
+ 70%|██████▉   | 62/89 [00:17&lt;00:07,  3.54it/s]
+ 71%|███████   | 63/89 [00:17&lt;00:07,  3.54it/s]
+ 72%|███████▏  | 64/89 [00:17&lt;00:06,  3.60it/s]
+ 73%|███████▎  | 65/89 [00:17&lt;00:06,  3.60it/s]
+ 74%|███████▍  | 66/89 [00:18&lt;00:06,  3.66it/s]
+ 75%|███████▌  | 67/89 [00:18&lt;00:05,  3.73it/s]
+ 76%|███████▋  | 68/89 [00:18&lt;00:05,  3.65it/s]
+ 78%|███████▊  | 69/89 [00:18&lt;00:05,  3.67it/s]
+ 79%|███████▊  | 70/89 [00:19&lt;00:05,  3.62it/s]
+ 80%|███████▉  | 71/89 [00:19&lt;00:05,  3.56it/s]
+ 81%|████████  | 72/89 [00:19&lt;00:04,  3.62it/s]
+ 82%|████████▏ | 73/89 [00:20&lt;00:04,  3.55it/s]
+ 83%|████████▎ | 74/89 [00:20&lt;00:04,  3.54it/s]
+ 84%|████████▍ | 75/89 [00:20&lt;00:03,  3.51it/s]
+ 85%|████████▌ | 76/89 [00:20&lt;00:03,  3.47it/s]
+ 87%|████████▋ | 77/89 [00:21&lt;00:03,  3.47it/s]
+ 88%|████████▊ | 78/89 [00:21&lt;00:03,  3.66it/s]
+ 89%|████████▉ | 79/89 [00:21&lt;00:02,  3.58it/s]
+ 90%|████████▉ | 80/89 [00:22&lt;00:02,  3.55it/s]
+ 91%|█████████ | 81/89 [00:22&lt;00:02,  3.53it/s]
+ 92%|█████████▏| 82/89 [00:22&lt;00:02,  3.46it/s]
+ 93%|█████████▎| 83/89 [00:22&lt;00:01,  3.57it/s]
+ 94%|█████████▍| 84/89 [00:23&lt;00:01,  3.57it/s]
+ 96%|█████████▌| 85/89 [00:23&lt;00:01,  3.64it/s]
+ 97%|█████████▋| 86/89 [00:23&lt;00:00,  3.56it/s]
+ 98%|█████████▊| 87/89 [00:24&lt;00:00,  3.51it/s]
+ 99%|█████████▉| 88/89 [00:24&lt;00:00,  3.50it/s]
+100%|██████████| 89/89 [00:24&lt;00:00,  3.49it/s]
+100%|██████████| 89/89 [00:24&lt;00:00,  3.62it/s]
+</pre></div>
+</div>
+<p>Both <code class="docutils literal notranslate"><span class="pre">update_all</span></code> and the functions in <code class="docutils literal notranslate"><span class="pre">nn.functional</span></code> namespace
+support MFGs, so you can migrate the code working for small
+graphs to large graph training with minimal changes introduced above.</p>
+</section>
+<section id="writing-gnn-modules-for-both-full-graph-training-and-stochastic-training">
+<h2>Writing GNN Modules for Both Full-graph Training and Stochastic Training<a class="headerlink" href="#writing-gnn-modules-for-both-full-graph-training-and-stochastic-training" title="Link to this heading"></a></h2>
+<p>Here is a step-by-step tutorial for writing a GNN module for both
+<a class="reference internal" href="../blitz/1_introduction.html"><span class="doc">full-graph training</span></a> <em>and</em> <a class="reference internal" href="L1_large_node_classification.html"><span class="doc">stochastic
+training</span></a>.</p>
+<p>Say you start with a GNN module that works for full-graph training only:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SAGEConv</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Graph convolution module used by the GraphSAGE model.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    in_feat : int</span>
+<span class="sd">        Input feature size.</span>
+<span class="sd">    out_feat : int</span>
+<span class="sd">        Output feature size.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_feat</span><span class="p">,</span> <span class="n">out_feat</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># A linear submodule for projecting the input and neighbor feature to the output.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_feat</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">out_feat</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Forward computation</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        g : Graph</span>
+<span class="sd">            The input graph.</span>
+<span class="sd">        h : Tensor</span>
+<span class="sd">            The input node feature.</span>
+<span class="sd">        """</span>
+        <span class="k">with</span> <span class="n">g</span><span class="o">.</span><span class="n">local_scope</span><span class="p">():</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"h"</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
+            <span class="c1"># update_all is a message passing API.</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">update_all</span><span class="p">(</span>
+                <span class="n">message_func</span><span class="o">=</span><span class="n">fn</span><span class="o">.</span><span class="n">copy_u</span><span class="p">(</span><span class="s2">"h"</span><span class="p">,</span> <span class="s2">"m"</span><span class="p">),</span>
+                <span class="n">reduce_func</span><span class="o">=</span><span class="n">fn</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s2">"m"</span><span class="p">,</span> <span class="s2">"h_N"</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="n">h_N</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"h_N"</span><span class="p">]</span>
+            <span class="n">h_total</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">h</span><span class="p">,</span> <span class="n">h_N</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">h_total</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>First step</strong>: Check whether the input feature is a single tensor or a
+pair of tensors:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+    <span class="n">h_src</span><span class="p">,</span> <span class="n">h_dst</span> <span class="o">=</span> <span class="n">h</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">h_src</span> <span class="o">=</span> <span class="n">h_dst</span> <span class="o">=</span> <span class="n">h</span>
+</pre></div>
+</div>
+<p><strong>Second step</strong>: Replace node features <code class="docutils literal notranslate"><span class="pre">h</span></code> with <code class="docutils literal notranslate"><span class="pre">h_src</span></code> or
+<code class="docutils literal notranslate"><span class="pre">h_dst</span></code>, and assign the node features to <code class="docutils literal notranslate"><span class="pre">srcdata</span></code> or <code class="docutils literal notranslate"><span class="pre">dstdata</span></code>,
+instead of <code class="docutils literal notranslate"><span class="pre">ndata</span></code>.</p>
+<p>Whether to assign to <code class="docutils literal notranslate"><span class="pre">srcdata</span></code> or <code class="docutils literal notranslate"><span class="pre">dstdata</span></code> depends on whether the
+said feature acts as the features on source nodes or destination nodes
+of the edges in the message functions (in <code class="docutils literal notranslate"><span class="pre">update_all</span></code> or
+<code class="docutils literal notranslate"><span class="pre">apply_edges</span></code>).</p>
+<p><em>Example 1</em>: For the following <code class="docutils literal notranslate"><span class="pre">update_all</span></code> statement:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'h'</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
+<span class="n">g</span><span class="o">.</span><span class="n">update_all</span><span class="p">(</span><span class="n">message_func</span><span class="o">=</span><span class="n">fn</span><span class="o">.</span><span class="n">copy_u</span><span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="s1">'m'</span><span class="p">),</span> <span class="n">reduce_func</span><span class="o">=</span><span class="n">fn</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s1">'m'</span><span class="p">,</span> <span class="s1">'h_N'</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The node feature <code class="docutils literal notranslate"><span class="pre">h</span></code> acts as source node feature because <code class="docutils literal notranslate"><span class="pre">'h'</span></code>
+appeared as source node feature. So you will need to replace <code class="docutils literal notranslate"><span class="pre">h</span></code> with
+source feature <code class="docutils literal notranslate"><span class="pre">h_src</span></code> and assign to <code class="docutils literal notranslate"><span class="pre">srcdata</span></code> for the version that
+works with both cases:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">g</span><span class="o">.</span><span class="n">srcdata</span><span class="p">[</span><span class="s1">'h'</span><span class="p">]</span> <span class="o">=</span> <span class="n">h_src</span>
+<span class="n">g</span><span class="o">.</span><span class="n">update_all</span><span class="p">(</span><span class="n">message_func</span><span class="o">=</span><span class="n">fn</span><span class="o">.</span><span class="n">copy_u</span><span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="s1">'m'</span><span class="p">),</span> <span class="n">reduce_func</span><span class="o">=</span><span class="n">fn</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s1">'m'</span><span class="p">,</span> <span class="s1">'h_N'</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><em>Example 2</em>: For the following <code class="docutils literal notranslate"><span class="pre">apply_edges</span></code> statement:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'h'</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
+<span class="n">g</span><span class="o">.</span><span class="n">apply_edges</span><span class="p">(</span><span class="n">fn</span><span class="o">.</span><span class="n">u_dot_v</span><span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="s1">'h'</span><span class="p">,</span> <span class="s1">'score'</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The node feature <code class="docutils literal notranslate"><span class="pre">h</span></code> acts as both source node feature and destination
+node feature. So you will assign <code class="docutils literal notranslate"><span class="pre">h_src</span></code> to <code class="docutils literal notranslate"><span class="pre">srcdata</span></code> and <code class="docutils literal notranslate"><span class="pre">h_dst</span></code>
+to <code class="docutils literal notranslate"><span class="pre">dstdata</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">g</span><span class="o">.</span><span class="n">srcdata</span><span class="p">[</span><span class="s1">'h'</span><span class="p">]</span> <span class="o">=</span> <span class="n">h_src</span>
+<span class="n">g</span><span class="o">.</span><span class="n">dstdata</span><span class="p">[</span><span class="s1">'h'</span><span class="p">]</span> <span class="o">=</span> <span class="n">h_dst</span>
+<span class="c1"># The first 'h' corresponds to source feature (u) while the second 'h' corresponds to destination feature (v).</span>
+<span class="n">g</span><span class="o">.</span><span class="n">apply_edges</span><span class="p">(</span><span class="n">fn</span><span class="o">.</span><span class="n">u_dot_v</span><span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="s1">'h'</span><span class="p">,</span> <span class="s1">'score'</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For homogeneous graphs (i.e. graphs with only one node type
+and one edge type), <code class="docutils literal notranslate"><span class="pre">srcdata</span></code> and <code class="docutils literal notranslate"><span class="pre">dstdata</span></code> are aliases of
+<code class="docutils literal notranslate"><span class="pre">ndata</span></code>. So you can safely replace <code class="docutils literal notranslate"><span class="pre">ndata</span></code> with <code class="docutils literal notranslate"><span class="pre">srcdata</span></code> and
+<code class="docutils literal notranslate"><span class="pre">dstdata</span></code> even for full-graph training.</p>
+</div>
+<p><strong>Third step</strong>: Replace the <code class="docutils literal notranslate"><span class="pre">ndata</span></code> for outputs with <code class="docutils literal notranslate"><span class="pre">dstdata</span></code>.</p>
+<p>For example, the following code</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Assume that update_all() function has been called with output node features in `h_N`.</span>
+<span class="n">h_N</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'h_N'</span><span class="p">]</span>
+<span class="n">h_total</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">h</span><span class="p">,</span> <span class="n">h_N</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>will change to</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">h_N</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">dstdata</span><span class="p">[</span><span class="s1">'h_N'</span><span class="p">]</span>
+<span class="n">h_total</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">h_dst</span><span class="p">,</span> <span class="n">h_N</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Putting together, you will change the <code class="docutils literal notranslate"><span class="pre">SAGEConvForBoth</span></code> module above
+to something like the following:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SAGEConvForBoth</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Graph convolution module used by the GraphSAGE model.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    in_feat : int</span>
+<span class="sd">        Input feature size.</span>
+<span class="sd">    out_feat : int</span>
+<span class="sd">        Output feature size.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_feat</span><span class="p">,</span> <span class="n">out_feat</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># A linear submodule for projecting the input and neighbor feature to the output.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_feat</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">out_feat</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Forward computation</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        g : Graph</span>
+<span class="sd">            The input graph.</span>
+<span class="sd">        h : Tensor or tuple[Tensor, Tensor]</span>
+<span class="sd">            The input node feature.</span>
+<span class="sd">        """</span>
+        <span class="k">with</span> <span class="n">g</span><span class="o">.</span><span class="n">local_scope</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                <span class="n">h_src</span><span class="p">,</span> <span class="n">h_dst</span> <span class="o">=</span> <span class="n">h</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">h_src</span> <span class="o">=</span> <span class="n">h_dst</span> <span class="o">=</span> <span class="n">h</span>
+
+            <span class="n">g</span><span class="o">.</span><span class="n">srcdata</span><span class="p">[</span><span class="s2">"h"</span><span class="p">]</span> <span class="o">=</span> <span class="n">h_src</span>
+            <span class="c1"># update_all is a message passing API.</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">update_all</span><span class="p">(</span>
+                <span class="n">message_func</span><span class="o">=</span><span class="n">fn</span><span class="o">.</span><span class="n">copy_u</span><span class="p">(</span><span class="s2">"h"</span><span class="p">,</span> <span class="s2">"m"</span><span class="p">),</span>
+                <span class="n">reduce_func</span><span class="o">=</span><span class="n">fn</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s2">"m"</span><span class="p">,</span> <span class="s2">"h_N"</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="n">h_N</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"h_N"</span><span class="p">]</span>
+            <span class="n">h_total</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">h_dst</span><span class="p">,</span> <span class="n">h_N</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">h_total</span><span class="p">)</span>
+
+
+<span class="c1"># Thumbnail credits: Representation Learning on Networks, Jure Leskovec, WWW 2018</span>
+<span class="c1"># sphinx_gallery_thumbnail_path = '_static/blitz_3_message_passing.png'</span>
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 24.728 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-large-l4-message-passing-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/8cb938b649fd7d999f37ccfa7e1d1bac/L4_message_passing.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">L4_message_passing.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/4a706ebd2a194b5eaca1085c20b2960a/L4_message_passing.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">L4_message_passing.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/9132b9463d28dbc47cf4baf9b95316db/L4_message_passing.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">L4_message_passing.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+</div>
+</div>
+<footer><div aria-label="Footer" class="rst-footer-buttons" role="navigation">
+<a accesskey="p" class="btn btn-neutral float-left" href="L2_large_link_prediction.html" rel="prev" title="Stochastic Training of GNN for Link Prediction"><span aria-hidden="true" class="fa fa-arrow-circle-left"></span> Previous</a>
+<a accesskey="n" class="btn btn-neutral float-right" href="../cpu/index.html" rel="next" title="Training on CPUs">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
+</div>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+<span id="version-placeholder">v: latest</span>
+<span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('/dgl_docs/branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            // 获取当前路径
+            var path = window.location.pathname;
+            var versionPlaceholder = document.getElementById('version-placeholder');
+
+            // 检查路径中是否包含 'en'
+            if (path.includes('/en/')) {
+                // 提取 'en' 后的文件夹作为版本号
+                var parts = path.split('/en/');
+                if (parts[1]) {
+                    var folders = parts[1].split('/');
+                    if (folders.length > 0 && folders[0]) {
+                        versionPlaceholder.textContent = 'v: ' + folders[0];
+                    } else {
+                        versionPlaceholder.textContent = 'v: latest';
+                    }
+                } else {
+                    versionPlaceholder.textContent = 'v: latest';
+                }
+            } else {
+                versionPlaceholder.textContent = 'v: latest';
+            }
+        });
+    </script>
+
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+</body>
+</html>

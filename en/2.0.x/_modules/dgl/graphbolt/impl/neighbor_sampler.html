@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>dgl.graphbolt.impl.neighbor_sampler — DGL 2.1.0 documentation</title>
+<title>dgl.graphbolt.impl.neighbor_sampler — DGL 2.0.0 documentation</title>
 <link href="../../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,13 +19,12 @@
   <![endif]-->
 <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
 <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../../../../_static/documentation_options.js?v=20623aea"></script>
+<script src="../../../../_static/documentation_options.js?v=51b770b3"></script>
 <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
 <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../../../../_static/copybutton.js?v=ccdb6887"></script>
 <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
 <script src="../../../../_static/js/theme.js"></script>
 <link href="../../../../genindex.html" rel="index" title="Index"/>
 <link href="../../../../search.html" rel="search" title="Search"/>
@@ -39,7 +38,7 @@
             DGL
           </a>
 <div class="version">
-                2.1.0
+                2.0.0
               </div>
 <div role="search">
 <form action="../../../../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -60,7 +59,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../guide_cn/index.html">用户指南【包含过时信息】</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../guide_ko/index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../graphtransformer/index.html">🆕 Tutorial: Graph Transformer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/sparse/index.html">Tutorials: dgl.sparse</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/cpu/index.html">Training on CPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/multi/index.html">Training on Multiple GPUs</a></li>
@@ -78,6 +76,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/python/dgl.geometry.html">dgl.geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/python/dgl.graphbolt.html">🆕 dgl.graphbolt</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/python/nn-tensorflow.html">dgl.nn (TensorFlow)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/python/nn-mxnet.html">dgl.nn (MXNet)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/python/nn.functional.html">dgl.nn.functional</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/python/dgl.ops.html">dgl.ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/python/dgl.optim.html">dgl.optim</a></li>
@@ -123,241 +123,22 @@
 <h1>Source code for dgl.graphbolt.impl.neighbor_sampler</h1><div class="highlight"><pre>
 <span></span><span class="sd">"""Neighbor subgraph samplers for GraphBolt."""</span>
 
-<span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
-
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">functional_datapipe</span>
-<span class="kn">from</span> <span class="nn">torchdata.datapipes.iter</span> <span class="kn">import</span> <span class="n">Mapper</span>
 
 <span class="kn">from</span> <span class="nn">..internal</span> <span class="kn">import</span> <span class="n">compact_csc_format</span><span class="p">,</span> <span class="n">unique_and_compact_csc_formats</span>
-<span class="kn">from</span> <span class="nn">..minibatch_transformer</span> <span class="kn">import</span> <span class="n">MiniBatchTransformer</span>
 
 <span class="kn">from</span> <span class="nn">..subgraph_sampler</span> <span class="kn">import</span> <span class="n">SubgraphSampler</span>
-<span class="kn">from</span> <span class="nn">.fused_csc_sampling_graph</span> <span class="kn">import</span> <span class="n">fused_csc_sampling_graph</span>
 <span class="kn">from</span> <span class="nn">.sampled_subgraph_impl</span> <span class="kn">import</span> <span class="n">SampledSubgraphImpl</span>
 
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">"NeighborSampler"</span><span class="p">,</span>
-    <span class="s2">"LayerNeighborSampler"</span><span class="p">,</span>
-    <span class="s2">"SamplePerLayer"</span><span class="p">,</span>
-    <span class="s2">"SamplePerLayerFromFetchedSubgraph"</span><span class="p">,</span>
-    <span class="s2">"FetchInsubgraphData"</span><span class="p">,</span>
-<span class="p">]</span>
-
-
-<span class="nd">@functional_datapipe</span><span class="p">(</span><span class="s2">"fetch_insubgraph_data"</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">FetchInsubgraphData</span><span class="p">(</span><span class="n">Mapper</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Fetches the insubgraph and wraps it in a FusedCSCSamplingGraph object. If</span>
-<span class="sd">    the provided sample_per_layer_obj has a valid prob_name, then it reads the</span>
-<span class="sd">    probabilies of all the fetched edges. Furthermore, if type_per_array tensor</span>
-<span class="sd">    exists in the underlying graph, then the types of all the fetched edges are</span>
-<span class="sd">    read as well."""</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">datapipe</span><span class="p">,</span> <span class="n">sample_per_layer_obj</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">executor</span><span class="o">=</span><span class="kc">None</span>
-    <span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">datapipe</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_per_layer</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">sample_per_layer_obj</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="vm">__self__</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">prob_name</span> <span class="o">=</span> <span class="n">sample_per_layer_obj</span><span class="o">.</span><span class="n">prob_name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stream</span> <span class="o">=</span> <span class="n">stream</span>
-        <span class="k">if</span> <span class="n">executor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">executor</span> <span class="o">=</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">executor</span> <span class="o">=</span> <span class="n">executor</span>
-
-    <span class="k">def</span> <span class="nf">_fetch_per_layer_impl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minibatch</span><span class="p">,</span> <span class="n">stream</span><span class="p">):</span>
-        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="p">):</span>
-            <span class="n">index</span> <span class="o">=</span> <span class="n">minibatch</span><span class="o">.</span><span class="n">_seed_nodes</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-                    <span class="n">idx</span><span class="o">.</span><span class="n">record_stream</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">current_stream</span><span class="p">())</span>
-                <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">_convert_to_homogeneous_nodes</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">index</span><span class="o">.</span><span class="n">record_stream</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">current_stream</span><span class="p">())</span>
-
-            <span class="k">def</span> <span class="nf">record_stream</span><span class="p">(</span><span class="n">tensor</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">stream</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">tensor</span><span class="o">.</span><span class="n">is_cuda</span><span class="p">:</span>
-                    <span class="n">tensor</span><span class="o">.</span><span class="n">record_stream</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">tensor</span>
-
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node_type_offset</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="c1"># sorting not needed.</span>
-                <span class="n">minibatch</span><span class="o">.</span><span class="n">_subgraph_seed_nodes</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">index</span><span class="p">,</span> <span class="n">original_positions</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">original_positions</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">():</span>
-                    <span class="c1"># already sorted.</span>
-                    <span class="n">minibatch</span><span class="o">.</span><span class="n">_subgraph_seed_nodes</span> <span class="o">=</span> <span class="kc">None</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">minibatch</span><span class="o">.</span><span class="n">_subgraph_seed_nodes</span> <span class="o">=</span> <span class="n">record_stream</span><span class="p">(</span>
-                        <span class="n">original_positions</span><span class="o">.</span><span class="n">sort</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
-                    <span class="p">)</span>
-            <span class="n">index_select_csc_with_indptr</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
-                <span class="n">torch</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">graphbolt</span><span class="o">.</span><span class="n">index_select_csc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">csc_indptr</span>
-            <span class="p">)</span>
-
-            <span class="n">indptr</span><span class="p">,</span> <span class="n">indices</span> <span class="o">=</span> <span class="n">index_select_csc_with_indptr</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">indices</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="kc">None</span>
-            <span class="p">)</span>
-            <span class="n">record_stream</span><span class="p">(</span><span class="n">indptr</span><span class="p">)</span>
-            <span class="n">record_stream</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
-            <span class="n">output_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">type_per_edge</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">_</span><span class="p">,</span> <span class="n">type_per_edge</span> <span class="o">=</span> <span class="n">index_select_csc_with_indptr</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">type_per_edge</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">output_size</span>
-                <span class="p">)</span>
-                <span class="n">record_stream</span><span class="p">(</span><span class="n">type_per_edge</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">type_per_edge</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">edge_attributes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">probs_or_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">edge_attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">prob_name</span><span class="p">,</span> <span class="kc">None</span>
-                <span class="p">)</span>
-                <span class="k">if</span> <span class="n">probs_or_mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">_</span><span class="p">,</span> <span class="n">probs_or_mask</span> <span class="o">=</span> <span class="n">index_select_csc_with_indptr</span><span class="p">(</span>
-                        <span class="n">probs_or_mask</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">output_size</span>
-                    <span class="p">)</span>
-                    <span class="n">record_stream</span><span class="p">(</span><span class="n">probs_or_mask</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">probs_or_mask</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node_type_offset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">node_type_offset</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span>
-                    <span class="n">index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node_type_offset</span>
-                <span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">node_type_offset</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="n">subgraph</span> <span class="o">=</span> <span class="n">fused_csc_sampling_graph</span><span class="p">(</span>
-                <span class="n">indptr</span><span class="p">,</span>
-                <span class="n">indices</span><span class="p">,</span>
-                <span class="n">node_type_offset</span><span class="o">=</span><span class="n">node_type_offset</span><span class="p">,</span>
-                <span class="n">type_per_edge</span><span class="o">=</span><span class="n">type_per_edge</span><span class="p">,</span>
-                <span class="n">node_type_to_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node_type_to_id</span><span class="p">,</span>
-                <span class="n">edge_type_to_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">edge_type_to_id</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">probs_or_mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">subgraph</span><span class="o">.</span><span class="n">edge_attributes</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prob_name</span><span class="p">:</span> <span class="n">probs_or_mask</span><span class="p">}</span>
-
-            <span class="n">minibatch</span><span class="o">.</span><span class="n">sampled_subgraphs</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">subgraph</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">minibatch</span><span class="o">.</span><span class="n">wait</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">current_stream</span><span class="p">()</span><span class="o">.</span><span class="n">record_event</span><span class="p">()</span><span class="o">.</span><span class="n">wait</span>
-
-            <span class="k">return</span> <span class="n">minibatch</span>
-
-    <span class="k">def</span> <span class="nf">_fetch_per_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minibatch</span><span class="p">):</span>
-        <span class="n">current_stream</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">current_stream</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">current_stream</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">wait_stream</span><span class="p">(</span><span class="n">current_stream</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_per_layer_impl</span><span class="p">,</span> <span class="n">minibatch</span><span class="p">,</span> <span class="n">current_stream</span>
-        <span class="p">)</span>
-
-
-<span class="nd">@functional_datapipe</span><span class="p">(</span><span class="s2">"sample_per_layer_from_fetched_subgraph"</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">SamplePerLayerFromFetchedSubgraph</span><span class="p">(</span><span class="n">MiniBatchTransformer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Sample neighbor edges from a graph for a single layer."""</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datapipe</span><span class="p">,</span> <span class="n">sample_per_layer_obj</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">datapipe</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample_per_layer_from_fetched_subgraph</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sampler_name</span> <span class="o">=</span> <span class="n">sample_per_layer_obj</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="vm">__name__</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fanout</span> <span class="o">=</span> <span class="n">sample_per_layer_obj</span><span class="o">.</span><span class="n">fanout</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">replace</span> <span class="o">=</span> <span class="n">sample_per_layer_obj</span><span class="o">.</span><span class="n">replace</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">prob_name</span> <span class="o">=</span> <span class="n">sample_per_layer_obj</span><span class="o">.</span><span class="n">prob_name</span>
-
-    <span class="k">def</span> <span class="nf">_sample_per_layer_from_fetched_subgraph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minibatch</span><span class="p">):</span>
-        <span class="n">subgraph</span> <span class="o">=</span> <span class="n">minibatch</span><span class="o">.</span><span class="n">sampled_subgraphs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-        <span class="n">sampled_subgraph</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">subgraph</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampler_name</span><span class="p">)(</span>
-            <span class="n">minibatch</span><span class="o">.</span><span class="n">_subgraph_seed_nodes</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">fanout</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">replace</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">prob_name</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="nb">delattr</span><span class="p">(</span><span class="n">minibatch</span><span class="p">,</span> <span class="s2">"_subgraph_seed_nodes"</span><span class="p">)</span>
-        <span class="n">sampled_subgraph</span><span class="o">.</span><span class="n">original_column_node_ids</span> <span class="o">=</span> <span class="n">minibatch</span><span class="o">.</span><span class="n">_seed_nodes</span>
-        <span class="n">minibatch</span><span class="o">.</span><span class="n">sampled_subgraphs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">sampled_subgraph</span>
-
-        <span class="k">return</span> <span class="n">minibatch</span>
-
-
-<span class="nd">@functional_datapipe</span><span class="p">(</span><span class="s2">"sample_per_layer"</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">SamplePerLayer</span><span class="p">(</span><span class="n">MiniBatchTransformer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Sample neighbor edges from a graph for a single layer."""</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datapipe</span><span class="p">,</span> <span class="n">sampler</span><span class="p">,</span> <span class="n">fanout</span><span class="p">,</span> <span class="n">replace</span><span class="p">,</span> <span class="n">prob_name</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">datapipe</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample_per_layer</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sampler</span> <span class="o">=</span> <span class="n">sampler</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fanout</span> <span class="o">=</span> <span class="n">fanout</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">replace</span> <span class="o">=</span> <span class="n">replace</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">prob_name</span> <span class="o">=</span> <span class="n">prob_name</span>
-
-    <span class="k">def</span> <span class="nf">_sample_per_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minibatch</span><span class="p">):</span>
-        <span class="n">subgraph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="p">(</span>
-            <span class="n">minibatch</span><span class="o">.</span><span class="n">_seed_nodes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fanout</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">replace</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_name</span>
-        <span class="p">)</span>
-        <span class="n">minibatch</span><span class="o">.</span><span class="n">sampled_subgraphs</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">subgraph</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">minibatch</span>
-
-
-<span class="nd">@functional_datapipe</span><span class="p">(</span><span class="s2">"compact_per_layer"</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">CompactPerLayer</span><span class="p">(</span><span class="n">MiniBatchTransformer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Compact the sampled edges for a single layer."""</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datapipe</span><span class="p">,</span> <span class="n">deduplicate</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">datapipe</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compact_per_layer</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">deduplicate</span> <span class="o">=</span> <span class="n">deduplicate</span>
-
-    <span class="k">def</span> <span class="nf">_compact_per_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minibatch</span><span class="p">):</span>
-        <span class="n">subgraph</span> <span class="o">=</span> <span class="n">minibatch</span><span class="o">.</span><span class="n">sampled_subgraphs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">seeds</span> <span class="o">=</span> <span class="n">minibatch</span><span class="o">.</span><span class="n">_seed_nodes</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">deduplicate</span><span class="p">:</span>
-            <span class="p">(</span>
-                <span class="n">original_row_node_ids</span><span class="p">,</span>
-                <span class="n">compacted_csc_format</span><span class="p">,</span>
-            <span class="p">)</span> <span class="o">=</span> <span class="n">unique_and_compact_csc_formats</span><span class="p">(</span><span class="n">subgraph</span><span class="o">.</span><span class="n">sampled_csc</span><span class="p">,</span> <span class="n">seeds</span><span class="p">)</span>
-            <span class="n">subgraph</span> <span class="o">=</span> <span class="n">SampledSubgraphImpl</span><span class="p">(</span>
-                <span class="n">sampled_csc</span><span class="o">=</span><span class="n">compacted_csc_format</span><span class="p">,</span>
-                <span class="n">original_column_node_ids</span><span class="o">=</span><span class="n">seeds</span><span class="p">,</span>
-                <span class="n">original_row_node_ids</span><span class="o">=</span><span class="n">original_row_node_ids</span><span class="p">,</span>
-                <span class="n">original_edge_ids</span><span class="o">=</span><span class="n">subgraph</span><span class="o">.</span><span class="n">original_edge_ids</span><span class="p">,</span>
-            <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="p">(</span>
-                <span class="n">original_row_node_ids</span><span class="p">,</span>
-                <span class="n">compacted_csc_format</span><span class="p">,</span>
-            <span class="p">)</span> <span class="o">=</span> <span class="n">compact_csc_format</span><span class="p">(</span><span class="n">subgraph</span><span class="o">.</span><span class="n">sampled_csc</span><span class="p">,</span> <span class="n">seeds</span><span class="p">)</span>
-            <span class="n">subgraph</span> <span class="o">=</span> <span class="n">SampledSubgraphImpl</span><span class="p">(</span>
-                <span class="n">sampled_csc</span><span class="o">=</span><span class="n">compacted_csc_format</span><span class="p">,</span>
-                <span class="n">original_column_node_ids</span><span class="o">=</span><span class="n">seeds</span><span class="p">,</span>
-                <span class="n">original_row_node_ids</span><span class="o">=</span><span class="n">original_row_node_ids</span><span class="p">,</span>
-                <span class="n">original_edge_ids</span><span class="o">=</span><span class="n">subgraph</span><span class="o">.</span><span class="n">original_edge_ids</span><span class="p">,</span>
-            <span class="p">)</span>
-        <span class="n">minibatch</span><span class="o">.</span><span class="n">_seed_nodes</span> <span class="o">=</span> <span class="n">original_row_node_ids</span>
-        <span class="n">minibatch</span><span class="o">.</span><span class="n">sampled_subgraphs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">subgraph</span>
-        <span class="k">return</span> <span class="n">minibatch</span>
-
-
-<span class="nd">@functional_datapipe</span><span class="p">(</span><span class="s2">"fetch_and_sample"</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">FetcherAndSampler</span><span class="p">(</span><span class="n">MiniBatchTransformer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Overlapped graph sampling operation replacement."""</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sampler</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">executor</span><span class="p">,</span> <span class="n">buffer_size</span><span class="p">):</span>
-        <span class="n">datapipe</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">datapipe</span><span class="o">.</span><span class="n">fetch_insubgraph_data</span><span class="p">(</span>
-            <span class="n">sampler</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">executor</span>
-        <span class="p">)</span>
-        <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">buffer_size</span><span class="p">)</span><span class="o">.</span><span class="n">wait_future</span><span class="p">()</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
-        <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">sample_per_layer_from_fetched_subgraph</span><span class="p">(</span><span class="n">sampler</span><span class="p">)</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">datapipe</span><span class="p">)</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"NeighborSampler"</span><span class="p">,</span> <span class="s2">"LayerNeighborSampler"</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="NeighborSampler">
 <a class="viewcode-back" href="../../../../generated/dgl.graphbolt.NeighborSampler.html#dgl.graphbolt.NeighborSampler">[docs]</a>
 <span class="nd">@functional_datapipe</span><span class="p">(</span><span class="s2">"sample_neighbor"</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">NeighborSampler</span><span class="p">(</span><span class="n">SubgraphSampler</span><span class="p">):</span>
-    <span class="c1"># pylint: disable=abstract-method</span>
 <span class="w">    </span><span class="sd">"""Sample neighbor edges from a graph and return a subgraph.</span>
 
 <span class="sd">    Functional name: :obj:`sample_neighbor`.</span>
@@ -439,7 +220,6 @@
 <span class="sd">    )]</span>
 <span class="sd">    """</span>
 
-    <span class="c1"># pylint: disable=useless-super-delegation</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">datapipe</span><span class="p">,</span>
@@ -448,20 +228,28 @@
         <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">prob_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">deduplicate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">sampler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="k">if</span> <span class="n">sampler</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">sampler</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">sample_neighbors</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">datapipe</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">fanouts</span><span class="p">,</span> <span class="n">replace</span><span class="p">,</span> <span class="n">prob_name</span><span class="p">,</span> <span class="n">deduplicate</span><span class="p">,</span> <span class="n">sampler</span>
-        <span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">datapipe</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">graph</span>
+        <span class="c1"># Convert fanouts to a list of tensors.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fanouts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">fanout</span> <span class="ow">in</span> <span class="n">fanouts</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fanout</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+                <span class="n">fanout</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">fanout</span><span class="p">)])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fanouts</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">fanout</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">replace</span> <span class="o">=</span> <span class="n">replace</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prob_name</span> <span class="o">=</span> <span class="n">prob_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deduplicate</span> <span class="o">=</span> <span class="n">deduplicate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sampler</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">sample_neighbors</span>
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_prepare</span><span class="p">(</span><span class="n">node_type_to_id</span><span class="p">,</span> <span class="n">minibatch</span><span class="p">):</span>
-        <span class="n">seeds</span> <span class="o">=</span> <span class="n">minibatch</span><span class="o">.</span><span class="n">_seed_nodes</span>
+<div class="viewcode-block" id="NeighborSampler.sample_subgraphs">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.NeighborSampler.html#dgl.graphbolt.NeighborSampler.sample_subgraphs">[docs]</a>
+    <span class="k">def</span> <span class="nf">sample_subgraphs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seeds</span><span class="p">,</span> <span class="n">seeds_timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">subgraphs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">num_layers</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fanouts</span><span class="p">)</span>
         <span class="c1"># Enrich seeds with all node types.</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">seeds</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="n">ntypes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">node_type_to_id</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="n">ntypes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node_type_to_id</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
             <span class="c1"># Loop over different seeds to extract the device they are on.</span>
             <span class="n">device</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">dtype</span> <span class="o">=</span> <span class="kc">None</span>
@@ -473,34 +261,38 @@
             <span class="n">seeds</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="n">ntype</span><span class="p">:</span> <span class="n">seeds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ntype</span><span class="p">,</span> <span class="n">default_tensor</span><span class="p">)</span> <span class="k">for</span> <span class="n">ntype</span> <span class="ow">in</span> <span class="n">ntypes</span>
             <span class="p">}</span>
-        <span class="n">minibatch</span><span class="o">.</span><span class="n">_seed_nodes</span> <span class="o">=</span> <span class="n">seeds</span>
-        <span class="n">minibatch</span><span class="o">.</span><span class="n">sampled_subgraphs</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">return</span> <span class="n">minibatch</span>
-
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_set_input_nodes</span><span class="p">(</span><span class="n">minibatch</span><span class="p">):</span>
-        <span class="n">minibatch</span><span class="o">.</span><span class="n">input_nodes</span> <span class="o">=</span> <span class="n">minibatch</span><span class="o">.</span><span class="n">_seed_nodes</span>
-        <span class="k">return</span> <span class="n">minibatch</span>
-
-    <span class="c1"># pylint: disable=arguments-differ</span>
-<div class="viewcode-block" id="NeighborSampler.sampling_stages">
-<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.NeighborSampler.html#dgl.graphbolt.NeighborSampler.sampling_stages">[docs]</a>
-    <span class="k">def</span> <span class="nf">sampling_stages</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">datapipe</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">fanouts</span><span class="p">,</span> <span class="n">replace</span><span class="p">,</span> <span class="n">prob_name</span><span class="p">,</span> <span class="n">deduplicate</span><span class="p">,</span> <span class="n">sampler</span>
-    <span class="p">):</span>
-        <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span>
-            <span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_prepare</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">node_type_to_id</span><span class="p">)</span>
-        <span class="p">)</span>
-        <span class="k">for</span> <span class="n">fanout</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">fanouts</span><span class="p">):</span>
-            <span class="c1"># Convert fanout to tensor.</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fanout</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
-                <span class="n">fanout</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">fanout</span><span class="p">)])</span>
-            <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">sample_per_layer</span><span class="p">(</span>
-                <span class="n">sampler</span><span class="p">,</span> <span class="n">fanout</span><span class="p">,</span> <span class="n">replace</span><span class="p">,</span> <span class="n">prob_name</span>
+        <span class="k">for</span> <span class="n">hop</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_layers</span><span class="p">):</span>
+            <span class="n">subgraph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="p">(</span>
+                <span class="n">seeds</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">fanouts</span><span class="p">[</span><span class="n">hop</span><span class="p">],</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">replace</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">prob_name</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">compact_per_layer</span><span class="p">(</span><span class="n">deduplicate</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_set_input_nodes</span><span class="p">)</span></div>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">deduplicate</span><span class="p">:</span>
+                <span class="p">(</span>
+                    <span class="n">original_row_node_ids</span><span class="p">,</span>
+                    <span class="n">compacted_csc_format</span><span class="p">,</span>
+                <span class="p">)</span> <span class="o">=</span> <span class="n">unique_and_compact_csc_formats</span><span class="p">(</span><span class="n">subgraph</span><span class="o">.</span><span class="n">sampled_csc</span><span class="p">,</span> <span class="n">seeds</span><span class="p">)</span>
+                <span class="n">subgraph</span> <span class="o">=</span> <span class="n">SampledSubgraphImpl</span><span class="p">(</span>
+                    <span class="n">sampled_csc</span><span class="o">=</span><span class="n">compacted_csc_format</span><span class="p">,</span>
+                    <span class="n">original_column_node_ids</span><span class="o">=</span><span class="n">seeds</span><span class="p">,</span>
+                    <span class="n">original_row_node_ids</span><span class="o">=</span><span class="n">original_row_node_ids</span><span class="p">,</span>
+                    <span class="n">original_edge_ids</span><span class="o">=</span><span class="n">subgraph</span><span class="o">.</span><span class="n">original_edge_ids</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="p">(</span>
+                    <span class="n">original_row_node_ids</span><span class="p">,</span>
+                    <span class="n">compacted_csc_format</span><span class="p">,</span>
+                <span class="p">)</span> <span class="o">=</span> <span class="n">compact_csc_format</span><span class="p">(</span><span class="n">subgraph</span><span class="o">.</span><span class="n">sampled_csc</span><span class="p">,</span> <span class="n">seeds</span><span class="p">)</span>
+                <span class="n">subgraph</span> <span class="o">=</span> <span class="n">SampledSubgraphImpl</span><span class="p">(</span>
+                    <span class="n">sampled_csc</span><span class="o">=</span><span class="n">compacted_csc_format</span><span class="p">,</span>
+                    <span class="n">original_column_node_ids</span><span class="o">=</span><span class="n">seeds</span><span class="p">,</span>
+                    <span class="n">original_row_node_ids</span><span class="o">=</span><span class="n">original_row_node_ids</span><span class="p">,</span>
+                    <span class="n">original_edge_ids</span><span class="o">=</span><span class="n">subgraph</span><span class="o">.</span><span class="n">original_edge_ids</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="n">subgraphs</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">subgraph</span><span class="p">)</span>
+            <span class="n">seeds</span> <span class="o">=</span> <span class="n">original_row_node_ids</span>
+        <span class="k">return</span> <span class="n">seeds</span><span class="p">,</span> <span class="n">subgraphs</span></div>
 </div>
 
 
@@ -509,7 +301,6 @@
 <a class="viewcode-back" href="../../../../generated/dgl.graphbolt.LayerNeighborSampler.html#dgl.graphbolt.LayerNeighborSampler">[docs]</a>
 <span class="nd">@functional_datapipe</span><span class="p">(</span><span class="s2">"sample_layer_neighbor"</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">LayerNeighborSampler</span><span class="p">(</span><span class="n">NeighborSampler</span><span class="p">):</span>
-    <span class="c1"># pylint: disable=abstract-method</span>
 <span class="w">    </span><span class="sd">"""Sample layer neighbor edges from a graph and return a subgraph.</span>
 
 <span class="sd">    Functional name: :obj:`sample_layer_neighbor`.</span>
@@ -620,8 +411,8 @@
             <span class="n">replace</span><span class="p">,</span>
             <span class="n">prob_name</span><span class="p">,</span>
             <span class="n">deduplicate</span><span class="p">,</span>
-            <span class="n">graph</span><span class="o">.</span><span class="n">sample_layer_neighbors</span><span class="p">,</span>
-        <span class="p">)</span></div>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sampler</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">sample_layer_neighbors</span></div>
 
 </pre></div>
 </div>

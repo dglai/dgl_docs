@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Link Prediction using Graph Neural Networks — DGL 2.1.0 documentation</title>
+<title>Link Prediction using Graph Neural Networks — DGL 2.0.0 documentation</title>
 <link href="../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,13 +19,12 @@
   <![endif]-->
 <script src="../../_static/jquery.js?v=5d32c60e"></script>
 <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../../_static/documentation_options.js?v=20623aea"></script>
+<script src="../../_static/documentation_options.js?v=51b770b3"></script>
 <script src="../../_static/doctools.js?v=9a2dae69"></script>
 <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../../_static/copybutton.js?v=ccdb6887"></script>
 <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
 <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
 <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <script src="../../_static/js/theme.js"></script>
@@ -43,7 +42,7 @@
             DGL
           </a>
 <div class="version">
-                2.1.0
+                2.0.0
               </div>
 <div role="search">
 <form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -80,7 +79,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../guide_cn/index.html">用户指南【包含过时信息】</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../guide_ko/index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../graphtransformer/index.html">🆕 Tutorial: Graph Transformer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../notebooks/sparse/index.html">Tutorials: dgl.sparse</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cpu/index.html">Training on CPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../multi/index.html">Training on Multiple GPUs</a></li>
@@ -98,6 +96,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.geometry.html">dgl.geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.graphbolt.html">🆕 dgl.graphbolt</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/nn-tensorflow.html">dgl.nn (TensorFlow)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/nn-mxnet.html">dgl.nn (MXNet)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/nn.functional.html">dgl.nn.functional</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.ops.html">dgl.ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.optim.html">dgl.optim</a></li>
@@ -467,30 +467,30 @@ performance on the validation set.</p>
 <span class="c1"># sphinx_gallery_thumbnail_path = '_static/blitz_4_link_predict.png'</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>In epoch 0, loss: 0.7200618386268616
-In epoch 5, loss: 0.6923640370368958
-In epoch 10, loss: 0.6754197478294373
-In epoch 15, loss: 0.6308778524398804
-In epoch 20, loss: 0.5773763060569763
-In epoch 25, loss: 0.5486514568328857
-In epoch 30, loss: 0.5124441981315613
-In epoch 35, loss: 0.49048805236816406
-In epoch 40, loss: 0.4669176936149597
-In epoch 45, loss: 0.4415031671524048
-In epoch 50, loss: 0.4242275357246399
-In epoch 55, loss: 0.4051501452922821
-In epoch 60, loss: 0.3853144943714142
-In epoch 65, loss: 0.36718982458114624
-In epoch 70, loss: 0.3486452102661133
-In epoch 75, loss: 0.3300226330757141
-In epoch 80, loss: 0.3108196258544922
-In epoch 85, loss: 0.29147106409072876
-In epoch 90, loss: 0.2717398703098297
-In epoch 95, loss: 0.25211039185523987
-AUC 0.8483142786550167
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>In epoch 0, loss: 0.7381672859191895
+In epoch 5, loss: 0.6935503482818604
+In epoch 10, loss: 0.6893392205238342
+In epoch 15, loss: 0.6708845496177673
+In epoch 20, loss: 0.6263279318809509
+In epoch 25, loss: 0.5570552349090576
+In epoch 30, loss: 0.5261102318763733
+In epoch 35, loss: 0.5094533562660217
+In epoch 40, loss: 0.48286885023117065
+In epoch 45, loss: 0.4640629291534424
+In epoch 50, loss: 0.44855695962905884
+In epoch 55, loss: 0.434173047542572
+In epoch 60, loss: 0.4187002182006836
+In epoch 65, loss: 0.40413370728492737
+In epoch 70, loss: 0.38817325234413147
+In epoch 75, loss: 0.37128981947898865
+In epoch 80, loss: 0.3528115749359131
+In epoch 85, loss: 0.33340948820114136
+In epoch 90, loss: 0.31503570079803467
+In epoch 95, loss: 0.29693716764450073
+AUC 0.8756649670941803
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (1 minutes 1.396 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (1 minutes 0.613 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-blitz-4-link-predict-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/514d96075aeea53fc7a3d9873b7b963f/4_link_predict.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">4_link_predict.ipynb</span></code></a></p>

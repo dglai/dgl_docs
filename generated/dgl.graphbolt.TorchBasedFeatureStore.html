@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TorchBasedFeatureStore — DGL 2.3.1 documentation</title>
+<title>TorchBasedFeatureStore — DGL 2.4 documentation</title>
 <link href="../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,7 +19,7 @@
   <![endif]-->
 <script src="../_static/jquery.js?v=5d32c60e"></script>
 <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../_static/documentation_options.js?v=9caaf7ed"></script>
 <script src="../_static/doctools.js?v=9a2dae69"></script>
 <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -29,7 +29,7 @@
 <script src="../_static/js/theme.js"></script>
 <link href="../genindex.html" rel="index" title="Index"/>
 <link href="../search.html" rel="search" title="Search"/>
-<link href="dgl.graphbolt.GPUCachedFeature.html" rel="next" title="GPUCachedFeature"/>
+<link href="dgl.graphbolt.DiskBasedFeature.html" rel="next" title="DiskBasedFeature"/>
 <link href="dgl.graphbolt.TorchBasedFeature.html" rel="prev" title="TorchBasedFeature"/>
 </head>
 <body class="wy-body-for-nav">
@@ -41,7 +41,7 @@
             DGL
           </a>
 <div class="version">
-                2.3.1
+                2.4
               </div>
 <div role="search">
 <form action="../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -90,6 +90,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#dgl.graphbolt.TorchBasedFeatureStore"><code class="docutils literal notranslate"><span class="pre">TorchBasedFeatureStore</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="dgl.graphbolt.DiskBasedFeature.html">DiskBasedFeature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgl.graphbolt.CPUCachedFeature.html">CPUCachedFeature</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dgl.graphbolt.GPUCachedFeature.html">GPUCachedFeature</a></li>
 </ul>
 </li>
@@ -160,7 +162,8 @@ list of <cite>OnDiskFeatureData</cite>.</p>
 <p>For a feature store, its format must be either “pt” or “npy” for Pytorch or
 Numpy formats. If the format is “pt”, the feature store must be loaded in
 memory. If the format is “npy”, the feature store can be loaded in memory or
-on disk.</p>
+on disk. Note that you can use gb.numpy_save_aligned as a replacement for
+np.save to potentially get increased performance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>feat_data</strong> (<em>List</em><em>[</em><em>OnDiskFeatureData</em><em>]</em>) – The description of the feature stores.</p>
@@ -173,7 +176,7 @@ on disk.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">edge_label</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">node_feat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">edge_label</span><span class="p">,</span> <span class="s2">"/tmp/edge_label.pt"</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">"/tmp/node_feat.npy"</span><span class="p">,</span> <span class="n">node_feat</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gb</span><span class="o">.</span><span class="n">numpy_save_aligned</span><span class="p">(</span><span class="s2">"/tmp/node_feat.npy"</span><span class="p">,</span> <span class="n">node_feat</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">feat_data</span> <span class="o">=</span> <span class="p">[</span>
 <span class="gp">... </span>    <span class="n">gb</span><span class="o">.</span><span class="n">OnDiskFeatureData</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="s2">"edge"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">"author:writes:paper"</span><span class="p">,</span>
 <span class="gp">... </span>        <span class="n">name</span><span class="o">=</span><span class="s2">"label"</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">"torch"</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">"/tmp/edge_label.pt"</span><span class="p">,</span>
@@ -181,7 +184,7 @@ on disk.</p>
 <span class="gp">... </span>    <span class="n">gb</span><span class="o">.</span><span class="n">OnDiskFeatureData</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="s2">"node"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">"paper"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"feat"</span><span class="p">,</span>
 <span class="gp">... </span>        <span class="nb">format</span><span class="o">=</span><span class="s2">"numpy"</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">"/tmp/node_feat.npy"</span><span class="p">,</span> <span class="n">in_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
 <span class="gp">... </span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">feature_sotre</span> <span class="o">=</span> <span class="n">gb</span><span class="o">.</span><span class="n">TorchBasedFeatureStore</span><span class="p">(</span><span class="n">feat_data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">feature_store</span> <span class="o">=</span> <span class="n">gb</span><span class="o">.</span><span class="n">TorchBasedFeatureStore</span><span class="p">(</span><span class="n">feat_data</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="py method">
@@ -206,7 +209,7 @@ Returns the same object modified in-place.</p>
 </div>
 <footer><div aria-label="Footer" class="rst-footer-buttons" role="navigation">
 <a accesskey="p" class="btn btn-neutral float-left" href="dgl.graphbolt.TorchBasedFeature.html" rel="prev" title="TorchBasedFeature"><span aria-hidden="true" class="fa fa-arrow-circle-left"></span> Previous</a>
-<a accesskey="n" class="btn btn-neutral float-right" href="dgl.graphbolt.GPUCachedFeature.html" rel="next" title="GPUCachedFeature">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
+<a accesskey="n" class="btn btn-neutral float-right" href="dgl.graphbolt.DiskBasedFeature.html" rel="next" title="DiskBasedFeature">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
 </div>
 <hr/>
 <div role="contentinfo">
@@ -226,8 +229,8 @@ Returns the same object modified in-place.</p>
 <div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
 <span class="rst-current-version" data-toggle="rst-current-version">
 <span class="fa fa-book"> Read the Docs</span>
-            v: 1.1.x
-            <span class="fa fa-caret-down"></span>
+<span id="version-placeholder">v: latest</span>
+<span class="fa fa-caret-down"></span>
 </span>
 <div class="rst-other-versions">
 <dl>
@@ -249,8 +252,7 @@ Returns the same object modified in-place.</p>
 </div>
 <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 假设 branches.json 位于同目录下
-            fetch('branches.json')
+            fetch('/dgl_docs/branches.json')
                 .then(response => response.json())
                 .then(data => {
                     var versionListDiv = document.getElementById('version-list');
@@ -264,6 +266,29 @@ Returns the same object modified in-place.</p>
                     });
                 })
                 .catch(error => console.error('Error loading branches:', error));
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            // 获取当前路径
+            var path = window.location.pathname;
+            var versionPlaceholder = document.getElementById('version-placeholder');
+
+            // 检查路径中是否包含 'en'
+            if (path.includes('/en/')) {
+                // 提取 'en' 后的文件夹作为版本号
+                var parts = path.split('/en/');
+                if (parts[1]) {
+                    var folders = parts[1].split('/');
+                    if (folders.length > 0 && folders[0]) {
+                        versionPlaceholder.textContent = 'v: ' + folders[0];
+                    } else {
+                        versionPlaceholder.textContent = 'v: latest';
+                    }
+                } else {
+                    versionPlaceholder.textContent = 'v: latest';
+                }
+            } else {
+                versionPlaceholder.textContent = 'v: latest';
+            }
         });
     </script>
 

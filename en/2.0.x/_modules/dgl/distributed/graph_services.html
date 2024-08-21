@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>dgl.distributed.graph_services — DGL 2.1.0 documentation</title>
+<title>dgl.distributed.graph_services — DGL 2.0.0 documentation</title>
 <link href="../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,13 +19,12 @@
   <![endif]-->
 <script src="../../../_static/jquery.js?v=5d32c60e"></script>
 <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../../../_static/documentation_options.js?v=20623aea"></script>
+<script src="../../../_static/documentation_options.js?v=51b770b3"></script>
 <script src="../../../_static/doctools.js?v=9a2dae69"></script>
 <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../../../_static/copybutton.js?v=ccdb6887"></script>
 <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
 <script src="../../../_static/js/theme.js"></script>
 <link href="../../../genindex.html" rel="index" title="Index"/>
 <link href="../../../search.html" rel="search" title="Search"/>
@@ -39,7 +38,7 @@
             DGL
           </a>
 <div class="version">
-                2.1.0
+                2.0.0
               </div>
 <div role="search">
 <form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -60,7 +59,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guide_cn/index.html">用户指南【包含过时信息】</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guide_ko/index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../graphtransformer/index.html">🆕 Tutorial: Graph Transformer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/sparse/index.html">Tutorials: dgl.sparse</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/cpu/index.html">Training on CPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/multi/index.html">Training on Multiple GPUs</a></li>
@@ -78,6 +76,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.geometry.html">dgl.geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.graphbolt.html">🆕 dgl.graphbolt</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn-tensorflow.html">dgl.nn (TensorFlow)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn-mxnet.html">dgl.nn (MXNet)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn.functional.html">dgl.nn.functional</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.ops.html">dgl.ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.optim.html">dgl.optim</a></li>
@@ -122,21 +122,19 @@
 <div itemprop="articleBody">
 <h1>Source code for dgl.distributed.graph_services</h1><div class="highlight"><pre>
 <span></span><span class="sd">"""A set of graph services of getting subgraphs from DistGraph"""</span>
-<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-
-<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">F</span><span class="p">,</span> <span class="n">graphbolt</span> <span class="k">as</span> <span class="n">gb</span>
-<span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">EID</span><span class="p">,</span> <span class="n">ETYPE</span><span class="p">,</span> <span class="n">NID</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">F</span>
+<span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">EID</span><span class="p">,</span> <span class="n">NID</span>
 <span class="kn">from</span> <span class="nn">..convert</span> <span class="kn">import</span> <span class="n">graph</span><span class="p">,</span> <span class="n">heterograph</span>
 <span class="kn">from</span> <span class="nn">..sampling</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">sample_etype_neighbors</span> <span class="k">as</span> <span class="n">local_sample_etype_neighbors</span><span class="p">,</span>
     <span class="n">sample_neighbors</span> <span class="k">as</span> <span class="n">local_sample_neighbors</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">..subgraph</span> <span class="kn">import</span> <span class="n">in_subgraph</span> <span class="k">as</span> <span class="n">local_in_subgraph</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">toindex</span>
 <span class="kn">from</span> <span class="nn">.rpc</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">recv_responses</span><span class="p">,</span>
     <span class="n">register_service</span><span class="p">,</span>
@@ -163,29 +161,16 @@
 <span class="k">class</span> <span class="nc">SubgraphResponse</span><span class="p">(</span><span class="n">Response</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""The response for sampling and in_subgraph"""</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">global_src</span><span class="p">,</span> <span class="n">global_dst</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">global_eids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">etype_ids</span><span class="o">=</span><span class="kc">None</span>
-    <span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">global_src</span><span class="p">,</span> <span class="n">global_dst</span><span class="p">,</span> <span class="n">global_eids</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">global_src</span> <span class="o">=</span> <span class="n">global_src</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">global_dst</span> <span class="o">=</span> <span class="n">global_dst</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">global_eids</span> <span class="o">=</span> <span class="n">global_eids</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">etype_ids</span> <span class="o">=</span> <span class="n">etype_ids</span>
 
     <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-        <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">global_src</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">global_dst</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">global_eids</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">etype_ids</span><span class="p">,</span>
-        <span class="p">)</span> <span class="o">=</span> <span class="n">state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">global_src</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">global_dst</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">global_eids</span> <span class="o">=</span> <span class="n">state</span>
 
     <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">global_src</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">global_dst</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">global_eids</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">etype_ids</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">global_src</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">global_dst</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">global_eids</span>
 
 
 <span class="k">class</span> <span class="nc">FindEdgeResponse</span><span class="p">(</span><span class="n">Response</span><span class="p">):</span>
@@ -203,103 +188,8 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">global_src</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">global_dst</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">order_id</span>
 
 
-<span class="k">def</span> <span class="nf">_sample_neighbors_graphbolt</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">,</span> <span class="n">gpb</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">fanout</span><span class="p">,</span> <span class="n">edge_dir</span><span class="o">=</span><span class="s2">"in"</span><span class="p">,</span> <span class="n">prob</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span>
-<span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Sample from local partition via graphbolt.</span>
-
-<span class="sd">    The input nodes use global IDs. We need to map the global node IDs to local</span>
-<span class="sd">    node IDs, perform sampling and map the sampled results to the global IDs</span>
-<span class="sd">    space again. The sampled results are stored in three vectors that store</span>
-<span class="sd">    source nodes, destination nodes, etype IDs and edge IDs.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    g : FusedCSCSamplingGraph</span>
-<span class="sd">        The local partition.</span>
-<span class="sd">    gpb : GraphPartitionBook</span>
-<span class="sd">        The graph partition book.</span>
-<span class="sd">    nodes : tensor</span>
-<span class="sd">        The nodes to sample neighbors from.</span>
-<span class="sd">    fanout : tensor or int</span>
-<span class="sd">        The number of edges to be sampled for each node.</span>
-<span class="sd">    edge_dir : str, optional</span>
-<span class="sd">        Determines whether to sample inbound or outbound edges.</span>
-<span class="sd">    prob : tensor, optional</span>
-<span class="sd">        The probability associated with each neighboring edge of a node.</span>
-<span class="sd">    replace : bool, optional</span>
-<span class="sd">        If True, sample with replacement.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    tensor</span>
-<span class="sd">        The source node ID array.</span>
-<span class="sd">    tensor</span>
-<span class="sd">        The destination node ID array.</span>
-<span class="sd">    tensor</span>
-<span class="sd">        The edge ID array.</span>
-<span class="sd">    tensor</span>
-<span class="sd">        The edge type ID array.</span>
-<span class="sd">    """</span>
-    <span class="k">assert</span> <span class="p">(</span>
-        <span class="n">edge_dir</span> <span class="o">==</span> <span class="s2">"in"</span>
-    <span class="p">),</span> <span class="sa">f</span><span class="s2">"GraphBolt only supports inbound edge sampling but got </span><span class="si">{</span><span class="n">edge_dir</span><span class="si">}</span><span class="s2">."</span>
-
-    <span class="c1"># 1. Map global node IDs to local node IDs.</span>
-    <span class="n">nodes</span> <span class="o">=</span> <span class="n">gpb</span><span class="o">.</span><span class="n">nid2localnid</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">gpb</span><span class="o">.</span><span class="n">partid</span><span class="p">)</span>
-    <span class="c1"># Local partition may be saved in torch.int32 even though the global graph</span>
-    <span class="c1"># is in torch.int64.</span>
-    <span class="n">nodes</span> <span class="o">=</span> <span class="n">nodes</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">indices</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
-
-    <span class="c1"># 2. Perform sampling.</span>
-    <span class="c1"># [Rui][TODO] `prob` and `replace` are not tested yet. Skip for now.</span>
-    <span class="k">assert</span> <span class="p">(</span>
-        <span class="n">prob</span> <span class="ow">is</span> <span class="kc">None</span>
-    <span class="p">),</span> <span class="s2">"DistGraphBolt does not support sampling with probability."</span>
-    <span class="k">assert</span> <span class="p">(</span>
-        <span class="ow">not</span> <span class="n">replace</span>
-    <span class="p">),</span> <span class="s2">"DistGraphBolt does not support sampling with replacement."</span>
-
-    <span class="c1"># Sanity checks.</span>
-    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
-        <span class="n">g</span><span class="p">,</span> <span class="n">gb</span><span class="o">.</span><span class="n">FusedCSCSamplingGraph</span>
-    <span class="p">),</span> <span class="s2">"Expect a FusedCSCSamplingGraph."</span>
-    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">),</span> <span class="s2">"Expect a tensor of nodes."</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fanout</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-        <span class="n">fanout</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">([</span><span class="n">fanout</span><span class="p">])</span>
-    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fanout</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">),</span> <span class="s2">"Expect a tensor of fanout."</span>
-
-    <span class="n">return_eids</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">edge_attributes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">EID</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">edge_attributes</span>
-    <span class="n">subgraph</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">_sample_neighbors</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">fanout</span><span class="p">,</span> <span class="n">return_eids</span><span class="o">=</span><span class="n">return_eids</span><span class="p">)</span>
-
-    <span class="c1"># 3. Map local node IDs to global node IDs.</span>
-    <span class="n">local_src</span> <span class="o">=</span> <span class="n">subgraph</span><span class="o">.</span><span class="n">indices</span>
-    <span class="n">local_dst</span> <span class="o">=</span> <span class="n">gb</span><span class="o">.</span><span class="n">expand_indptr</span><span class="p">(</span>
-        <span class="n">subgraph</span><span class="o">.</span><span class="n">indptr</span><span class="p">,</span>
-        <span class="n">dtype</span><span class="o">=</span><span class="n">local_src</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
-        <span class="n">node_ids</span><span class="o">=</span><span class="n">subgraph</span><span class="o">.</span><span class="n">original_column_node_ids</span><span class="p">,</span>
-        <span class="n">output_size</span><span class="o">=</span><span class="n">local_src</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-    <span class="p">)</span>
-    <span class="n">global_nid_mapping</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">node_attributes</span><span class="p">[</span><span class="n">NID</span><span class="p">]</span>
-    <span class="n">global_src</span> <span class="o">=</span> <span class="n">global_nid_mapping</span><span class="p">[</span><span class="n">local_src</span><span class="p">]</span>
-    <span class="n">global_dst</span> <span class="o">=</span> <span class="n">global_nid_mapping</span><span class="p">[</span><span class="n">local_dst</span><span class="p">]</span>
-
-    <span class="n">global_eids</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">if</span> <span class="n">return_eids</span><span class="p">:</span>
-        <span class="n">global_eids</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">edge_attributes</span><span class="p">[</span><span class="n">EID</span><span class="p">][</span><span class="n">subgraph</span><span class="o">.</span><span class="n">original_edge_ids</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">LocalSampledGraph</span><span class="p">(</span>
-        <span class="n">global_src</span><span class="p">,</span> <span class="n">global_dst</span><span class="p">,</span> <span class="n">global_eids</span><span class="p">,</span> <span class="n">subgraph</span><span class="o">.</span><span class="n">type_per_edge</span>
-    <span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">_sample_neighbors_dgl</span><span class="p">(</span>
-    <span class="n">local_g</span><span class="p">,</span>
-    <span class="n">partition_book</span><span class="p">,</span>
-    <span class="n">seed_nodes</span><span class="p">,</span>
-    <span class="n">fan_out</span><span class="p">,</span>
-    <span class="n">edge_dir</span><span class="o">=</span><span class="s2">"in"</span><span class="p">,</span>
-    <span class="n">prob</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="k">def</span> <span class="nf">_sample_neighbors</span><span class="p">(</span>
+    <span class="n">local_g</span><span class="p">,</span> <span class="n">partition_book</span><span class="p">,</span> <span class="n">seed_nodes</span><span class="p">,</span> <span class="n">fan_out</span><span class="p">,</span> <span class="n">edge_dir</span><span class="p">,</span> <span class="n">prob</span><span class="p">,</span> <span class="n">replace</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Sample from local partition.</span>
 
@@ -326,49 +216,18 @@
         <span class="n">global_nid_mapping</span><span class="p">,</span> <span class="n">src</span>
     <span class="p">),</span> <span class="n">F</span><span class="o">.</span><span class="n">gather_row</span><span class="p">(</span><span class="n">global_nid_mapping</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
     <span class="n">global_eids</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">gather_row</span><span class="p">(</span><span class="n">local_g</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">EID</span><span class="p">],</span> <span class="n">sampled_graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">EID</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">LocalSampledGraph</span><span class="p">(</span><span class="n">global_src</span><span class="p">,</span> <span class="n">global_dst</span><span class="p">,</span> <span class="n">global_eids</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">global_src</span><span class="p">,</span> <span class="n">global_dst</span><span class="p">,</span> <span class="n">global_eids</span>
 
 
-<span class="k">def</span> <span class="nf">_sample_neighbors</span><span class="p">(</span><span class="n">use_graphbolt</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Wrapper for sampling neighbors.</span>
-
-<span class="sd">    The actual sampling function depends on whether to use GraphBolt.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    use_graphbolt : bool</span>
-<span class="sd">        Whether to use GraphBolt for sampling.</span>
-<span class="sd">    args : list</span>
-<span class="sd">        The arguments for the sampling function.</span>
-<span class="sd">    kwargs : dict</span>
-<span class="sd">        The keyword arguments for the sampling function.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    tensor</span>
-<span class="sd">        The source node ID array.</span>
-<span class="sd">    tensor</span>
-<span class="sd">        The destination node ID array.</span>
-<span class="sd">    tensor</span>
-<span class="sd">        The edge ID array.</span>
-<span class="sd">    tensor</span>
-<span class="sd">        The edge type ID array.</span>
-<span class="sd">    """</span>
-    <span class="n">func</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">_sample_neighbors_graphbolt</span> <span class="k">if</span> <span class="n">use_graphbolt</span> <span class="k">else</span> <span class="n">_sample_neighbors_dgl</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">_sample_etype_neighbors_dgl</span><span class="p">(</span>
+<span class="k">def</span> <span class="nf">_sample_etype_neighbors</span><span class="p">(</span>
     <span class="n">local_g</span><span class="p">,</span>
     <span class="n">partition_book</span><span class="p">,</span>
     <span class="n">seed_nodes</span><span class="p">,</span>
+    <span class="n">etype_offset</span><span class="p">,</span>
     <span class="n">fan_out</span><span class="p">,</span>
-    <span class="n">edge_dir</span><span class="o">=</span><span class="s2">"in"</span><span class="p">,</span>
-    <span class="n">prob</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">etype_offset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">edge_dir</span><span class="p">,</span>
+    <span class="n">prob</span><span class="p">,</span>
+    <span class="n">replace</span><span class="p">,</span>
     <span class="n">etype_sorted</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Sample from local partition.</span>
@@ -378,8 +237,6 @@
 <span class="sd">    The sampled results are stored in three vectors that store source nodes, destination nodes</span>
 <span class="sd">    and edge IDs.</span>
 <span class="sd">    """</span>
-    <span class="k">assert</span> <span class="n">etype_offset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">"The etype offset is not provided."</span>
-
     <span class="n">local_ids</span> <span class="o">=</span> <span class="n">partition_book</span><span class="o">.</span><span class="n">nid2localnid</span><span class="p">(</span><span class="n">seed_nodes</span><span class="p">,</span> <span class="n">partition_book</span><span class="o">.</span><span class="n">partid</span><span class="p">)</span>
     <span class="n">local_ids</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">local_ids</span><span class="p">,</span> <span class="n">local_g</span><span class="o">.</span><span class="n">idtype</span><span class="p">)</span>
 
@@ -400,44 +257,7 @@
         <span class="n">global_nid_mapping</span><span class="p">,</span> <span class="n">src</span>
     <span class="p">),</span> <span class="n">F</span><span class="o">.</span><span class="n">gather_row</span><span class="p">(</span><span class="n">global_nid_mapping</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
     <span class="n">global_eids</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">gather_row</span><span class="p">(</span><span class="n">local_g</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">EID</span><span class="p">],</span> <span class="n">sampled_graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">EID</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">LocalSampledGraph</span><span class="p">(</span><span class="n">global_src</span><span class="p">,</span> <span class="n">global_dst</span><span class="p">,</span> <span class="n">global_eids</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">_sample_etype_neighbors</span><span class="p">(</span><span class="n">use_graphbolt</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Wrapper for sampling etype neighbors.</span>
-
-<span class="sd">    The actual sampling function depends on whether to use GraphBolt.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    use_graphbolt : bool</span>
-<span class="sd">        Whether to use GraphBolt for sampling.</span>
-<span class="sd">    args : list</span>
-<span class="sd">        The arguments for the sampling function.</span>
-<span class="sd">    kwargs : dict</span>
-<span class="sd">        The keyword arguments for the sampling function.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    tensor</span>
-<span class="sd">        The source node ID array.</span>
-<span class="sd">    tensor</span>
-<span class="sd">        The destination node ID array.</span>
-<span class="sd">    tensor</span>
-<span class="sd">        The edge ID array.</span>
-<span class="sd">    tensor</span>
-<span class="sd">        The edge type ID array.</span>
-<span class="sd">    """</span>
-    <span class="n">func</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">_sample_neighbors_graphbolt</span>
-        <span class="k">if</span> <span class="n">use_graphbolt</span>
-        <span class="k">else</span> <span class="n">_sample_etype_neighbors_dgl</span>
-    <span class="p">)</span>
-    <span class="k">if</span> <span class="n">use_graphbolt</span><span class="p">:</span>
-        <span class="c1"># GraphBolt does not require `etype_offset` and `etype_sorted`.</span>
-        <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"etype_offset"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"etype_sorted"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">global_src</span><span class="p">,</span> <span class="n">global_dst</span><span class="p">,</span> <span class="n">global_eids</span>
 
 
 <span class="k">def</span> <span class="nf">_find_edges</span><span class="p">(</span><span class="n">local_g</span><span class="p">,</span> <span class="n">partition_book</span><span class="p">,</span> <span class="n">seed_edges</span><span class="p">):</span>
@@ -483,7 +303,7 @@
     <span class="n">src</span><span class="p">,</span> <span class="n">dst</span> <span class="o">=</span> <span class="n">sampled_graph</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span>
     <span class="n">global_src</span><span class="p">,</span> <span class="n">global_dst</span> <span class="o">=</span> <span class="n">global_nid_mapping</span><span class="p">[</span><span class="n">src</span><span class="p">],</span> <span class="n">global_nid_mapping</span><span class="p">[</span><span class="n">dst</span><span class="p">]</span>
     <span class="n">global_eids</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">gather_row</span><span class="p">(</span><span class="n">local_g</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">EID</span><span class="p">],</span> <span class="n">sampled_graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">EID</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">LocalSampledGraph</span><span class="p">(</span><span class="n">global_src</span><span class="p">,</span> <span class="n">global_dst</span><span class="p">,</span> <span class="n">global_eids</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">global_src</span><span class="p">,</span> <span class="n">global_dst</span><span class="p">,</span> <span class="n">global_eids</span>
 
 
 <span class="c1"># --- NOTE 1 ---</span>
@@ -515,21 +335,12 @@
 <span class="k">class</span> <span class="nc">SamplingRequest</span><span class="p">(</span><span class="n">Request</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Sampling Request"""</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">nodes</span><span class="p">,</span>
-        <span class="n">fan_out</span><span class="p">,</span>
-        <span class="n">edge_dir</span><span class="o">=</span><span class="s2">"in"</span><span class="p">,</span>
-        <span class="n">prob</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">use_graphbolt</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">fan_out</span><span class="p">,</span> <span class="n">edge_dir</span><span class="o">=</span><span class="s2">"in"</span><span class="p">,</span> <span class="n">prob</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seed_nodes</span> <span class="o">=</span> <span class="n">nodes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">edge_dir</span> <span class="o">=</span> <span class="n">edge_dir</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prob</span> <span class="o">=</span> <span class="n">prob</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">replace</span> <span class="o">=</span> <span class="n">replace</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fan_out</span> <span class="o">=</span> <span class="n">fan_out</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">use_graphbolt</span> <span class="o">=</span> <span class="n">use_graphbolt</span>
 
     <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
         <span class="p">(</span>
@@ -538,7 +349,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">prob</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">replace</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">fan_out</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">use_graphbolt</span><span class="p">,</span>
         <span class="p">)</span> <span class="o">=</span> <span class="n">state</span>
 
     <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -548,7 +358,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">prob</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">replace</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">fan_out</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">use_graphbolt</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">process_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">server_state</span><span class="p">):</span>
@@ -559,22 +368,16 @@
             <span class="n">prob</span> <span class="o">=</span> <span class="p">[</span><span class="n">kv_store</span><span class="o">.</span><span class="n">data_store</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">prob</span><span class="p">]]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">prob</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="n">_sample_neighbors</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">use_graphbolt</span><span class="p">,</span>
+        <span class="n">global_src</span><span class="p">,</span> <span class="n">global_dst</span><span class="p">,</span> <span class="n">global_eids</span> <span class="o">=</span> <span class="n">_sample_neighbors</span><span class="p">(</span>
             <span class="n">local_g</span><span class="p">,</span>
             <span class="n">partition_book</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">seed_nodes</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">fan_out</span><span class="p">,</span>
-            <span class="n">edge_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_dir</span><span class="p">,</span>
-            <span class="n">prob</span><span class="o">=</span><span class="n">prob</span><span class="p">,</span>
-            <span class="n">replace</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">replace</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">edge_dir</span><span class="p">,</span>
+            <span class="n">prob</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">replace</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">SubgraphResponse</span><span class="p">(</span>
-            <span class="n">res</span><span class="o">.</span><span class="n">global_src</span><span class="p">,</span>
-            <span class="n">res</span><span class="o">.</span><span class="n">global_dst</span><span class="p">,</span>
-            <span class="n">global_eids</span><span class="o">=</span><span class="n">res</span><span class="o">.</span><span class="n">global_eids</span><span class="p">,</span>
-            <span class="n">etype_ids</span><span class="o">=</span><span class="n">res</span><span class="o">.</span><span class="n">etype_ids</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">SubgraphResponse</span><span class="p">(</span><span class="n">global_src</span><span class="p">,</span> <span class="n">global_dst</span><span class="p">,</span> <span class="n">global_eids</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">SamplingRequestEtype</span><span class="p">(</span><span class="n">Request</span><span class="p">):</span>
@@ -588,7 +391,6 @@
         <span class="n">prob</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">etype_sorted</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">use_graphbolt</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seed_nodes</span> <span class="o">=</span> <span class="n">nodes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">edge_dir</span> <span class="o">=</span> <span class="n">edge_dir</span>
@@ -596,7 +398,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">replace</span> <span class="o">=</span> <span class="n">replace</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fan_out</span> <span class="o">=</span> <span class="n">fan_out</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">etype_sorted</span> <span class="o">=</span> <span class="n">etype_sorted</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">use_graphbolt</span> <span class="o">=</span> <span class="n">use_graphbolt</span>
 
     <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
         <span class="p">(</span>
@@ -606,7 +407,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">replace</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">fan_out</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">etype_sorted</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">use_graphbolt</span><span class="p">,</span>
         <span class="p">)</span> <span class="o">=</span> <span class="n">state</span>
 
     <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -617,7 +417,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">replace</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">fan_out</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">etype_sorted</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">use_graphbolt</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">process_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">server_state</span><span class="p">):</span>
@@ -633,24 +432,18 @@
             <span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">probs</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="n">_sample_etype_neighbors</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">use_graphbolt</span><span class="p">,</span>
+        <span class="n">global_src</span><span class="p">,</span> <span class="n">global_dst</span><span class="p">,</span> <span class="n">global_eids</span> <span class="o">=</span> <span class="n">_sample_etype_neighbors</span><span class="p">(</span>
             <span class="n">local_g</span><span class="p">,</span>
             <span class="n">partition_book</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">seed_nodes</span><span class="p">,</span>
+            <span class="n">etype_offset</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">fan_out</span><span class="p">,</span>
-            <span class="n">edge_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_dir</span><span class="p">,</span>
-            <span class="n">prob</span><span class="o">=</span><span class="n">probs</span><span class="p">,</span>
-            <span class="n">replace</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">replace</span><span class="p">,</span>
-            <span class="n">etype_offset</span><span class="o">=</span><span class="n">etype_offset</span><span class="p">,</span>
-            <span class="n">etype_sorted</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">etype_sorted</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">edge_dir</span><span class="p">,</span>
+            <span class="n">probs</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">replace</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">etype_sorted</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">SubgraphResponse</span><span class="p">(</span>
-            <span class="n">res</span><span class="o">.</span><span class="n">global_src</span><span class="p">,</span>
-            <span class="n">res</span><span class="o">.</span><span class="n">global_dst</span><span class="p">,</span>
-            <span class="n">global_eids</span><span class="o">=</span><span class="n">res</span><span class="o">.</span><span class="n">global_eids</span><span class="p">,</span>
-            <span class="n">etype_ids</span><span class="o">=</span><span class="n">res</span><span class="o">.</span><span class="n">etype_ids</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">SubgraphResponse</span><span class="p">(</span><span class="n">global_src</span><span class="p">,</span> <span class="n">global_dst</span><span class="p">,</span> <span class="n">global_eids</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">EdgesRequest</span><span class="p">(</span><span class="n">Request</span><span class="p">):</span>
@@ -764,7 +557,7 @@
         <span class="n">global_src</span><span class="p">,</span> <span class="n">global_dst</span><span class="p">,</span> <span class="n">global_eids</span> <span class="o">=</span> <span class="n">_in_subgraph</span><span class="p">(</span>
             <span class="n">local_g</span><span class="p">,</span> <span class="n">partition_book</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed_nodes</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">SubgraphResponse</span><span class="p">(</span><span class="n">global_src</span><span class="p">,</span> <span class="n">global_dst</span><span class="p">,</span> <span class="n">global_eids</span><span class="o">=</span><span class="n">global_eids</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">SubgraphResponse</span><span class="p">(</span><span class="n">global_src</span><span class="p">,</span> <span class="n">global_dst</span><span class="p">,</span> <span class="n">global_eids</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">merge_graphs</span><span class="p">(</span><span class="n">res_list</span><span class="p">,</span> <span class="n">num_nodes</span><span class="p">):</span>
@@ -773,33 +566,24 @@
         <span class="n">srcs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">dsts</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">eids</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">etype_ids</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">res_list</span><span class="p">:</span>
             <span class="n">srcs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">global_src</span><span class="p">)</span>
             <span class="n">dsts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">global_dst</span><span class="p">)</span>
             <span class="n">eids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">global_eids</span><span class="p">)</span>
-            <span class="n">etype_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">etype_ids</span><span class="p">)</span>
         <span class="n">src_tensor</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">srcs</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">dst_tensor</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">dsts</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="n">eid_tensor</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">eids</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">F</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">eids</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="n">etype_id_tensor</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">etype_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">F</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">etype_ids</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">eid_tensor</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">eids</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">src_tensor</span> <span class="o">=</span> <span class="n">res_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">global_src</span>
         <span class="n">dst_tensor</span> <span class="o">=</span> <span class="n">res_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">global_dst</span>
         <span class="n">eid_tensor</span> <span class="o">=</span> <span class="n">res_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">global_eids</span>
-        <span class="n">etype_id_tensor</span> <span class="o">=</span> <span class="n">res_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">etype_ids</span>
     <span class="n">g</span> <span class="o">=</span> <span class="n">graph</span><span class="p">((</span><span class="n">src_tensor</span><span class="p">,</span> <span class="n">dst_tensor</span><span class="p">),</span> <span class="n">num_nodes</span><span class="o">=</span><span class="n">num_nodes</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">eid_tensor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">EID</span><span class="p">]</span> <span class="o">=</span> <span class="n">eid_tensor</span>
-    <span class="k">if</span> <span class="n">etype_id_tensor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">ETYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">etype_id_tensor</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">EID</span><span class="p">]</span> <span class="o">=</span> <span class="n">eid_tensor</span>
     <span class="k">return</span> <span class="n">g</span>
 
 
-<span class="n">LocalSampledGraph</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span>  <span class="c1"># pylint: disable=unexpected-keyword-arg</span>
-    <span class="s2">"LocalSampledGraph"</span><span class="p">,</span>
-    <span class="s2">"global_src global_dst global_eids etype_ids"</span><span class="p">,</span>
-    <span class="n">defaults</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+<span class="n">LocalSampledGraph</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span>
+    <span class="s2">"LocalSampledGraph"</span><span class="p">,</span> <span class="s2">"global_src global_dst global_eids"</span>
 <span class="p">)</span>
 
 
@@ -830,6 +614,7 @@
 <span class="sd">    """</span>
     <span class="n">req_list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">partition_book</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_partition_book</span><span class="p">()</span>
+    <span class="n">nodes</span> <span class="o">=</span> <span class="n">toindex</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span><span class="o">.</span><span class="n">tousertensor</span><span class="p">()</span>
     <span class="n">partition_id</span> <span class="o">=</span> <span class="n">partition_book</span><span class="o">.</span><span class="n">nid2partid</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
     <span class="n">local_nids</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">for</span> <span class="n">pid</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">partition_book</span><span class="o">.</span><span class="n">num_partitions</span><span class="p">()):</span>
@@ -853,8 +638,10 @@
     <span class="c1"># sample neighbors for the nodes in the local partition.</span>
     <span class="n">res_list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="n">local_nids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="n">local_access</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">local_partition</span><span class="p">,</span> <span class="n">partition_book</span><span class="p">,</span> <span class="n">local_nids</span><span class="p">)</span>
-        <span class="n">res_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+        <span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="n">eids</span> <span class="o">=</span> <span class="n">local_access</span><span class="p">(</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">local_partition</span><span class="p">,</span> <span class="n">partition_book</span><span class="p">,</span> <span class="n">local_nids</span>
+        <span class="p">)</span>
+        <span class="n">res_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">LocalSampledGraph</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="n">eids</span><span class="p">))</span>
 
     <span class="c1"># receive responses from remote machines.</span>
     <span class="k">if</span> <span class="n">msgseq2pos</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -877,47 +664,24 @@
             <span class="n">idtype</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">idtype</span><span class="p">,</span>
         <span class="p">)</span>
 
-    <span class="c1"># For DGL partitions, the global edge IDs are always stored in the edata.</span>
-    <span class="c1"># For GraphBolt partitions, the edge type IDs are always stored in the</span>
-    <span class="c1"># edata. As for the edge IDs, they are stored in the edata if the graph is</span>
-    <span class="c1"># partitioned with `store_eids=True`. Otherwise, the edge IDs are not</span>
-    <span class="c1"># stored.</span>
-    <span class="n">etype_ids</span><span class="p">,</span> <span class="n">type_wise_eids</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">gpb</span><span class="o">.</span><span class="n">map_to_per_etype</span><span class="p">(</span><span class="n">frontier</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">EID</span><span class="p">])</span>
-        <span class="k">if</span> <span class="n">EID</span> <span class="ow">in</span> <span class="n">frontier</span><span class="o">.</span><span class="n">edata</span>
-        <span class="k">else</span> <span class="p">(</span><span class="n">frontier</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">ETYPE</span><span class="p">],</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="p">)</span>
-    <span class="n">etype_ids</span><span class="p">,</span> <span class="n">idx</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">sort_1d</span><span class="p">(</span><span class="n">etype_ids</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">type_wise_eids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">type_wise_eids</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">gather_row</span><span class="p">(</span><span class="n">type_wise_eids</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
-
-    <span class="c1"># Sort the edges by their edge types.</span>
+    <span class="n">etype_ids</span><span class="p">,</span> <span class="n">frontier</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">EID</span><span class="p">]</span> <span class="o">=</span> <span class="n">gpb</span><span class="o">.</span><span class="n">map_to_per_etype</span><span class="p">(</span><span class="n">frontier</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">EID</span><span class="p">])</span>
     <span class="n">src</span><span class="p">,</span> <span class="n">dst</span> <span class="o">=</span> <span class="n">frontier</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span>
+    <span class="n">etype_ids</span><span class="p">,</span> <span class="n">idx</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">sort_1d</span><span class="p">(</span><span class="n">etype_ids</span><span class="p">)</span>
     <span class="n">src</span><span class="p">,</span> <span class="n">dst</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">gather_row</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">idx</span><span class="p">),</span> <span class="n">F</span><span class="o">.</span><span class="n">gather_row</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
-    <span class="n">src_ntype_ids</span><span class="p">,</span> <span class="n">src</span> <span class="o">=</span> <span class="n">gpb</span><span class="o">.</span><span class="n">map_to_per_ntype</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
-    <span class="n">dst_ntype_ids</span><span class="p">,</span> <span class="n">dst</span> <span class="o">=</span> <span class="n">gpb</span><span class="o">.</span><span class="n">map_to_per_ntype</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span>
+    <span class="n">eid</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">gather_row</span><span class="p">(</span><span class="n">frontier</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">EID</span><span class="p">],</span> <span class="n">idx</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">src</span> <span class="o">=</span> <span class="n">gpb</span><span class="o">.</span><span class="n">map_to_per_ntype</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">dst</span> <span class="o">=</span> <span class="n">gpb</span><span class="o">.</span><span class="n">map_to_per_ntype</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span>
 
     <span class="n">data_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="n">edge_ids</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">etid</span><span class="p">,</span> <span class="n">etype</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">canonical_etypes</span><span class="p">):</span>
-        <span class="n">src_ntype</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">dst_ntype</span> <span class="o">=</span> <span class="n">etype</span>
-        <span class="n">src_ntype_id</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_ntype_id</span><span class="p">(</span><span class="n">src_ntype</span><span class="p">)</span>
-        <span class="n">dst_ntype_id</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_ntype_id</span><span class="p">(</span><span class="n">dst_ntype</span><span class="p">)</span>
         <span class="n">type_idx</span> <span class="o">=</span> <span class="n">etype_ids</span> <span class="o">==</span> <span class="n">etid</span>
         <span class="k">if</span> <span class="n">F</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">type_idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">data_dict</span><span class="p">[</span><span class="n">etype</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">F</span><span class="o">.</span><span class="n">boolean_mask</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">type_idx</span><span class="p">),</span>
                 <span class="n">F</span><span class="o">.</span><span class="n">boolean_mask</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="n">type_idx</span><span class="p">),</span>
             <span class="p">)</span>
-            <span class="k">if</span> <span class="s2">"DGL_DIST_DEBUG"</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
-                <span class="k">assert</span> <span class="n">torch</span><span class="o">.</span><span class="n">all</span><span class="p">(</span>
-                    <span class="n">src_ntype_id</span> <span class="o">==</span> <span class="n">src_ntype_ids</span><span class="p">[</span><span class="n">type_idx</span><span class="p">]</span>
-                <span class="p">),</span> <span class="s2">"source ntype is is not expected."</span>
-                <span class="k">assert</span> <span class="n">torch</span><span class="o">.</span><span class="n">all</span><span class="p">(</span>
-                    <span class="n">dst_ntype_id</span> <span class="o">==</span> <span class="n">dst_ntype_ids</span><span class="p">[</span><span class="n">type_idx</span><span class="p">]</span>
-                <span class="p">),</span> <span class="s2">"destination ntype is is not expected."</span>
-            <span class="k">if</span> <span class="n">type_wise_eids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">edge_ids</span><span class="p">[</span><span class="n">etype</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">boolean_mask</span><span class="p">(</span><span class="n">type_wise_eids</span><span class="p">,</span> <span class="n">type_idx</span><span class="p">)</span>
+            <span class="n">edge_ids</span><span class="p">[</span><span class="n">etype</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">boolean_mask</span><span class="p">(</span><span class="n">eid</span><span class="p">,</span> <span class="n">type_idx</span><span class="p">)</span>
     <span class="n">hg</span> <span class="o">=</span> <span class="n">heterograph</span><span class="p">(</span>
         <span class="n">data_dict</span><span class="p">,</span>
         <span class="p">{</span><span class="n">ntype</span><span class="p">:</span> <span class="n">g</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">(</span><span class="n">ntype</span><span class="p">)</span> <span class="k">for</span> <span class="n">ntype</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">ntypes</span><span class="p">},</span>
@@ -939,7 +703,6 @@
     <span class="n">prob</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">etype_sorted</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">use_graphbolt</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Sample from the neighbors of the given nodes from a distributed graph.</span>
 
@@ -993,8 +756,6 @@
 <span class="sd">        neighbors are sampled. If fanout == -1, all neighbors are collected.</span>
 <span class="sd">    etype_sorted : bool, optional</span>
 <span class="sd">        Indicates whether etypes are sorted.</span>
-<span class="sd">    use_graphbolt : bool, optional</span>
-<span class="sd">        Whether to use GraphBolt for sampling.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -1025,7 +786,11 @@
             <span class="p">),</span> <span class="s2">"The sampled node type </span><span class="si">{}</span><span class="s2"> does not exist in the input graph"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">ntype</span>
             <span class="p">)</span>
-            <span class="n">homo_nids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gpb</span><span class="o">.</span><span class="n">map_to_homo_nid</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="n">ntype</span><span class="p">],</span> <span class="n">ntype</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">F</span><span class="o">.</span><span class="n">is_tensor</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="n">ntype</span><span class="p">]):</span>
+                <span class="n">typed_nodes</span> <span class="o">=</span> <span class="n">nodes</span><span class="p">[</span><span class="n">ntype</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">typed_nodes</span> <span class="o">=</span> <span class="n">toindex</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="n">ntype</span><span class="p">])</span><span class="o">.</span><span class="n">tousertensor</span><span class="p">()</span>
+            <span class="n">homo_nids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gpb</span><span class="o">.</span><span class="n">map_to_homo_nid</span><span class="p">(</span><span class="n">typed_nodes</span><span class="p">,</span> <span class="n">ntype</span><span class="p">))</span>
         <span class="n">nodes</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">homo_nids</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">issue_remote_req</span><span class="p">(</span><span class="n">node_ids</span><span class="p">):</span>
@@ -1048,7 +813,6 @@
             <span class="n">prob</span><span class="o">=</span><span class="n">_prob</span><span class="p">,</span>
             <span class="n">replace</span><span class="o">=</span><span class="n">replace</span><span class="p">,</span>
             <span class="n">etype_sorted</span><span class="o">=</span><span class="n">etype_sorted</span><span class="p">,</span>
-            <span class="n">use_graphbolt</span><span class="o">=</span><span class="n">use_graphbolt</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">local_access</span><span class="p">(</span><span class="n">local_g</span><span class="p">,</span> <span class="n">partition_book</span><span class="p">,</span> <span class="n">local_nids</span><span class="p">):</span>
@@ -1064,15 +828,14 @@
                 <span class="k">for</span> <span class="n">etype</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">canonical_etypes</span>
             <span class="p">]</span>
         <span class="k">return</span> <span class="n">_sample_etype_neighbors</span><span class="p">(</span>
-            <span class="n">use_graphbolt</span><span class="p">,</span>
             <span class="n">local_g</span><span class="p">,</span>
             <span class="n">partition_book</span><span class="p">,</span>
             <span class="n">local_nids</span><span class="p">,</span>
+            <span class="n">etype_offset</span><span class="p">,</span>
             <span class="n">fanout</span><span class="p">,</span>
-            <span class="n">edge_dir</span><span class="o">=</span><span class="n">edge_dir</span><span class="p">,</span>
-            <span class="n">prob</span><span class="o">=</span><span class="n">_prob</span><span class="p">,</span>
-            <span class="n">replace</span><span class="o">=</span><span class="n">replace</span><span class="p">,</span>
-            <span class="n">etype_offset</span><span class="o">=</span><span class="n">etype_offset</span><span class="p">,</span>
+            <span class="n">edge_dir</span><span class="p">,</span>
+            <span class="n">_prob</span><span class="p">,</span>
+            <span class="n">replace</span><span class="p">,</span>
             <span class="n">etype_sorted</span><span class="o">=</span><span class="n">etype_sorted</span><span class="p">,</span>
         <span class="p">)</span>
 
@@ -1086,15 +849,7 @@
 
 <div class="viewcode-block" id="sample_neighbors">
 <a class="viewcode-back" href="../../../generated/dgl.distributed.sample_neighbors.html#dgl.distributed.sample_neighbors">[docs]</a>
-<span class="k">def</span> <span class="nf">sample_neighbors</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">,</span>
-    <span class="n">nodes</span><span class="p">,</span>
-    <span class="n">fanout</span><span class="p">,</span>
-    <span class="n">edge_dir</span><span class="o">=</span><span class="s2">"in"</span><span class="p">,</span>
-    <span class="n">prob</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">use_graphbolt</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<span class="p">):</span>
+<span class="k">def</span> <span class="nf">sample_neighbors</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">fanout</span><span class="p">,</span> <span class="n">edge_dir</span><span class="o">=</span><span class="s2">"in"</span><span class="p">,</span> <span class="n">prob</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Sample from the neighbors of the given nodes from a distributed graph.</span>
 
 <span class="sd">    For each node, a number of inbound (or outbound when ``edge_dir == 'out'``) edges</span>
@@ -1137,8 +892,6 @@
 
 <span class="sd">        For sampling without replacement, if fanout &gt; the number of neighbors, all the</span>
 <span class="sd">        neighbors are sampled. If fanout == -1, all neighbors are collected.</span>
-<span class="sd">    use_graphbolt : bool, optional</span>
-<span class="sd">        Whether to use GraphBolt for sampling.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -1153,7 +906,11 @@
             <span class="k">assert</span> <span class="p">(</span>
                 <span class="n">ntype</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">ntypes</span>
             <span class="p">),</span> <span class="s2">"The sampled node type does not exist in the input graph"</span>
-            <span class="n">homo_nids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gpb</span><span class="o">.</span><span class="n">map_to_homo_nid</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="n">ntype</span><span class="p">],</span> <span class="n">ntype</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">F</span><span class="o">.</span><span class="n">is_tensor</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="n">ntype</span><span class="p">]):</span>
+                <span class="n">typed_nodes</span> <span class="o">=</span> <span class="n">nodes</span><span class="p">[</span><span class="n">ntype</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">typed_nodes</span> <span class="o">=</span> <span class="n">toindex</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="n">ntype</span><span class="p">])</span><span class="o">.</span><span class="n">tousertensor</span><span class="p">()</span>
+            <span class="n">homo_nids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gpb</span><span class="o">.</span><span class="n">map_to_homo_nid</span><span class="p">(</span><span class="n">typed_nodes</span><span class="p">,</span> <span class="n">ntype</span><span class="p">))</span>
         <span class="n">nodes</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">homo_nids</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
@@ -1166,26 +923,20 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">_prob</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="n">SamplingRequest</span><span class="p">(</span>
-            <span class="n">node_ids</span><span class="p">,</span>
-            <span class="n">fanout</span><span class="p">,</span>
-            <span class="n">edge_dir</span><span class="o">=</span><span class="n">edge_dir</span><span class="p">,</span>
-            <span class="n">prob</span><span class="o">=</span><span class="n">_prob</span><span class="p">,</span>
-            <span class="n">replace</span><span class="o">=</span><span class="n">replace</span><span class="p">,</span>
-            <span class="n">use_graphbolt</span><span class="o">=</span><span class="n">use_graphbolt</span><span class="p">,</span>
+            <span class="n">node_ids</span><span class="p">,</span> <span class="n">fanout</span><span class="p">,</span> <span class="n">edge_dir</span><span class="o">=</span><span class="n">edge_dir</span><span class="p">,</span> <span class="n">prob</span><span class="o">=</span><span class="n">_prob</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="n">replace</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">local_access</span><span class="p">(</span><span class="n">local_g</span><span class="p">,</span> <span class="n">partition_book</span><span class="p">,</span> <span class="n">local_nids</span><span class="p">):</span>
         <span class="c1"># See NOTE 1</span>
         <span class="n">_prob</span> <span class="o">=</span> <span class="p">[</span><span class="n">g</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">prob</span><span class="p">]</span><span class="o">.</span><span class="n">local_partition</span><span class="p">]</span> <span class="k">if</span> <span class="n">prob</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="n">_sample_neighbors</span><span class="p">(</span>
-            <span class="n">use_graphbolt</span><span class="p">,</span>
             <span class="n">local_g</span><span class="p">,</span>
             <span class="n">partition_book</span><span class="p">,</span>
             <span class="n">local_nids</span><span class="p">,</span>
             <span class="n">fanout</span><span class="p">,</span>
-            <span class="n">edge_dir</span><span class="o">=</span><span class="n">edge_dir</span><span class="p">,</span>
-            <span class="n">prob</span><span class="o">=</span><span class="n">_prob</span><span class="p">,</span>
-            <span class="n">replace</span><span class="o">=</span><span class="n">replace</span><span class="p">,</span>
+            <span class="n">edge_dir</span><span class="p">,</span>
+            <span class="n">_prob</span><span class="p">,</span>
+            <span class="n">replace</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="n">frontier</span> <span class="o">=</span> <span class="n">_distributed_access</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">issue_remote_req</span><span class="p">,</span> <span class="n">local_access</span><span class="p">)</span>
@@ -1224,6 +975,7 @@
 <span class="sd">    """</span>
     <span class="n">req_list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">partition_book</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_partition_book</span><span class="p">()</span>
+    <span class="n">edges</span> <span class="o">=</span> <span class="n">toindex</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span><span class="o">.</span><span class="n">tousertensor</span><span class="p">()</span>
     <span class="n">partition_id</span> <span class="o">=</span> <span class="n">partition_book</span><span class="o">.</span><span class="n">eid2partid</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
     <span class="n">local_eids</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">reorder_idx</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1347,6 +1099,7 @@
 <span class="k">def</span> <span class="nf">_distributed_get_node_property</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">issue_remote_req</span><span class="p">,</span> <span class="n">local_access</span><span class="p">):</span>
     <span class="n">req_list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">partition_book</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_partition_book</span><span class="p">()</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">toindex</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">tousertensor</span><span class="p">()</span>
     <span class="n">partition_id</span> <span class="o">=</span> <span class="n">partition_book</span><span class="o">.</span><span class="n">nid2partid</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
     <span class="n">local_nids</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">reorder_idx</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1391,21 +1144,7 @@
 
 
 <span class="k">def</span> <span class="nf">in_degrees</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Get in-degrees</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-
-<span class="sd">    g : DistGraph</span>
-<span class="sd">        The distributed graph.</span>
-<span class="sd">    v : tensor</span>
-<span class="sd">        The node ID array.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    tensor</span>
-<span class="sd">        The in-degree array.</span>
-<span class="sd">    """</span>
+<span class="w">    </span><span class="sd">"""Get in-degrees"""</span>
 
     <span class="k">def</span> <span class="nf">issue_remote_req</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">order_id</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">InDegreeRequest</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">order_id</span><span class="p">)</span>
@@ -1417,21 +1156,7 @@
 
 
 <span class="k">def</span> <span class="nf">out_degrees</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Get out-degrees</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-
-<span class="sd">    g : DistGraph</span>
-<span class="sd">        The distributed graph.</span>
-<span class="sd">    u : tensor</span>
-<span class="sd">        The node ID array.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    tensor</span>
-<span class="sd">        The out-degree array.</span>
-<span class="sd">    """</span>
+<span class="w">    </span><span class="sd">"""Get out-degrees"""</span>
 
     <span class="k">def</span> <span class="nf">issue_remote_req</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">order_id</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">OutDegreeRequest</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">order_id</span><span class="p">)</span>

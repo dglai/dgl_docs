@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TorchBasedFeature — DGL 2.1.0 documentation</title>
+<title>TorchBasedFeature — DGL 2.0.0 documentation</title>
 <link href="../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,13 +19,12 @@
   <![endif]-->
 <script src="../_static/jquery.js?v=5d32c60e"></script>
 <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../_static/documentation_options.js?v=20623aea"></script>
+<script src="../_static/documentation_options.js?v=51b770b3"></script>
 <script src="../_static/doctools.js?v=9a2dae69"></script>
 <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../_static/copybutton.js?v=ccdb6887"></script>
 <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
 <script src="../_static/js/theme.js"></script>
 <link href="../genindex.html" rel="index" title="Index"/>
 <link href="../search.html" rel="search" title="Search"/>
@@ -41,7 +40,7 @@
             DGL
           </a>
 <div class="version">
-                2.1.0
+                2.0.0
               </div>
 <div role="search">
 <form action="../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -62,7 +61,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guide_cn/index.html">用户指南【包含过时信息】</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guide_ko/index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../graphtransformer/index.html">🆕 Tutorial: Graph Transformer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/sparse/index.html">Tutorials: dgl.sparse</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/cpu/index.html">Training on CPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/multi/index.html">Training on Multiple GPUs</a></li>
@@ -105,6 +103,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/nn-tensorflow.html">dgl.nn (TensorFlow)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/nn-mxnet.html">dgl.nn (MXNet)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/python/nn.functional.html">dgl.nn.functional</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.ops.html">dgl.ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.optim.html">dgl.optim</a></li>
@@ -202,22 +202,13 @@ Note that the dimension of the tensor should be greater than 1.</p>
 <span class="go">tensor([[1, 2]])</span>
 </pre></div>
 </div>
-<ol class="arabic simple" start="3">
-<li><p>Pinned CPU feature.</p></li>
-</ol>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">torch_feat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">pin_memory</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span> <span class="o">=</span> <span class="n">gb</span><span class="o">.</span><span class="n">TorchBasedFeature</span><span class="p">(</span><span class="n">torch_feat</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">device</span>
-<span class="go">device(type='cuda', index=0)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">cuda</span><span class="p">())</span><span class="o">.</span><span class="n">device</span>
-<span class="go">device(type='cuda', index=0)</span>
-</pre></div>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="dgl.graphbolt.TorchBasedFeature.is_pinned">
-<span class="sig-name descname"><span class="pre">is_pinned</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dgl/graphbolt/impl/torch_based_feature_store.html#TorchBasedFeature.is_pinned"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.graphbolt.TorchBasedFeature.is_pinned" title="Link to this definition"></a></dt>
-<dd><p>Returns True if the stored feature is pinned.</p>
-</dd></dl>
+<p>3. Pinned CPU feature.
+&gt;&gt;&gt; torch_feat = torch.arange(10).reshape(2, -1).pin_memory()
+&gt;&gt;&gt; feature = gb.TorchBasedFeature(torch_feat)
+&gt;&gt;&gt; feature.read().device
+device(type=’cuda’, index=0)
+&gt;&gt;&gt; feature.read(torch.tensor([0]).cuda()).device
+device(type=’cuda’, index=0)</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.graphbolt.TorchBasedFeature.metadata">
 <span class="sig-name descname"><span class="pre">metadata</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dgl/graphbolt/impl/torch_based_feature_store.html#TorchBasedFeature.metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.graphbolt.TorchBasedFeature.metadata" title="Link to this definition"></a></dt>
@@ -234,8 +225,7 @@ Note that the dimension of the tensor should be greater than 1.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.graphbolt.TorchBasedFeature.pin_memory_">
 <span class="sig-name descname"><span class="pre">pin_memory_</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dgl/graphbolt/impl/torch_based_feature_store.html#TorchBasedFeature.pin_memory_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.graphbolt.TorchBasedFeature.pin_memory_" title="Link to this definition"></a></dt>
-<dd><p>In-place operation to copy the feature to pinned memory. Returns the
-same object modified in-place.</p>
+<dd><p>In-place operation to copy the feature to pinned memory.</p>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.graphbolt.TorchBasedFeature.read">
@@ -269,11 +259,6 @@ of the feature are read. If None, the entire feature is returned.</p>
 <dd class="field-even"><p>torch.Size</p>
 </dd>
 </dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="dgl.graphbolt.TorchBasedFeature.to">
-<span class="sig-name descname"><span class="pre">to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dgl/graphbolt/impl/torch_based_feature_store.html#TorchBasedFeature.to"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.graphbolt.TorchBasedFeature.to" title="Link to this definition"></a></dt>
-<dd><p>Copy <cite>TorchBasedFeature</cite> to the specified device.</p>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="dgl.graphbolt.TorchBasedFeature.update">

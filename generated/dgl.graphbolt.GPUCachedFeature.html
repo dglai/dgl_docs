@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>GPUCachedFeature — DGL 2.3.1 documentation</title>
+<title>GPUCachedFeature — DGL 2.4 documentation</title>
 <link href="../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,7 +19,7 @@
   <![endif]-->
 <script src="../_static/jquery.js?v=5d32c60e"></script>
 <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../_static/documentation_options.js?v=9caaf7ed"></script>
 <script src="../_static/doctools.js?v=9a2dae69"></script>
 <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -30,7 +30,7 @@
 <link href="../genindex.html" rel="index" title="Index"/>
 <link href="../search.html" rel="search" title="Search"/>
 <link href="dgl.graphbolt.DataLoader.html" rel="next" title="DataLoader"/>
-<link href="dgl.graphbolt.TorchBasedFeatureStore.html" rel="prev" title="TorchBasedFeatureStore"/>
+<link href="dgl.graphbolt.CPUCachedFeature.html" rel="prev" title="CPUCachedFeature"/>
 </head>
 <body class="wy-body-for-nav">
 <div class="wy-grid-for-nav">
@@ -41,7 +41,7 @@
             DGL
           </a>
 <div class="version">
-                2.3.1
+                2.4
               </div>
 <div role="search">
 <form action="../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -87,6 +87,8 @@
 <li class="toctree-l3"><a class="reference internal" href="dgl.graphbolt.BasicFeatureStore.html">BasicFeatureStore</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dgl.graphbolt.TorchBasedFeature.html">TorchBasedFeature</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dgl.graphbolt.TorchBasedFeatureStore.html">TorchBasedFeatureStore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgl.graphbolt.DiskBasedFeature.html">DiskBasedFeature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgl.graphbolt.CPUCachedFeature.html">CPUCachedFeature</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">GPUCachedFeature</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#dgl.graphbolt.GPUCachedFeature"><code class="docutils literal notranslate"><span class="pre">GPUCachedFeature</span></code></a></li>
 </ul>
@@ -154,7 +156,8 @@
 <dt class="sig sig-object py" id="dgl.graphbolt.GPUCachedFeature">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgl.graphbolt.</span></span><span class="sig-name descname"><span class="pre">GPUCachedFeature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fallback_feature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="dgl.graphbolt.Feature.html#dgl.graphbolt.Feature" title="dgl.graphbolt.feature_store.Feature"><span class="pre">Feature</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_cache_size_in_bytes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dgl/graphbolt/impl/gpu_cached_feature.html#GPUCachedFeature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.graphbolt.GPUCachedFeature" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="dgl.graphbolt.Feature.html#dgl.graphbolt.Feature" title="dgl.graphbolt.feature_store.Feature"><code class="xref py py-class docutils literal notranslate"><span class="pre">Feature</span></code></a></p>
-<p>GPU cached feature wrapping a fallback feature.</p>
+<p>GPU cached feature wrapping a fallback feature. It uses the least
+recently used (LRU) algorithm as the cache eviction policy.</p>
 <p>Places the GPU cache to torch.cuda.current_device().</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -205,6 +208,55 @@ of the feature are read. If None, the entire feature is returned.</p>
 </dl>
 </dd></dl>
 <dl class="py method">
+<dt class="sig sig-object py" id="dgl.graphbolt.GPUCachedFeature.read_async">
+<span class="sig-name descname"><span class="pre">read_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dgl/graphbolt/impl/gpu_cached_feature.html#GPUCachedFeature.read_async"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.graphbolt.GPUCachedFeature.read_async" title="Link to this definition"></a></dt>
+<dd><p>Read the feature by index asynchronously.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ids</strong> (<em>torch.Tensor</em>) – The index of the feature. Only the specified indices of the
+feature are read.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The returned generator object returns a future on
+<code class="docutils literal notranslate"><span class="pre">read_async_num_stages(ids.device)``th</span> <span class="pre">invocation.</span> <span class="pre">The</span> <span class="pre">return</span> <span class="pre">result</span>
+<span class="pre">can</span> <span class="pre">be</span> <span class="pre">accessed</span> <span class="pre">by</span> <span class="pre">calling</span> <span class="pre">``.wait()</span></code>. on the returned future object.
+It is undefined behavior to call <code class="docutils literal notranslate"><span class="pre">.wait()</span></code> more than once.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A generator object.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dgl.graphbolt</span> <span class="k">as</span> <span class="nn">gb</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span> <span class="o">=</span> <span class="n">gb</span><span class="o">.</span><span class="n">Feature</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ids</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">stage</span><span class="p">,</span> <span class="n">future</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">read_async</span><span class="p">(</span><span class="n">ids</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">stage</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">feature</span><span class="o">.</span><span class="n">read_async_num_stages</span><span class="p">(</span><span class="n">ids</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">future</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>  <span class="c1"># result contains the read values.</span>
+</pre></div>
+</div>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="dgl.graphbolt.GPUCachedFeature.read_async_num_stages">
+<span class="sig-name descname"><span class="pre">read_async_num_stages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids_device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">device</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dgl/graphbolt/impl/gpu_cached_feature.html#GPUCachedFeature.read_async_num_stages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.graphbolt.GPUCachedFeature.read_async_num_stages" title="Link to this definition"></a></dt>
+<dd><p>The number of stages of the read_async operation. See read_async
+function for directions on its use. This function is required to return
+the number of yield operations when read_async is used with a tensor
+residing on ids_device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ids_device</strong> (<em>torch.device</em>) – The device of the ids parameter passed into read_async.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The number of stages of the read_async operation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
 <dt class="sig sig-object py" id="dgl.graphbolt.GPUCachedFeature.size">
 <span class="sig-name descname"><span class="pre">size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dgl/graphbolt/impl/gpu_cached_feature.html#GPUCachedFeature.size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.graphbolt.GPUCachedFeature.size" title="Link to this definition"></a></dt>
 <dd><p>Get the size of the feature.</p>
@@ -234,12 +286,17 @@ updated.</p></li>
 </dd>
 </dl>
 </dd></dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="dgl.graphbolt.GPUCachedFeature.miss_rate">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">miss_rate</span></span><a class="headerlink" href="#dgl.graphbolt.GPUCachedFeature.miss_rate" title="Link to this definition"></a></dt>
+<dd><p>Returns the cache miss rate since creation.</p>
+</dd></dl>
 </dd></dl>
 </section>
 </div>
 </div>
 <footer><div aria-label="Footer" class="rst-footer-buttons" role="navigation">
-<a accesskey="p" class="btn btn-neutral float-left" href="dgl.graphbolt.TorchBasedFeatureStore.html" rel="prev" title="TorchBasedFeatureStore"><span aria-hidden="true" class="fa fa-arrow-circle-left"></span> Previous</a>
+<a accesskey="p" class="btn btn-neutral float-left" href="dgl.graphbolt.CPUCachedFeature.html" rel="prev" title="CPUCachedFeature"><span aria-hidden="true" class="fa fa-arrow-circle-left"></span> Previous</a>
 <a accesskey="n" class="btn btn-neutral float-right" href="dgl.graphbolt.DataLoader.html" rel="next" title="DataLoader">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
 </div>
 <hr/>
@@ -260,8 +317,8 @@ updated.</p></li>
 <div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
 <span class="rst-current-version" data-toggle="rst-current-version">
 <span class="fa fa-book"> Read the Docs</span>
-            v: 1.1.x
-            <span class="fa fa-caret-down"></span>
+<span id="version-placeholder">v: latest</span>
+<span class="fa fa-caret-down"></span>
 </span>
 <div class="rst-other-versions">
 <dl>
@@ -283,8 +340,7 @@ updated.</p></li>
 </div>
 <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 假设 branches.json 位于同目录下
-            fetch('branches.json')
+            fetch('/dgl_docs/branches.json')
                 .then(response => response.json())
                 .then(data => {
                     var versionListDiv = document.getElementById('version-list');
@@ -298,6 +354,29 @@ updated.</p></li>
                     });
                 })
                 .catch(error => console.error('Error loading branches:', error));
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            // 获取当前路径
+            var path = window.location.pathname;
+            var versionPlaceholder = document.getElementById('version-placeholder');
+
+            // 检查路径中是否包含 'en'
+            if (path.includes('/en/')) {
+                // 提取 'en' 后的文件夹作为版本号
+                var parts = path.split('/en/');
+                if (parts[1]) {
+                    var folders = parts[1].split('/');
+                    if (folders.length > 0 && folders[0]) {
+                        versionPlaceholder.textContent = 'v: ' + folders[0];
+                    } else {
+                        versionPlaceholder.textContent = 'v: latest';
+                    }
+                } else {
+                    versionPlaceholder.textContent = 'v: latest';
+                }
+            } else {
+                versionPlaceholder.textContent = 'v: latest';
+            }
         });
     </script>
 

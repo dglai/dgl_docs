@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>dgl.graphbolt.utils — DGL 2.1.0 documentation</title>
+<title>dgl.graphbolt.utils — DGL 2.0.0 documentation</title>
 <link href="../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,13 +19,12 @@
   <![endif]-->
 <script src="../../../_static/jquery.js?v=5d32c60e"></script>
 <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../../../_static/documentation_options.js?v=20623aea"></script>
+<script src="../../../_static/documentation_options.js?v=51b770b3"></script>
 <script src="../../../_static/doctools.js?v=9a2dae69"></script>
 <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../../../_static/copybutton.js?v=ccdb6887"></script>
 <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
 <script src="../../../_static/js/theme.js"></script>
 <link href="../../../genindex.html" rel="index" title="Index"/>
 <link href="../../../search.html" rel="search" title="Search"/>
@@ -39,7 +38,7 @@
             DGL
           </a>
 <div class="version">
-                2.1.0
+                2.0.0
               </div>
 <div role="search">
 <form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -60,7 +59,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guide_cn/index.html">用户指南【包含过时信息】</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guide_ko/index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../graphtransformer/index.html">🆕 Tutorial: Graph Transformer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/sparse/index.html">Tutorials: dgl.sparse</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/cpu/index.html">Training on CPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/multi/index.html">Training on Multiple GPUs</a></li>
@@ -78,6 +76,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.geometry.html">dgl.geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.graphbolt.html">🆕 dgl.graphbolt</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn-tensorflow.html">dgl.nn (TensorFlow)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn-mxnet.html">dgl.nn (MXNet)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn.functional.html">dgl.nn.functional</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.ops.html">dgl.ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.optim.html">dgl.optim</a></li>
@@ -199,74 +199,6 @@
 
 
 
-<span class="k">def</span> <span class="nf">add_reverse_edges_2</span><span class="p">(</span>
-    <span class="n">edges</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span>
-    <span class="n">reverse_etypes_mapping</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
-<span class="sd">    This function finds the reverse edges of the given `edges` and returns the</span>
-<span class="sd">    composition of them. In a homogeneous graph, reverse edges have inverted</span>
-<span class="sd">    source and destination node IDs. While in a heterogeneous graph, reversing</span>
-<span class="sd">    also involves swapping node IDs and their types. This function could be</span>
-<span class="sd">    used before `exclude_edges` function to help find targeting edges.</span>
-<span class="sd">    Note: The found reverse edges may not really exists in the original graph.</span>
-<span class="sd">    And repeat edges could be added becasue reverse edges may already exists in</span>
-<span class="sd">    the `edges`.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    edges : Union[Dict[str, torch.Tensor], torch.Tensor]</span>
-<span class="sd">      - If sampled subgraph is homogeneous, then `edges` should be a N*2</span>
-<span class="sd">        tensors.</span>
-<span class="sd">      - If sampled subgraph is heterogeneous, then `edges` should be a</span>
-<span class="sd">        dictionary of edge types and the corresponding edges to exclude.</span>
-<span class="sd">    reverse_etypes_mapping : Dict[str, str], optional</span>
-<span class="sd">        The mapping from the original edge types to their reverse edge types.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    Union[Dict[str, torch.Tensor], torch.Tensor]</span>
-<span class="sd">        The node pairs contain both the original edges and their reverse</span>
-<span class="sd">        counterparts.</span>
-
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt; edges = {"A:r:B": torch.tensor([[0, 1],[1, 2]]))}</span>
-<span class="sd">    &gt;&gt;&gt; print(gb.add_reverse_edges(edges, {"A:r:B": "B:rr:A"}))</span>
-<span class="sd">    {'A:r:B': torch.tensor([[0, 1],[1, 2]]),</span>
-<span class="sd">    'B:rr:A': torch.tensor([[1, 0],[2, 1]])}</span>
-
-<span class="sd">    &gt;&gt;&gt; edges = torch.tensor([[0, 1],[1, 2]])</span>
-<span class="sd">    &gt;&gt;&gt; print(gb.add_reverse_edges(edges))</span>
-<span class="sd">    torch.tensor([[1, 0],[2, 1]])</span>
-<span class="sd">    """</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="n">edges</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">edges</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span>
-            <span class="s2">"Only tensor with shape N*2 is supported now, but got "</span>
-            <span class="o">+</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">edges</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">."</span>
-        <span class="p">)</span>
-        <span class="n">reverse_edges</span> <span class="o">=</span> <span class="n">edges</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
-        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">edges</span><span class="p">,</span> <span class="n">reverse_edges</span><span class="p">))</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">combined_edges</span> <span class="o">=</span> <span class="n">edges</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">etype</span><span class="p">,</span> <span class="n">reverse_etype</span> <span class="ow">in</span> <span class="n">reverse_etypes_mapping</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">etype</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
-                <span class="k">assert</span> <span class="n">edges</span><span class="p">[</span><span class="n">etype</span><span class="p">]</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">edges</span><span class="p">[</span><span class="n">etype</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span>
-                    <span class="s2">"Only tensor with shape N*2 is supported now, but got "</span>
-                    <span class="o">+</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">edges</span><span class="p">[</span><span class="n">etype</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">."</span>
-                <span class="p">)</span>
-                <span class="k">if</span> <span class="n">reverse_etype</span> <span class="ow">in</span> <span class="n">combined_edges</span><span class="p">:</span>
-                    <span class="n">combined_edges</span><span class="p">[</span><span class="n">reverse_etype</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span>
-                        <span class="p">(</span>
-                            <span class="n">combined_edges</span><span class="p">[</span><span class="n">reverse_etype</span><span class="p">],</span>
-                            <span class="n">edges</span><span class="p">[</span><span class="n">etype</span><span class="p">]</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,)),</span>
-                        <span class="p">)</span>
-                    <span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">combined_edges</span><span class="p">[</span><span class="n">reverse_etype</span><span class="p">]</span> <span class="o">=</span> <span class="n">edges</span><span class="p">[</span><span class="n">etype</span><span class="p">]</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
-        <span class="k">return</span> <span class="n">combined_edges</span>
-
-
 <div class="viewcode-block" id="exclude_seed_edges">
 <a class="viewcode-back" href="../../../generated/dgl.graphbolt.exclude_seed_edges.html#dgl.graphbolt.exclude_seed_edges">[docs]</a>
 <span class="k">def</span> <span class="nf">exclude_seed_edges</span><span class="p">(</span>
@@ -285,18 +217,11 @@
 <span class="sd">    reverse_etypes_mapping : Dict[str, str] = None</span>
 <span class="sd">        The mapping from the original edge types to their reverse edge types.</span>
 <span class="sd">    """</span>
-    <span class="k">if</span> <span class="n">minibatch</span><span class="o">.</span><span class="n">node_pairs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">edges_to_exclude</span> <span class="o">=</span> <span class="n">minibatch</span><span class="o">.</span><span class="n">node_pairs</span>
-        <span class="k">if</span> <span class="n">include_reverse_edges</span><span class="p">:</span>
-            <span class="n">edges_to_exclude</span> <span class="o">=</span> <span class="n">add_reverse_edges</span><span class="p">(</span>
-                <span class="n">minibatch</span><span class="o">.</span><span class="n">node_pairs</span><span class="p">,</span> <span class="n">reverse_etypes_mapping</span>
-            <span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">edges_to_exclude</span> <span class="o">=</span> <span class="n">minibatch</span><span class="o">.</span><span class="n">seeds</span>
-        <span class="k">if</span> <span class="n">include_reverse_edges</span><span class="p">:</span>
-            <span class="n">edges_to_exclude</span> <span class="o">=</span> <span class="n">add_reverse_edges_2</span><span class="p">(</span>
-                <span class="n">edges_to_exclude</span><span class="p">,</span> <span class="n">reverse_etypes_mapping</span>
-            <span class="p">)</span>
+    <span class="n">edges_to_exclude</span> <span class="o">=</span> <span class="n">minibatch</span><span class="o">.</span><span class="n">node_pairs</span>
+    <span class="k">if</span> <span class="n">include_reverse_edges</span><span class="p">:</span>
+        <span class="n">edges_to_exclude</span> <span class="o">=</span> <span class="n">add_reverse_edges</span><span class="p">(</span>
+            <span class="n">minibatch</span><span class="o">.</span><span class="n">node_pairs</span><span class="p">,</span> <span class="n">reverse_etypes_mapping</span>
+        <span class="p">)</span>
     <span class="n">minibatch</span><span class="o">.</span><span class="n">sampled_subgraphs</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">subgraph</span><span class="o">.</span><span class="n">exclude_edges</span><span class="p">(</span><span class="n">edges_to_exclude</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">subgraph</span> <span class="ow">in</span> <span class="n">minibatch</span><span class="o">.</span><span class="n">sampled_subgraphs</span>

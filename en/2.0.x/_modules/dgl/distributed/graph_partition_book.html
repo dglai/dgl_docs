@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>dgl.distributed.graph_partition_book — DGL 2.1.0 documentation</title>
+<title>dgl.distributed.graph_partition_book — DGL 2.0.0 documentation</title>
 <link href="../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,13 +19,12 @@
   <![endif]-->
 <script src="../../../_static/jquery.js?v=5d32c60e"></script>
 <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../../../_static/documentation_options.js?v=20623aea"></script>
+<script src="../../../_static/documentation_options.js?v=51b770b3"></script>
 <script src="../../../_static/doctools.js?v=9a2dae69"></script>
 <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../../../_static/copybutton.js?v=ccdb6887"></script>
 <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
 <script src="../../../_static/js/theme.js"></script>
 <link href="../../../genindex.html" rel="index" title="Index"/>
 <link href="../../../search.html" rel="search" title="Search"/>
@@ -39,7 +38,7 @@
             DGL
           </a>
 <div class="version">
-                2.1.0
+                2.0.0
               </div>
 <div role="search">
 <form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -60,7 +59,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guide_cn/index.html">用户指南【包含过时信息】</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guide_ko/index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../graphtransformer/index.html">🆕 Tutorial: Graph Transformer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/sparse/index.html">Tutorials: dgl.sparse</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/cpu/index.html">Training on CPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/multi/index.html">Training on Multiple GPUs</a></li>
@@ -78,6 +76,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.geometry.html">dgl.geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.graphbolt.html">🆕 dgl.graphbolt</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn-tensorflow.html">dgl.nn (TensorFlow)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn-mxnet.html">dgl.nn (MXNet)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn.functional.html">dgl.nn.functional</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.ops.html">dgl.ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.optim.html">dgl.optim</a></li>
@@ -127,9 +127,8 @@
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">torch</span>
 
-<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">F</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">F</span><span class="p">,</span> <span class="n">utils</span>
 <span class="kn">from</span> <span class="nn">.._ffi.ndarray</span> <span class="kn">import</span> <span class="n">empty_shared_mem</span>
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">DGLError</span>
 <span class="kn">from</span> <span class="nn">..ndarray</span> <span class="kn">import</span> <span class="n">exist_shared_mem_array</span>
@@ -927,6 +926,7 @@
 
     <span class="k">def</span> <span class="nf">map_to_homo_nid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">,</span> <span class="n">ntype</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Map per-node-type IDs to global node IDs in the homogeneous format."""</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">toindex</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span><span class="o">.</span><span class="n">tousertensor</span><span class="p">()</span>
         <span class="n">partids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nid2partid</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">ntype</span><span class="p">)</span>
         <span class="n">typed_max_nids</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">zerocopy_from_numpy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_typed_max_node_ids</span><span class="p">[</span><span class="n">ntype</span><span class="p">])</span>
         <span class="n">end_diff</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">gather_row</span><span class="p">(</span><span class="n">typed_max_nids</span><span class="p">,</span> <span class="n">partids</span><span class="p">)</span> <span class="o">-</span> <span class="n">ids</span>
@@ -937,6 +937,7 @@
 
     <span class="k">def</span> <span class="nf">map_to_homo_eid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">,</span> <span class="n">etype</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Map per-edge-type IDs to global edge IDs in the homoenegeous format."""</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">toindex</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span><span class="o">.</span><span class="n">tousertensor</span><span class="p">()</span>
         <span class="n">c_etype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_canonical_etype</span><span class="p">(</span><span class="n">etype</span><span class="p">)</span>
         <span class="n">partids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eid2partid</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">c_etype</span><span class="p">)</span>
         <span class="n">typed_max_eids</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">zerocopy_from_numpy</span><span class="p">(</span>
@@ -950,28 +951,32 @@
 
     <span class="k">def</span> <span class="nf">nid2partid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nids</span><span class="p">,</span> <span class="n">ntype</span><span class="o">=</span><span class="n">DEFAULT_NTYPE</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""From global node IDs to partition IDs"""</span>
-        <span class="c1"># [TODO][Rui] replace numpy with torch.</span>
-        <span class="n">nids</span> <span class="o">=</span> <span class="n">nids</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+        <span class="n">nids</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">toindex</span><span class="p">(</span><span class="n">nids</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">ntype</span> <span class="o">==</span> <span class="n">DEFAULT_NTYPE</span><span class="p">:</span>
-            <span class="n">ret</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_max_node_ids</span><span class="p">,</span> <span class="n">nids</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">"right"</span><span class="p">)</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_max_node_ids</span><span class="p">,</span> <span class="n">nids</span><span class="o">.</span><span class="n">tonumpy</span><span class="p">(),</span> <span class="n">side</span><span class="o">=</span><span class="s2">"right"</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">ret</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_typed_max_node_ids</span><span class="p">[</span><span class="n">ntype</span><span class="p">],</span> <span class="n">nids</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">"right"</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_typed_max_node_ids</span><span class="p">[</span><span class="n">ntype</span><span class="p">],</span> <span class="n">nids</span><span class="o">.</span><span class="n">tonumpy</span><span class="p">(),</span> <span class="n">side</span><span class="o">=</span><span class="s2">"right"</span>
             <span class="p">)</span>
-        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">toindex</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span><span class="o">.</span><span class="n">tousertensor</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">eid2partid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eids</span><span class="p">,</span> <span class="n">etype</span><span class="o">=</span><span class="n">DEFAULT_ETYPE</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""From global edge IDs to partition IDs"""</span>
-        <span class="c1"># [TODO][Rui] replace numpy with torch.</span>
-        <span class="n">eids</span> <span class="o">=</span> <span class="n">eids</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+        <span class="n">eids</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">toindex</span><span class="p">(</span><span class="n">eids</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">etype</span> <span class="ow">in</span> <span class="p">(</span><span class="n">DEFAULT_ETYPE</span><span class="p">,</span> <span class="n">DEFAULT_ETYPE</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
-            <span class="n">ret</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_max_edge_ids</span><span class="p">,</span> <span class="n">eids</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">"right"</span><span class="p">)</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_max_edge_ids</span><span class="p">,</span> <span class="n">eids</span><span class="o">.</span><span class="n">tonumpy</span><span class="p">(),</span> <span class="n">side</span><span class="o">=</span><span class="s2">"right"</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">c_etype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_canonical_etype</span><span class="p">(</span><span class="n">etype</span><span class="p">)</span>
             <span class="n">ret</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_typed_max_edge_ids</span><span class="p">[</span><span class="n">c_etype</span><span class="p">],</span> <span class="n">eids</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">"right"</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_typed_max_edge_ids</span><span class="p">[</span><span class="n">c_etype</span><span class="p">],</span> <span class="n">eids</span><span class="o">.</span><span class="n">tonumpy</span><span class="p">(),</span> <span class="n">side</span><span class="o">=</span><span class="s2">"right"</span>
             <span class="p">)</span>
-        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">toindex</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span><span class="o">.</span><span class="n">tousertensor</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">partid2nids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">partid</span><span class="p">,</span> <span class="n">ntype</span><span class="o">=</span><span class="n">DEFAULT_NTYPE</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""From partition ID to global node IDs"""</span>
@@ -1012,6 +1017,8 @@
 <span class="s2">                getting remote tensor of nid2localnid."</span>
             <span class="p">)</span>
 
+        <span class="n">nids</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">toindex</span><span class="p">(</span><span class="n">nids</span><span class="p">)</span>
+        <span class="n">nids</span> <span class="o">=</span> <span class="n">nids</span><span class="o">.</span><span class="n">tousertensor</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">ntype</span> <span class="o">==</span> <span class="n">DEFAULT_NTYPE</span><span class="p">:</span>
             <span class="n">start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_node_ids</span><span class="p">[</span><span class="n">partid</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">partid</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1028,6 +1035,8 @@
 <span class="s2">                getting remote tensor of eid2localeid."</span>
             <span class="p">)</span>
 
+        <span class="n">eids</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">toindex</span><span class="p">(</span><span class="n">eids</span><span class="p">)</span>
+        <span class="n">eids</span> <span class="o">=</span> <span class="n">eids</span><span class="o">.</span><span class="n">tousertensor</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">etype</span> <span class="ow">in</span> <span class="p">(</span><span class="n">DEFAULT_ETYPE</span><span class="p">,</span> <span class="n">DEFAULT_ETYPE</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
             <span class="n">start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_edge_ids</span><span class="p">[</span><span class="n">partid</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">partid</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1109,16 +1118,6 @@
                 <span class="s2">"in the form of (srctype, etype, dsttype)"</span> <span class="o">%</span> <span class="n">etype</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">ret</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">global_nid_dtype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""Get the node ID's dtype"""</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nid_map</span><span class="o">.</span><span class="n">torch_dtype</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">global_eid_dtype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""Get the edge ID's dtype"""</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_eid_map</span><span class="o">.</span><span class="n">torch_dtype</span>
 
 
 <span class="n">NODE_PART_POLICY</span> <span class="o">=</span> <span class="s2">"node"</span>

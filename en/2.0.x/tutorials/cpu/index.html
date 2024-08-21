@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Training on CPUs — DGL 2.1.0 documentation</title>
+<title>Training on CPUs — DGL 2.0.0 documentation</title>
 <link href="../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,17 +19,16 @@
   <![endif]-->
 <script src="../../_static/jquery.js?v=5d32c60e"></script>
 <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../../_static/documentation_options.js?v=20623aea"></script>
+<script src="../../_static/documentation_options.js?v=51b770b3"></script>
 <script src="../../_static/doctools.js?v=9a2dae69"></script>
 <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../../_static/copybutton.js?v=ccdb6887"></script>
 <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
 <script src="../../_static/js/theme.js"></script>
 <link href="../../genindex.html" rel="index" title="Index"/>
 <link href="../../search.html" rel="search" title="Search"/>
-<link href="argo_tutorial.html" rel="next" title="Improve Scalability on Multi-Core CPUs"/>
+<link href="cpu_best_practises.html" rel="next" title="CPU Best Practices"/>
 <link href="../../notebooks/sparse/graph_transformer.html" rel="prev" title="Graph Transformer in a Nutshell"/>
 </head>
 <body class="wy-body-for-nav">
@@ -41,7 +40,7 @@
             DGL
           </a>
 <div class="version">
-                2.1.0
+                2.0.0
               </div>
 <div role="search">
 <form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -62,10 +61,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../guide_cn/index.html">用户指南【包含过时信息】</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../guide_ko/index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../graphtransformer/index.html">🆕 Tutorial: Graph Transformer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../notebooks/sparse/index.html">Tutorials: dgl.sparse</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Training on CPUs</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="argo_tutorial.html">Improve Scalability on Multi-Core CPUs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cpu_best_practises.html">CPU Best Practices</a></li>
 </ul>
 </li>
@@ -84,6 +81,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.geometry.html">dgl.geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.graphbolt.html">🆕 dgl.graphbolt</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/nn-tensorflow.html">dgl.nn (TensorFlow)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/nn-mxnet.html">dgl.nn (MXNet)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/nn.functional.html">dgl.nn.functional</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.ops.html">dgl.ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/python/dgl.optim.html">dgl.optim</a></li>
@@ -128,10 +127,7 @@
 <div itemprop="articleBody">
 <section id="training-on-cpus">
 <h1>Training on CPUs<a class="headerlink" href="#training-on-cpus" title="Link to this heading"></a></h1>
-<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Graph Neural Network (GNN) training suffers from low scalability on multi-core CPUs.  Specificially, the performance often caps at 16 cores, and no improvement is observed when applying more than 16 cores [#f1]_. ARGO is a runtime system that offers scalable performance.   With ARGO enabled, we are able to scale over 64 cores, allowing ARGO to speedup GNN training (in terms of epoch time) by up to 4.30x and 3.32x on a Xeon 8380H and a Xeon 6430L, respectively [#f2]_. This chapter focus on how to setup ARGO to unleash the potential of multi-core CPUs to speedup GNN training."><img alt="" src="../../_images/sphx_glr_argo_tutorial_thumb.png"/>
-<p><a class="reference internal" href="argo_tutorial.html#sphx-glr-tutorials-cpu-argo-tutorial-py"><span class="std std-ref">Improve Scalability on Multi-Core CPUs</span></a></p>
-<div class="sphx-glr-thumbnail-title">Improve Scalability on Multi-Core CPUs</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="This chapter focus on providing best practises for environment setup to get the best performance during training and inference on the CPU."><img alt="" src="../../_images/sphx_glr_cpu_best_practises_thumb.png"/>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="This chapter focus on providing best practises for environment setup to get the best performance during training and inference on the CPU."><img alt="" src="../../_images/sphx_glr_cpu_best_practises_thumb.png"/>
 <p><a class="reference internal" href="cpu_best_practises.html#sphx-glr-tutorials-cpu-cpu-best-practises-py"><span class="std std-ref">CPU Best Practices</span></a></p>
 <div class="sphx-glr-thumbnail-title">CPU Best Practices</div>
 </div></div><div class="toctree-wrapper compound">
@@ -142,7 +138,7 @@
 </div>
 <footer><div aria-label="Footer" class="rst-footer-buttons" role="navigation">
 <a accesskey="p" class="btn btn-neutral float-left" href="../../notebooks/sparse/graph_transformer.html" rel="prev" title="Graph Transformer in a Nutshell"><span aria-hidden="true" class="fa fa-arrow-circle-left"></span> Previous</a>
-<a accesskey="n" class="btn btn-neutral float-right" href="argo_tutorial.html" rel="next" title="Improve Scalability on Multi-Core CPUs">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
+<a accesskey="n" class="btn btn-neutral float-right" href="cpu_best_practises.html" rel="next" title="CPU Best Practices">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
 </div>
 <hr/>
 <div role="contentinfo">

@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>dgl.graphbolt.unique_and_compact — DGL 2.1.0 documentation</title>
+<title>dgl.graphbolt.unique_and_compact — DGL 2.0.0 documentation</title>
 <link href="../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,13 +19,12 @@
   <![endif]-->
 <script src="../_static/jquery.js?v=5d32c60e"></script>
 <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../_static/documentation_options.js?v=20623aea"></script>
+<script src="../_static/documentation_options.js?v=51b770b3"></script>
 <script src="../_static/doctools.js?v=9a2dae69"></script>
 <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../_static/copybutton.js?v=ccdb6887"></script>
 <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
 <script src="../_static/js/theme.js"></script>
 <link href="../genindex.html" rel="index" title="Index"/>
 <link href="../search.html" rel="search" title="Search"/>
@@ -41,7 +40,7 @@
             DGL
           </a>
 <div class="version">
-                2.1.0
+                2.0.0
               </div>
 <div role="search">
 <form action="../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -62,7 +61,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../guide/index.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guide_cn/index.html">用户指南【包含过时信息】</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guide_ko/index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../graphtransformer/index.html">🆕 Tutorial: Graph Transformer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/sparse/index.html">Tutorials: dgl.sparse</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/cpu/index.html">Training on CPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/multi/index.html">Training on Multiple GPUs</a></li>
@@ -98,8 +96,6 @@
 <li class="toctree-l3"><a class="reference internal" href="dgl.graphbolt.etype_tuple_to_str.html">dgl.graphbolt.etype_tuple_to_str</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dgl.graphbolt.isin.html">dgl.graphbolt.isin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dgl.graphbolt.seed.html">dgl.graphbolt.seed</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dgl.graphbolt.index_select.html">dgl.graphbolt.index_select</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dgl.graphbolt.expand_indptr.html">dgl.graphbolt.expand_indptr</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dgl.graphbolt.add_reverse_edges.html">dgl.graphbolt.add_reverse_edges</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dgl.graphbolt.exclude_seed_edges.html">dgl.graphbolt.exclude_seed_edges</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dgl.graphbolt.compact_csc_format.html">dgl.graphbolt.compact_csc_format</a></li>
@@ -113,6 +109,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/nn-tensorflow.html">dgl.nn (TensorFlow)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/nn-mxnet.html">dgl.nn (MXNet)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/python/nn.functional.html">dgl.nn.functional</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.ops.html">dgl.ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.optim.html">dgl.optim</a></li>
@@ -173,14 +171,15 @@ the values should be corresponding nodes, the unique and compact will
 be done per type, usually it is used for heterogeneous graph.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The Unique nodes (per type) of all nodes in the input. And the compacted
-nodes list, where IDs inside are replaced with compacted node IDs.
-“Compacted node list” indicates that the node IDs in the input node
-list are replaced with mapped node IDs, where each type of node is
-mapped to a contiguous space of IDs ranging from 0 to N.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tuple[unique_nodes, compacted_node_list]</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>Tuple[unique_nodes, compacted_node_list]</em></p></li>
+<li><p><em>The Unique nodes (per type) of all nodes in the input. And the compacted</em></p></li>
+<li><p><em>nodes list, where IDs inside are replaced with compacted node IDs.</em></p></li>
+<li><p><em>”Compacted node list” indicates that the node IDs in the input node</em></p></li>
+<li><p><em>list are replaced with mapped node IDs, where each type of node is</em></p></li>
+<li><p><em>mapped to a contiguous space of IDs ranging from 0 to N.</em></p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>

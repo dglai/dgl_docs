@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Quickstart — DGL 2.3.1 documentation</title>
+<title>Quickstart — DGL 2.4 documentation</title>
 <link href="../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -20,7 +20,7 @@
   <![endif]-->
 <script src="../../_static/jquery.js?v=5d32c60e"></script>
 <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../../_static/documentation_options.js?v=67b02a41"></script>
+<script src="../../_static/documentation_options.js?v=9caaf7ed"></script>
 <script src="../../_static/doctools.js?v=9a2dae69"></script>
 <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -44,7 +44,7 @@
             DGL
           </a>
 <div class="version">
-                2.3.1
+                2.4
               </div>
 <div role="search">
 <form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -1434,19 +1434,19 @@ tensor([[0., 0., 0., 0.],
         [0., 0., 1., 2.],
         [0., 0., 0., 3.]])
 X1:
-tensor([[-0.8688,  1.4704,  0.4727,  1.1561,  0.4109],
-        [ 0.3273, -0.0945,  0.0312, -0.9770, -0.9290],
-        [ 0.9275,  2.2494,  1.7205,  0.4026,  0.3390]])
+tensor([[-1.6323, -0.4835, -1.3361, -1.2848,  0.1390],
+        [ 0.9056, -0.5240, -0.8112,  0.6594,  0.5155],
+        [ 1.2944,  0.5539, -0.7302, -0.3511,  0.6541]])
 X2:
-tensor([[-1.6020, -0.7990,  1.2796,  1.5791],
-        [ 0.8181,  0.5398, -0.6588,  0.1842],
-        [-0.2813,  0.5938,  0.2413,  2.3458],
-        [ 0.1591, -1.4179,  0.4670, -0.9203],
-        [ 0.4266,  0.9321, -1.2683, -0.5533]])
+tensor([[ 1.2293, -1.5722, -1.3352, -1.1584],
+        [-0.2783, -1.2759, -0.4523,  0.6465],
+        [ 0.9417,  0.0505, -0.9892,  0.4283],
+        [ 0.6956, -1.3627, -0.2882, -0.8120],
+        [-0.8410,  1.5988, -0.3890, -0.6215]])
 dglsp.sddmm(A, X1, X2):
 tensor([[ 0.0000,  0.0000,  0.0000,  0.0000],
-        [ 0.0000,  0.0000,  1.2105,  3.9716],
-        [ 0.0000,  0.0000,  0.0000, 16.0701]])
+        [ 0.0000,  0.0000, -0.5602, -5.1821],
+        [ 0.0000,  0.0000,  0.0000, -4.7267]])
 </pre></div></div>
 </div>
 <p>This operator also supports batched sampled-dense-dense matrix multiplication. For a <span class="math notranslate nohighlight">\(L \times N\)</span> sparse matrix A with non-zero vector values of length <span class="math notranslate nohighlight">\(𝐾\)</span>, a <span class="math notranslate nohighlight">\(L \times M \times K\)</span> dense matrix X1 and a <span class="math notranslate nohighlight">\(M \times N \times K\)</span> dense matrix X2, <code class="docutils literal notranslate"><span class="pre">sddmm(A,</span> <span class="pre">X1,</span> <span class="pre">X2)</span></code> will be a <span class="math notranslate nohighlight">\(L \times N \times K\)</span> sparse matrix.</p>
@@ -1495,48 +1495,48 @@ tensor([[[0., 0.],
          [0., 0.],
          [3., 3.]]])
 X1:
-tensor([[[ 0.5803,  1.2130],
-         [ 0.7751,  0.5138],
-         [-0.1484, -0.5620],
-         [-1.7107, -2.0195],
-         [-0.0074, -1.2178]],
+tensor([[[-1.2068,  0.4095],
+         [-0.4205,  0.4442],
+         [ 0.3748,  1.5506],
+         [ 0.6017, -0.2563],
+         [ 0.7520,  0.7448]],
 
-        [[ 0.2828, -0.1649],
-         [ 1.0841, -0.8276],
-         [-0.1654, -1.2673],
-         [ 0.1748, -2.7374],
-         [-0.1700, -1.5684]],
+        [[ 0.8422, -1.0179],
+         [ 0.8914, -1.7927],
+         [ 0.7993, -2.7070],
+         [-1.8181, -0.6957],
+         [-0.5311, -0.9846]],
 
-        [[ 1.7530,  0.6942],
-         [ 0.2841,  1.0710],
-         [-1.1283,  0.4483],
-         [ 0.9797,  0.6971],
-         [-0.7339, -1.1583]]])
+        [[-1.0525, -1.4424],
+         [-0.6449, -0.0169],
+         [ 1.2545,  1.0101],
+         [-0.8306,  0.3952],
+         [ 0.1598,  0.3381]]])
 X2:
-tensor([[[ 1.8823,  1.4829],
-         [ 0.1473,  0.8380],
-         [-1.4387, -0.9878],
-         [ 0.9350,  0.5980]],
+tensor([[[ 1.6902,  0.4988],
+         [ 0.5729, -0.2400],
+         [-2.0392,  0.0253],
+         [-0.7323, -0.7147]],
 
-        [[ 2.0899, -1.1879],
-         [-1.0333,  0.0083],
-         [ 0.8162,  0.4344],
-         [ 0.8738, -0.2287]],
+        [[ 0.4954, -0.2203],
+         [ 1.2283,  0.5950],
+         [-0.5944,  0.4547],
+         [ 1.9320,  1.3019]],
 
-        [[ 0.7714, -0.0088],
-         [ 1.0545, -0.4668],
-         [ 0.9848, -1.4832],
-         [-1.4577, -0.1053]],
+        [[ 0.5405, -0.8208],
+         [ 1.4883, -2.5272],
+         [-0.7362,  0.9958],
+         [ 0.1818, -0.8668]],
 
-        [[ 0.1840,  1.4033],
-         [ 0.9529, -1.5505],
-         [-1.2170,  0.1934],
-         [ 2.2017, -0.9041]],
+        [[-1.5307, -0.8435],
+         [ 0.1691, -1.7128],
+         [-0.8827,  0.4806],
+         [ 0.1306,  0.1097]],
 
-        [[-0.4730,  1.4715],
-         [ 0.1054,  0.6716],
-         [-0.5972,  2.6514],
-         [ 0.0590, -0.1702]]])
+        [[-1.0252,  0.6661],
+         [ 1.1304, -0.0352],
+         [-1.2886,  0.6438],
+         [-0.6736, -1.2709]]])
 dglsp.sddmm(A, X1, X2):
 tensor([[[ 0.0000,  0.0000],
          [ 0.0000,  0.0000],
@@ -1545,13 +1545,13 @@ tensor([[[ 0.0000,  0.0000],
 
         [[ 0.0000,  0.0000],
          [ 0.0000,  0.0000],
-         [ 0.2038, -3.0049],
-         [ 3.6555,  5.9315]],
+         [-0.5465, -4.5048],
+         [ 2.7420,  3.8301]],
 
         [[ 0.0000,  0.0000],
          [ 0.0000,  0.0000],
          [ 0.0000,  0.0000],
-         [16.9373, -0.9306]]])
+         [-1.3897, -0.7588]]])
 </pre></div></div>
 </div>
 </section>
@@ -1583,13 +1583,13 @@ tensor([[[ 0.0000,  0.0000],
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-tensor([[0.0000, 1.4427, 0.0000],
-        [1.1329, 0.0000, 0.7341],
-        [1.6019, 0.0000, 0.0000]])
+tensor([[ 0.0000, -0.7196,  0.0000],
+        [ 0.9051,  0.0000, -1.8815],
+        [ 0.8194,  0.0000,  0.0000]])
 Apply tanh.
-tensor([[0.0000, 0.8942, 0.0000],
-        [0.8120, 0.0000, 0.6256],
-        [0.9220, 0.0000, 0.0000]])
+tensor([[ 0.0000, -0.6167,  0.0000],
+        [ 0.7188,  0.0000, -0.9546],
+        [ 0.6747,  0.0000,  0.0000]])
 </pre></div></div>
 </div>
 <p><strong>Non-sparse-preserving functions</strong> such as <code class="docutils literal notranslate"><span class="pre">exp()</span></code>, <code class="docutils literal notranslate"><span class="pre">cos()</span></code>, etc. You can first convert the sparse matrix to dense before applying the functions.</p>
@@ -1614,13 +1614,13 @@ tensor([[0.0000, 0.8942, 0.0000],
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-tensor([[ 0.0000, -1.2009,  0.0000],
-        [ 1.6294,  0.0000,  1.9400],
-        [-0.9380,  0.0000,  0.0000]])
+tensor([[ 0.0000, -0.1879,  0.0000],
+        [ 0.8009,  0.0000,  0.7064],
+        [-0.9048,  0.0000,  0.0000]])
 Apply exp.
-tensor([[1.0000, 0.3009, 1.0000],
-        [5.1009, 1.0000, 6.9588],
-        [0.3914, 1.0000, 1.0000]])
+tensor([[1.0000, 0.8287, 1.0000],
+        [2.2276, 1.0000, 2.0267],
+        [0.4046, 1.0000, 1.0000]])
 </pre></div></div>
 </div>
 </section>
@@ -1774,8 +1774,8 @@ tensor([[0.0000, 1.0000, 0.0000],
 <div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
 <span class="rst-current-version" data-toggle="rst-current-version">
 <span class="fa fa-book"> Read the Docs</span>
-            v: 1.1.x
-            <span class="fa fa-caret-down"></span>
+<span id="version-placeholder">v: latest</span>
+<span class="fa fa-caret-down"></span>
 </span>
 <div class="rst-other-versions">
 <dl>
@@ -1797,8 +1797,7 @@ tensor([[0.0000, 1.0000, 0.0000],
 </div>
 <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 假设 branches.json 位于同目录下
-            fetch('branches.json')
+            fetch('/dgl_docs/branches.json')
                 .then(response => response.json())
                 .then(data => {
                     var versionListDiv = document.getElementById('version-list');
@@ -1812,6 +1811,29 @@ tensor([[0.0000, 1.0000, 0.0000],
                     });
                 })
                 .catch(error => console.error('Error loading branches:', error));
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            // 获取当前路径
+            var path = window.location.pathname;
+            var versionPlaceholder = document.getElementById('version-placeholder');
+
+            // 检查路径中是否包含 'en'
+            if (path.includes('/en/')) {
+                // 提取 'en' 后的文件夹作为版本号
+                var parts = path.split('/en/');
+                if (parts[1]) {
+                    var folders = parts[1].split('/');
+                    if (folders.length > 0 && folders[0]) {
+                        versionPlaceholder.textContent = 'v: ' + folders[0];
+                    } else {
+                        versionPlaceholder.textContent = 'v: latest';
+                    }
+                } else {
+                    versionPlaceholder.textContent = 'v: latest';
+                }
+            } else {
+                versionPlaceholder.textContent = 'v: latest';
+            }
         });
     </script>
 
