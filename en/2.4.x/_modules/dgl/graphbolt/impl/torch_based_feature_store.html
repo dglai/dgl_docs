@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+
+<html class="writer-html5" data-content_root="../../../../" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>dgl.graphbolt.impl.torch_based_feature_store — DGL 2.4.0 documentation</title>
+<link href="../../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../../../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../../../../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../../../../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+<script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+<script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../../../../_static/documentation_options.js?v=4d935f96"></script>
+<script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+<script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../../../../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script src="../../../../_static/js/theme.js"></script>
+<link href="../../../../genindex.html" rel="index" title="Index"/>
+<link href="../../../../search.html" rel="search" title="Search"/>
+</head>
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../../../../index.html">
+            DGL
+          </a>
+<div class="version">
+                2.4.0
+              </div>
+<div role="search">
+<form action="../../../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
+</div>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install/index.html">Install and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/blitz/index.html">A Blitz Introduction to DGL</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Materials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../stochastic_training/index.html">🆕 Stochastic Training of GNNs with GraphBolt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../guide_cn/index.html">用户指南【包含过时信息】</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../guide_ko/index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../graphtransformer/index.html">🆕 Tutorial: Graph Transformer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/sparse/index.html">Tutorials: dgl.sparse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/cpu/index.html">Training on CPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/multi/index.html">Training on Multiple GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/dist/index.html">Distributed training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/models/index.html">Paper Study with DGL</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/python/dgl.html">dgl</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/python/dgl.data.html">dgl.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/python/dgl.dataloading.html">dgl.dataloading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/python/dgl.DGLGraph.html">dgl.DGLGraph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/python/dgl.distributed.html">dgl.distributed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/python/dgl.function.html">dgl.function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/python/dgl.geometry.html">dgl.geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/python/dgl.graphbolt.html">🆕 dgl.graphbolt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/python/nn.functional.html">dgl.nn.functional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/python/dgl.ops.html">dgl.ops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/python/dgl.optim.html">dgl.optim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/python/dgl.sampling.html">dgl.sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/python/dgl.sparse_v0.html">dgl.sparse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/python/dgl.multiprocessing.html">dgl.multiprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/python/transforms.html">dgl.transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/python/udf.html">User-defined Functions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contribute.html">Contribute to DGL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../developer/ffi.html">DGL Foreign Function Interface (FFI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../performance.html">Performance Benchmarks</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Misc</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../env_var.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../resources.html">Resources</a></li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../../../../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../../../../index.html"></a></li>
+<li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+<li class="breadcrumb-item active">dgl.graphbolt.impl.torch_based_feature_store</li>
+<li class="wy-breadcrumbs-aside">
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<h1>Source code for dgl.graphbolt.impl.torch_based_feature_store</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Torch-based feature store for GraphBolt."""</span>
+
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">textwrap</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">get_device_to_host_uva_stream</span><span class="p">,</span>
+    <span class="n">get_host_to_device_uva_stream</span><span class="p">,</span>
+    <span class="n">index_select</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">..feature_store</span> <span class="kn">import</span> <span class="n">Feature</span>
+<span class="kn">from</span> <span class="nn">..internal_utils</span> <span class="kn">import</span> <span class="n">gb_warning</span><span class="p">,</span> <span class="n">is_wsl</span>
+<span class="kn">from</span> <span class="nn">.basic_feature_store</span> <span class="kn">import</span> <span class="n">BasicFeatureStore</span>
+<span class="kn">from</span> <span class="nn">.ondisk_metadata</span> <span class="kn">import</span> <span class="n">OnDiskFeatureData</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"TorchBasedFeature"</span><span class="p">,</span> <span class="s2">"DiskBasedFeature"</span><span class="p">,</span> <span class="s2">"TorchBasedFeatureStore"</span><span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">_Waiter</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event</span> <span class="o">=</span> <span class="n">event</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">values</span>
+
+    <span class="k">def</span> <span class="nf">wait</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Returns the stored value when invoked."""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span>
+        <span class="c1"># Ensure there is no memory leak.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">values</span>
+
+
+<div class="viewcode-block" id="TorchBasedFeature">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.TorchBasedFeature.html#dgl.graphbolt.TorchBasedFeature">[docs]</a>
+<span class="k">class</span> <span class="nc">TorchBasedFeature</span><span class="p">(</span><span class="n">Feature</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""A wrapper of pytorch based feature.</span>
+
+<span class="sd">    Initialize a torch based feature store by a torch feature.</span>
+<span class="sd">    Note that the feature can be either in memory or on disk.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    torch_feature : torch.Tensor</span>
+<span class="sd">        The torch feature.</span>
+<span class="sd">        Note that the dimension of the tensor should be greater than 1.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; from dgl import graphbolt as gb</span>
+
+<span class="sd">    1. The feature is in memory.</span>
+
+<span class="sd">    &gt;&gt;&gt; torch_feat = torch.arange(10).reshape(2, -1)</span>
+<span class="sd">    &gt;&gt;&gt; feature = gb.TorchBasedFeature(torch_feat)</span>
+<span class="sd">    &gt;&gt;&gt; feature.read()</span>
+<span class="sd">    tensor([[0, 1, 2, 3, 4],</span>
+<span class="sd">            [5, 6, 7, 8, 9]])</span>
+<span class="sd">    &gt;&gt;&gt; feature.read(torch.tensor([0]))</span>
+<span class="sd">    tensor([[0, 1, 2, 3, 4]])</span>
+<span class="sd">    &gt;&gt;&gt; feature.update(torch.tensor([[1 for _ in range(5)]]),</span>
+<span class="sd">    ...                      torch.tensor([1]))</span>
+<span class="sd">    &gt;&gt;&gt; feature.read(torch.tensor([0, 1]))</span>
+<span class="sd">    tensor([[0, 1, 2, 3, 4],</span>
+<span class="sd">            [1, 1, 1, 1, 1]])</span>
+<span class="sd">    &gt;&gt;&gt; feature.size()</span>
+<span class="sd">    torch.Size([5])</span>
+
+<span class="sd">    2. The feature is on disk. Note that you can use gb.numpy_save_aligned as a</span>
+<span class="sd">    replacement for np.save to potentially get increased performance.</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; arr = np.array([[1, 2], [3, 4]])</span>
+<span class="sd">    &gt;&gt;&gt; np.save("/tmp/arr.npy", arr)</span>
+<span class="sd">    &gt;&gt;&gt; torch_feat = torch.from_numpy(np.load("/tmp/arr.npy", mmap_mode="r+"))</span>
+<span class="sd">    &gt;&gt;&gt; feature = gb.TorchBasedFeature(torch_feat)</span>
+<span class="sd">    &gt;&gt;&gt; feature.read()</span>
+<span class="sd">    tensor([[1, 2],</span>
+<span class="sd">            [3, 4]])</span>
+<span class="sd">    &gt;&gt;&gt; feature.read(torch.tensor([0]))</span>
+<span class="sd">    tensor([[1, 2]])</span>
+
+<span class="sd">    3. Pinned CPU feature.</span>
+
+<span class="sd">    &gt;&gt;&gt; torch_feat = torch.arange(10).reshape(2, -1).pin_memory()</span>
+<span class="sd">    &gt;&gt;&gt; feature = gb.TorchBasedFeature(torch_feat)</span>
+<span class="sd">    &gt;&gt;&gt; feature.read().device</span>
+<span class="sd">    device(type='cuda', index=0)</span>
+<span class="sd">    &gt;&gt;&gt; feature.read(torch.tensor([0]).cuda()).device</span>
+<span class="sd">    device(type='cuda', index=0)</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">torch_feature</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_inplace_pinned</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">torch_feature</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">),</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"torch_feature in TorchBasedFeature must be torch.Tensor, "</span>
+            <span class="sa">f</span><span class="s2">"but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">torch_feature</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="n">torch_feature</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"dimension of torch_feature in TorchBasedFeature must be greater "</span>
+            <span class="sa">f</span><span class="s2">"than 1, but got </span><span class="si">{</span><span class="n">torch_feature</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span><span class="si">}</span><span class="s2"> dimension."</span>
+        <span class="p">)</span>
+        <span class="c1"># Make sure the tensor is contiguous.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span> <span class="o">=</span> <span class="n">torch_feature</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="n">metadata</span>
+
+    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># torch.Tensor.pin_memory() is not an inplace operation. To make it</span>
+        <span class="c1"># truly in-place, we need to use cudaHostRegister. Then, we need to use</span>
+        <span class="c1"># cudaHostUnregister to unpin the tensor in the destructor.</span>
+        <span class="c1"># https://github.com/pytorch/pytorch/issues/32167#issuecomment-753551842</span>
+        <span class="k">for</span> <span class="n">tensor</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_inplace_pinned</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inplace_unpinner</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">data_ptr</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="TorchBasedFeature.read">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.TorchBasedFeature.html#dgl.graphbolt.TorchBasedFeature.read">[docs]</a>
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Read the feature by index.</span>
+
+<span class="sd">        If the feature is on pinned CPU memory and `ids` is on GPU or pinned CPU</span>
+<span class="sd">        memory, it will be read by GPU and the returned tensor will be on GPU.</span>
+<span class="sd">        Otherwise, the returned tensor will be on CPU.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ids : torch.Tensor, optional</span>
+<span class="sd">            The index of the feature. If specified, only the specified indices</span>
+<span class="sd">            of the feature are read. If None, the entire feature is returned.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        torch.Tensor</span>
+<span class="sd">            The read feature.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="n">ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="o">.</span><span class="n">is_pinned</span><span class="p">():</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span>
+        <span class="k">return</span> <span class="n">index_select</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="p">,</span> <span class="n">ids</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TorchBasedFeature.read_async">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.TorchBasedFeature.html#dgl.graphbolt.TorchBasedFeature.read_async">[docs]</a>
+    <span class="k">def</span> <span class="nf">read_async</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Read the feature by index asynchronously.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ids : torch.Tensor</span>
+<span class="sd">            The index of the feature. Only the specified indices of the</span>
+<span class="sd">            feature are read.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        A generator object.</span>
+<span class="sd">            The returned generator object returns a future on</span>
+<span class="sd">            ``read_async_num_stages(ids.device)``\ th invocation. The return result</span>
+<span class="sd">            can be accessed by calling ``.wait()``. on the returned future object.</span>
+<span class="sd">            It is undefined behavior to call ``.wait()`` more than once.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; import dgl.graphbolt as gb</span>
+<span class="sd">        &gt;&gt;&gt; feature = gb.Feature(...)</span>
+<span class="sd">        &gt;&gt;&gt; ids = torch.tensor([0, 2])</span>
+<span class="sd">        &gt;&gt;&gt; for stage, future in enumerate(feature.read_async(ids)):</span>
+<span class="sd">        ...     pass</span>
+<span class="sd">        &gt;&gt;&gt; assert stage + 1 == feature.read_async_num_stages(ids.device)</span>
+<span class="sd">        &gt;&gt;&gt; result = future.wait()  # result contains the read values.</span>
+<span class="sd">        """</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"cpu"</span>
+        <span class="k">if</span> <span class="n">ids</span><span class="o">.</span><span class="n">is_cuda</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_pinned</span><span class="p">():</span>
+            <span class="n">current_stream</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">current_stream</span><span class="p">()</span>
+            <span class="n">host_to_device_stream</span> <span class="o">=</span> <span class="n">get_host_to_device_uva_stream</span><span class="p">()</span>
+            <span class="n">host_to_device_stream</span><span class="o">.</span><span class="n">wait_stream</span><span class="p">(</span><span class="n">current_stream</span><span class="p">)</span>
+            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="n">host_to_device_stream</span><span class="p">):</span>
+                <span class="n">ids</span><span class="o">.</span><span class="n">record_stream</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">current_stream</span><span class="p">())</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="n">index_select</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="p">,</span> <span class="n">ids</span><span class="p">)</span>
+                <span class="n">values</span><span class="o">.</span><span class="n">record_stream</span><span class="p">(</span><span class="n">current_stream</span><span class="p">)</span>
+                <span class="n">values_copy_event</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+                <span class="n">values_copy_event</span><span class="o">.</span><span class="n">record</span><span class="p">()</span>
+
+            <span class="k">yield</span> <span class="n">_Waiter</span><span class="p">(</span><span class="n">values_copy_event</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ids</span><span class="o">.</span><span class="n">is_cuda</span><span class="p">:</span>
+            <span class="n">ids_device</span> <span class="o">=</span> <span class="n">ids</span><span class="o">.</span><span class="n">device</span>
+            <span class="n">current_stream</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">current_stream</span><span class="p">()</span>
+            <span class="n">device_to_host_stream</span> <span class="o">=</span> <span class="n">get_device_to_host_uva_stream</span><span class="p">()</span>
+            <span class="n">device_to_host_stream</span><span class="o">.</span><span class="n">wait_stream</span><span class="p">(</span><span class="n">current_stream</span><span class="p">)</span>
+            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="n">device_to_host_stream</span><span class="p">):</span>
+                <span class="n">ids</span><span class="o">.</span><span class="n">record_stream</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">current_stream</span><span class="p">())</span>
+                <span class="n">ids</span> <span class="o">=</span> <span class="n">ids</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">non_blocking</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">ids_copy_event</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+                <span class="n">ids_copy_event</span><span class="o">.</span><span class="n">record</span><span class="p">()</span>
+
+            <span class="k">yield</span>  <span class="c1"># first stage is done.</span>
+
+            <span class="n">ids_copy_event</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">graphbolt</span><span class="o">.</span><span class="n">index_select_async</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="p">,</span> <span class="n">ids</span><span class="p">)</span>
+            <span class="k">yield</span>
+
+            <span class="n">host_to_device_stream</span> <span class="o">=</span> <span class="n">get_host_to_device_uva_stream</span><span class="p">()</span>
+            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="n">host_to_device_stream</span><span class="p">):</span>
+                <span class="n">values_cuda</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">ids_device</span><span class="p">,</span> <span class="n">non_blocking</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">values_cuda</span><span class="o">.</span><span class="n">record_stream</span><span class="p">(</span><span class="n">current_stream</span><span class="p">)</span>
+                <span class="n">values_copy_event</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+                <span class="n">values_copy_event</span><span class="o">.</span><span class="n">record</span><span class="p">()</span>
+
+            <span class="k">yield</span> <span class="n">_Waiter</span><span class="p">(</span><span class="n">values_copy_event</span><span class="p">,</span> <span class="n">values_cuda</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">torch</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">graphbolt</span><span class="o">.</span><span class="n">index_select_async</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="p">,</span> <span class="n">ids</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TorchBasedFeature.read_async_num_stages">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.TorchBasedFeature.html#dgl.graphbolt.TorchBasedFeature.read_async_num_stages">[docs]</a>
+    <span class="k">def</span> <span class="nf">read_async_num_stages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids_device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""The number of stages of the read_async operation. See read_async</span>
+<span class="sd">        function for directions on its use. This function is required to return</span>
+<span class="sd">        the number of yield operations when read_async is used with a tensor</span>
+<span class="sd">        residing on ids_device.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ids_device : torch.device</span>
+<span class="sd">            The device of the ids parameter passed into read_async.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">            The number of stages of the read_async operation.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="n">ids_device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"cuda"</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="o">.</span><span class="n">is_cuda</span><span class="p">:</span>
+                <span class="c1"># If the ids and the tensor are on cuda, no need for async.</span>
+                <span class="k">return</span> <span class="mi">0</span>
+            <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_pinned</span><span class="p">()</span> <span class="k">else</span> <span class="mi">3</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="TorchBasedFeature.size">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.TorchBasedFeature.html#dgl.graphbolt.TorchBasedFeature.size">[docs]</a>
+    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Get the size of the feature.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        torch.Size</span>
+<span class="sd">            The size of the feature.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span></div>
+
+
+<div class="viewcode-block" id="TorchBasedFeature.count">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.TorchBasedFeature.html#dgl.graphbolt.TorchBasedFeature.count">[docs]</a>
+    <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Get the count of the feature.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">            The count of the feature.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="TorchBasedFeature.update">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.TorchBasedFeature.html#dgl.graphbolt.TorchBasedFeature.update">[docs]</a>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">ids</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Update the feature store.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : torch.Tensor</span>
+<span class="sd">            The updated value of the feature.</span>
+<span class="sd">        ids : torch.Tensor, optional</span>
+<span class="sd">            The indices of the feature to update. If specified, only the</span>
+<span class="sd">            specified indices of the feature will be updated. For the feature,</span>
+<span class="sd">            the `ids[i]` row is updated to `value[i]`. So the indices and value</span>
+<span class="sd">            must have the same length. If None, the entire feature will be</span>
+<span class="sd">            updated.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="n">ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">ids</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"ids and value must have the same length, "</span>
+                <span class="sa">f</span><span class="s2">"but got </span><span class="si">{</span><span class="n">ids</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">."</span>
+            <span class="p">)</span>
+            <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">value</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">1</span><span class="p">:],</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"The size of the feature is </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="si">}</span><span class="s2">, "</span>
+                <span class="sa">f</span><span class="s2">"while the size of the value is </span><span class="si">{</span><span class="n">value</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span><span class="si">}</span><span class="s2">."</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="o">.</span><span class="n">is_pinned</span><span class="p">()</span> <span class="ow">and</span> <span class="n">value</span><span class="o">.</span><span class="n">is_cuda</span> <span class="ow">and</span> <span class="n">ids</span><span class="o">.</span><span class="n">is_cuda</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                    <span class="s2">"Update the feature on pinned CPU memory by GPU is not "</span>
+                    <span class="s2">"supported yet."</span>
+                <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="p">[</span><span class="n">ids</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="TorchBasedFeature.metadata">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.TorchBasedFeature.html#dgl.graphbolt.TorchBasedFeature.metadata">[docs]</a>
+    <span class="k">def</span> <span class="nf">metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Get the metadata of the feature.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Dict</span>
+<span class="sd">            The metadata of the feature.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">metadata</span><span class="p">()</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TorchBasedFeature.pin_memory_">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.TorchBasedFeature.html#dgl.graphbolt.TorchBasedFeature.pin_memory_">[docs]</a>
+    <span class="k">def</span> <span class="nf">pin_memory_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""In-place operation to copy the feature to pinned memory. Returns the</span>
+<span class="sd">        same object modified in-place."""</span>
+        <span class="c1"># torch.Tensor.pin_memory() is not an inplace operation. To make it</span>
+        <span class="c1"># truly in-place, we need to use cudaHostRegister. Then, we need to use</span>
+        <span class="c1"># cudaHostUnregister to unpin the tensor in the destructor.</span>
+        <span class="c1"># https://github.com/pytorch/pytorch/issues/32167#issuecomment-753551842</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">is_pinned</span><span class="p">()</span> <span class="ow">and</span> <span class="n">x</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"cpu"</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="p">(</span>
+                <span class="n">x</span><span class="o">.</span><span class="n">is_contiguous</span><span class="p">()</span>
+            <span class="p">),</span> <span class="s2">"Tensor pinning is only supported for contiguous tensors."</span>
+            <span class="n">cudart</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">cudart</span><span class="p">()</span>
+            <span class="k">assert</span> <span class="p">(</span>
+                <span class="n">cudart</span><span class="o">.</span><span class="n">cudaHostRegister</span><span class="p">(</span>
+                    <span class="n">x</span><span class="o">.</span><span class="n">data_ptr</span><span class="p">(),</span> <span class="n">x</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">*</span> <span class="n">x</span><span class="o">.</span><span class="n">element_size</span><span class="p">(),</span> <span class="mi">0</span>
+                <span class="p">)</span>
+                <span class="o">==</span> <span class="mi">0</span>
+            <span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_is_inplace_pinned</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inplace_unpinner</span> <span class="o">=</span> <span class="n">cudart</span><span class="o">.</span><span class="n">cudaHostUnregister</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="TorchBasedFeature.is_pinned">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.TorchBasedFeature.html#dgl.graphbolt.TorchBasedFeature.is_pinned">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_pinned</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Returns True if the stored feature is pinned."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="o">.</span><span class="n">is_pinned</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TorchBasedFeature.to">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.TorchBasedFeature.html#dgl.graphbolt.TorchBasedFeature.to">[docs]</a>
+    <span class="k">def</span> <span class="nf">to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>  <span class="c1"># pylint: disable=invalid-name</span>
+<span class="w">        </span><span class="sd">"""Copy `TorchBasedFeature` to the specified device."""</span>
+        <span class="c1"># copy.copy is a shallow copy so it does not copy tensor memory.</span>
+        <span class="n">self2</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">device</span> <span class="o">==</span> <span class="s2">"pinned"</span><span class="p">:</span>
+            <span class="n">self2</span><span class="o">.</span><span class="n">_tensor</span> <span class="o">=</span> <span class="n">self2</span><span class="o">.</span><span class="n">_tensor</span><span class="o">.</span><span class="n">pin_memory</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">self2</span><span class="o">.</span><span class="n">_tensor</span> <span class="o">=</span> <span class="n">self2</span><span class="o">.</span><span class="n">_tensor</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">self2</span></div>
+
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">"</span><span class="si">{Classname}</span><span class="s2">(</span><span class="se">\n</span><span class="s2">"</span>
+            <span class="s2">"    feature=</span><span class="si">{feature}</span><span class="s2">,</span><span class="se">\n</span><span class="s2">"</span>
+            <span class="s2">"    metadata=</span><span class="si">{metadata}</span><span class="s2">,</span><span class="se">\n</span><span class="s2">"</span>
+            <span class="s2">")"</span>
+        <span class="p">)</span>
+
+        <span class="n">feature_str</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span>
+            <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="p">),</span> <span class="s2">" "</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="s2">"    feature="</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">metadata_str</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span>
+            <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">()),</span> <span class="s2">" "</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="s2">"    metadata="</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">ret</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">Classname</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="n">feature</span><span class="o">=</span><span class="n">feature_str</span><span class="p">,</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="n">metadata_str</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="DiskBasedFeature">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.DiskBasedFeature.html#dgl.graphbolt.DiskBasedFeature">[docs]</a>
+<span class="k">class</span> <span class="nc">DiskBasedFeature</span><span class="p">(</span><span class="n">Feature</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""A wrapper of disk based feature.</span>
+
+<span class="sd">    Initialize a disk based feature fetcher by a numpy file. Note that you can</span>
+<span class="sd">    use gb.numpy_save_aligned as a replacement for np.save to potentially get</span>
+<span class="sd">    increased performance.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path : string</span>
+<span class="sd">        The path to the numpy feature file.</span>
+<span class="sd">        Note that the dimension of the numpy should be greater than 1.</span>
+<span class="sd">    metadata : Dict</span>
+<span class="sd">        The metadata of the feature.</span>
+<span class="sd">    num_threads : int</span>
+<span class="sd">        The number of threads driving io_uring queues.</span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; from dgl import graphbolt as gb</span>
+<span class="sd">    &gt;&gt;&gt; torch_feat = torch.arange(10).reshape(2, -1)</span>
+<span class="sd">    &gt;&gt;&gt; pth = "path/to/feat.npy"</span>
+<span class="sd">    &gt;&gt;&gt; np.save(pth, torch_feat)</span>
+<span class="sd">    &gt;&gt;&gt; feature = gb.DiskBasedFeature(pth)</span>
+<span class="sd">    &gt;&gt;&gt; feature.read(torch.tensor([0]))</span>
+<span class="sd">    tensor([[0, 1, 2, 3, 4]])</span>
+<span class="sd">    &gt;&gt;&gt; feature.size()</span>
+<span class="sd">    torch.Size([5])</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">num_threads</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="n">mmap_mode</span> <span class="o">=</span> <span class="s2">"r+"</span>
+        <span class="n">ondisk_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">mmap_mode</span><span class="o">=</span><span class="n">mmap_mode</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">ondisk_data</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span>
+            <span class="s2">"C_CONTIGUOUS"</span>
+        <span class="p">],</span> <span class="s2">"DiskBasedFeature only supports C_CONTIGUOUS array."</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">ondisk_data</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="n">metadata</span>
+        <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">graphbolt</span><span class="o">.</span><span class="n">detect_io_uring</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ondisk_npy_array</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">graphbolt</span><span class="o">.</span><span class="n">ondisk_npy_array</span><span class="p">(</span>
+                <span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">num_threads</span>
+            <span class="p">)</span>
+
+<div class="viewcode-block" id="DiskBasedFeature.read">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.DiskBasedFeature.html#dgl.graphbolt.DiskBasedFeature.read">[docs]</a>
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Read the feature by index.</span>
+<span class="sd">        The returned tensor will be on CPU.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ids : torch.Tensor</span>
+<span class="sd">            The index of the feature. Only the specified indices of the</span>
+<span class="sd">            feature are read.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        torch.Tensor</span>
+<span class="sd">            The read feature.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="n">ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span>
+        <span class="k">elif</span> <span class="n">torch</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">graphbolt</span><span class="o">.</span><span class="n">detect_io_uring</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ondisk_npy_array</span><span class="o">.</span><span class="n">index_select</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">IndexError</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">index_select</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="p">,</span> <span class="n">ids</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DiskBasedFeature.read_async">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.DiskBasedFeature.html#dgl.graphbolt.DiskBasedFeature.read_async">[docs]</a>
+    <span class="k">def</span> <span class="nf">read_async</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Read the feature by index asynchronously.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ids : torch.Tensor</span>
+<span class="sd">            The index of the feature. Only the specified indices of the</span>
+<span class="sd">            feature are read.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        A generator object.</span>
+<span class="sd">            The returned generator object returns a future on</span>
+<span class="sd">            ``read_async_num_stages(ids.device)``\ th invocation. The return result</span>
+<span class="sd">            can be accessed by calling ``.wait()``. on the returned future object.</span>
+<span class="sd">            It is undefined behavior to call ``.wait()`` more than once.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; import dgl.graphbolt as gb</span>
+<span class="sd">        &gt;&gt;&gt; feature = gb.Feature(...)</span>
+<span class="sd">        &gt;&gt;&gt; ids = torch.tensor([0, 2])</span>
+<span class="sd">        &gt;&gt;&gt; for stage, future in enumerate(feature.read_async(ids)):</span>
+<span class="sd">        ...     pass</span>
+<span class="sd">        &gt;&gt;&gt; assert stage + 1 == feature.read_async_num_stages(ids.device)</span>
+<span class="sd">        &gt;&gt;&gt; result = future.wait()  # result contains the read values.</span>
+<span class="sd">        """</span>
+        <span class="k">assert</span> <span class="n">torch</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">graphbolt</span><span class="o">.</span><span class="n">detect_io_uring</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">ids</span><span class="o">.</span><span class="n">is_cuda</span><span class="p">:</span>
+            <span class="n">ids_device</span> <span class="o">=</span> <span class="n">ids</span><span class="o">.</span><span class="n">device</span>
+            <span class="n">current_stream</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">current_stream</span><span class="p">()</span>
+            <span class="n">device_to_host_stream</span> <span class="o">=</span> <span class="n">get_device_to_host_uva_stream</span><span class="p">()</span>
+            <span class="n">device_to_host_stream</span><span class="o">.</span><span class="n">wait_stream</span><span class="p">(</span><span class="n">current_stream</span><span class="p">)</span>
+            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="n">device_to_host_stream</span><span class="p">):</span>
+                <span class="n">ids</span><span class="o">.</span><span class="n">record_stream</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">current_stream</span><span class="p">())</span>
+                <span class="n">ids</span> <span class="o">=</span> <span class="n">ids</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">non_blocking</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">ids_copy_event</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+                <span class="n">ids_copy_event</span><span class="o">.</span><span class="n">record</span><span class="p">()</span>
+
+            <span class="k">yield</span>  <span class="c1"># first stage is done.</span>
+
+            <span class="n">ids_copy_event</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ondisk_npy_array</span><span class="o">.</span><span class="n">index_select</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
+            <span class="k">yield</span>
+
+            <span class="n">host_to_device_stream</span> <span class="o">=</span> <span class="n">get_host_to_device_uva_stream</span><span class="p">()</span>
+            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="n">host_to_device_stream</span><span class="p">):</span>
+                <span class="n">values_cuda</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">ids_device</span><span class="p">,</span> <span class="n">non_blocking</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">values_cuda</span><span class="o">.</span><span class="n">record_stream</span><span class="p">(</span><span class="n">current_stream</span><span class="p">)</span>
+                <span class="n">values_copy_event</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+                <span class="n">values_copy_event</span><span class="o">.</span><span class="n">record</span><span class="p">()</span>
+
+            <span class="k">yield</span> <span class="n">_Waiter</span><span class="p">(</span><span class="n">values_copy_event</span><span class="p">,</span> <span class="n">values_cuda</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ondisk_npy_array</span><span class="o">.</span><span class="n">index_select</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DiskBasedFeature.read_async_num_stages">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.DiskBasedFeature.html#dgl.graphbolt.DiskBasedFeature.read_async_num_stages">[docs]</a>
+    <span class="k">def</span> <span class="nf">read_async_num_stages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids_device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""The number of stages of the read_async operation. See read_async</span>
+<span class="sd">        function for directions on its use. This function is required to return</span>
+<span class="sd">        the number of yield operations when read_async is used with a tensor</span>
+<span class="sd">        residing on ids_device.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ids_device : torch.device</span>
+<span class="sd">            The device of the ids parameter passed into read_async.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">            The number of stages of the read_async operation.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="mi">3</span> <span class="k">if</span> <span class="n">ids_device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"cuda"</span> <span class="k">else</span> <span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="DiskBasedFeature.size">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.DiskBasedFeature.html#dgl.graphbolt.DiskBasedFeature.size">[docs]</a>
+    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Get the size of the feature.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        torch.Size</span>
+<span class="sd">            The size of the feature.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span></div>
+
+
+<div class="viewcode-block" id="DiskBasedFeature.count">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.DiskBasedFeature.html#dgl.graphbolt.DiskBasedFeature.count">[docs]</a>
+    <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Get the count of the feature.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">            The count of the feature.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="DiskBasedFeature.update">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.DiskBasedFeature.html#dgl.graphbolt.DiskBasedFeature.update">[docs]</a>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">ids</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Disk based feature does not support update for now."""</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="DiskBasedFeature.metadata">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.DiskBasedFeature.html#dgl.graphbolt.DiskBasedFeature.metadata">[docs]</a>
+    <span class="k">def</span> <span class="nf">metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Get the metadata of the feature.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Dict</span>
+<span class="sd">            The metadata of the feature.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">metadata</span><span class="p">()</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DiskBasedFeature.read_into_memory">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.DiskBasedFeature.html#dgl.graphbolt.DiskBasedFeature.read_into_memory">[docs]</a>
+    <span class="k">def</span> <span class="nf">read_into_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TorchBasedFeature</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Change disk-based feature to torch-based feature."""</span>
+        <span class="k">return</span> <span class="n">TorchBasedFeature</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DiskBasedFeature.to">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.DiskBasedFeature.html#dgl.graphbolt.DiskBasedFeature.to">[docs]</a>
+    <span class="k">def</span> <span class="nf">to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>  <span class="c1"># pylint: disable=invalid-name</span>
+<span class="w">        </span><span class="sd">"""Placeholder `DiskBasedFeature` to implementation. It is a no-op."""</span>
+        <span class="n">gb_warning</span><span class="p">(</span>
+            <span class="s2">"`DiskBasedFeature.to(device)` is not supported. Leaving unmodified."</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="DiskBasedFeature.pin_memory_">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.DiskBasedFeature.html#dgl.graphbolt.DiskBasedFeature.pin_memory_">[docs]</a>
+    <span class="k">def</span> <span class="nf">pin_memory_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pylint: disable=invalid-name</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Placeholder `DiskBasedFeature` pin_memory_ implementation. It is a no-op."""</span>
+        <span class="n">gb_warning</span><span class="p">(</span>
+            <span class="s2">"`DiskBasedFeature.pin_memory_()` is not supported. Leaving unmodified."</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">"</span><span class="si">{Classname}</span><span class="s2">(</span><span class="se">\n</span><span class="s2">"</span>
+            <span class="s2">"    feature=</span><span class="si">{feature}</span><span class="s2">,</span><span class="se">\n</span><span class="s2">"</span>
+            <span class="s2">"    metadata=</span><span class="si">{metadata}</span><span class="s2">,</span><span class="se">\n</span><span class="s2">"</span>
+            <span class="s2">")"</span>
+        <span class="p">)</span>
+
+        <span class="n">feature_str</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span>
+            <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tensor</span><span class="p">),</span> <span class="s2">" "</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="s2">"    feature="</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">metadata_str</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span>
+            <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">()),</span> <span class="s2">" "</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="s2">"    metadata="</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">ret</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">Classname</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="n">feature</span><span class="o">=</span><span class="n">feature_str</span><span class="p">,</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="n">metadata_str</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="TorchBasedFeatureStore">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.TorchBasedFeatureStore.html#dgl.graphbolt.TorchBasedFeatureStore">[docs]</a>
+<span class="k">class</span> <span class="nc">TorchBasedFeatureStore</span><span class="p">(</span><span class="n">BasicFeatureStore</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""A store to manage multiple pytorch based feature for access.</span>
+
+<span class="sd">    The feature stores are described by the `feat_data`. The `feat_data` is a</span>
+<span class="sd">    list of `OnDiskFeatureData`.</span>
+
+<span class="sd">    For a feature store, its format must be either "pt" or "npy" for Pytorch or</span>
+<span class="sd">    Numpy formats. If the format is "pt", the feature store must be loaded in</span>
+<span class="sd">    memory. If the format is "npy", the feature store can be loaded in memory or</span>
+<span class="sd">    on disk. Note that you can use gb.numpy_save_aligned as a replacement for</span>
+<span class="sd">    np.save to potentially get increased performance.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    feat_data : List[OnDiskFeatureData]</span>
+<span class="sd">        The description of the feature stores.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; from dgl import graphbolt as gb</span>
+<span class="sd">    &gt;&gt;&gt; edge_label = torch.tensor([[1], [2], [3]])</span>
+<span class="sd">    &gt;&gt;&gt; node_feat = torch.tensor([[1, 2, 3], [4, 5, 6]])</span>
+<span class="sd">    &gt;&gt;&gt; torch.save(edge_label, "/tmp/edge_label.pt")</span>
+<span class="sd">    &gt;&gt;&gt; gb.numpy_save_aligned("/tmp/node_feat.npy", node_feat.numpy())</span>
+<span class="sd">    &gt;&gt;&gt; feat_data = [</span>
+<span class="sd">    ...     gb.OnDiskFeatureData(domain="edge", type="author:writes:paper",</span>
+<span class="sd">    ...         name="label", format="torch", path="/tmp/edge_label.pt",</span>
+<span class="sd">    ...         in_memory=True),</span>
+<span class="sd">    ...     gb.OnDiskFeatureData(domain="node", type="paper", name="feat",</span>
+<span class="sd">    ...         format="numpy", path="/tmp/node_feat.npy", in_memory=False),</span>
+<span class="sd">    ... ]</span>
+<span class="sd">    &gt;&gt;&gt; feature_store = gb.TorchBasedFeatureStore(feat_data)</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feat_data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">OnDiskFeatureData</span><span class="p">]):</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">feat_data</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span> <span class="n">spec</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">extra_fields</span>
+            <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s2">"torch"</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="n">spec</span><span class="o">.</span><span class="n">in_memory</span><span class="p">,</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"Pytorch tensor can only be loaded in memory, "</span>
+                    <span class="sa">f</span><span class="s2">"but the feature </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> is loaded on disk."</span>
+                <span class="p">)</span>
+                <span class="n">features</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">TorchBasedFeature</span><span class="p">(</span>
+                    <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">path</span><span class="p">),</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="n">spec</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s2">"numpy"</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">in_memory</span><span class="p">:</span>
+                    <span class="c1"># TorchBasedFeature is always in memory by default.</span>
+                    <span class="n">features</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">TorchBasedFeature</span><span class="p">(</span>
+                        <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">path</span><span class="p">)),</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># DiskBasedFeature is always out of memory by default.</span>
+                    <span class="n">features</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">DiskBasedFeature</span><span class="p">(</span>
+                        <span class="n">spec</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
+                    <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unknown feature format </span><span class="si">{</span><span class="n">spec</span><span class="o">.</span><span class="n">format</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TorchBasedFeatureStore.pin_memory_">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.TorchBasedFeatureStore.html#dgl.graphbolt.TorchBasedFeatureStore.pin_memory_">[docs]</a>
+    <span class="k">def</span> <span class="nf">pin_memory_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""In-place operation to copy the feature store to pinned memory.</span>
+<span class="sd">        Returns the same object modified in-place."""</span>
+        <span class="k">if</span> <span class="n">is_wsl</span><span class="p">():</span>
+            <span class="n">gb_warning</span><span class="p">(</span>
+                <span class="s2">"In place pinning is not supported on WSL. "</span>
+                <span class="s2">"Returning the out of place pinned `TorchBasedFeatureStore`."</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"pinned"</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_features</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">feature</span><span class="o">.</span><span class="n">pin_memory_</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="TorchBasedFeatureStore.is_pinned">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.TorchBasedFeatureStore.html#dgl.graphbolt.TorchBasedFeatureStore.is_pinned">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_pinned</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Returns True if all the stored features are pinned."""</span>
+        <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">is_pinned</span><span class="p">()</span> <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_features</span><span class="o">.</span><span class="n">values</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="TorchBasedFeatureStore.to">
+<a class="viewcode-back" href="../../../../generated/dgl.graphbolt.TorchBasedFeatureStore.html#dgl.graphbolt.TorchBasedFeatureStore.to">[docs]</a>
+    <span class="k">def</span> <span class="nf">to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>  <span class="c1"># pylint: disable=invalid-name</span>
+<span class="w">        </span><span class="sd">"""Copy `TorchBasedFeatureStore` to the specified device."""</span>
+        <span class="c1"># copy.copy is a shallow copy so it does not copy tensor memory.</span>
+        <span class="n">self2</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">self2</span><span class="o">.</span><span class="n">_features</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">self2</span><span class="o">.</span><span class="n">_features</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="k">return</span> <span class="n">self2</span></div>
+
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="s2">"</span><span class="si">{Classname}</span><span class="s2">(</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"    </span><span class="si">{features}</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">")"</span>
+        <span class="n">features_str</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_features</span><span class="p">),</span> <span class="s2">"    "</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">ret</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">Classname</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="n">features_str</span>
+        <span class="p">)</span></div>
+
+</pre></div>
+</div>
+</div>
+<footer>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+<span id="version-placeholder">v: latest</span>
+<span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('/dgl_docs/branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            // 获取当前路径
+            var path = window.location.pathname;
+            var versionPlaceholder = document.getElementById('version-placeholder');
+
+            // 检查路径中是否包含 'en'
+            if (path.includes('/en/')) {
+                // 提取 'en' 后的文件夹作为版本号
+                var parts = path.split('/en/');
+                if (parts[1]) {
+                    var folders = parts[1].split('/');
+                    if (folders.length > 0 && folders[0]) {
+                        versionPlaceholder.textContent = 'v: ' + folders[0];
+                    } else {
+                        versionPlaceholder.textContent = 'v: latest';
+                    }
+                } else {
+                    versionPlaceholder.textContent = 'v: latest';
+                }
+            } else {
+                versionPlaceholder.textContent = 'v: latest';
+            }
+        });
+    </script>
+
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+</body>
+</html>

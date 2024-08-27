@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+
+<html class="writer-html5" data-content_root="../" lang="en">
+<head>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Link Prediction — DGL 2.4.0 documentation</title>
+<link href="../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../_static/nbsphinx-code-cells.css?v=2aa19091" rel="stylesheet" type="text/css"/>
+<link href="../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+<script src="../_static/jquery.js?v=5d32c60e"></script>
+<script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../_static/documentation_options.js?v=4d935f96"></script>
+<script src="../_static/doctools.js?v=9a2dae69"></script>
+<script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+<script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../_static/js/theme.js"></script>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="multigpu_node_classification.html" rel="next" title="Multi-GPU Node Classification"/>
+<link href="node_classification.html" rel="prev" title="Node Classification"/>
+</head>
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../index.html">
+            DGL
+          </a>
+<div class="version">
+                2.4.0
+              </div>
+<div role="search">
+<form action="../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
+</div>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Install and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/blitz/index.html">A Blitz Introduction to DGL</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Materials</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">🆕 Stochastic Training of GNNs with GraphBolt</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="neighbor_sampling_overview.html">Neighbor Sampling Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="node_classification.html">Node Classification</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Link Prediction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multigpu_node_classification.html">Multi-GPU Node Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ondisk-dataset.html">Composing OnDiskDataset from raw data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide_cn/index.html">用户指南【包含过时信息】</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide_ko/index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphtransformer/index.html">🆕 Tutorial: Graph Transformer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/sparse/index.html">Tutorials: dgl.sparse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/cpu/index.html">Training on CPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/multi/index.html">Training on Multiple GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/dist/index.html">Distributed training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/models/index.html">Paper Study with DGL</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.html">dgl</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.data.html">dgl.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.dataloading.html">dgl.dataloading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.DGLGraph.html">dgl.DGLGraph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.distributed.html">dgl.distributed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.function.html">dgl.function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.geometry.html">dgl.geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.graphbolt.html">🆕 dgl.graphbolt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/nn.functional.html">dgl.nn.functional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.ops.html">dgl.ops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.optim.html">dgl.optim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.sampling.html">dgl.sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.sparse_v0.html">dgl.sparse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.multiprocessing.html">dgl.multiprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/transforms.html">dgl.transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/udf.html">User-defined Functions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contribute.html">Contribute to DGL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/ffi.html">DGL Foreign Function Interface (FFI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance.html">Performance Benchmarks</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Misc</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../env_var.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources.html">Resources</a></li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../index.html"></a></li>
+<li class="breadcrumb-item"><a href="index.html">🆕 Stochastic Training of GNNs with GraphBolt</a></li>
+<li class="breadcrumb-item active">Link Prediction</li>
+<li class="wy-breadcrumbs-aside">
+<a href="../_sources/stochastic_training/link_prediction.nblink.txt" rel="nofollow"> View page source</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<section id="Link-Prediction">
+<h1>Link Prediction<a class="headerlink" href="#Link-Prediction" title="Link to this heading"></a></h1>
+<p><a class="reference external" href="https://colab.research.google.com/github/dmlc/dgl/blob/master/notebooks/stochastic_training/link_prediction.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg"/></a> <a class="reference external" href="https://github.com/dmlc/dgl/blob/master/notebooks/stochastic_training/link_prediction.ipynb"><img alt="GitHub" src="https://img.shields.io/badge/-View%20on%20GitHub-181717?logo=github&amp;logoColor=ffffff"/></a></p>
+<p>This tutorial will show how to train a multi-layer GraphSAGE for link prediction on <a class="reference external" href="https://data.dgl.ai/dataset/cora_v2.zip">CoraGraphDataset</a>. The dataset contains 2708 nodes and 10556 edges.</p>
+<p>By the end of this tutorial, you will be able to</p>
+<ul class="simple">
+<li><p>Train a GNN model for link prediction on target device with DGL’s neighbor sampling components.</p></li>
+</ul>
+<section id="Install-DGL-package">
+<h2>Install DGL package<a class="headerlink" href="#Install-DGL-package" title="Link to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install required packages.</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">'TORCH'</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">__version__</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">'DGLBACKEND'</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"pytorch"</span>
+
+<span class="c1"># Install the CPU version in default. If you want to install CUDA version,</span>
+<span class="c1"># please refer to https://www.dgl.ai/pages/start.html and change runtime type</span>
+<span class="c1"># accordingly.</span>
+<span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"cpu"</span><span class="p">)</span>
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>--pre<span class="w"> </span>dgl<span class="w"> </span>-f<span class="w"> </span>https://data.dgl.ai/wheels-test/repo.html
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">dgl</span>
+    <span class="kn">import</span> <span class="nn">dgl.graphbolt</span> <span class="k">as</span> <span class="nn">gb</span>
+    <span class="n">installed</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+    <span class="n">installed</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"DGL installed!"</span> <span class="k">if</span> <span class="n">installed</span> <span class="k">else</span> <span class="s2">"DGL not found!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Looking in links: https://data.dgl.ai/wheels-test/repo.html
+Requirement already satisfied: dgl in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (2.2a240410)
+Requirement already satisfied: numpy&gt;=1.14.0 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from dgl) (1.26.4)
+Requirement already satisfied: scipy&gt;=1.1.0 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from dgl) (1.14.0)
+Requirement already satisfied: networkx&gt;=2.1 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from dgl) (3.3)
+Requirement already satisfied: requests&gt;=2.19.0 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from dgl) (2.32.3)
+Requirement already satisfied: tqdm in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from dgl) (4.66.5)
+Requirement already satisfied: psutil&gt;=5.8.0 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from dgl) (6.0.0)
+Requirement already satisfied: torchdata&gt;=0.5.0 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from dgl) (0.7.1)
+Requirement already satisfied: pandas in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from dgl) (2.2.2)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from requests&gt;=2.19.0-&gt;dgl) (3.3.2)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from requests&gt;=2.19.0-&gt;dgl) (3.8)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from requests&gt;=2.19.0-&gt;dgl) (2.2.2)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from requests&gt;=2.19.0-&gt;dgl) (2024.7.4)
+Requirement already satisfied: torch&gt;=2 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from torchdata&gt;=0.5.0-&gt;dgl) (2.4.0+cpu)
+Requirement already satisfied: python-dateutil&gt;=2.8.2 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from pandas-&gt;dgl) (2.9.0.post0)
+Requirement already satisfied: pytz&gt;=2020.1 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from pandas-&gt;dgl) (2024.1)
+Requirement already satisfied: tzdata&gt;=2022.7 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from pandas-&gt;dgl) (2024.1)
+Requirement already satisfied: six&gt;=1.5 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from python-dateutil&gt;=2.8.2-&gt;pandas-&gt;dgl) (1.16.0)
+Requirement already satisfied: filelock in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from torch&gt;=2-&gt;torchdata&gt;=0.5.0-&gt;dgl) (3.15.4)
+Requirement already satisfied: typing-extensions&gt;=4.8.0 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from torch&gt;=2-&gt;torchdata&gt;=0.5.0-&gt;dgl) (4.12.2)
+Requirement already satisfied: sympy in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from torch&gt;=2-&gt;torchdata&gt;=0.5.0-&gt;dgl) (1.13.2)
+Requirement already satisfied: jinja2 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from torch&gt;=2-&gt;torchdata&gt;=0.5.0-&gt;dgl) (3.1.4)
+Requirement already satisfied: fsspec in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from torch&gt;=2-&gt;torchdata&gt;=0.5.0-&gt;dgl) (2024.6.1)
+Requirement already satisfied: MarkupSafe&gt;=2.0 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from jinja2-&gt;torch&gt;=2-&gt;torchdata&gt;=0.5.0-&gt;dgl) (2.1.5)
+Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from sympy-&gt;torch&gt;=2-&gt;torchdata&gt;=0.5.0-&gt;dgl) (1.3.0)
+DGL installed!
+</pre></div></div>
+</div>
+</section>
+<section id="Loading-Dataset">
+<h2>Loading Dataset<a class="headerlink" href="#Loading-Dataset" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">cora</span></code> is already prepared as <code class="docutils literal notranslate"><span class="pre">BuiltinDataset</span></code> in <strong>GraphBolt</strong>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span> <span class="o">=</span> <span class="n">gb</span><span class="o">.</span><span class="n">BuiltinDataset</span><span class="p">(</span><span class="s2">"cora-seeds"</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+The dataset is already preprocessed.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/ubuntu/regression_test/dgl/python/dgl/graphbolt/impl/ondisk_dataset.py:855: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  return torch.load(graph_topology.path)
+</pre></div></div>
+</div>
+<p>Dataset consists of graph, feature and tasks. You can get the training-validation-test set from the tasks. Seed nodes and corresponding labels are already stored in each training-validation-test set. This dataset contains 2 tasks, one for node classification and the other for link prediction. We will use the link prediction task.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">graph</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">feature</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">train_set</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">train_set</span>
+<span class="n">test_set</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">test_set</span>
+<span class="n">task_name</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Task: </span><span class="si">{</span><span class="n">task_name</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Task: link_prediction.
+</pre></div></div>
+</div>
+</section>
+<section id="Defining-Neighbor-Sampler-and-Data-Loader-in-DGL">
+<h2>Defining Neighbor Sampler and Data Loader in DGL<a class="headerlink" href="#Defining-Neighbor-Sampler-and-Data-Loader-in-DGL" title="Link to this heading"></a></h2>
+<p>Different from the link prediction tutorial for full graph, a common practice to train GNN on large graphs is to iterate over the edges in minibatches, since computing the probability of all edges is usually impossible. For each minibatch of edges, you compute the output representation of their incident nodes using neighbor sampling and GNN, in a similar fashion introduced in the node classification tutorial.</p>
+<p>To perform link prediction, you need to specify a negative sampler. DGL provides builtin negative samplers such as <code class="docutils literal notranslate"><span class="pre">dgl.graphbolt.UniformNegativeSampler</span></code>. Here this tutorial uniformly draws 5 negative examples per positive example.</p>
+<p>Except for the negative sampler, the rest of the code is identical to the node classification tutorial.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="n">datapipe</span> <span class="o">=</span> <span class="n">gb</span><span class="o">.</span><span class="n">ItemSampler</span><span class="p">(</span><span class="n">train_set</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">copy_to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">sample_uniform_negative</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">sample_neighbor</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">gb</span><span class="o">.</span><span class="n">exclude_seed_edges</span><span class="p">,</span> <span class="n">include_reverse_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">fetch_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">node_feature_keys</span><span class="o">=</span><span class="p">[</span><span class="s2">"feat"</span><span class="p">])</span>
+<span class="n">train_dataloader</span> <span class="o">=</span> <span class="n">gb</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">datapipe</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>You can peek one minibatch from train_dataloader and see what it will give you.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">train_dataloader</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"MiniBatch: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+MiniBatch: MiniBatch(seeds=tensor([[2371, 2177],
+                        [2418,   65],
+                        [1416, 1008],
+                        ...,
+                        [1348,  118],
+                        [1348, 2329],
+                        [1348,  948]], dtype=torch.int32),
+          sampled_subgraphs=[SampledSubgraphImpl(sampled_csc=CSCFormatBase(indptr=tensor([   0,    2,    5,  ..., 6993, 6995, 6997], dtype=torch.int32),
+                                                                         indices=tensor([1270,  274, 1271,  ..., 1264, 1829, 1266], dtype=torch.int32),
+                                                           ),
+                                               original_row_node_ids=tensor([2371, 2177, 2418,  ..., 1056, 2482, 1793], dtype=torch.int32),
+                                               original_edge_ids=tensor([ 9699,  9701,  8998,  ...,  8480, 10059, 10060], dtype=torch.int32),
+                                               original_column_node_ids=tensor([2371, 2177, 2418,  ..., 2670, 2049, 2481], dtype=torch.int32),
+                            ),
+                            SampledSubgraphImpl(sampled_csc=CSCFormatBase(indptr=tensor([   0,    2,    5,  ..., 3726, 3728, 3732], dtype=torch.int32),
+                                                                         indices=tensor([1270,  274, 1271,  ..., 2008, 1343, 1229], dtype=torch.int32),
+                                                           ),
+                                               original_row_node_ids=tensor([2371, 2177, 2418,  ..., 2670, 2049, 2481], dtype=torch.int32),
+                                               original_edge_ids=tensor([9699, 9701, 8998,  ..., 3687, 3688, 3689], dtype=torch.int32),
+                                               original_column_node_ids=tensor([2371, 2177, 2418,  ...,  879,  343,  948], dtype=torch.int32),
+                            )],
+          node_features={'feat': tensor([[0.0000, 0.0000, 0.0000,  ..., 0.0000, 0.0000, 0.0000],
+                                [0.0000, 0.0000, 0.0000,  ..., 0.0000, 0.0000, 0.0000],
+                                [0.0000, 0.0000, 0.0000,  ..., 0.0476, 0.0000, 0.0000],
+                                ...,
+                                [0.0000, 0.0000, 0.0000,  ..., 0.0000, 0.0000, 0.0000],
+                                [0.0000, 0.0000, 0.0000,  ..., 0.0000, 0.0000, 0.0000],
+                                [0.0000, 0.0000, 0.0000,  ..., 0.0000, 0.0000, 0.0000]])},
+          labels=tensor([1., 1., 1.,  ..., 0., 0., 0.]),
+          input_nodes=tensor([2371, 2177, 2418,  ..., 1056, 2482, 1793], dtype=torch.int32),
+          indexes=tensor([  0,   1,   2,  ..., 255, 255, 255]),
+          edge_features=[{},
+                        {}],
+          compacted_seeds=tensor([[   0,    1],
+                                  [   2,    3],
+                                  [   4,    5],
+                                  ...,
+                                  [ 427,  162],
+                                  [ 427,  280],
+                                  [ 427, 1269]], dtype=torch.int32),
+          blocks=[Block(num_src_nodes=2517, num_dst_nodes=2237, num_edges=6997),
+                 Block(num_src_nodes=2237, num_dst_nodes=1270, num_edges=3732)],
+       )
+</pre></div></div>
+</div>
+</section>
+<section id="Defining-Model-for-Node-Representation">
+<h2>Defining Model for Node Representation<a class="headerlink" href="#Defining-Model-for-Node-Representation" title="Link to this heading"></a></h2>
+<p>Let’s consider training a 2-layer GraphSAGE with neighbor sampling. The model can be written as follows:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dgl.nn</span> <span class="k">as</span> <span class="nn">dglnn</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+
+
+<span class="k">class</span> <span class="nc">SAGE</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dglnn</span><span class="o">.</span><span class="n">SAGEConv</span><span class="p">(</span><span class="n">in_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="s2">"mean"</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dglnn</span><span class="o">.</span><span class="n">SAGEConv</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="s2">"mean"</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span> <span class="o">=</span> <span class="n">hidden_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">predictor</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blocks</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">hidden_x</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="k">for</span> <span class="n">layer_idx</span><span class="p">,</span> <span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">,</span> <span class="n">blocks</span><span class="p">)):</span>
+            <span class="n">hidden_x</span> <span class="o">=</span> <span class="n">layer</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">hidden_x</span><span class="p">)</span>
+            <span class="n">is_last_layer</span> <span class="o">=</span> <span class="n">layer_idx</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_last_layer</span><span class="p">:</span>
+                <span class="n">hidden_x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">hidden_x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">hidden_x</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Defining-Traing-Loop">
+<h2>Defining Traing Loop<a class="headerlink" href="#Defining-Traing-Loop" title="Link to this heading"></a></h2>
+<p>The following initializes the model and defines the optimizer.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">in_size</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="s2">"node"</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">"feat"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">SAGE</span><span class="p">(</span><span class="n">in_size</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>The following is the training loop for link prediction and evaluation.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tqdm.auto</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+    <span class="n">total_loss</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">step</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">train_dataloader</span><span class="p">)):</span>
+        <span class="c1"># Get node pairs with labels for loss calculation.</span>
+        <span class="n">compacted_seeds</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">compacted_seeds</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">labels</span>
+        <span class="n">node_feature</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">node_features</span><span class="p">[</span><span class="s2">"feat"</span><span class="p">]</span>
+        <span class="c1"># Convert sampled subgraphs to DGL blocks.</span>
+        <span class="n">blocks</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">blocks</span>
+
+        <span class="c1"># Get the embeddings of the input nodes.</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">blocks</span><span class="p">,</span> <span class="n">node_feature</span><span class="p">)</span>
+        <span class="n">logits</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predictor</span><span class="p">(</span>
+            <span class="n">y</span><span class="p">[</span><span class="n">compacted_seeds</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="n">y</span><span class="p">[</span><span class="n">compacted_seeds</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+
+        <span class="c1"># Compute loss.</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">binary_cross_entropy_with_logits</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+        <span class="n">total_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="si">:</span><span class="s2">03d</span><span class="si">}</span><span class="s2"> | Loss </span><span class="si">{</span><span class="n">total_loss</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">step</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "e7914c36999546f2a8523e35dd75cfe3"}</script></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Epoch 000 | Loss 0.557
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "237790dca4784a4cba737180808faffe"}</script></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Epoch 001 | Loss 0.449
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "b2db432a460742629a11b756186c16e9"}</script></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Epoch 002 | Loss 0.444
+</pre></div></div>
+</div>
+</section>
+<section id="Evaluating-Performance-with-Link-Prediction">
+<h2>Evaluating Performance with Link Prediction<a class="headerlink" href="#Evaluating-Performance-with-Link-Prediction" title="Link to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+<span class="n">datapipe</span> <span class="o">=</span> <span class="n">gb</span><span class="o">.</span><span class="n">ItemSampler</span><span class="p">(</span><span class="n">test_set</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">copy_to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="c1"># Since we need to use all neghborhoods for evaluation, we set the fanout</span>
+<span class="c1"># to -1.</span>
+<span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">sample_neighbor</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">fetch_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">node_feature_keys</span><span class="o">=</span><span class="p">[</span><span class="s2">"feat"</span><span class="p">])</span>
+<span class="n">eval_dataloader</span> <span class="o">=</span> <span class="n">gb</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">datapipe</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">logits</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">step</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">eval_dataloader</span><span class="p">)):</span>
+    <span class="c1"># Get node pairs with labels for loss calculation.</span>
+    <span class="n">compacted_seeds</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">compacted_seeds</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">labels</span>
+
+    <span class="c1"># The features of sampled nodes.</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">node_features</span><span class="p">[</span><span class="s2">"feat"</span><span class="p">]</span>
+
+    <span class="c1"># Forward.</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">blocks</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">logit</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">predictor</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">compacted_seeds</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="n">y</span><span class="p">[</span><span class="n">compacted_seeds</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+        <span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+        <span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+    <span class="p">)</span>
+
+    <span class="n">logits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">logit</span><span class="p">)</span>
+    <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+
+<span class="n">logits</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+
+<span class="c1"># Compute the AUROC score.</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">roc_auc_score</span>
+
+<span class="n">auc</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">cpu</span><span class="p">(),</span> <span class="n">logits</span><span class="o">.</span><span class="n">cpu</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Link Prediction AUC:"</span><span class="p">,</span> <span class="n">auc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "a41f89cfe18c4d88815d134361b8ff3b"}</script></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Link Prediction AUC: 0.6917643359313583
+</pre></div></div>
+</div>
+</section>
+<section id="Conclusion">
+<h2>Conclusion<a class="headerlink" href="#Conclusion" title="Link to this heading"></a></h2>
+<p>In this tutorial, you have learned how to train a multi-layer GraphSAGE for link prediction with neighbor sampling.</p>
+<script type="application/vnd.jupyter.widget-state+json">
+{"state": {"f6de7136e9544c4a82fb279a9ae25ab9": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": "20px"}}, "f648e55e0ec54052a77fc83834454e4f": {"model_name": "ProgressStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "ProgressStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "bar_color": null, "description_width": ""}}, "d3836cb3ce3e4aa3a22ea166c03bdf55": {"model_name": "FloatProgressModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "FloatProgressModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "ProgressView", "bar_style": "success", "description": "", "description_allow_html": false, "layout": "IPY_MODEL_f6de7136e9544c4a82fb279a9ae25ab9", "max": 1.0, "min": 0.0, "orientation": "horizontal", "style": "IPY_MODEL_f648e55e0ec54052a77fc83834454e4f", "tabbable": null, "tooltip": null, "value": 1.0}}, "79e8b6be128e4301b6a1a7527030b96c": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "d1c608e5c3f84d07a4d67fc0ba1ce1c5": {"model_name": "HTMLStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HTMLStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "background": null, "description_width": "", "font_size": null, "text_color": null}}, "16f1bb8680da4e9c8ed3de80d9cd27de": {"model_name": "HTMLModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HTMLModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "HTMLView", "description": "", "description_allow_html": false, "layout": "IPY_MODEL_79e8b6be128e4301b6a1a7527030b96c", "placeholder": "\u200b", "style": "IPY_MODEL_d1c608e5c3f84d07a4d67fc0ba1ce1c5", "tabbable": null, "tooltip": null, "value": ""}}, "fcd9e287de5d478ab84ed9b12ed8db48": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "a695015d21294a2a82911973393dca14": {"model_name": "HTMLStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HTMLStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "background": null, "description_width": "", "font_size": null, "text_color": null}}, "fdcb005e5f074535ab7076c70a66529f": {"model_name": "HTMLModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HTMLModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "HTMLView", "description": "", "description_allow_html": false, "layout": "IPY_MODEL_fcd9e287de5d478ab84ed9b12ed8db48", "placeholder": "\u200b", "style": "IPY_MODEL_a695015d21294a2a82911973393dca14", "tabbable": null, "tooltip": null, "value": "\u200738/?\u2007[00:00&lt;00:00,\u200761.03it/s]"}}, "7b3fa01e6810428b88910e9b739f37ed": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "e7914c36999546f2a8523e35dd75cfe3": {"model_name": "HBoxModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HBoxModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "HBoxView", "box_style": "", "children": ["IPY_MODEL_16f1bb8680da4e9c8ed3de80d9cd27de", "IPY_MODEL_d3836cb3ce3e4aa3a22ea166c03bdf55", "IPY_MODEL_fdcb005e5f074535ab7076c70a66529f"], "layout": "IPY_MODEL_7b3fa01e6810428b88910e9b739f37ed", "tabbable": null, "tooltip": null}}, "0631ac31f19645d191440b5f651fa727": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": "20px"}}, "58f610248823493d95e77be37bdaab57": {"model_name": "ProgressStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "ProgressStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "bar_color": null, "description_width": ""}}, "ee55feb663f4402e8b4a3ee49774a0f2": {"model_name": "FloatProgressModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "FloatProgressModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "ProgressView", "bar_style": "success", "description": "", "description_allow_html": false, "layout": "IPY_MODEL_0631ac31f19645d191440b5f651fa727", "max": 1.0, "min": 0.0, "orientation": "horizontal", "style": "IPY_MODEL_58f610248823493d95e77be37bdaab57", "tabbable": null, "tooltip": null, "value": 1.0}}, "f76a0758ac6a44ec9b1cada72a0141fa": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "53830422744b40a68d6053ebad3ccc17": {"model_name": "HTMLStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HTMLStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "background": null, "description_width": "", "font_size": null, "text_color": null}}, "d1412fa6a77c44d1bc665768b4017943": {"model_name": "HTMLModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HTMLModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "HTMLView", "description": "", "description_allow_html": false, "layout": "IPY_MODEL_f76a0758ac6a44ec9b1cada72a0141fa", "placeholder": "\u200b", "style": "IPY_MODEL_53830422744b40a68d6053ebad3ccc17", "tabbable": null, "tooltip": null, "value": ""}}, "b5b90ee93a7a4a3da61a731e13dca3ea": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "b6b49baf43c14e2fa94382c4befadf47": {"model_name": "HTMLStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HTMLStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "background": null, "description_width": "", "font_size": null, "text_color": null}}, "16cf791087a04644871259f063d8e60c": {"model_name": "HTMLModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HTMLModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "HTMLView", "description": "", "description_allow_html": false, "layout": "IPY_MODEL_b5b90ee93a7a4a3da61a731e13dca3ea", "placeholder": "\u200b", "style": "IPY_MODEL_b6b49baf43c14e2fa94382c4befadf47", "tabbable": null, "tooltip": null, "value": "\u200738/?\u2007[00:00&lt;00:00,\u200758.38it/s]"}}, "36f503e99d8040b8a98b8fc002aac75a": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "237790dca4784a4cba737180808faffe": {"model_name": "HBoxModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HBoxModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "HBoxView", "box_style": "", "children": ["IPY_MODEL_d1412fa6a77c44d1bc665768b4017943", "IPY_MODEL_ee55feb663f4402e8b4a3ee49774a0f2", "IPY_MODEL_16cf791087a04644871259f063d8e60c"], "layout": "IPY_MODEL_36f503e99d8040b8a98b8fc002aac75a", "tabbable": null, "tooltip": null}}, "4c20b5f7eae54fc08145dea6b93aff53": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": "20px"}}, "967c12166eec409b95817e5f462555b9": {"model_name": "ProgressStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "ProgressStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "bar_color": null, "description_width": ""}}, "d0fc6d191fbf42e1b3870265558871e8": {"model_name": "FloatProgressModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "FloatProgressModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "ProgressView", "bar_style": "success", "description": "", "description_allow_html": false, "layout": "IPY_MODEL_4c20b5f7eae54fc08145dea6b93aff53", "max": 1.0, "min": 0.0, "orientation": "horizontal", "style": "IPY_MODEL_967c12166eec409b95817e5f462555b9", "tabbable": null, "tooltip": null, "value": 1.0}}, "6f0689cb14334d43ab2e5a1a024cf1d2": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "b9f8a46984324ceebff5f6437a885a7d": {"model_name": "HTMLStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HTMLStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "background": null, "description_width": "", "font_size": null, "text_color": null}}, "fab0cd5e17b14463a33096ec04c352e9": {"model_name": "HTMLModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HTMLModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "HTMLView", "description": "", "description_allow_html": false, "layout": "IPY_MODEL_6f0689cb14334d43ab2e5a1a024cf1d2", "placeholder": "\u200b", "style": "IPY_MODEL_b9f8a46984324ceebff5f6437a885a7d", "tabbable": null, "tooltip": null, "value": ""}}, "d9318322d9b547f4854ef1f7facbb7cd": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "dda8ced558344f98a5f892cd8b107772": {"model_name": "HTMLStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HTMLStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "background": null, "description_width": "", "font_size": null, "text_color": null}}, "66ef9fef381d491bbab139dba3697d4b": {"model_name": "HTMLModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HTMLModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "HTMLView", "description": "", "description_allow_html": false, "layout": "IPY_MODEL_d9318322d9b547f4854ef1f7facbb7cd", "placeholder": "\u200b", "style": "IPY_MODEL_dda8ced558344f98a5f892cd8b107772", "tabbable": null, "tooltip": null, "value": "\u200738/?\u2007[00:00&lt;00:00,\u200763.26it/s]"}}, "cd90baccc5b04cc0bb07e85cc080735e": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "b2db432a460742629a11b756186c16e9": {"model_name": "HBoxModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HBoxModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "HBoxView", "box_style": "", "children": ["IPY_MODEL_fab0cd5e17b14463a33096ec04c352e9", "IPY_MODEL_d0fc6d191fbf42e1b3870265558871e8", "IPY_MODEL_66ef9fef381d491bbab139dba3697d4b"], "layout": "IPY_MODEL_cd90baccc5b04cc0bb07e85cc080735e", "tabbable": null, "tooltip": null}}, "deb3d1ca313a4293a9f3b5d4b61a947a": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": "20px"}}, "4c9c23d6958840168b423f8d931aef81": {"model_name": "ProgressStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "ProgressStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "bar_color": null, "description_width": ""}}, "17cd73db778543dda10890cf3fa61a2a": {"model_name": "FloatProgressModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "FloatProgressModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "ProgressView", "bar_style": "success", "description": "", "description_allow_html": false, "layout": "IPY_MODEL_deb3d1ca313a4293a9f3b5d4b61a947a", "max": 1.0, "min": 0.0, "orientation": "horizontal", "style": "IPY_MODEL_4c9c23d6958840168b423f8d931aef81", "tabbable": null, "tooltip": null, "value": 1.0}}, "5aba70e0c3154d0aa137e57b5ba36114": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "d32ad655f1dc45c9af25d8a6a302005f": {"model_name": "HTMLStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HTMLStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "background": null, "description_width": "", "font_size": null, "text_color": null}}, "3c521de4e7d943ef917867da5eb7f5a7": {"model_name": "HTMLModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HTMLModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "HTMLView", "description": "", "description_allow_html": false, "layout": "IPY_MODEL_5aba70e0c3154d0aa137e57b5ba36114", "placeholder": "\u200b", "style": "IPY_MODEL_d32ad655f1dc45c9af25d8a6a302005f", "tabbable": null, "tooltip": null, "value": ""}}, "eec3f4e811284975b65501ac04ca11b8": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "b267ec87b76948a981b0b32571b4ee02": {"model_name": "HTMLStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HTMLStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "background": null, "description_width": "", "font_size": null, "text_color": null}}, "3d70a2cee9d843e5869ba63ec894a2ae": {"model_name": "HTMLModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HTMLModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "HTMLView", "description": "", "description_allow_html": false, "layout": "IPY_MODEL_eec3f4e811284975b65501ac04ca11b8", "placeholder": "\u200b", "style": "IPY_MODEL_b267ec87b76948a981b0b32571b4ee02", "tabbable": null, "tooltip": null, "value": "\u20079/?\u2007[00:00&lt;00:00,\u2007121.49it/s]"}}, "b4281c0f0ff4483fb85d3770bfe41a09": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "a41f89cfe18c4d88815d134361b8ff3b": {"model_name": "HBoxModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HBoxModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "HBoxView", "box_style": "", "children": ["IPY_MODEL_3c521de4e7d943ef917867da5eb7f5a7", "IPY_MODEL_17cd73db778543dda10890cf3fa61a2a", "IPY_MODEL_3d70a2cee9d843e5869ba63ec894a2ae"], "layout": "IPY_MODEL_b4281c0f0ff4483fb85d3770bfe41a09", "tabbable": null, "tooltip": null}}}, "version_major": 2, "version_minor": 0}
+</script></section>
+</section>
+</div>
+</div>
+<footer><div aria-label="Footer" class="rst-footer-buttons" role="navigation">
+<a accesskey="p" class="btn btn-neutral float-left" href="node_classification.html" rel="prev" title="Node Classification"><span aria-hidden="true" class="fa fa-arrow-circle-left"></span> Previous</a>
+<a accesskey="n" class="btn btn-neutral float-right" href="multigpu_node_classification.html" rel="next" title="Multi-GPU Node Classification">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
+</div>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+<span id="version-placeholder">v: latest</span>
+<span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('/dgl_docs/branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            // 获取当前路径
+            var path = window.location.pathname;
+            var versionPlaceholder = document.getElementById('version-placeholder');
+
+            // 检查路径中是否包含 'en'
+            if (path.includes('/en/')) {
+                // 提取 'en' 后的文件夹作为版本号
+                var parts = path.split('/en/');
+                if (parts[1]) {
+                    var folders = parts[1].split('/');
+                    if (folders.length > 0 && folders[0]) {
+                        versionPlaceholder.textContent = 'v: ' + folders[0];
+                    } else {
+                        versionPlaceholder.textContent = 'v: latest';
+                    }
+                } else {
+                    versionPlaceholder.textContent = 'v: latest';
+                }
+            } else {
+                versionPlaceholder.textContent = 'v: latest';
+            }
+        });
+    </script>
+
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+</body>
+</html>

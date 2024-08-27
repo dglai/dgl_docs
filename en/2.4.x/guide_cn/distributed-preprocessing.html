@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html class="writer-html5" data-content_root="../" lang="en">
+<head>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>7.1 分布式训练所需的图数据预处理 — DGL 2.4.0 documentation</title>
+<link href="../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+<script src="../_static/jquery.js?v=5d32c60e"></script>
+<script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../_static/documentation_options.js?v=4d935f96"></script>
+<script src="../_static/doctools.js?v=9a2dae69"></script>
+<script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script src="../_static/js/theme.js"></script>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="distributed-apis.html" rel="next" title="7.2 分布式计算的API"/>
+<link href="distributed.html" rel="prev" title="第7章：分布式训练"/>
+</head>
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../index.html">
+            DGL
+          </a>
+<div class="version">
+                2.4.0
+              </div>
+<div role="search">
+<form action="../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
+</div>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Install and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/blitz/index.html">A Blitz Introduction to DGL</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Materials</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../stochastic_training/index.html">🆕 Stochastic Training of GNNs with GraphBolt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide/index.html">User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">用户指南【包含过时信息】</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="graph.html">第1章：图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="message.html">第2章：消息传递范式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn.html">第3章：构建图神经网络（GNN）模块</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data.html">第4章：图数据处理管道</a></li>
+<li class="toctree-l2"><a class="reference internal" href="training.html">第5章：训练图神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="minibatch.html">第6章：在大图上的随机（批次）训练</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="distributed.html">第7章：分布式训练</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">7.1 分布式训练所需的图数据预处理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="distributed-apis.html">7.2 分布式计算的API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="distributed-tools.html">7.3 运行分布式训练/推断所需的工具</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../guide_ko/index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphtransformer/index.html">🆕 Tutorial: Graph Transformer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/sparse/index.html">Tutorials: dgl.sparse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/cpu/index.html">Training on CPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/multi/index.html">Training on Multiple GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/dist/index.html">Distributed training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/models/index.html">Paper Study with DGL</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.html">dgl</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.data.html">dgl.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.dataloading.html">dgl.dataloading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.DGLGraph.html">dgl.DGLGraph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.distributed.html">dgl.distributed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.function.html">dgl.function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.geometry.html">dgl.geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.graphbolt.html">🆕 dgl.graphbolt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/nn.functional.html">dgl.nn.functional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.ops.html">dgl.ops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.optim.html">dgl.optim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.sampling.html">dgl.sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.sparse_v0.html">dgl.sparse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/dgl.multiprocessing.html">dgl.multiprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/transforms.html">dgl.transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/udf.html">User-defined Functions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contribute.html">Contribute to DGL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/ffi.html">DGL Foreign Function Interface (FFI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance.html">Performance Benchmarks</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Misc</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../env_var.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources.html">Resources</a></li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../index.html"></a></li>
+<li class="breadcrumb-item"><a href="index.html">用户指南【包含过时信息】</a></li>
+<li class="breadcrumb-item"><a href="distributed.html">第7章：分布式训练</a></li>
+<li class="breadcrumb-item active">7.1 分布式训练所需的图数据预处理</li>
+<li class="wy-breadcrumbs-aside">
+<a href="../_sources/guide_cn/distributed-preprocessing.rst.txt" rel="nofollow"> View page source</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<section id="guide-cn-distributed-preprocessing">
+<span id="id1"></span><h1>7.1 分布式训练所需的图数据预处理<a class="headerlink" href="#guide-cn-distributed-preprocessing" title="Link to this heading"></a></h1>
+<p><a class="reference internal" href="../guide/distributed-preprocessing.html#guide-distributed-preprocessing"><span class="std std-ref">(English Version)</span></a></p>
+<p>DGL要求预处理图数据以进行分布式训练，这包括两个步骤：1)将一张图划分为多张子图(分区)，2)为节点和边分配新的ID。
+DGL提供了一个API以执行这两个步骤。该API支持随机划分和一个基于
+<a class="reference external" href="http://glaros.dtc.umn.edu/gkhome/views/metis">Metis</a> 的划分。Metis划分的好处在于，
+它可以用最少的边分割以生成分区，从而减少了用于分布式训练和推理的网络通信。DGL使用最新版本的Metis，
+并针对真实世界中具有幂律分布的图进行了优化。在图划分后，API以易于在训练期间加载的格式构造划分结果。</p>
+<p><strong>Note</strong>: 图划分API当前在一台机器上运行。 因此如果一张图很大，用户将需要一台大内存的机器来对图进行划分。
+未来DGL将支持分布式图划分。</p>
+<p>默认情况下，为了在分布式训练/推理期间定位节点/边，API将新ID分配给输入图的节点和边。
+分配ID后，该API会相应地打乱所有节点数据和边数据。在训练期间，用户只需使用新的节点和边的ID。
+与此同时，用户仍然可以通过 <code class="docutils literal notranslate"><span class="pre">g.ndata['orig_id']</span></code> 和 <code class="docutils literal notranslate"><span class="pre">g.edata['orig_id']</span></code> 获取原始ID。
+其中 <code class="docutils literal notranslate"><span class="pre">g</span></code> 是 <code class="docutils literal notranslate"><span class="pre">DistGraph</span></code> 对象（详细解释，请参见:ref:<cite>guide-distributed-apis</cite>）。</p>
+<p>DGL将图划分结果存储在输出目录中的多个文件中。输出目录里始终包含一个名为xxx.json的JSON文件，其中xxx是提供给划分API的图的名称。
+JSON文件包含所有划分的配置。如果该API没有为节点和边分配新ID，它将生成两个额外的NumPy文件：<cite>node_map.npy</cite> 和 <cite>edge_map.npy</cite>。
+它们存储节点和边ID与分区ID之间的映射。对于具有十亿级数量节点和边的图，两个文件中的NumPy数组会很大，
+这是因为图中的每个节点和边都对应一个条目。在每个分区的文件夹内，有3个文件以DGL格式存储分区数据。
+<cite>graph.dgl</cite> 存储分区的图结构以及节点和边上的一些元数据。<cite>node_feats.dgl</cite> 和 <cite>edge_feats.dgl</cite> 存储属于该分区的节点和边的所有特征。</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>data_root_dir/
+    |-- xxx.json             # JSON中的分区配置文件
+    |-- node_map.npy         # 存储在NumPy数组中的每个节点的分区ID（可选）
+    |-- edge_map.npy         # 存储在NumPy数组中的每个边的分区ID（可选）
+    |-- part0/               # 分区0的数据
+        |-- node_feats.dgl   # 以二进制格式存储的节点特征
+        |-- edge_feats.dgl   # 以二进制格式存储的边特征
+        |-- graph.dgl        # 以二进制格式存储的子图结构
+    |-- part1/               # 分区1的数据
+        |-- node_feats.dgl
+        |-- edge_feats.dgl
+        |-- graph.dgl
+</pre></div>
+</div>
+<section id="id2">
+<h2>负载均衡<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>在对图进行划分时，默认情况下，Metis仅平衡每个子图中的节点数。根据当前的任务情况，这可能带来非最优的配置。
+例如，在半监督节点分类的场景里，训练器会对局部分区中带标签节点的子集进行计算。
+一个仅平衡图中节点(带标签和未带标签)的划分可能会导致计算负载不平衡。为了在每个分区中获得平衡的工作负载，
+划分API通过在 <a class="reference internal" href="../generated/dgl.distributed.partition_graph.html#dgl.distributed.partition_graph" title="dgl.distributed.partition_graph"><code class="xref py py-func docutils literal notranslate"><span class="pre">dgl.distributed.partition_graph()</span></code></a> 中指定 <code class="docutils literal notranslate"><span class="pre">balance_ntypes</span></code>
+在每个节点类型中的节点数上实现分区间的平衡。用户可以利用这一点将训练集、验证集和测试集中的节点看作不同类型的节点。</p>
+<p>以下示例将训练集内和训练集外的节点看作两种类型的节点：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">partition_graph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="s1">'graph_name'</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">'/tmp/test'</span><span class="p">,</span> <span class="n">balance_ntypes</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s1">'train_mask'</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>除了平衡节点的类型之外， <a class="reference internal" href="../generated/dgl.distributed.partition_graph.html#dgl.distributed.partition_graph" title="dgl.distributed.partition_graph"><code class="xref py py-func docutils literal notranslate"><span class="pre">dgl.distributed.partition_graph()</span></code></a> 还允许通过指定
+<code class="docutils literal notranslate"><span class="pre">balance_edges</span></code> 来平衡每个类型节点在子图中的入度。这平衡了不同类型节点的连边数量。</p>
+<p><strong>Note</strong>: 传给 <a class="reference internal" href="../generated/dgl.distributed.partition_graph.html#dgl.distributed.partition_graph" title="dgl.distributed.partition_graph"><code class="xref py py-func docutils literal notranslate"><span class="pre">dgl.distributed.partition_graph()</span></code></a> 的图名称是一个重要的参数。
+<a class="reference internal" href="../api/python/dgl.distributed.html#dgl.distributed.DistGraph" title="dgl.distributed.DistGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">dgl.distributed.DistGraph</span></code></a> 使用该名称来识别一个分布式的图。一个有效的图名称应该仅包含字母和下划线。</p>
+</section>
+</section>
+</div>
+</div>
+<footer><div aria-label="Footer" class="rst-footer-buttons" role="navigation">
+<a accesskey="p" class="btn btn-neutral float-left" href="distributed.html" rel="prev" title="第7章：分布式训练"><span aria-hidden="true" class="fa fa-arrow-circle-left"></span> Previous</a>
+<a accesskey="n" class="btn btn-neutral float-right" href="distributed-apis.html" rel="next" title="7.2 分布式计算的API">Next <span aria-hidden="true" class="fa fa-arrow-circle-right"></span></a>
+</div>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+<span id="version-placeholder">v: latest</span>
+<span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('/dgl_docs/branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            // 获取当前路径
+            var path = window.location.pathname;
+            var versionPlaceholder = document.getElementById('version-placeholder');
+
+            // 检查路径中是否包含 'en'
+            if (path.includes('/en/')) {
+                // 提取 'en' 后的文件夹作为版本号
+                var parts = path.split('/en/');
+                if (parts[1]) {
+                    var folders = parts[1].split('/');
+                    if (folders.length > 0 && folders[0]) {
+                        versionPlaceholder.textContent = 'v: ' + folders[0];
+                    } else {
+                        versionPlaceholder.textContent = 'v: latest';
+                    }
+                } else {
+                    versionPlaceholder.textContent = 'v: latest';
+                }
+            } else {
+                versionPlaceholder.textContent = 'v: latest';
+            }
+        });
+    </script>
+
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+</body>
+</html>

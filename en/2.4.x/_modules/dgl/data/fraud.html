@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+
+<html class="writer-html5" data-content_root="../../../" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>dgl.data.fraud — DGL 2.4.0 documentation</title>
+<link href="../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
+<!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+<script src="../../../_static/jquery.js?v=5d32c60e"></script>
+<script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="../../../_static/documentation_options.js?v=4d935f96"></script>
+<script src="../../../_static/doctools.js?v=9a2dae69"></script>
+<script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../../../_static/copybutton.js?v=ccdb6887"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+<script src="../../../_static/js/theme.js"></script>
+<link href="../../../genindex.html" rel="index" title="Index"/>
+<link href="../../../search.html" rel="search" title="Search"/>
+</head>
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../../../index.html">
+            DGL
+          </a>
+<div class="version">
+                2.4.0
+              </div>
+<div role="search">
+<form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
+</div>
+</div><div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Install and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/blitz/index.html">A Blitz Introduction to DGL</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Materials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../stochastic_training/index.html">🆕 Stochastic Training of GNNs with GraphBolt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guide_cn/index.html">用户指南【包含过时信息】</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guide_ko/index.html">사용자 가이드[시대에 뒤쳐진]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../graphtransformer/index.html">🆕 Tutorial: Graph Transformer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/sparse/index.html">Tutorials: dgl.sparse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/cpu/index.html">Training on CPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/multi/index.html">Training on Multiple GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/dist/index.html">Distributed training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/models/index.html">Paper Study with DGL</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.html">dgl</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.data.html">dgl.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.dataloading.html">dgl.dataloading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.DGLGraph.html">dgl.DGLGraph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.distributed.html">dgl.distributed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.function.html">dgl.function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.geometry.html">dgl.geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.graphbolt.html">🆕 dgl.graphbolt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn-pytorch.html">dgl.nn (PyTorch)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/nn.functional.html">dgl.nn.functional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.ops.html">dgl.ops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.optim.html">dgl.optim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.sampling.html">dgl.sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.sparse_v0.html">dgl.sparse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/dgl.multiprocessing.html">dgl.multiprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/transforms.html">dgl.transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/python/udf.html">User-defined Functions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../contribute.html">Contribute to DGL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/ffi.html">DGL Foreign Function Interface (FFI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../performance.html">Performance Benchmarks</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Misc</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../env_var.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resources.html">Resources</a></li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift"><nav aria-label="Mobile navigation menu" class="wy-nav-top">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../../../index.html">DGL</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="Page navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Home" class="icon icon-home" href="../../../index.html"></a></li>
+<li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+<li class="breadcrumb-item active">dgl.data.fraud</li>
+<li class="wy-breadcrumbs-aside">
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<h1>Source code for dgl.data.fraud</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Fraud Dataset</span>
+<span class="sd">"""</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">io</span>
+
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">F</span>
+<span class="kn">from</span> <span class="nn">..convert</span> <span class="kn">import</span> <span class="n">heterograph</span>
+<span class="kn">from</span> <span class="nn">.dgl_dataset</span> <span class="kn">import</span> <span class="n">DGLBuiltinDataset</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">_get_dgl_url</span><span class="p">,</span> <span class="n">load_graphs</span><span class="p">,</span> <span class="n">save_graphs</span>
+
+
+<div class="viewcode-block" id="FraudDataset">
+<a class="viewcode-back" href="../../../generated/dgl.data.FraudDataset.html#dgl.data.FraudDataset">[docs]</a>
+<span class="k">class</span> <span class="nc">FraudDataset</span><span class="p">(</span><span class="n">DGLBuiltinDataset</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""Fraud node prediction dataset.</span>
+
+<span class="sd">    The dataset includes two multi-relational graphs extracted from Yelp and Amazon</span>
+<span class="sd">    where nodes represent fraudulent reviews or fraudulent reviewers.</span>
+
+<span class="sd">    It was first proposed in a CIKM'20 paper &lt;https://arxiv.org/pdf/2008.08692.pdf&gt; and</span>
+<span class="sd">    has been used by a recent WWW'21 paper &lt;https://ponderly.github.io/pub/PCGNN_WWW2021.pdf&gt;</span>
+<span class="sd">    as a benchmark. Another paper &lt;https://arxiv.org/pdf/2104.01404.pdf&gt; also takes</span>
+<span class="sd">    the dataset as an example to study the non-homophilous graphs. This dataset is built</span>
+<span class="sd">    upon industrial data and has rich relational information and unique properties like</span>
+<span class="sd">    class-imbalance and feature inconsistency, which makes the dataset be a good instance</span>
+<span class="sd">    to investigate how GNNs perform on real-world noisy graphs. These graphs are bidirected</span>
+<span class="sd">    and not self connected.</span>
+
+<span class="sd">    Reference: &lt;https://github.com/YingtongDou/CARE-GNN&gt;</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Name of the dataset</span>
+<span class="sd">    raw_dir : str</span>
+<span class="sd">        Specifying the directory that will store the</span>
+<span class="sd">        downloaded data or the directory that</span>
+<span class="sd">        already stores the input data.</span>
+<span class="sd">        Default: ~/.dgl/</span>
+<span class="sd">    random_seed : int</span>
+<span class="sd">        Specifying the random seed in splitting the dataset.</span>
+<span class="sd">        Default: 717</span>
+<span class="sd">    train_size : float</span>
+<span class="sd">        training set size of the dataset.</span>
+<span class="sd">        Default: 0.7</span>
+<span class="sd">    val_size : float</span>
+<span class="sd">        validation set size of the dataset, and the</span>
+<span class="sd">        size of testing set is (1 - train_size - val_size)</span>
+<span class="sd">        Default: 0.1</span>
+<span class="sd">    force_reload : bool</span>
+<span class="sd">        Whether to reload the dataset. Default: False</span>
+<span class="sd">    verbose : bool</span>
+<span class="sd">        Whether to print out progress information. Default: True.</span>
+<span class="sd">    transform : callable, optional</span>
+<span class="sd">        A transform that takes in a :class:`~dgl.DGLGraph` object and returns</span>
+<span class="sd">        a transformed version. The :class:`~dgl.DGLGraph` object will be</span>
+<span class="sd">        transformed before every access.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    num_classes : int</span>
+<span class="sd">        Number of label classes</span>
+<span class="sd">    graph : dgl.DGLGraph</span>
+<span class="sd">        Graph structure, etc.</span>
+<span class="sd">    seed : int</span>
+<span class="sd">        Random seed in splitting the dataset.</span>
+<span class="sd">    train_size : float</span>
+<span class="sd">        Training set size of the dataset.</span>
+<span class="sd">    val_size : float</span>
+<span class="sd">        Validation set size of the dataset</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; dataset = FraudDataset('yelp')</span>
+<span class="sd">    &gt;&gt;&gt; graph = dataset[0]</span>
+<span class="sd">    &gt;&gt;&gt; num_classes = dataset.num_classes</span>
+<span class="sd">    &gt;&gt;&gt; feat = graph.ndata['feature']</span>
+<span class="sd">    &gt;&gt;&gt; label = graph.ndata['label']</span>
+<span class="sd">    """</span>
+    <span class="n">file_urls</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"yelp"</span><span class="p">:</span> <span class="s2">"dataset/FraudYelp.zip"</span><span class="p">,</span>
+        <span class="s2">"amazon"</span><span class="p">:</span> <span class="s2">"dataset/FraudAmazon.zip"</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">relations</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"yelp"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"net_rsr"</span><span class="p">,</span> <span class="s2">"net_rtr"</span><span class="p">,</span> <span class="s2">"net_rur"</span><span class="p">],</span>
+        <span class="s2">"amazon"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"net_upu"</span><span class="p">,</span> <span class="s2">"net_usu"</span><span class="p">,</span> <span class="s2">"net_uvu"</span><span class="p">],</span>
+    <span class="p">}</span>
+    <span class="n">file_names</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"yelp"</span><span class="p">:</span> <span class="s2">"YelpChi.mat"</span><span class="p">,</span> <span class="s2">"amazon"</span><span class="p">:</span> <span class="s2">"Amazon.mat"</span><span class="p">}</span>
+    <span class="n">node_name</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"yelp"</span><span class="p">:</span> <span class="s2">"review"</span><span class="p">,</span> <span class="s2">"amazon"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">,</span>
+        <span class="n">raw_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">random_seed</span><span class="o">=</span><span class="mi">717</span><span class="p">,</span>
+        <span class="n">train_size</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+        <span class="n">val_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">force_reload</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">assert</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"yelp"</span><span class="p">,</span> <span class="s2">"amazon"</span><span class="p">],</span> <span class="s2">"only supports 'yelp', or 'amazon'"</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">_get_dgl_url</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_urls</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">random_seed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_size</span> <span class="o">=</span> <span class="n">train_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val_size</span> <span class="o">=</span> <span class="n">val_size</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FraudDataset</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">raw_dir</span><span class="o">=</span><span class="n">raw_dir</span><span class="p">,</span>
+            <span class="n">hash_key</span><span class="o">=</span><span class="p">(</span><span class="n">random_seed</span><span class="p">,</span> <span class="n">train_size</span><span class="p">,</span> <span class="n">val_size</span><span class="p">),</span>
+            <span class="n">force_reload</span><span class="o">=</span><span class="n">force_reload</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+            <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""process raw data to graph, labels, splitting masks"""</span>
+        <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_names</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+        <span class="n">node_features</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">"features"</span><span class="p">]</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span>
+        <span class="c1"># remove additional dimension of length 1 in raw .mat file</span>
+        <span class="n">node_labels</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">"label"</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+
+        <span class="n">graph_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">relation</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">relations</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]:</span>
+            <span class="n">adj</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">relation</span><span class="p">]</span><span class="o">.</span><span class="n">tocoo</span><span class="p">()</span>
+            <span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">adj</span><span class="o">.</span><span class="n">row</span><span class="p">,</span> <span class="n">adj</span><span class="o">.</span><span class="n">col</span>
+            <span class="n">graph_data</span><span class="p">[</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_name</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">],</span> <span class="n">relation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_name</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+            <span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">heterograph</span><span class="p">(</span><span class="n">graph_data</span><span class="p">)</span>
+
+        <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"feature"</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+            <span class="n">node_features</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">data_type_dict</span><span class="p">[</span><span class="s2">"float32"</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"label"</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+            <span class="n">node_labels</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">data_type_dict</span><span class="p">[</span><span class="s2">"int64"</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">g</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_random_split</span><span class="p">(</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"feature"</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_size</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="FraudDataset.__getitem__">
+<a class="viewcode-back" href="../../../generated/dgl.data.FraudDataset.html#dgl.data.FraudDataset.__getitem__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Get graph object</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        idx : int</span>
+<span class="sd">            Item index</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`dgl.DGLGraph`</span>
+<span class="sd">            graph structure, node features, node labels and masks</span>
+
+<span class="sd">            - ``ndata['feature']``: node features</span>
+<span class="sd">            - ``ndata['label']``: node labels</span>
+<span class="sd">            - ``ndata['train_mask']``: mask of training set</span>
+<span class="sd">            - ``ndata['val_mask']``: mask of validation set</span>
+<span class="sd">            - ``ndata['test_mask']``: mask of testing set</span>
+<span class="sd">        """</span>
+        <span class="k">assert</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"This dataset has only one graph"</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="FraudDataset.__len__">
+<a class="viewcode-back" href="../../../generated/dgl.data.FraudDataset.html#dgl.data.FraudDataset.__len__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""number of data examples"""</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">num_classes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Number of classes.</span>
+
+<span class="sd">        Return</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="mi">2</span>
+
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""save processed data to directory `self.save_path`"""</span>
+        <span class="n">graph_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">"_dgl_graph_</span><span class="si">{}</span><span class="s2">.bin"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hash</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">save_graphs</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">graph_path</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""load processed data from directory `self.save_path`"""</span>
+        <span class="n">graph_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">"_dgl_graph_</span><span class="si">{}</span><span class="s2">.bin"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hash</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">graph_list</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">load_graphs</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">graph_path</span><span class="p">))</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">graph_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">g</span>
+
+    <span class="k">def</span> <span class="nf">has_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""check whether there are processed data in `self.save_path`"""</span>
+        <span class="n">graph_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">"_dgl_graph_</span><span class="si">{}</span><span class="s2">.bin"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hash</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">graph_path</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_random_split</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">717</span><span class="p">,</span> <span class="n">train_size</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">val_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""split the dataset into training set, validation set and testing set"""</span>
+
+        <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">train_size</span> <span class="o">+</span> <span class="n">val_size</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span>
+            <span class="s2">"The sum of valid training set size and validation set size "</span>
+            <span class="s2">"must between 0 and 1 (inclusive)."</span>
+        <span class="p">)</span>
+
+        <span class="n">N</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"amazon"</span><span class="p">:</span>
+            <span class="c1"># 0-3304 are unlabeled nodes</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3305</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+
+        <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="n">train_idx</span> <span class="o">=</span> <span class="n">index</span><span class="p">[:</span> <span class="nb">int</span><span class="p">(</span><span class="n">train_size</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">index</span><span class="p">))]</span>
+        <span class="n">val_idx</span> <span class="o">=</span> <span class="n">index</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">val_size</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">index</span><span class="p">))</span> <span class="p">:]</span>
+        <span class="n">test_idx</span> <span class="o">=</span> <span class="n">index</span><span class="p">[</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">train_size</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">index</span><span class="p">))</span> <span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+            <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">val_size</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+        <span class="p">]</span>
+        <span class="n">train_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">)</span>
+        <span class="n">val_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">)</span>
+        <span class="n">test_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">)</span>
+        <span class="n">train_mask</span><span class="p">[</span><span class="n">train_idx</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">val_mask</span><span class="p">[</span><span class="n">val_idx</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">test_mask</span><span class="p">[</span><span class="n">test_idx</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"train_mask"</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">train_mask</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"val_mask"</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">val_mask</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"test_mask"</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">test_mask</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="FraudYelpDataset">
+<a class="viewcode-back" href="../../../generated/dgl.data.FraudYelpDataset.html#dgl.data.FraudYelpDataset">[docs]</a>
+<span class="k">class</span> <span class="nc">FraudYelpDataset</span><span class="p">(</span><span class="n">FraudDataset</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""Fraud Yelp Dataset</span>
+
+<span class="sd">    The Yelp dataset includes hotel and restaurant reviews filtered (spam) and recommended</span>
+<span class="sd">    (legitimate) by Yelp. A spam review detection task can be conducted, which is a binary</span>
+<span class="sd">    classification task. 32 handcrafted features from &lt;http://dx.doi.org/10.1145/2783258.2783370&gt;</span>
+<span class="sd">    are taken as the raw node features. Reviews are nodes in the graph, and three relations are:</span>
+
+<span class="sd">        1. R-U-R: it connects reviews posted by the same user</span>
+<span class="sd">        2. R-S-R: it connects reviews under the same product with the same star rating (1-5 stars)</span>
+<span class="sd">        3. R-T-R: it connects two reviews under the same product posted in the same month.</span>
+
+<span class="sd">    Statistics:</span>
+
+<span class="sd">    - Nodes: 45,954</span>
+<span class="sd">    - Edges:</span>
+
+<span class="sd">        - R-U-R: 98,630</span>
+<span class="sd">        - R-T-R: 1,147,232</span>
+<span class="sd">        - R-S-R: 6,805,486</span>
+
+<span class="sd">    - Classes:</span>
+
+<span class="sd">        - Positive (spam): 6,677</span>
+<span class="sd">        - Negative (legitimate): 39,277</span>
+
+<span class="sd">    - Positive-Negative ratio: 1 : 5.9</span>
+<span class="sd">    - Node feature size: 32</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    raw_dir : str</span>
+<span class="sd">        Specifying the directory that will store the</span>
+<span class="sd">        downloaded data or the directory that</span>
+<span class="sd">        already stores the input data.</span>
+<span class="sd">        Default: ~/.dgl/</span>
+<span class="sd">    random_seed : int</span>
+<span class="sd">        Specifying the random seed in splitting the dataset.</span>
+<span class="sd">        Default: 717</span>
+<span class="sd">    train_size : float</span>
+<span class="sd">        training set size of the dataset.</span>
+<span class="sd">        Default: 0.7</span>
+<span class="sd">    val_size : float</span>
+<span class="sd">        validation set size of the dataset, and the</span>
+<span class="sd">        size of testing set is (1 - train_size - val_size)</span>
+<span class="sd">        Default: 0.1</span>
+<span class="sd">    force_reload : bool</span>
+<span class="sd">        Whether to reload the dataset. Default: False</span>
+<span class="sd">    verbose : bool</span>
+<span class="sd">        Whether to print out progress information. Default: True.</span>
+<span class="sd">    transform : callable, optional</span>
+<span class="sd">        A transform that takes in a :class:`~dgl.DGLGraph` object and returns</span>
+<span class="sd">        a transformed version. The :class:`~dgl.DGLGraph` object will be</span>
+<span class="sd">        transformed before every access.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; dataset = FraudYelpDataset()</span>
+<span class="sd">    &gt;&gt;&gt; graph = dataset[0]</span>
+<span class="sd">    &gt;&gt;&gt; num_classes = dataset.num_classes</span>
+<span class="sd">    &gt;&gt;&gt; feat = graph.ndata['feature']</span>
+<span class="sd">    &gt;&gt;&gt; label = graph.ndata['label']</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">raw_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">random_seed</span><span class="o">=</span><span class="mi">717</span><span class="p">,</span>
+        <span class="n">train_size</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+        <span class="n">val_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">force_reload</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FraudYelpDataset</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"yelp"</span><span class="p">,</span>
+            <span class="n">raw_dir</span><span class="o">=</span><span class="n">raw_dir</span><span class="p">,</span>
+            <span class="n">random_seed</span><span class="o">=</span><span class="n">random_seed</span><span class="p">,</span>
+            <span class="n">train_size</span><span class="o">=</span><span class="n">train_size</span><span class="p">,</span>
+            <span class="n">val_size</span><span class="o">=</span><span class="n">val_size</span><span class="p">,</span>
+            <span class="n">force_reload</span><span class="o">=</span><span class="n">force_reload</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+            <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="FraudAmazonDataset">
+<a class="viewcode-back" href="../../../generated/dgl.data.FraudAmazonDataset.html#dgl.data.FraudAmazonDataset">[docs]</a>
+<span class="k">class</span> <span class="nc">FraudAmazonDataset</span><span class="p">(</span><span class="n">FraudDataset</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""Fraud Amazon Dataset</span>
+
+<span class="sd">    The Amazon dataset includes product reviews under the Musical Instruments category.</span>
+<span class="sd">    Users with more than 80% helpful votes are labelled as benign entities and users with</span>
+<span class="sd">    less than 20% helpful votes are labelled as fraudulent entities. A fraudulent user</span>
+<span class="sd">    detection task can be conducted on the Amazon dataset, which is a binary classification</span>
+<span class="sd">    task. 25 handcrafted features from &lt;https://arxiv.org/pdf/2005.10150.pdf&gt; are taken as</span>
+<span class="sd">    the raw node features .</span>
+
+<span class="sd">    Users are nodes in the graph, and three relations are:</span>
+<span class="sd">    1. U-P-U : it connects users reviewing at least one same product</span>
+<span class="sd">    2. U-S-U : it connects users having at least one same star rating within one week</span>
+<span class="sd">    3. U-V-U : it connects users with top 5% mutual review text similarities (measured by</span>
+<span class="sd">    TF-IDF) among all users.</span>
+
+<span class="sd">    Statistics:</span>
+
+<span class="sd">    - Nodes: 11,944</span>
+<span class="sd">    - Edges:</span>
+
+<span class="sd">        - U-P-U: 351,216</span>
+<span class="sd">        - U-S-U: 7,132,958</span>
+<span class="sd">        - U-V-U: 2,073,474</span>
+
+<span class="sd">    - Classes:</span>
+
+<span class="sd">        - Positive (fraudulent): 821</span>
+<span class="sd">        - Negative (benign): 7,818</span>
+<span class="sd">        - Unlabeled: 3,305</span>
+
+<span class="sd">    - Positive-Negative ratio: 1 : 10.5</span>
+<span class="sd">    - Node feature size: 25</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    raw_dir : str</span>
+<span class="sd">        Specifying the directory that will store the</span>
+<span class="sd">        downloaded data or the directory that</span>
+<span class="sd">        already stores the input data.</span>
+<span class="sd">        Default: ~/.dgl/</span>
+<span class="sd">    random_seed : int</span>
+<span class="sd">        Specifying the random seed in splitting the dataset.</span>
+<span class="sd">        Default: 717</span>
+<span class="sd">    train_size : float</span>
+<span class="sd">        training set size of the dataset.</span>
+<span class="sd">        Default: 0.7</span>
+<span class="sd">    val_size : float</span>
+<span class="sd">        validation set size of the dataset, and the</span>
+<span class="sd">        size of testing set is (1 - train_size - val_size)</span>
+<span class="sd">        Default: 0.1</span>
+<span class="sd">    force_reload : bool</span>
+<span class="sd">        Whether to reload the dataset. Default: False</span>
+<span class="sd">    verbose : bool</span>
+<span class="sd">        Whether to print out progress information. Default: True.</span>
+<span class="sd">    transform : callable, optional</span>
+<span class="sd">        A transform that takes in a :class:`~dgl.DGLGraph` object and returns</span>
+<span class="sd">        a transformed version. The :class:`~dgl.DGLGraph` object will be</span>
+<span class="sd">        transformed before every access.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; dataset = FraudAmazonDataset()</span>
+<span class="sd">    &gt;&gt;&gt; graph = dataset[0]</span>
+<span class="sd">    &gt;&gt;&gt; num_classes = dataset.num_classes</span>
+<span class="sd">    &gt;&gt;&gt; feat = graph.ndata['feature']</span>
+<span class="sd">    &gt;&gt;&gt; label = graph.ndata['label']</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">raw_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">random_seed</span><span class="o">=</span><span class="mi">717</span><span class="p">,</span>
+        <span class="n">train_size</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+        <span class="n">val_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">force_reload</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FraudAmazonDataset</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"amazon"</span><span class="p">,</span>
+            <span class="n">raw_dir</span><span class="o">=</span><span class="n">raw_dir</span><span class="p">,</span>
+            <span class="n">random_seed</span><span class="o">=</span><span class="n">random_seed</span><span class="p">,</span>
+            <span class="n">train_size</span><span class="o">=</span><span class="n">train_size</span><span class="p">,</span>
+            <span class="n">val_size</span><span class="o">=</span><span class="n">val_size</span><span class="p">,</span>
+            <span class="n">force_reload</span><span class="o">=</span><span class="n">force_reload</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+            <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+</pre></div>
+</div>
+</div>
+<footer>
+<hr/>
+<div role="contentinfo">
+<p>© Copyright 2018, DGL Team.</p>
+</div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span class="fa fa-book"> Read the Docs</span>
+<span id="version-placeholder">v: latest</span>
+<span class="fa fa-caret-down"></span>
+</span>
+<div class="rst-other-versions">
+<dl>
+<dt>Versions</dt>
+<div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
+</div>
+</dl>
+<dl>
+<dt>Downloads</dt>
+<!-- 下载内容 -->
+</dl>
+<dl>
+<dt>On Read the Docs</dt>
+<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
+<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
+</dl>
+</div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('/dgl_docs/branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            // 获取当前路径
+            var path = window.location.pathname;
+            var versionPlaceholder = document.getElementById('version-placeholder');
+
+            // 检查路径中是否包含 'en'
+            if (path.includes('/en/')) {
+                // 提取 'en' 后的文件夹作为版本号
+                var parts = path.split('/en/');
+                if (parts[1]) {
+                    var folders = parts[1].split('/');
+                    if (folders.length > 0 && folders[0]) {
+                        versionPlaceholder.textContent = 'v: ' + folders[0];
+                    } else {
+                        versionPlaceholder.textContent = 'v: latest';
+                    }
+                } else {
+                    versionPlaceholder.textContent = 'v: latest';
+                }
+            } else {
+                versionPlaceholder.textContent = 'v: latest';
+            }
+        });
+    </script>
+
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+</body>
+</html>

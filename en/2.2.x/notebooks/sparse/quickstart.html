@@ -161,6 +161,15 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/ubuntu/regression_test/dgl/python/dgl/graphbolt/base.py:81: FutureWarning: `torch.library.impl_abstract` was renamed to `torch.library.register_fake`. Please use that instead; we will remove `torch.library.impl_abstract` in a future version of PyTorch.
+  @torch.library.impl_abstract("graphbolt::expand_indptr")
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
@@ -1434,19 +1443,19 @@ tensor([[0., 0., 0., 0.],
         [0., 0., 1., 2.],
         [0., 0., 0., 3.]])
 X1:
-tensor([[-0.4768, -1.4700,  0.0882, -0.2802,  0.0367],
-        [ 0.9269, -0.2581, -0.3007, -0.5380,  1.7404],
-        [-0.3924, -0.1681, -0.4167, -0.2909, -1.4839]])
+tensor([[ 0.0472, -0.1214,  0.6995,  0.0820,  0.2299],
+        [ 0.3889, -1.6682,  0.3187, -0.2412, -0.1311],
+        [-0.9747,  1.8175,  0.3706,  0.2098, -0.1984]])
 X2:
-tensor([[ 2.3441, -1.5228, -0.3965, -1.0747],
-        [-1.1595,  0.0723, -0.2075,  0.9115],
-        [ 0.2084,  0.0783,  0.3351, -0.5025],
-        [-0.3061, -0.6503, -0.6625, -0.7615],
-        [ 0.3900, -1.2546, -0.5184,  0.4497]])
+tensor([[-0.7088,  1.0886,  0.2797, -1.2416],
+        [-0.8438,  0.8985,  0.6707, -1.1711],
+        [ 0.5492, -0.2254,  0.9621, -1.6239],
+        [ 0.6427, -1.4197, -0.3486,  0.2751],
+        [-0.0693, -0.4468,  0.6329, -1.1643]])
 dglsp.sddmm(A, X1, X2):
 tensor([[ 0.0000,  0.0000,  0.0000,  0.0000],
-        [ 0.0000,  0.0000, -0.9605,  0.2242],
-        [ 0.0000,  0.0000,  0.0000,  0.0962]])
+        [ 0.0000,  0.0000, -0.7023,  2.0792],
+        [ 0.0000,  0.0000,  0.0000, -3.6945]])
 </pre></div></div>
 </div>
 <p>This operator also supports batched sampled-dense-dense matrix multiplication. For a <span class="math notranslate nohighlight">\(L \times N\)</span> sparse matrix A with non-zero vector values of length <span class="math notranslate nohighlight">\(𝐾\)</span>, a <span class="math notranslate nohighlight">\(L \times M \times K\)</span> dense matrix X1 and a <span class="math notranslate nohighlight">\(M \times N \times K\)</span> dense matrix X2, <code class="docutils literal notranslate"><span class="pre">sddmm(A,</span> <span class="pre">X1,</span> <span class="pre">X2)</span></code> will be a <span class="math notranslate nohighlight">\(L \times N \times K\)</span> sparse matrix.</p>
@@ -1495,48 +1504,48 @@ tensor([[[0., 0.],
          [0., 0.],
          [3., 3.]]])
 X1:
-tensor([[[ 0.8031,  0.0806],
-         [ 0.3976, -1.7646],
-         [ 0.5874, -0.6233],
-         [ 0.7846,  0.5023],
-         [-0.7708, -0.8203]],
+tensor([[[ 0.2958,  1.0403],
+         [-0.1005, -0.4697],
+         [-0.2612,  0.0042],
+         [-0.8640, -0.8938],
+         [ 0.2237,  0.1025]],
 
-        [[-0.0484, -0.5077],
-         [ 1.2361, -0.6835],
-         [-0.1920,  0.7740],
-         [ 0.4276, -0.2801],
-         [-0.0328,  0.3317]],
+        [[-0.3424, -0.3451],
+         [-2.6533, -0.3498],
+         [ 1.0698, -0.4942],
+         [-0.0130, -0.1125],
+         [-0.7312, -0.9620]],
 
-        [[-0.7699, -1.4129],
-         [-1.5004,  0.8556],
-         [-0.0442,  1.6115],
-         [ 0.0449, -0.0931],
-         [-0.4383, -0.3707]]])
+        [[-0.4636,  1.5167],
+         [ 0.8233,  0.2171],
+         [-0.1405,  0.1237],
+         [ 1.2118,  1.5282],
+         [-1.5739, -1.2699]]])
 X2:
-tensor([[[ 0.9492, -0.9020],
-         [-0.2212, -2.5438],
-         [ 1.3890,  0.3834],
-         [ 0.2059,  0.7277]],
+tensor([[[-1.3418, -1.3552],
+         [ 1.1261, -0.1074],
+         [-0.9532, -2.9770],
+         [ 1.0923, -1.8743]],
 
-        [[-0.0262,  0.5051],
-         [-0.9564,  0.5361],
-         [ 0.6772,  1.6990],
-         [-0.1921,  2.6246]],
+        [[ 0.3437, -1.4525],
+         [ 1.4448,  1.6877],
+         [-1.5709, -0.5476],
+         [-0.4157, -1.3566]],
 
-        [[-0.0045,  0.5223],
-         [-0.8242, -0.0686],
-         [ 1.5684,  0.1676],
-         [ 0.6048,  0.4168]],
+        [[ 1.8870, -1.1284],
+         [-0.5050,  0.0585],
+         [ 0.5195,  0.0544],
+         [ 1.7507,  0.0864]],
 
-        [[-2.6084, -0.6422],
-         [-0.7583,  0.7817],
-         [-0.3694, -1.1331],
-         [ 0.3105,  0.2464]],
+        [[ 0.9387,  0.5584],
+         [-1.2980, -0.6757],
+         [ 0.3826,  0.4402],
+         [ 0.4001, -0.5750]],
 
-        [[-1.3092,  1.6205],
-         [ 3.5184, -0.6497],
-         [-0.5232, -1.2781],
-         [ 0.4414,  0.0745]]])
+        [[-0.2511,  0.1608],
+         [ 1.0434,  0.0659],
+         [ 0.3905, -0.6206],
+         [-0.2577, -0.8503]]])
 dglsp.sddmm(A, X1, X2):
 tensor([[[ 0.0000,  0.0000],
          [ 0.0000,  0.0000],
@@ -1545,13 +1554,13 @@ tensor([[[ 0.0000,  0.0000],
 
         [[ 0.0000,  0.0000],
          [ 0.0000,  0.0000],
-         [ 0.3280, -1.3327],
-         [-0.4905, -3.7701]],
+         [ 4.7599,  1.7395],
+         [ 5.5701,  3.9227]],
 
         [[ 0.0000,  0.0000],
          [ 0.0000,  0.0000],
          [ 0.0000,  0.0000],
-         [-0.2296,  5.5158]]])
+         [-0.6130, -8.7767]]])
 </pre></div></div>
 </div>
 </section>
@@ -1583,13 +1592,13 @@ tensor([[[ 0.0000,  0.0000],
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-tensor([[ 0.0000, -1.3002,  0.0000],
-        [-0.5880,  0.0000, -0.7279],
-        [-0.0791,  0.0000,  0.0000]])
+tensor([[ 0.0000,  0.8271,  0.0000],
+        [ 0.3616,  0.0000, -0.6459],
+        [ 0.6803,  0.0000,  0.0000]])
 Apply tanh.
-tensor([[ 0.0000, -0.8618,  0.0000],
-        [-0.5285,  0.0000, -0.6218],
-        [-0.0790,  0.0000,  0.0000]])
+tensor([[ 0.0000,  0.6789,  0.0000],
+        [ 0.3466,  0.0000, -0.5689],
+        [ 0.5917,  0.0000,  0.0000]])
 </pre></div></div>
 </div>
 <p><strong>Non-sparse-preserving functions</strong> such as <code class="docutils literal notranslate"><span class="pre">exp()</span></code>, <code class="docutils literal notranslate"><span class="pre">cos()</span></code>, etc. You can first convert the sparse matrix to dense before applying the functions.</p>
@@ -1614,13 +1623,13 @@ tensor([[ 0.0000, -0.8618,  0.0000],
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-tensor([[ 0.0000,  0.9936,  0.0000],
-        [ 1.3276,  0.0000,  0.1112],
-        [-0.1071,  0.0000,  0.0000]])
+tensor([[ 0.0000, -0.3048,  0.0000],
+        [ 1.0043,  0.0000, -0.1975],
+        [-1.1183,  0.0000,  0.0000]])
 Apply exp.
-tensor([[1.0000, 2.7009, 1.0000],
-        [3.7721, 1.0000, 1.1177],
-        [0.8984, 1.0000, 1.0000]])
+tensor([[1.0000, 0.7372, 1.0000],
+        [2.7299, 1.0000, 0.8208],
+        [0.3268, 1.0000, 1.0000]])
 </pre></div></div>
 </div>
 </section>
