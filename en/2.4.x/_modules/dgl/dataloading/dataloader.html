@@ -122,6 +122,7 @@
 <div itemprop="articleBody">
 <h1>Source code for dgl.dataloading.dataloader</h1><div class="highlight"><pre>
 <span></span><span class="sd">"""DGL PyTorch DataLoaders"""</span>
+
 <span class="kn">import</span> <span class="nn">atexit</span>
 <span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
@@ -147,7 +148,6 @@
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">dgl_warning</span><span class="p">,</span> <span class="n">DGLError</span><span class="p">,</span> <span class="n">EID</span><span class="p">,</span> <span class="n">NID</span>
 <span class="kn">from</span> <span class="nn">..batch</span> <span class="kn">import</span> <span class="n">batch</span> <span class="k">as</span> <span class="n">batch_graphs</span>
 <span class="kn">from</span> <span class="nn">..cuda</span> <span class="kn">import</span> <span class="n">GPUCache</span>
-<span class="kn">from</span> <span class="nn">..distributed</span> <span class="kn">import</span> <span class="n">DistGraph</span>
 <span class="kn">from</span> <span class="nn">..frame</span> <span class="kn">import</span> <span class="n">LazyFeature</span>
 <span class="kn">from</span> <span class="nn">..heterograph</span> <span class="kn">import</span> <span class="n">DGLGraph</span>
 <span class="kn">from</span> <span class="nn">..storages</span> <span class="kn">import</span> <span class="n">wrap_storage</span>
@@ -1095,11 +1095,6 @@
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="k">return</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">DistGraph</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                <span class="s2">"Please use dgl.dataloading.DistNodeDataLoader or "</span>
-                <span class="s2">"dgl.datalaoding.DistEdgeDataLoader for DistGraphs."</span>
-            <span class="p">)</span>
         <span class="c1"># (BarclayII) I hoped that pin_prefetcher can be merged into PyTorch's native</span>
         <span class="c1"># pin_memory argument.  But our neighbor samplers and subgraph samplers</span>
         <span class="c1"># return indices, which could be CUDA tensors (e.g. during UVA sampling)</span>
@@ -1606,6 +1601,40 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">DGLError</span><span class="p">(</span><span class="s2">"set_epoch is only available when use_ddp is True."</span><span class="p">)</span></div>
 
+
+
+<span class="k">class</span> <span class="nc">DistNodeDataLoader</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Deprecated. Please use :class:`~dgl.distributed.DistNodeDataLoader`</span>
+<span class="sd">    instead.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">dgl_warning</span><span class="p">(</span>
+            <span class="s2">"dgl.dataloading.DistNodeDataLoader has been moved to "</span>
+            <span class="s2">"dgl.distributed.DistNodeDataLoader. This old class is deprecated "</span>
+            <span class="s2">"and will be removed soon. Please update your code to use the new "</span>
+            <span class="s2">"class."</span>
+        <span class="p">)</span>
+        <span class="kn">from</span> <span class="nn">..distributed</span> <span class="kn">import</span> <span class="n">DistNodeDataLoader</span> <span class="k">as</span> <span class="n">NewDistNodeDataLoader</span>
+
+        <span class="k">return</span> <span class="n">NewDistNodeDataLoader</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">DistEdgeDataLoader</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Deprecated. Please use :class:`~dgl.distributed.DistEdgeDataLoader`</span>
+<span class="sd">    instead.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">dgl_warning</span><span class="p">(</span>
+            <span class="s2">"dgl.dataloading.DistEdgeDataLoader has been moved to "</span>
+            <span class="s2">"dgl.distributed.DistEdgeDataLoader. This old class is deprecated "</span>
+            <span class="s2">"and will be removed soon. Please update your code to use the new "</span>
+            <span class="s2">"class."</span>
+        <span class="p">)</span>
+        <span class="kn">from</span> <span class="nn">..distributed</span> <span class="kn">import</span> <span class="n">DistEdgeDataLoader</span> <span class="k">as</span> <span class="n">NewDistEdgeDataLoader</span>
+
+        <span class="k">return</span> <span class="n">NewDistEdgeDataLoader</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

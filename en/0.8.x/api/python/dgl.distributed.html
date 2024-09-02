@@ -150,6 +150,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#distributed-sampling">Distributed Sampling</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#distributed-dataloader">Distributed DataLoader</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#dgl.distributed.DistDataLoader"><code class="docutils literal notranslate"><span class="pre">DistDataLoader</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dgl.distributed.DistNodeDataLoader"><code class="docutils literal notranslate"><span class="pre">DistNodeDataLoader</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dgl.distributed.DistEdgeDataLoader"><code class="docutils literal notranslate"><span class="pre">DistEdgeDataLoader</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#distributed-graph-sampling-operators">Distributed Graph Sampling Operators</a><ul>
@@ -1203,6 +1205,59 @@ uses the worker processes created in <a class="reference internal" href="../../g
 <p>This dataloader does not guarantee the iteration order. For example,
 if dataset = [1, 2, 3, 4], batch_size = 2 and shuffle = False, the order of [1, 2]
 and [3, 4] is not guaranteed.</p>
+</div>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="dgl.distributed.DistNodeDataLoader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgl.distributed.</span></span><span class="sig-name descname"><span class="pre">DistNodeDataLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_sampler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/dist_dataloader.html#DistNodeDataLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.DistNodeDataLoader" title="Link to this definition"></a></dt>
+<dd><p>Sampled graph data loader over nodes for distributed graph storage.</p>
+<p>It wraps an iterable over a set of nodes, generating the list
+of message flow graphs (MFGs) as computation dependency of the said minibatch, on
+a distributed graph.</p>
+<p>All the arguments have the same meaning as the single-machine counterpart
+<a class="reference internal" href="../../generated/dgl.dataloading.DataLoader.html#dgl.dataloading.DataLoader" title="dgl.dataloading.DataLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">dgl.dataloading.DataLoader</span></code></a> except the first argument
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">g</span></code> which must be a <a class="reference internal" href="#dgl.distributed.DistGraph" title="dgl.distributed.DistGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">dgl.distributed.DistGraph</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> (<a class="reference internal" href="#dgl.distributed.DistGraph" title="dgl.distributed.DistGraph"><em>DistGraph</em></a>) – The distributed graph.</p></li>
+<li><p><strong>nids</strong> – See <a class="reference internal" href="../../generated/dgl.dataloading.DataLoader.html#dgl.dataloading.DataLoader" title="dgl.dataloading.DataLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">dgl.dataloading.DataLoader</span></code></a>.</p></li>
+<li><p><strong>graph_sampler</strong> – See <a class="reference internal" href="../../generated/dgl.dataloading.DataLoader.html#dgl.dataloading.DataLoader" title="dgl.dataloading.DataLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">dgl.dataloading.DataLoader</span></code></a>.</p></li>
+<li><p><strong>device</strong> – See <a class="reference internal" href="../../generated/dgl.dataloading.DataLoader.html#dgl.dataloading.DataLoader" title="dgl.dataloading.DataLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">dgl.dataloading.DataLoader</span></code></a>.</p></li>
+<li><p><strong>kwargs</strong> – See <a class="reference internal" href="../../generated/dgl.dataloading.DataLoader.html#dgl.dataloading.DataLoader" title="dgl.dataloading.DataLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">dgl.dataloading.DataLoader</span></code></a>.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../../generated/dgl.dataloading.DataLoader.html#dgl.dataloading.DataLoader" title="dgl.dataloading.DataLoader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dgl.dataloading.DataLoader</span></code></a></p>
+</div>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="dgl.distributed.DistEdgeDataLoader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgl.distributed.</span></span><span class="sig-name descname"><span class="pre">DistEdgeDataLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_sampler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/dist_dataloader.html#DistEdgeDataLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.DistEdgeDataLoader" title="Link to this definition"></a></dt>
+<dd><p>Sampled graph data loader over edges for distributed graph storage.</p>
+<p>It wraps an iterable over a set of edges, generating the list
+of message flow graphs (MFGs) as computation dependency of the said minibatch for
+edge classification, edge regression, and link prediction, on a distributed
+graph.</p>
+<p>All the arguments have the same meaning as the single-machine counterpart
+<a class="reference internal" href="../../generated/dgl.dataloading.DataLoader.html#dgl.dataloading.DataLoader" title="dgl.dataloading.DataLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">dgl.dataloading.DataLoader</span></code></a> except the first argument
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">g</span></code> which must be a <a class="reference internal" href="#dgl.distributed.DistGraph" title="dgl.distributed.DistGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">dgl.distributed.DistGraph</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> (<a class="reference internal" href="#dgl.distributed.DistGraph" title="dgl.distributed.DistGraph"><em>DistGraph</em></a>) – The distributed graph.</p></li>
+<li><p><strong>eids</strong> – See <a class="reference internal" href="../../generated/dgl.dataloading.DataLoader.html#dgl.dataloading.DataLoader" title="dgl.dataloading.DataLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">dgl.dataloading.DataLoader</span></code></a>.</p></li>
+<li><p><strong>graph_sampler</strong> – See <a class="reference internal" href="../../generated/dgl.dataloading.DataLoader.html#dgl.dataloading.DataLoader" title="dgl.dataloading.DataLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">dgl.dataloading.DataLoader</span></code></a>.</p></li>
+<li><p><strong>device</strong> – See <a class="reference internal" href="../../generated/dgl.dataloading.DataLoader.html#dgl.dataloading.DataLoader" title="dgl.dataloading.DataLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">dgl.dataloading.DataLoader</span></code></a>.</p></li>
+<li><p><strong>kwargs</strong> – See <a class="reference internal" href="../../generated/dgl.dataloading.DataLoader.html#dgl.dataloading.DataLoader" title="dgl.dataloading.DataLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">dgl.dataloading.DataLoader</span></code></a>.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../../generated/dgl.dataloading.DataLoader.html#dgl.dataloading.DataLoader" title="dgl.dataloading.DataLoader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dgl.dataloading.DataLoader</span></code></a></p>
 </div>
 </dd></dl>
 </section>
