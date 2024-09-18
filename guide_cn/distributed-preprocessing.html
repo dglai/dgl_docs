@@ -219,10 +219,12 @@ JSON文件包含所有划分的配置。如果该API没有为节点和边分配�
 <dl>
 <dt>Versions</dt>
 <div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
 </div>
 </dl>
 <dl>
 <dt>Downloads</dt>
+<!-- 下载内容 -->
 </dl>
 <dl>
 <dt>On Read the Docs</dt>
@@ -232,46 +234,46 @@ JSON文件包含所有划分的配置。如果该API没有为节点和边分配�
 </div>
 </div>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        fetch('/dgl_docs/branches.json')
-            .then(response => response.json())
-            .then(data => {
-                var versionListDiv = document.getElementById('version-list');
-                data.branches.forEach(function(branch) {
-                    var dd = document.createElement('dd');
-                    var a = document.createElement('a');
-                    a.href = branch.url;
-                    a.textContent = branch.name;
-                    dd.appendChild(a);
-                    versionListDiv.appendChild(dd);
-                });
-            })
-            .catch(error => console.error('Error loading branches:', error));
-    });
-    document.addEventListener("DOMContentLoaded", function() {
-        // 获取当前路径
-        var path = window.location.pathname;
-        var versionPlaceholder = document.getElementById('version-placeholder');
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('/dgl_docs/branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            // 获取当前路径
+            var path = window.location.pathname;
+            var versionPlaceholder = document.getElementById('version-placeholder');
 
-        
-        if (path.includes('/en/')) {
-            
-            var parts = path.split('/en/');
-            if (parts[1]) {
-                var folders = parts[1].split('/');
-                if (folders.length > 0 && folders[0]) {
-                    versionPlaceholder.textContent = 'v: ' + folders[0];
+            // 检查路径中是否包含 'en'
+            if (path.includes('/en/')) {
+                // 提取 'en' 后的文件夹作为版本号
+                var parts = path.split('/en/');
+                if (parts[1]) {
+                    var folders = parts[1].split('/');
+                    if (folders.length > 0 && folders[0]) {
+                        versionPlaceholder.textContent = 'v: ' + folders[0];
+                    } else {
+                        versionPlaceholder.textContent = 'v: latest';
+                    }
                 } else {
                     versionPlaceholder.textContent = 'v: latest';
                 }
             } else {
                 versionPlaceholder.textContent = 'v: latest';
             }
-        } else {
-            versionPlaceholder.textContent = 'v: latest';
-        }
-    });
-</script>
+        });
+    </script>
 
 <script>
       jQuery(function () {

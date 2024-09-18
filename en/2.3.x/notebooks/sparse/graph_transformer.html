@@ -172,7 +172,7 @@ generalize the transformer neural architecture to graph-structured data. Here, w
 <div class="math notranslate nohighlight">
 \[\text{SparseAttn}(Q, K, V, A) = \text{softmax}(\frac{(QK^T) \circ A}{\sqrt{d}})V,\]</div>
 <p>where <span class="math notranslate nohighlight">\(Q, K, V ∈\mathbb{R}^{N\times d}\)</span> are query feature, key feature, and value feature, respectively. <span class="math notranslate nohighlight">\(A\in[0,1]^{N\times N}\)</span> is the adjacency matrix of the input graph. <span class="math notranslate nohighlight">\((QK^T)\circ A\)</span> means that the multiplication of query matrix and key matrix is followed by a Hadamard product (or element-wise multiplication) with the sparse adjacency matrix as illustrated in the figure below:</p>
-<p><img alt="e5aa7ad130844149b224d655d88a7ac0" class="no-scaled-link" src="https://drive.google.com/uc?id=1OgMAewLR3Z1vz5y4J8aPRSeaU3g8iQfX" style="width: 500px;"/></p>
+<p><img alt="8e0e9b264bb7402e807b46ee2e7db8c7" class="no-scaled-link" src="https://drive.google.com/uc?id=1OgMAewLR3Z1vz5y4J8aPRSeaU3g8iQfX" style="width: 500px;"/></p>
 <p>Essentially, only the attention scores between connected nodes are computed according to the sparsity of <span class="math notranslate nohighlight">\(A\)</span>. This operation is also called <em>Sampled Dense Dense Matrix Multiplication (SDDMM)</em>.</p>
 <p>Enjoying the <a class="reference external" href="https://docs.dgl.ai/en/latest/generated/dgl.sparse.bsddmm.html">batched SDDMM API</a> in DGL, we can parallel the computation on multiple attention heads (different representation subspaces).</p>
 <div class="nbinput nblast docutils container">
@@ -235,7 +235,7 @@ generalize the transformer neural architecture to graph-structured data. Here, w
 <section id="Graph-Transformer-Layer">
 <h2>Graph Transformer Layer<a class="headerlink" href="#Graph-Transformer-Layer" title="Link to this heading"></a></h2>
 <p>The GT layer is composed of Multi-head Attention, Batch Norm, and Feed-forward Network, connected by residual links as in vanilla transformer.</p>
-<p><img alt="0d360d96e3a0482bb3f73143a5c75c21" class="no-scaled-link" src="https://drive.google.com/uc?id=1cm-Ijw7bUQIOkoTKn5MQ3m4-66JqCsMz" style="width: 300px;"/></p>
+<p><img alt="3dbeb68fff284a748a81a39e7e97c568" class="no-scaled-link" src="https://drive.google.com/uc?id=1cm-Ijw7bUQIOkoTKn5MQ3m4-66JqCsMz" style="width: 300px;"/></p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -546,71 +546,6 @@ Epoch: 019, Loss: 0.0093, Val: 0.7356, Test: 0.5561
         });
     </script>
 
-<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
-<span class="rst-current-version" data-toggle="rst-current-version">
-<span class="fa fa-book"> Read the Docs</span>
-<span id="version-placeholder">v: latest</span>
-<span class="fa fa-caret-down"></span>
-</span>
-<div class="rst-other-versions">
-<dl>
-<dt>Versions</dt>
-<div id="version-list">
-<!-- 动态插入的版本列表将出现在这里 -->
-</div>
-</dl>
-<dl>
-<dt>Downloads</dt>
-<!-- 下载内容 -->
-</dl>
-<dl>
-<dt>On Read the Docs</dt>
-<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
-<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
-</dl>
-</div>
-</div>
-<script>
-        document.addEventListener("DOMContentLoaded", function() {
-            fetch('/dgl_docs/branches.json')
-                .then(response => response.json())
-                .then(data => {
-                    var versionListDiv = document.getElementById('version-list');
-                    data.branches.forEach(function(branch) {
-                        var dd = document.createElement('dd');
-                        var a = document.createElement('a');
-                        a.href = branch.url;
-                        a.textContent = branch.name;
-                        dd.appendChild(a);
-                        versionListDiv.appendChild(dd);
-                    });
-                })
-                .catch(error => console.error('Error loading branches:', error));
-        });
-        document.addEventListener("DOMContentLoaded", function() {
-            // 获取当前路径
-            var path = window.location.pathname;
-            var versionPlaceholder = document.getElementById('version-placeholder');
-
-            // 检查路径中是否包含 'en'
-            if (path.includes('/en/')) {
-                // 提取 'en' 后的文件夹作为版本号
-                var parts = path.split('/en/');
-                if (parts[1]) {
-                    var folders = parts[1].split('/');
-                    if (folders.length > 0 && folders[0]) {
-                        versionPlaceholder.textContent = 'v: ' + folders[0];
-                    } else {
-                        versionPlaceholder.textContent = 'v: latest';
-                    }
-                } else {
-                    versionPlaceholder.textContent = 'v: latest';
-                }
-            } else {
-                versionPlaceholder.textContent = 'v: latest';
-            }
-        });
-    </script>
 <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);

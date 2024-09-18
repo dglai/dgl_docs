@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>dgl.distributed.partition — DGL 2.4 documentation</title>
+<title>dgl.distributed.partition — DGL 2.5 documentation</title>
 <link href="../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,7 +19,7 @@
   <![endif]-->
 <script src="../../../_static/jquery.js?v=5d32c60e"></script>
 <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../../../_static/documentation_options.js?v=9caaf7ed"></script>
+<script src="../../../_static/documentation_options.js?v=38d273f4"></script>
 <script src="../../../_static/doctools.js?v=9a2dae69"></script>
 <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -39,7 +39,7 @@
             DGL
           </a>
 <div class="version">
-                2.4
+                2.5
               </div>
 <div role="search">
 <form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -211,49 +211,68 @@
         <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">part_metadata</span><span class="p">,</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_save_graphs</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">g_list</span><span class="p">,</span> <span class="n">formats</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sort_etypes</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">process_partitions</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">formats</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sort_etypes</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Preprocess partitions before saving:</span>
 <span class="sd">    1. format data types.</span>
 <span class="sd">    2. sort csc/csr by tag.</span>
 <span class="sd">    """</span>
-    <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">g_list</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="n">RESERVED_FIELD_DTYPE</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">:</span>
-                <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">dtype</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">edata</span><span class="p">:</span>
-                <span class="n">g</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">dtype</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">g_list</span><span class="p">:</span>
-        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">sort_etypes</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">formats</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
-            <span class="k">continue</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="n">RESERVED_FIELD_DTYPE</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">:</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">dtype</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">edata</span><span class="p">:</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">dtype</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">sort_etypes</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">formats</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="s2">"csr"</span> <span class="ow">in</span> <span class="n">formats</span><span class="p">:</span>
             <span class="n">g</span> <span class="o">=</span> <span class="n">sort_csr_by_tag</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">ETYPE</span><span class="p">],</span> <span class="n">tag_type</span><span class="o">=</span><span class="s2">"edge"</span><span class="p">)</span>
         <span class="k">if</span> <span class="s2">"csc"</span> <span class="ow">in</span> <span class="n">formats</span><span class="p">:</span>
             <span class="n">g</span> <span class="o">=</span> <span class="n">sort_csc_by_tag</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">ETYPE</span><span class="p">],</span> <span class="n">tag_type</span><span class="o">=</span><span class="s2">"edge"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">g</span>
+
+
+<span class="k">def</span> <span class="nf">_save_dgl_graphs</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">g_list</span><span class="p">,</span> <span class="n">formats</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">save_graphs</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">g_list</span><span class="p">,</span> <span class="n">formats</span><span class="o">=</span><span class="n">formats</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_get_inner_node_mask</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">ntype_id</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">NTYPE</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">:</span>
-        <span class="n">dtype</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"inner_node"</span><span class="p">])</span>
-        <span class="k">return</span> <span class="p">(</span>
-            <span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"inner_node"</span><span class="p">]</span>
-            <span class="o">*</span> <span class="n">F</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="n">NTYPE</span><span class="p">]</span> <span class="o">==</span> <span class="n">ntype_id</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
-            <span class="o">==</span> <span class="mi">1</span>
+<span class="k">def</span> <span class="nf">_get_inner_node_mask</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">ntype_id</span><span class="p">,</span> <span class="n">gpb</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">ndata</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">graph</span><span class="o">.</span><span class="n">node_attributes</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">gb</span><span class="o">.</span><span class="n">FusedCSCSamplingGraph</span><span class="p">)</span>
+        <span class="k">else</span> <span class="n">graph</span><span class="o">.</span><span class="n">ndata</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="s2">"inner_node"</span> <span class="ow">in</span> <span class="n">ndata</span><span class="p">,</span> <span class="s2">"'inner_node' is not in nodes' data"</span>
+    <span class="k">if</span> <span class="n">NTYPE</span> <span class="ow">in</span> <span class="n">ndata</span> <span class="ow">or</span> <span class="n">gpb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ntype</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">gpb</span><span class="o">.</span><span class="n">map_to_per_ntype</span><span class="p">(</span><span class="n">ndata</span><span class="p">[</span><span class="n">NID</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">gpb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="n">ndata</span><span class="p">[</span><span class="n">NTYPE</span><span class="p">]</span>
         <span class="p">)</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"inner_node"</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">ndata</span><span class="p">[</span><span class="s2">"inner_node"</span><span class="p">]</span> <span class="o">*</span> <span class="n">F</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">ntype</span> <span class="o">==</span> <span class="n">ntype_id</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">graph</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="s2">"inner_node"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">ndata</span><span class="p">[</span><span class="s2">"inner_node"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
 
 
-<span class="k">def</span> <span class="nf">_get_inner_edge_mask</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">etype_id</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">ETYPE</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">edata</span><span class="p">:</span>
-        <span class="n">dtype</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s2">"inner_edge"</span><span class="p">])</span>
-        <span class="k">return</span> <span class="p">(</span>
-            <span class="n">graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s2">"inner_edge"</span><span class="p">]</span>
-            <span class="o">*</span> <span class="n">F</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">ETYPE</span><span class="p">]</span> <span class="o">==</span> <span class="n">etype_id</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
-            <span class="o">==</span> <span class="mi">1</span>
-        <span class="p">)</span>
+<span class="k">def</span> <span class="nf">_get_inner_edge_mask</span><span class="p">(</span>
+    <span class="n">graph</span><span class="p">,</span>
+    <span class="n">etype_id</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">edata</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">graph</span><span class="o">.</span><span class="n">edge_attributes</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">gb</span><span class="o">.</span><span class="n">FusedCSCSamplingGraph</span><span class="p">)</span>
+        <span class="k">else</span> <span class="n">graph</span><span class="o">.</span><span class="n">edata</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="s2">"inner_edge"</span> <span class="ow">in</span> <span class="n">edata</span><span class="p">,</span> <span class="s2">"'inner_edge' is not in edges' data"</span>
+    <span class="n">etype</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">graph</span><span class="o">.</span><span class="n">type_per_edge</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">gb</span><span class="o">.</span><span class="n">FusedCSCSamplingGraph</span><span class="p">)</span>
+        <span class="k">else</span> <span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">ETYPE</span><span class="p">]</span> <span class="k">if</span> <span class="n">ETYPE</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">edata</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">etype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">edata</span><span class="p">[</span><span class="s2">"inner_edge"</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">edata</span><span class="p">[</span><span class="s2">"inner_edge"</span><span class="p">]</span> <span class="o">*</span> <span class="n">F</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">etype</span> <span class="o">==</span> <span class="n">etype_id</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s2">"inner_edge"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">edata</span><span class="p">[</span><span class="s2">"inner_edge"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
 
 
 <span class="k">def</span> <span class="nf">_get_part_ranges</span><span class="p">(</span><span class="n">id_ranges</span><span class="p">):</span>
@@ -440,9 +459,10 @@
         <span class="s2">"part-</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">part_id</span><span class="p">)</span> <span class="ow">in</span> <span class="n">part_metadata</span>
     <span class="p">),</span> <span class="s2">"part-</span><span class="si">{}</span><span class="s2"> does not exist"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">part_id</span><span class="p">)</span>
     <span class="n">part_files</span> <span class="o">=</span> <span class="n">part_metadata</span><span class="p">[</span><span class="s2">"part-</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">part_id</span><span class="p">)]</span>
-    <span class="n">part_graph_field</span> <span class="o">=</span> <span class="s2">"part_graph"</span>
     <span class="k">if</span> <span class="n">use_graphbolt</span><span class="p">:</span>
         <span class="n">part_graph_field</span> <span class="o">=</span> <span class="s2">"part_graph_graphbolt"</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">part_graph_field</span> <span class="o">=</span> <span class="s2">"part_graph"</span>
     <span class="k">assert</span> <span class="p">(</span>
         <span class="n">part_graph_field</span> <span class="ow">in</span> <span class="n">part_files</span>
     <span class="p">),</span> <span class="sa">f</span><span class="s2">"the partition does not contain graph structure: </span><span class="si">{</span><span class="n">part_graph_field</span><span class="si">}</span><span class="s2">"</span>
@@ -575,7 +595,7 @@
 
 <div class="viewcode-block" id="load_partition_book">
 <a class="viewcode-back" href="../../../generated/dgl.distributed.load_partition_book.html#dgl.distributed.load_partition_book">[docs]</a>
-<span class="k">def</span> <span class="nf">load_partition_book</span><span class="p">(</span><span class="n">part_config</span><span class="p">,</span> <span class="n">part_id</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">load_partition_book</span><span class="p">(</span><span class="n">part_config</span><span class="p">,</span> <span class="n">part_id</span><span class="p">,</span> <span class="n">part_metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Load a graph partition book from the partition config file.</span>
 
 <span class="sd">    Parameters</span>
@@ -584,6 +604,8 @@
 <span class="sd">        The path of the partition config file.</span>
 <span class="sd">    part_id : int</span>
 <span class="sd">        The partition ID.</span>
+<span class="sd">    part_metadata : dict</span>
+<span class="sd">        The meta data of partition.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -596,7 +618,8 @@
 <span class="sd">    dict</span>
 <span class="sd">        The edge types</span>
 <span class="sd">    """</span>
-    <span class="n">part_metadata</span> <span class="o">=</span> <span class="n">_load_part_config</span><span class="p">(</span><span class="n">part_config</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">part_metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">part_metadata</span> <span class="o">=</span> <span class="n">_load_part_config</span><span class="p">(</span><span class="n">part_config</span><span class="p">)</span>
     <span class="k">assert</span> <span class="s2">"num_parts"</span> <span class="ow">in</span> <span class="n">part_metadata</span><span class="p">,</span> <span class="s2">"num_parts does not exist."</span>
     <span class="k">assert</span> <span class="p">(</span>
         <span class="n">part_metadata</span><span class="p">[</span><span class="s2">"num_parts"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">part_id</span>
@@ -779,6 +802,127 @@
                 <span class="n">g</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">dst_type</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"trainer_id"</span><span class="p">],</span> <span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">etype</span><span class="o">=</span><span class="n">c_etype</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
             <span class="p">)</span>
             <span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">c_etype</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"trainer_id"</span><span class="p">]</span> <span class="o">=</span> <span class="n">trainer_id</span>
+
+
+<span class="k">def</span> <span class="nf">_partition_to_graphbolt</span><span class="p">(</span>
+    <span class="n">parts</span><span class="p">,</span>
+    <span class="n">part_i</span><span class="p">,</span>
+    <span class="n">part_config</span><span class="p">,</span>
+    <span class="n">part_metadata</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">store_eids</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">store_inner_node</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">store_inner_edge</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">graph_formats</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">gpb</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">ntypes</span><span class="p">,</span> <span class="n">etypes</span> <span class="o">=</span> <span class="n">load_partition_book</span><span class="p">(</span>
+        <span class="n">part_config</span><span class="o">=</span><span class="n">part_config</span><span class="p">,</span> <span class="n">part_id</span><span class="o">=</span><span class="n">part_i</span><span class="p">,</span> <span class="n">part_metadata</span><span class="o">=</span><span class="n">part_metadata</span>
+    <span class="p">)</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="n">part_i</span><span class="p">]</span>
+    <span class="n">csc_graph</span> <span class="o">=</span> <span class="n">gb_convert_single_dgl_partition</span><span class="p">(</span>
+        <span class="n">ntypes</span><span class="o">=</span><span class="n">ntypes</span><span class="p">,</span>
+        <span class="n">etypes</span><span class="o">=</span><span class="n">etypes</span><span class="p">,</span>
+        <span class="n">gpb</span><span class="o">=</span><span class="n">gpb</span><span class="p">,</span>
+        <span class="n">part_meta</span><span class="o">=</span><span class="n">part_metadata</span><span class="p">,</span>
+        <span class="n">graph</span><span class="o">=</span><span class="n">graph</span><span class="p">,</span>
+        <span class="n">store_eids</span><span class="o">=</span><span class="n">store_eids</span><span class="p">,</span>
+        <span class="n">store_inner_edge</span><span class="o">=</span><span class="n">store_inner_edge</span><span class="p">,</span>
+        <span class="n">store_inner_node</span><span class="o">=</span><span class="n">store_inner_node</span><span class="p">,</span>
+        <span class="n">graph_formats</span><span class="o">=</span><span class="n">graph_formats</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">rel_path_result</span> <span class="o">=</span> <span class="n">_save_graph_gb</span><span class="p">(</span>
+        <span class="n">part_config</span><span class="o">=</span><span class="n">part_config</span><span class="p">,</span> <span class="n">part_id</span><span class="o">=</span><span class="n">part_i</span><span class="p">,</span> <span class="n">csc_graph</span><span class="o">=</span><span class="n">csc_graph</span>
+    <span class="p">)</span>
+    <span class="n">part_metadata</span><span class="p">[</span><span class="sa">f</span><span class="s2">"part-</span><span class="si">{</span><span class="n">part_i</span><span class="si">}</span><span class="s2">"</span><span class="p">][</span><span class="s2">"part_graph_graphbolt"</span><span class="p">]</span> <span class="o">=</span> <span class="n">rel_path_result</span>
+
+
+<span class="k">def</span> <span class="nf">_update_node_edge_map</span><span class="p">(</span><span class="n">node_map_val</span><span class="p">,</span> <span class="n">edge_map_val</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">num_parts</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    If the original graph contains few nodes or edges for specific node/edge</span>
+<span class="sd">    types, the partitioned graph may have empty partitions for these types. And</span>
+<span class="sd">    the node_map_val and edge_map_val will have -1 for the start and end ID of</span>
+<span class="sd">    these types. This function updates the node_map_val and edge_map_val to be</span>
+<span class="sd">    contiguous.</span>
+
+<span class="sd">    Example case:</span>
+<span class="sd">    Suppose we have a heterogeneous graph with 3 node/edge types and the number</span>
+<span class="sd">    of partitions is 3. A possible node_map_val or edge_map_val is as follows:</span>
+
+<span class="sd">    | part_id\\Node/Edge Type| Type A |  Type B | Type C |</span>
+<span class="sd">    |------------------------|--------|---------|--------|</span>
+<span class="sd">    | 0                      | 0, 1   |  -1, -1 |  2, 3  |</span>
+<span class="sd">    | 1                      | -1, -1 |  3, 4   |  4, 5  |</span>
+<span class="sd">    | 2                      | 5, 6   |  7, 8   |  -1, -1|</span>
+
+<span class="sd">    As node/edge IDs are contiguous in node/edge type for each partition, we can</span>
+<span class="sd">    update the node_map_val and edge_map_val via updating the start and end ID</span>
+<span class="sd">    in row-wise order.</span>
+
+<span class="sd">    Updated node_map_val or edge_map_val:</span>
+
+<span class="sd">    | part_id\\Node/Edge Type| Type A |  Type B | Type C |</span>
+<span class="sd">    |------------------------|--------|---------|--------|</span>
+<span class="sd">    | 0                      |  0, 1  |  1, 1   |  2, 3  |</span>
+<span class="sd">    | 1                      |  3, 3  |  3, 4   |  4, 5  |</span>
+<span class="sd">    | 2                      |  5, 6  |  7, 8   |  8, 8  |</span>
+
+<span class="sd">    """</span>
+    <span class="c1"># Update the node_map_val to be contiguous.</span>
+    <span class="n">ntype_ids</span> <span class="o">=</span> <span class="p">{</span><span class="n">ntype</span><span class="p">:</span> <span class="n">g</span><span class="o">.</span><span class="n">get_ntype_id</span><span class="p">(</span><span class="n">ntype</span><span class="p">)</span> <span class="k">for</span> <span class="n">ntype</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">ntypes</span><span class="p">}</span>
+    <span class="n">ntype_ids_reverse</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">ntype_ids</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="k">for</span> <span class="n">part_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_parts</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">ntype_id</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">ntype_ids</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+            <span class="n">ntype</span> <span class="o">=</span> <span class="n">ntype_ids_reverse</span><span class="p">[</span><span class="n">ntype_id</span><span class="p">]</span>
+            <span class="n">start_id</span> <span class="o">=</span> <span class="n">node_map_val</span><span class="p">[</span><span class="n">ntype</span><span class="p">][</span><span class="n">part_id</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">end_id</span> <span class="o">=</span> <span class="n">node_map_val</span><span class="p">[</span><span class="n">ntype</span><span class="p">][</span><span class="n">part_id</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">start_id</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">end_id</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="n">prev_ntype_id</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">ntype_ids</span><span class="p">[</span><span class="n">ntype</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">ntype_ids</span><span class="p">[</span><span class="n">ntype</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
+                <span class="k">else</span> <span class="nb">max</span><span class="p">(</span><span class="n">ntype_ids</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="p">)</span>
+            <span class="n">prev_ntype</span> <span class="o">=</span> <span class="n">ntype_ids_reverse</span><span class="p">[</span><span class="n">prev_ntype_id</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">ntype_ids</span><span class="p">[</span><span class="n">ntype</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">part_id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">node_map_val</span><span class="p">[</span><span class="n">ntype</span><span class="p">][</span><span class="n">part_id</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">node_map_val</span><span class="p">[</span><span class="n">ntype</span><span class="p">][</span><span class="n">part_id</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">node_map_val</span><span class="p">[</span><span class="n">prev_ntype</span><span class="p">][</span>
+                        <span class="n">part_id</span> <span class="o">-</span> <span class="mi">1</span>
+                    <span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">node_map_val</span><span class="p">[</span><span class="n">ntype</span><span class="p">][</span><span class="n">part_id</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">node_map_val</span><span class="p">[</span><span class="n">prev_ntype</span><span class="p">][</span>
+                    <span class="n">part_id</span>
+                <span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">node_map_val</span><span class="p">[</span><span class="n">ntype</span><span class="p">][</span><span class="n">part_id</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">node_map_val</span><span class="p">[</span><span class="n">ntype</span><span class="p">][</span><span class="n">part_id</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># Update the edge_map_val to be contiguous.</span>
+    <span class="n">etype_ids</span> <span class="o">=</span> <span class="p">{</span><span class="n">etype</span><span class="p">:</span> <span class="n">g</span><span class="o">.</span><span class="n">get_etype_id</span><span class="p">(</span><span class="n">etype</span><span class="p">)</span> <span class="k">for</span> <span class="n">etype</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">canonical_etypes</span><span class="p">}</span>
+    <span class="n">etype_ids_reverse</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">etype_ids</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="k">for</span> <span class="n">part_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_parts</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">etype_id</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">etype_ids</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+            <span class="n">etype</span> <span class="o">=</span> <span class="n">etype_ids_reverse</span><span class="p">[</span><span class="n">etype_id</span><span class="p">]</span>
+            <span class="n">start_id</span> <span class="o">=</span> <span class="n">edge_map_val</span><span class="p">[</span><span class="n">etype</span><span class="p">][</span><span class="n">part_id</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">end_id</span> <span class="o">=</span> <span class="n">edge_map_val</span><span class="p">[</span><span class="n">etype</span><span class="p">][</span><span class="n">part_id</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">start_id</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">end_id</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="n">prev_etype_id</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">etype_ids</span><span class="p">[</span><span class="n">etype</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">etype_ids</span><span class="p">[</span><span class="n">etype</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
+                <span class="k">else</span> <span class="nb">max</span><span class="p">(</span><span class="n">etype_ids</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="p">)</span>
+            <span class="n">prev_etype</span> <span class="o">=</span> <span class="n">etype_ids_reverse</span><span class="p">[</span><span class="n">prev_etype_id</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">etype_ids</span><span class="p">[</span><span class="n">etype</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">part_id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">edge_map_val</span><span class="p">[</span><span class="n">etype</span><span class="p">][</span><span class="n">part_id</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">edge_map_val</span><span class="p">[</span><span class="n">etype</span><span class="p">][</span><span class="n">part_id</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">edge_map_val</span><span class="p">[</span><span class="n">prev_etype</span><span class="p">][</span>
+                        <span class="n">part_id</span> <span class="o">-</span> <span class="mi">1</span>
+                    <span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">edge_map_val</span><span class="p">[</span><span class="n">etype</span><span class="p">][</span><span class="n">part_id</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">edge_map_val</span><span class="p">[</span><span class="n">prev_etype</span><span class="p">][</span>
+                    <span class="n">part_id</span>
+                <span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">edge_map_val</span><span class="p">[</span><span class="n">etype</span><span class="p">][</span><span class="n">part_id</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">edge_map_val</span><span class="p">[</span><span class="n">etype</span><span class="p">][</span><span class="n">part_id</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="partition_graph">
@@ -1198,6 +1342,9 @@
             <span class="p">)</span>
             <span class="k">for</span> <span class="n">ntype</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">ntypes</span><span class="p">:</span>
                 <span class="n">inner_ntype_mask</span> <span class="o">=</span> <span class="n">inner_ntype</span> <span class="o">==</span> <span class="n">g</span><span class="o">.</span><span class="n">get_ntype_id</span><span class="p">(</span><span class="n">ntype</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">F</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">inner_ntype_mask</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="c1"># Skip if there is no node of this type in this partition.</span>
+                    <span class="k">continue</span>
                 <span class="n">typed_nids</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">boolean_mask</span><span class="p">(</span><span class="n">inner_nids</span><span class="p">,</span> <span class="n">inner_ntype_mask</span><span class="p">)</span>
                 <span class="c1"># inner node IDs are in a contiguous ID range.</span>
                 <span class="n">expected_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
@@ -1214,6 +1361,9 @@
             <span class="p">)</span>
             <span class="k">for</span> <span class="n">etype</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">canonical_etypes</span><span class="p">:</span>
                 <span class="n">inner_etype_mask</span> <span class="o">=</span> <span class="n">inner_etype</span> <span class="o">==</span> <span class="n">g</span><span class="o">.</span><span class="n">get_etype_id</span><span class="p">(</span><span class="n">etype</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">F</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">inner_etype_mask</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="c1"># Skip if there is no edge of this type in this partition.</span>
+                    <span class="k">continue</span>
                 <span class="n">typed_eids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span>
                     <span class="n">F</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">boolean_mask</span><span class="p">(</span><span class="n">inner_eids</span><span class="p">,</span> <span class="n">inner_etype_mask</span><span class="p">))</span>
                 <span class="p">)</span>
@@ -1240,6 +1390,9 @@
                 <span class="n">val</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="n">F</span><span class="o">.</span><span class="n">as_scalar</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">inner_node_mask</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="mi">0</span><span class="p">))</span>
                 <span class="p">)</span>
+                <span class="k">if</span> <span class="n">F</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">inner_node_mask</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">node_map_val</span><span class="p">[</span><span class="n">ntype</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="k">continue</span>
                 <span class="n">inner_nids</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">boolean_mask</span><span class="p">(</span>
                     <span class="n">parts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="n">NID</span><span class="p">],</span> <span class="n">inner_node_mask</span>
                 <span class="p">)</span>
@@ -1260,6 +1413,9 @@
                 <span class="n">val</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="n">F</span><span class="o">.</span><span class="n">as_scalar</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">inner_edge_mask</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="mi">0</span><span class="p">))</span>
                 <span class="p">)</span>
+                <span class="k">if</span> <span class="n">F</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">inner_edge_mask</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">edge_map_val</span><span class="p">[</span><span class="n">etype</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="k">continue</span>
                 <span class="n">inner_eids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span>
                     <span class="n">F</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span>
                         <span class="n">F</span><span class="o">.</span><span class="n">boolean_mask</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">EID</span><span class="p">],</span> <span class="n">inner_edge_mask</span><span class="p">)</span>
@@ -1270,6 +1426,8 @@
                 <span class="p">)</span>
             <span class="n">val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
             <span class="k">assert</span> <span class="n">val</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">g</span><span class="o">.</span><span class="n">num_edges</span><span class="p">(</span><span class="n">etype</span><span class="p">)</span>
+        <span class="c1"># Update the node_map_val and edge_map_val to be contiguous.</span>
+        <span class="n">_update_node_edge_map</span><span class="p">(</span><span class="n">node_map_val</span><span class="p">,</span> <span class="n">edge_map_val</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">num_parts</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">node_map_val</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">edge_map_val</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1317,6 +1475,7 @@
         <span class="s2">"ntypes"</span><span class="p">:</span> <span class="n">ntypes</span><span class="p">,</span>
         <span class="s2">"etypes"</span><span class="p">:</span> <span class="n">etypes</span><span class="p">,</span>
     <span class="p">}</span>
+    <span class="n">part_config</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_path</span><span class="p">,</span> <span class="n">graph_name</span> <span class="o">+</span> <span class="s2">".json"</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">part_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_parts</span><span class="p">):</span>
         <span class="n">part</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="n">part_id</span><span class="p">]</span>
 
@@ -1439,30 +1598,54 @@
         <span class="n">part_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_path</span><span class="p">,</span> <span class="s2">"part"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">part_id</span><span class="p">))</span>
         <span class="n">node_feat_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">part_dir</span><span class="p">,</span> <span class="s2">"node_feat.dgl"</span><span class="p">)</span>
         <span class="n">edge_feat_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">part_dir</span><span class="p">,</span> <span class="s2">"edge_feat.dgl"</span><span class="p">)</span>
-        <span class="n">part_graph_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">part_dir</span><span class="p">,</span> <span class="s2">"graph.dgl"</span><span class="p">)</span>
-        <span class="n">part_metadata</span><span class="p">[</span><span class="s2">"part-</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">part_id</span><span class="p">)]</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">"node_feats"</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">node_feat_file</span><span class="p">,</span> <span class="n">out_path</span><span class="p">),</span>
-            <span class="s2">"edge_feats"</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">edge_feat_file</span><span class="p">,</span> <span class="n">out_path</span><span class="p">),</span>
-            <span class="s2">"part_graph"</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">part_graph_file</span><span class="p">,</span> <span class="n">out_path</span><span class="p">),</span>
-        <span class="p">}</span>
+
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">part_dir</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mo">0o775</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">save_tensors</span><span class="p">(</span><span class="n">node_feat_file</span><span class="p">,</span> <span class="n">node_feats</span><span class="p">)</span>
         <span class="n">save_tensors</span><span class="p">(</span><span class="n">edge_feat_file</span><span class="p">,</span> <span class="n">edge_feats</span><span class="p">)</span>
 
+        <span class="n">part_metadata</span><span class="p">[</span><span class="s2">"part-</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">part_id</span><span class="p">)]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"node_feats"</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">node_feat_file</span><span class="p">,</span> <span class="n">out_path</span><span class="p">),</span>
+            <span class="s2">"edge_feats"</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">edge_feat_file</span><span class="p">,</span> <span class="n">out_path</span><span class="p">),</span>
+        <span class="p">}</span>
         <span class="n">sort_etypes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">etypes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span>
-        <span class="n">_save_graphs</span><span class="p">(</span>
-            <span class="n">part_graph_file</span><span class="p">,</span>
-            <span class="p">[</span><span class="n">part</span><span class="p">],</span>
-            <span class="n">formats</span><span class="o">=</span><span class="n">graph_formats</span><span class="p">,</span>
-            <span class="n">sort_etypes</span><span class="o">=</span><span class="n">sort_etypes</span><span class="p">,</span>
-        <span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span>
-        <span class="s2">"Save partitions: </span><span class="si">{:.3f}</span><span class="s2"> seconds, peak memory: </span><span class="si">{:.3f}</span><span class="s2"> GB"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">,</span> <span class="n">get_peak_mem</span><span class="p">()</span>
-        <span class="p">)</span>
-    <span class="p">)</span>
+        <span class="n">part</span> <span class="o">=</span> <span class="n">process_partitions</span><span class="p">(</span><span class="n">part</span><span class="p">,</span> <span class="n">graph_formats</span><span class="p">,</span> <span class="n">sort_etypes</span><span class="p">)</span>
 
-    <span class="n">part_config</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_path</span><span class="p">,</span> <span class="n">graph_name</span> <span class="o">+</span> <span class="s2">".json"</span><span class="p">)</span>
+    <span class="c1"># transmit to graphbolt and save graph</span>
+    <span class="k">if</span> <span class="n">use_graphbolt</span><span class="p">:</span>
+        <span class="c1"># save FusedCSCSamplingGraph</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">"graph_formats"</span><span class="p">]</span> <span class="o">=</span> <span class="n">graph_formats</span>
+        <span class="n">n_jobs</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"n_jobs"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">mp_ctx</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">get_context</span><span class="p">(</span><span class="s2">"spawn"</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">ProcessPoolExecutor</span><span class="p">(</span>  <span class="c1"># pylint: disable=unexpected-keyword-arg</span>
+            <span class="n">max_workers</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">num_parts</span><span class="p">,</span> <span class="n">n_jobs</span><span class="p">),</span>
+            <span class="n">mp_context</span><span class="o">=</span><span class="n">mp_ctx</span><span class="p">,</span>
+        <span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">part_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_parts</span><span class="p">):</span>
+                <span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span>
+                    <span class="n">_partition_to_graphbolt</span><span class="p">(</span>
+                        <span class="n">part_i</span><span class="o">=</span><span class="n">part_id</span><span class="p">,</span>
+                        <span class="n">part_config</span><span class="o">=</span><span class="n">part_config</span><span class="p">,</span>
+                        <span class="n">part_metadata</span><span class="o">=</span><span class="n">part_metadata</span><span class="p">,</span>
+                        <span class="n">parts</span><span class="o">=</span><span class="n">parts</span><span class="p">,</span>
+                        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+        <span class="n">part_metadata</span><span class="p">[</span><span class="s2">"node_map_dtype"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"int64"</span>
+        <span class="n">part_metadata</span><span class="p">[</span><span class="s2">"edge_map_dtype"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"int64"</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">part_id</span><span class="p">,</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">parts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">part_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_path</span><span class="p">,</span> <span class="s2">"part"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">part_id</span><span class="p">))</span>
+            <span class="n">part_graph_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">part_dir</span><span class="p">,</span> <span class="s2">"graph.dgl"</span><span class="p">)</span>
+            <span class="n">part_metadata</span><span class="p">[</span><span class="s2">"part-</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">part_id</span><span class="p">)][</span>
+                <span class="s2">"part_graph"</span>
+            <span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">part_graph_file</span><span class="p">,</span> <span class="n">out_path</span><span class="p">)</span>
+            <span class="c1"># save DGLGraph</span>
+            <span class="n">_save_dgl_graphs</span><span class="p">(</span>
+                <span class="n">part_graph_file</span><span class="p">,</span>
+                <span class="p">[</span><span class="n">part</span><span class="p">],</span>
+                <span class="n">formats</span><span class="o">=</span><span class="n">graph_formats</span><span class="p">,</span>
+            <span class="p">)</span>
+
     <span class="n">_dump_part_config</span><span class="p">(</span><span class="n">part_config</span><span class="p">,</span> <span class="n">part_metadata</span><span class="p">)</span>
 
     <span class="n">num_cuts</span> <span class="o">=</span> <span class="n">sim_g</span><span class="o">.</span><span class="n">num_edges</span><span class="p">()</span> <span class="o">-</span> <span class="n">tot_num_inner_edges</span>
@@ -1474,12 +1657,11 @@
         <span class="p">)</span>
     <span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">use_graphbolt</span><span class="p">:</span>
-        <span class="n">kwargs</span><span class="p">[</span><span class="s2">"graph_formats"</span><span class="p">]</span> <span class="o">=</span> <span class="n">graph_formats</span>
-        <span class="n">dgl_partition_to_graphbolt</span><span class="p">(</span>
-            <span class="n">part_config</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">"Save partitions: </span><span class="si">{:.3f}</span><span class="s2"> seconds, peak memory: </span><span class="si">{:.3f}</span><span class="s2"> GB"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">,</span> <span class="n">get_peak_mem</span><span class="p">()</span>
         <span class="p">)</span>
+    <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">return_mapping</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">orig_nids</span><span class="p">,</span> <span class="n">orig_eids</span></div>
@@ -1528,62 +1710,81 @@
     <span class="k">return</span> <span class="n">etype_ids</span>
 
 
-<span class="k">def</span> <span class="nf">gb_convert_single_dgl_partition</span><span class="p">(</span>
-    <span class="n">part_id</span><span class="p">,</span>
-    <span class="n">graph_formats</span><span class="p">,</span>
-    <span class="n">part_config</span><span class="p">,</span>
-    <span class="n">store_eids</span><span class="p">,</span>
+<span class="k">def</span> <span class="nf">_load_part</span><span class="p">(</span><span class="n">part_config</span><span class="p">,</span> <span class="n">part_id</span><span class="p">,</span> <span class="n">parts</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""load parts from variable or dist."""</span>
+    <span class="k">if</span> <span class="n">parts</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">graph</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">load_partition</span><span class="p">(</span>
+            <span class="n">part_config</span><span class="p">,</span> <span class="n">part_id</span><span class="p">,</span> <span class="n">load_feats</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">graph</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="n">part_id</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">graph</span>
+
+
+<span class="k">def</span> <span class="nf">_save_graph_gb</span><span class="p">(</span><span class="n">part_config</span><span class="p">,</span> <span class="n">part_id</span><span class="p">,</span> <span class="n">csc_graph</span><span class="p">):</span>
+    <span class="n">csc_graph_save_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">part_config</span><span class="p">),</span>
+        <span class="sa">f</span><span class="s2">"part</span><span class="si">{</span><span class="n">part_id</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">csc_graph_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">csc_graph_save_dir</span><span class="p">,</span> <span class="s2">"fused_csc_sampling_graph.pt"</span>
+    <span class="p">)</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">csc_graph</span><span class="p">,</span> <span class="n">csc_graph_path</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">csc_graph_path</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">part_config</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">cast_various_to_minimum_dtype_gb</span><span class="p">(</span>
+    <span class="n">graph</span><span class="p">,</span>
+    <span class="n">part_meta</span><span class="p">,</span>
+    <span class="n">num_parts</span><span class="p">,</span>
+    <span class="n">indptr</span><span class="p">,</span>
+    <span class="n">indices</span><span class="p">,</span>
+    <span class="n">type_per_edge</span><span class="p">,</span>
+    <span class="n">etypes</span><span class="p">,</span>
+    <span class="n">ntypes</span><span class="p">,</span>
+    <span class="n">node_attributes</span><span class="p">,</span>
+    <span class="n">edge_attributes</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Cast various data to minimum dtype."""</span>
+    <span class="c1"># Cast 1: indptr.</span>
+    <span class="n">indptr</span> <span class="o">=</span> <span class="n">_cast_to_minimum_dtype</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">num_edges</span><span class="p">(),</span> <span class="n">indptr</span><span class="p">)</span>
+    <span class="c1"># Cast 2: indices.</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">_cast_to_minimum_dtype</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">(),</span> <span class="n">indices</span><span class="p">)</span>
+    <span class="c1"># Cast 3: type_per_edge.</span>
+    <span class="n">type_per_edge</span> <span class="o">=</span> <span class="n">_cast_to_minimum_dtype</span><span class="p">(</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">etypes</span><span class="p">),</span> <span class="n">type_per_edge</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="n">ETYPE</span>
+    <span class="p">)</span>
+    <span class="c1"># Cast 4: node/edge_attributes.</span>
+    <span class="n">predicates</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">NID</span><span class="p">:</span> <span class="n">part_meta</span><span class="p">[</span><span class="s2">"num_nodes"</span><span class="p">],</span>
+        <span class="s2">"part_id"</span><span class="p">:</span> <span class="n">num_parts</span><span class="p">,</span>
+        <span class="n">NTYPE</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">ntypes</span><span class="p">),</span>
+        <span class="n">EID</span><span class="p">:</span> <span class="n">part_meta</span><span class="p">[</span><span class="s2">"num_edges"</span><span class="p">],</span>
+        <span class="n">ETYPE</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">etypes</span><span class="p">),</span>
+        <span class="n">DGL2GB_EID</span><span class="p">:</span> <span class="n">part_meta</span><span class="p">[</span><span class="s2">"num_edges"</span><span class="p">],</span>
+        <span class="n">GB_DST_ID</span><span class="p">:</span> <span class="n">part_meta</span><span class="p">[</span><span class="s2">"num_nodes"</span><span class="p">],</span>
+    <span class="p">}</span>
+    <span class="k">for</span> <span class="n">attributes</span> <span class="ow">in</span> <span class="p">[</span><span class="n">node_attributes</span><span class="p">,</span> <span class="n">edge_attributes</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">predicates</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">attributes</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">_cast_to_minimum_dtype</span><span class="p">(</span>
+                <span class="n">predicates</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">attributes</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">field</span><span class="o">=</span><span class="n">key</span>
+            <span class="p">)</span>
+    <span class="k">return</span> <span class="n">indptr</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">type_per_edge</span>
+
+
+<span class="k">def</span> <span class="nf">_create_attributes_gb</span><span class="p">(</span>
+    <span class="n">graph</span><span class="p">,</span>
+    <span class="n">gpb</span><span class="p">,</span>
+    <span class="n">edge_ids</span><span class="p">,</span>
+    <span class="n">is_homo</span><span class="p">,</span>
     <span class="n">store_inner_node</span><span class="p">,</span>
     <span class="n">store_inner_edge</span><span class="p">,</span>
+    <span class="n">store_eids</span><span class="p">,</span>
+    <span class="n">debug_mode</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Converts a single DGL partition to GraphBolt.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    part_id : int</span>
-<span class="sd">        The numerical ID of the partition to convert.</span>
-<span class="sd">    graph_formats : str or list[str], optional</span>
-<span class="sd">        Save partitions in specified formats. It could be any combination of</span>
-<span class="sd">        `coo`, `csc`. As `csc` format is mandatory for `FusedCSCSamplingGraph`,</span>
-<span class="sd">        it is not necessary to specify this argument. It's mainly for</span>
-<span class="sd">        specifying `coo` format to save edge ID mapping and destination node</span>
-<span class="sd">        IDs. If not specified, whether to save `coo` format is determined by</span>
-<span class="sd">        the availability of the format in DGL partitions. Default: None.</span>
-<span class="sd">    store_eids : bool, optional</span>
-<span class="sd">        Whether to store edge IDs in the new graph. Default: True.</span>
-<span class="sd">    store_inner_node : bool, optional</span>
-<span class="sd">        Whether to store inner node mask in the new graph. Default: False.</span>
-<span class="sd">    store_inner_edge : bool, optional</span>
-<span class="sd">        Whether to store inner edge mask in the new graph. Default: False.</span>
-<span class="sd">    """</span>
-    <span class="n">debug_mode</span> <span class="o">=</span> <span class="s2">"DGL_DIST_DEBUG"</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span>
-    <span class="k">if</span> <span class="n">debug_mode</span><span class="p">:</span>
-        <span class="n">dgl_warning</span><span class="p">(</span>
-            <span class="s2">"Running in debug mode which means all attributes of DGL partitions"</span>
-            <span class="s2">" will be saved to the new format."</span>
-        <span class="p">)</span>
-
-    <span class="n">part_meta</span> <span class="o">=</span> <span class="n">_load_part_config</span><span class="p">(</span><span class="n">part_config</span><span class="p">)</span>
-    <span class="n">num_parts</span> <span class="o">=</span> <span class="n">part_meta</span><span class="p">[</span><span class="s2">"num_parts"</span><span class="p">]</span>
-
-    <span class="n">graph</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">gpb</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">load_partition</span><span class="p">(</span>
-        <span class="n">part_config</span><span class="p">,</span> <span class="n">part_id</span><span class="p">,</span> <span class="n">load_feats</span><span class="o">=</span><span class="kc">False</span>
-    <span class="p">)</span>
-    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">ntypes</span><span class="p">,</span> <span class="n">etypes</span> <span class="o">=</span> <span class="n">load_partition_book</span><span class="p">(</span><span class="n">part_config</span><span class="p">,</span> <span class="n">part_id</span><span class="p">)</span>
-    <span class="n">is_homo</span> <span class="o">=</span> <span class="n">is_homogeneous</span><span class="p">(</span><span class="n">ntypes</span><span class="p">,</span> <span class="n">etypes</span><span class="p">)</span>
-    <span class="n">node_type_to_id</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="kc">None</span> <span class="k">if</span> <span class="n">is_homo</span> <span class="k">else</span> <span class="p">{</span><span class="n">ntype</span><span class="p">:</span> <span class="n">ntid</span> <span class="k">for</span> <span class="n">ntid</span><span class="p">,</span> <span class="n">ntype</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ntypes</span><span class="p">)}</span>
-    <span class="p">)</span>
-    <span class="n">edge_type_to_id</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="kc">None</span>
-        <span class="k">if</span> <span class="n">is_homo</span>
-        <span class="k">else</span> <span class="p">{</span>
-            <span class="n">gb</span><span class="o">.</span><span class="n">etype_tuple_to_str</span><span class="p">(</span><span class="n">etype</span><span class="p">):</span> <span class="n">etid</span> <span class="k">for</span> <span class="n">etype</span><span class="p">,</span> <span class="n">etid</span> <span class="ow">in</span> <span class="n">etypes</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-        <span class="p">}</span>
-    <span class="p">)</span>
-    <span class="c1"># Obtain CSC indtpr and indices.</span>
-    <span class="n">indptr</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">edge_ids</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">adj_tensors</span><span class="p">(</span><span class="s2">"csc"</span><span class="p">)</span>
-
     <span class="c1"># Save node attributes. Detailed attributes are shown below.</span>
     <span class="c1">#  DGL_GB\Attributes  dgl.NID("_ID")  dgl.NTYPE("_TYPE")  "inner_node"  "part_id"</span>
     <span class="c1">#  DGL_Homograph           ✅                🚫                  ✅          ✅</span>
@@ -1617,6 +1818,80 @@
     <span class="n">edge_attributes</span> <span class="o">=</span> <span class="p">{</span>
         <span class="n">attr</span><span class="p">:</span> <span class="n">graph</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="n">attr</span><span class="p">][</span><span class="n">edge_ids</span><span class="p">]</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">required_edge_attrs</span>
     <span class="p">}</span>
+    <span class="k">return</span> <span class="n">node_attributes</span><span class="p">,</span> <span class="n">edge_attributes</span><span class="p">,</span> <span class="n">type_per_edge</span>
+
+
+<span class="k">def</span> <span class="nf">gb_convert_single_dgl_partition</span><span class="p">(</span>
+    <span class="n">ntypes</span><span class="p">,</span>
+    <span class="n">etypes</span><span class="p">,</span>
+    <span class="n">gpb</span><span class="p">,</span>
+    <span class="n">part_meta</span><span class="p">,</span>
+    <span class="n">graph</span><span class="p">,</span>
+    <span class="n">graph_formats</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">store_eids</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">store_inner_node</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">store_inner_edge</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Converts a single DGL partition to GraphBolt.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    node types : dict</span>
+<span class="sd">        The node types</span>
+<span class="sd">    edge types : dict</span>
+<span class="sd">        The edge types</span>
+<span class="sd">    gpb : GraphPartitionBook</span>
+<span class="sd">        The global partition information.</span>
+<span class="sd">    part_meta : dict</span>
+<span class="sd">        Contain the meta data of the partition.</span>
+<span class="sd">    graph : DGLGraph</span>
+<span class="sd">        The graph to be converted to graphbolt graph.</span>
+<span class="sd">    graph_formats : str or list[str], optional</span>
+<span class="sd">        Save partitions in specified formats. It could be any combination of</span>
+<span class="sd">        `coo`, `csc`. As `csc` format is mandatory for `FusedCSCSamplingGraph`,</span>
+<span class="sd">        it is not necessary to specify this argument. It's mainly for</span>
+<span class="sd">        specifying `coo` format to save edge ID mapping and destination node</span>
+<span class="sd">        IDs. If not specified, whether to save `coo` format is determined by</span>
+<span class="sd">        the availability of the format in DGL partitions. Default: None.</span>
+<span class="sd">    store_eids : bool, optional</span>
+<span class="sd">        Whether to store edge IDs in the new graph. Default: True.</span>
+<span class="sd">    store_inner_node : bool, optional</span>
+<span class="sd">        Whether to store inner node mask in the new graph. Default: False.</span>
+<span class="sd">    store_inner_edge : bool, optional</span>
+<span class="sd">        Whether to store inner edge mask in the new graph. Default: False.</span>
+<span class="sd">    """</span>
+    <span class="n">debug_mode</span> <span class="o">=</span> <span class="s2">"DGL_DIST_DEBUG"</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span>
+    <span class="k">if</span> <span class="n">debug_mode</span><span class="p">:</span>
+        <span class="n">dgl_warning</span><span class="p">(</span>
+            <span class="s2">"Running in debug mode which means all attributes of DGL partitions"</span>
+            <span class="s2">" will be saved to the new format."</span>
+        <span class="p">)</span>
+    <span class="n">num_parts</span> <span class="o">=</span> <span class="n">part_meta</span><span class="p">[</span><span class="s2">"num_parts"</span><span class="p">]</span>
+
+    <span class="n">is_homo</span> <span class="o">=</span> <span class="n">is_homogeneous</span><span class="p">(</span><span class="n">ntypes</span><span class="p">,</span> <span class="n">etypes</span><span class="p">)</span>
+    <span class="n">node_type_to_id</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="kc">None</span> <span class="k">if</span> <span class="n">is_homo</span> <span class="k">else</span> <span class="p">{</span><span class="n">ntype</span><span class="p">:</span> <span class="n">ntid</span> <span class="k">for</span> <span class="n">ntid</span><span class="p">,</span> <span class="n">ntype</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ntypes</span><span class="p">)}</span>
+    <span class="p">)</span>
+    <span class="n">edge_type_to_id</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">is_homo</span>
+        <span class="k">else</span> <span class="p">{</span>
+            <span class="n">gb</span><span class="o">.</span><span class="n">etype_tuple_to_str</span><span class="p">(</span><span class="n">etype</span><span class="p">):</span> <span class="n">etid</span> <span class="k">for</span> <span class="n">etype</span><span class="p">,</span> <span class="n">etid</span> <span class="ow">in</span> <span class="n">etypes</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+    <span class="c1"># Obtain CSC indtpr and indices.</span>
+    <span class="n">indptr</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">edge_ids</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">adj_tensors</span><span class="p">(</span><span class="s2">"csc"</span><span class="p">)</span>
+
+    <span class="n">node_attributes</span><span class="p">,</span> <span class="n">edge_attributes</span><span class="p">,</span> <span class="n">type_per_edge</span> <span class="o">=</span> <span class="n">_create_attributes_gb</span><span class="p">(</span>
+        <span class="n">graph</span><span class="p">,</span>
+        <span class="n">gpb</span><span class="p">,</span>
+        <span class="n">edge_ids</span><span class="p">,</span>
+        <span class="n">is_homo</span><span class="p">,</span>
+        <span class="n">store_inner_node</span><span class="p">,</span>
+        <span class="n">store_inner_edge</span><span class="p">,</span>
+        <span class="n">store_eids</span><span class="p">,</span>
+        <span class="n">debug_mode</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="c1"># When converting DGLGraph to FusedCSCSamplingGraph, edge IDs are</span>
     <span class="c1"># re-ordered(actually FusedCSCSamplingGraph does not have edge IDs</span>
     <span class="c1"># in nature). So we need to save such re-order info for any</span>
@@ -1638,32 +1913,18 @@
             <span class="n">indptr</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">indices</span><span class="o">.</span><span class="n">dtype</span>
         <span class="p">)</span>
 
-    <span class="c1"># Cast various data to minimum dtype.</span>
-    <span class="c1"># Cast 1: indptr.</span>
-    <span class="n">indptr</span> <span class="o">=</span> <span class="n">_cast_to_minimum_dtype</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">num_edges</span><span class="p">(),</span> <span class="n">indptr</span><span class="p">)</span>
-    <span class="c1"># Cast 2: indices.</span>
-    <span class="n">indices</span> <span class="o">=</span> <span class="n">_cast_to_minimum_dtype</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">(),</span> <span class="n">indices</span><span class="p">)</span>
-    <span class="c1"># Cast 3: type_per_edge.</span>
-    <span class="n">type_per_edge</span> <span class="o">=</span> <span class="n">_cast_to_minimum_dtype</span><span class="p">(</span>
-        <span class="nb">len</span><span class="p">(</span><span class="n">etypes</span><span class="p">),</span> <span class="n">type_per_edge</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="n">ETYPE</span>
+    <span class="n">indptr</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">type_per_edge</span> <span class="o">=</span> <span class="n">cast_various_to_minimum_dtype_gb</span><span class="p">(</span>
+        <span class="n">graph</span><span class="p">,</span>
+        <span class="n">part_meta</span><span class="p">,</span>
+        <span class="n">num_parts</span><span class="p">,</span>
+        <span class="n">indptr</span><span class="p">,</span>
+        <span class="n">indices</span><span class="p">,</span>
+        <span class="n">type_per_edge</span><span class="p">,</span>
+        <span class="n">etypes</span><span class="p">,</span>
+        <span class="n">ntypes</span><span class="p">,</span>
+        <span class="n">node_attributes</span><span class="p">,</span>
+        <span class="n">edge_attributes</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="c1"># Cast 4: node/edge_attributes.</span>
-    <span class="n">predicates</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">NID</span><span class="p">:</span> <span class="n">part_meta</span><span class="p">[</span><span class="s2">"num_nodes"</span><span class="p">],</span>
-        <span class="s2">"part_id"</span><span class="p">:</span> <span class="n">num_parts</span><span class="p">,</span>
-        <span class="n">NTYPE</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">ntypes</span><span class="p">),</span>
-        <span class="n">EID</span><span class="p">:</span> <span class="n">part_meta</span><span class="p">[</span><span class="s2">"num_edges"</span><span class="p">],</span>
-        <span class="n">ETYPE</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">etypes</span><span class="p">),</span>
-        <span class="n">DGL2GB_EID</span><span class="p">:</span> <span class="n">part_meta</span><span class="p">[</span><span class="s2">"num_edges"</span><span class="p">],</span>
-        <span class="n">GB_DST_ID</span><span class="p">:</span> <span class="n">part_meta</span><span class="p">[</span><span class="s2">"num_nodes"</span><span class="p">],</span>
-    <span class="p">}</span>
-    <span class="k">for</span> <span class="n">attributes</span> <span class="ow">in</span> <span class="p">[</span><span class="n">node_attributes</span><span class="p">,</span> <span class="n">edge_attributes</span><span class="p">]:</span>
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">predicates</span><span class="p">:</span>
-                <span class="k">continue</span>
-            <span class="n">attributes</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">_cast_to_minimum_dtype</span><span class="p">(</span>
-                <span class="n">predicates</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">attributes</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">field</span><span class="o">=</span><span class="n">key</span>
-            <span class="p">)</span>
 
     <span class="n">csc_graph</span> <span class="o">=</span> <span class="n">gb</span><span class="o">.</span><span class="n">fused_csc_sampling_graph</span><span class="p">(</span>
         <span class="n">indptr</span><span class="p">,</span>
@@ -1675,17 +1936,128 @@
         <span class="n">node_type_to_id</span><span class="o">=</span><span class="n">node_type_to_id</span><span class="p">,</span>
         <span class="n">edge_type_to_id</span><span class="o">=</span><span class="n">edge_type_to_id</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">orig_graph_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">part_config</span><span class="p">),</span>
-        <span class="n">part_meta</span><span class="p">[</span><span class="sa">f</span><span class="s2">"part-</span><span class="si">{</span><span class="n">part_id</span><span class="si">}</span><span class="s2">"</span><span class="p">][</span><span class="s2">"part_graph"</span><span class="p">],</span>
-    <span class="p">)</span>
-    <span class="n">csc_graph_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">orig_graph_path</span><span class="p">),</span> <span class="s2">"fused_csc_sampling_graph.pt"</span>
-    <span class="p">)</span>
-    <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">csc_graph</span><span class="p">,</span> <span class="n">csc_graph_path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">csc_graph</span>
 
-    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">csc_graph_path</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">part_config</span><span class="p">))</span>
-    <span class="c1"># Update graph path.</span>
+
+<span class="k">def</span> <span class="nf">_convert_partition_to_graphbolt</span><span class="p">(</span>
+    <span class="n">part_config</span><span class="p">,</span>
+    <span class="n">part_id</span><span class="p">,</span>
+    <span class="n">graph_formats</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">store_eids</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">store_inner_node</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">store_inner_edge</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    The pipeline converting signle partition to graphbolt.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    part_config : str</span>
+<span class="sd">        The path of the partition config file.</span>
+<span class="sd">    part_id : int</span>
+<span class="sd">        The partition ID.</span>
+<span class="sd">    graph_formats : str or list[str], optional</span>
+<span class="sd">        Save partitions in specified formats. It could be any combination of</span>
+<span class="sd">        `coo`, `csc`. As `csc` format is mandatory for `FusedCSCSamplingGraph`,</span>
+<span class="sd">        it is not necessary to specify this argument. It's mainly for</span>
+<span class="sd">        specifying `coo` format to save edge ID mapping and destination node</span>
+<span class="sd">        IDs. If not specified, whether to save `coo` format is determined by</span>
+<span class="sd">        the availability of the format in DGL partitions. Default: None.</span>
+<span class="sd">    store_eids : bool, optional</span>
+<span class="sd">        Whether to store edge IDs in the new graph. Default: True.</span>
+<span class="sd">    store_inner_node : bool, optional</span>
+<span class="sd">        Whether to store inner node mask in the new graph. Default: False.</span>
+<span class="sd">    store_inner_edge : bool, optional</span>
+<span class="sd">        Whether to store inner edge mask in the new graph. Default: False.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        The path csc_graph to save.</span>
+<span class="sd">    """</span>
+    <span class="n">gpb</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">ntypes</span><span class="p">,</span> <span class="n">etypes</span> <span class="o">=</span> <span class="n">load_partition_book</span><span class="p">(</span>
+        <span class="n">part_config</span><span class="o">=</span><span class="n">part_config</span><span class="p">,</span> <span class="n">part_id</span><span class="o">=</span><span class="n">part_id</span>
+    <span class="p">)</span>
+    <span class="n">part</span> <span class="o">=</span> <span class="n">_load_part</span><span class="p">(</span><span class="n">part_config</span><span class="p">,</span> <span class="n">part_id</span><span class="p">)</span>
+    <span class="n">part_meta</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">_load_part_config</span><span class="p">(</span><span class="n">part_config</span><span class="p">))</span>
+    <span class="n">csc_graph</span> <span class="o">=</span> <span class="n">gb_convert_single_dgl_partition</span><span class="p">(</span>
+        <span class="n">graph</span><span class="o">=</span><span class="n">part</span><span class="p">,</span>
+        <span class="n">ntypes</span><span class="o">=</span><span class="n">ntypes</span><span class="p">,</span>
+        <span class="n">etypes</span><span class="o">=</span><span class="n">etypes</span><span class="p">,</span>
+        <span class="n">gpb</span><span class="o">=</span><span class="n">gpb</span><span class="p">,</span>
+        <span class="n">part_meta</span><span class="o">=</span><span class="n">part_meta</span><span class="p">,</span>
+        <span class="n">graph_formats</span><span class="o">=</span><span class="n">graph_formats</span><span class="p">,</span>
+        <span class="n">store_eids</span><span class="o">=</span><span class="n">store_eids</span><span class="p">,</span>
+        <span class="n">store_inner_node</span><span class="o">=</span><span class="n">store_inner_node</span><span class="p">,</span>
+        <span class="n">store_inner_edge</span><span class="o">=</span><span class="n">store_inner_edge</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">rel_path</span> <span class="o">=</span> <span class="n">_save_graph_gb</span><span class="p">(</span><span class="n">part_config</span><span class="p">,</span> <span class="n">part_id</span><span class="p">,</span> <span class="n">csc_graph</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">rel_path</span>
+
+
+<span class="k">def</span> <span class="nf">_convert_partition_to_graphbolt_wrapper</span><span class="p">(</span>
+    <span class="n">graph_formats</span><span class="p">,</span>
+    <span class="n">part_config</span><span class="p">,</span>
+    <span class="n">store_eids</span><span class="p">,</span>
+    <span class="n">store_inner_node</span><span class="p">,</span>
+    <span class="n">store_inner_edge</span><span class="p">,</span>
+    <span class="n">n_jobs</span><span class="p">,</span>
+    <span class="n">num_parts</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="c1"># [Rui] DGL partitions are always saved as homogeneous graphs even though</span>
+    <span class="c1"># the original graph is heterogeneous. But heterogeneous information like</span>
+    <span class="c1"># node/edge types are saved as node/edge data alongside with partitions.</span>
+    <span class="c1"># What needs more attention is that due to the existence of HALO nodes in</span>
+    <span class="c1"># each partition, the local node IDs are not sorted according to the node</span>
+    <span class="c1"># types. So we fail to assign ``node_type_offset`` as required by GraphBolt.</span>
+    <span class="c1"># But this is not a problem since such information is not used in sampling.</span>
+    <span class="c1"># We can simply pass None to it.</span>
+
+    <span class="c1"># Iterate over partitions.</span>
+    <span class="n">convert_with_format</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
+        <span class="n">_convert_partition_to_graphbolt</span><span class="p">,</span>
+        <span class="n">part_config</span><span class="o">=</span><span class="n">part_config</span><span class="p">,</span>
+        <span class="n">graph_formats</span><span class="o">=</span><span class="n">graph_formats</span><span class="p">,</span>
+        <span class="n">store_eids</span><span class="o">=</span><span class="n">store_eids</span><span class="p">,</span>
+        <span class="n">store_inner_node</span><span class="o">=</span><span class="n">store_inner_node</span><span class="p">,</span>
+        <span class="n">store_inner_edge</span><span class="o">=</span><span class="n">store_inner_edge</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="c1"># Need to create entirely new interpreters, because we call C++ downstream</span>
+    <span class="c1"># See https://docs.python.org/3.12/library/multiprocessing.html#contexts-and-start-methods</span>
+    <span class="c1"># and https://pybind11.readthedocs.io/en/stable/advanced/misc.html#global-interpreter-lock-gil</span>
+    <span class="n">rel_path_results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">n_jobs</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">num_parts</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">mp_ctx</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">get_context</span><span class="p">(</span><span class="s2">"spawn"</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">ProcessPoolExecutor</span><span class="p">(</span>  <span class="c1"># pylint: disable=unexpected-keyword-arg</span>
+            <span class="n">max_workers</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">num_parts</span><span class="p">,</span> <span class="n">n_jobs</span><span class="p">),</span>
+            <span class="n">mp_context</span><span class="o">=</span><span class="n">mp_ctx</span><span class="p">,</span>
+        <span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">part_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_parts</span><span class="p">):</span>
+                <span class="n">rel_path_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span>
+                        <span class="n">convert_with_format</span><span class="p">,</span> <span class="n">part_id</span><span class="o">=</span><span class="n">part_id</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+                <span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># If running single-threaded, avoid spawning new interpreter, which is slow</span>
+        <span class="k">for</span> <span class="n">part_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_parts</span><span class="p">):</span>
+            <span class="n">rel_path</span> <span class="o">=</span> <span class="n">convert_with_format</span><span class="p">(</span><span class="n">part_id</span><span class="o">=</span><span class="n">part_id</span><span class="p">)</span>
+            <span class="n">rel_path_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rel_path</span><span class="p">)</span>
+    <span class="n">part_meta</span> <span class="o">=</span> <span class="n">_load_part_config</span><span class="p">(</span><span class="n">part_config</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">part_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_parts</span><span class="p">):</span>
+        <span class="c1"># Update graph path.</span>
+        <span class="n">part_meta</span><span class="p">[</span><span class="sa">f</span><span class="s2">"part-</span><span class="si">{</span><span class="n">part_id</span><span class="si">}</span><span class="s2">"</span><span class="p">][</span><span class="s2">"part_graph_graphbolt"</span><span class="p">]</span> <span class="o">=</span> <span class="n">rel_path_results</span><span class="p">[</span>
+            <span class="n">part_id</span>
+        <span class="p">]</span>
+
+    <span class="c1"># Save dtype info into partition config.</span>
+    <span class="c1"># [TODO][Rui] Always use int64_t for node/edge IDs in GraphBolt. See more</span>
+    <span class="c1"># details in #7175.</span>
+    <span class="n">part_meta</span><span class="p">[</span><span class="s2">"node_map_dtype"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"int64"</span>
+    <span class="n">part_meta</span><span class="p">[</span><span class="s2">"edge_map_dtype"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"int64"</span>
+
+    <span class="k">return</span> <span class="n">part_meta</span>
 
 
 <div class="viewcode-block" id="dgl_partition_to_graphbolt">
@@ -1736,62 +2108,17 @@
             <span class="s2">" will be saved to the new format."</span>
         <span class="p">)</span>
     <span class="n">part_meta</span> <span class="o">=</span> <span class="n">_load_part_config</span><span class="p">(</span><span class="n">part_config</span><span class="p">)</span>
-    <span class="n">new_part_meta</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">part_meta</span><span class="p">)</span>
     <span class="n">num_parts</span> <span class="o">=</span> <span class="n">part_meta</span><span class="p">[</span><span class="s2">"num_parts"</span><span class="p">]</span>
-
-    <span class="c1"># [Rui] DGL partitions are always saved as homogeneous graphs even though</span>
-    <span class="c1"># the original graph is heterogeneous. But heterogeneous information like</span>
-    <span class="c1"># node/edge types are saved as node/edge data alongside with partitions.</span>
-    <span class="c1"># What needs more attention is that due to the existence of HALO nodes in</span>
-    <span class="c1"># each partition, the local node IDs are not sorted according to the node</span>
-    <span class="c1"># types. So we fail to assign ``node_type_offset`` as required by GraphBolt.</span>
-    <span class="c1"># But this is not a problem since such information is not used in sampling.</span>
-    <span class="c1"># We can simply pass None to it.</span>
-
-    <span class="c1"># Iterate over partitions.</span>
-    <span class="n">convert_with_format</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
-        <span class="n">gb_convert_single_dgl_partition</span><span class="p">,</span>
+    <span class="n">part_meta</span> <span class="o">=</span> <span class="n">_convert_partition_to_graphbolt_wrapper</span><span class="p">(</span>
         <span class="n">graph_formats</span><span class="o">=</span><span class="n">graph_formats</span><span class="p">,</span>
         <span class="n">part_config</span><span class="o">=</span><span class="n">part_config</span><span class="p">,</span>
         <span class="n">store_eids</span><span class="o">=</span><span class="n">store_eids</span><span class="p">,</span>
         <span class="n">store_inner_node</span><span class="o">=</span><span class="n">store_inner_node</span><span class="p">,</span>
         <span class="n">store_inner_edge</span><span class="o">=</span><span class="n">store_inner_edge</span><span class="p">,</span>
+        <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">,</span>
+        <span class="n">num_parts</span><span class="o">=</span><span class="n">num_parts</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="c1"># Need to create entirely new interpreters, because we call C++ downstream</span>
-    <span class="c1"># See https://docs.python.org/3.12/library/multiprocessing.html#contexts-and-start-methods</span>
-    <span class="c1"># and https://pybind11.readthedocs.io/en/stable/advanced/misc.html#global-interpreter-lock-gil</span>
-    <span class="n">rel_path_results</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">if</span> <span class="n">n_jobs</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">num_parts</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">mp_ctx</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">get_context</span><span class="p">(</span><span class="s2">"spawn"</span><span class="p">)</span>
-        <span class="k">with</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">ProcessPoolExecutor</span><span class="p">(</span>  <span class="c1"># pylint: disable=unexpected-keyword-arg</span>
-            <span class="n">max_workers</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">num_parts</span><span class="p">,</span> <span class="n">n_jobs</span><span class="p">),</span>
-            <span class="n">mp_context</span><span class="o">=</span><span class="n">mp_ctx</span><span class="p">,</span>
-        <span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
-            <span class="n">futures</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">part_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_parts</span><span class="p">):</span>
-                <span class="n">futures</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">convert_with_format</span><span class="p">,</span> <span class="n">part_id</span><span class="p">))</span>
-
-        <span class="k">for</span> <span class="n">part_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_parts</span><span class="p">):</span>
-            <span class="n">rel_path_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">futures</span><span class="p">[</span><span class="n">part_id</span><span class="p">]</span><span class="o">.</span><span class="n">result</span><span class="p">())</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># If running single-threaded, avoid spawning new interpreter, which is slow</span>
-        <span class="k">for</span> <span class="n">part_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_parts</span><span class="p">):</span>
-            <span class="n">rel_path_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">convert_with_format</span><span class="p">(</span><span class="n">part_id</span><span class="p">))</span>
-
-    <span class="k">for</span> <span class="n">part_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_parts</span><span class="p">):</span>
-        <span class="c1"># Update graph path.</span>
-        <span class="n">new_part_meta</span><span class="p">[</span><span class="sa">f</span><span class="s2">"part-</span><span class="si">{</span><span class="n">part_id</span><span class="si">}</span><span class="s2">"</span><span class="p">][</span>
-            <span class="s2">"part_graph_graphbolt"</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="n">rel_path_results</span><span class="p">[</span><span class="n">part_id</span><span class="p">]</span>
-
-    <span class="c1"># Save dtype info into partition config.</span>
-    <span class="c1"># [TODO][Rui] Always use int64_t for node/edge IDs in GraphBolt. See more</span>
-    <span class="c1"># details in #7175.</span>
-    <span class="n">new_part_meta</span><span class="p">[</span><span class="s2">"node_map_dtype"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"int64"</span>
-    <span class="n">new_part_meta</span><span class="p">[</span><span class="s2">"edge_map_dtype"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"int64"</span>
-
-    <span class="n">_dump_part_config</span><span class="p">(</span><span class="n">part_config</span><span class="p">,</span> <span class="n">new_part_meta</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Converted partitions to GraphBolt format into </span><span class="si">{</span><span class="n">part_config</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
+    <span class="n">_dump_part_config</span><span class="p">(</span><span class="n">part_config</span><span class="p">,</span> <span class="n">part_meta</span><span class="p">)</span></div>
 
 </pre></div>
 </div>
@@ -1878,71 +2205,6 @@
         });
     </script>
 
-<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
-<span class="rst-current-version" data-toggle="rst-current-version">
-<span class="fa fa-book"> Read the Docs</span>
-<span id="version-placeholder">v: latest</span>
-<span class="fa fa-caret-down"></span>
-</span>
-<div class="rst-other-versions">
-<dl>
-<dt>Versions</dt>
-<div id="version-list">
-<!-- 动态插入的版本列表将出现在这里 -->
-</div>
-</dl>
-<dl>
-<dt>Downloads</dt>
-<!-- 下载内容 -->
-</dl>
-<dl>
-<dt>On Read the Docs</dt>
-<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
-<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
-</dl>
-</div>
-</div>
-<script>
-        document.addEventListener("DOMContentLoaded", function() {
-            fetch('/dgl_docs/branches.json')
-                .then(response => response.json())
-                .then(data => {
-                    var versionListDiv = document.getElementById('version-list');
-                    data.branches.forEach(function(branch) {
-                        var dd = document.createElement('dd');
-                        var a = document.createElement('a');
-                        a.href = branch.url;
-                        a.textContent = branch.name;
-                        dd.appendChild(a);
-                        versionListDiv.appendChild(dd);
-                    });
-                })
-                .catch(error => console.error('Error loading branches:', error));
-        });
-        document.addEventListener("DOMContentLoaded", function() {
-            // 获取当前路径
-            var path = window.location.pathname;
-            var versionPlaceholder = document.getElementById('version-placeholder');
-
-            // 检查路径中是否包含 'en'
-            if (path.includes('/en/')) {
-                // 提取 'en' 后的文件夹作为版本号
-                var parts = path.split('/en/');
-                if (parts[1]) {
-                    var folders = parts[1].split('/');
-                    if (folders.length > 0 && folders[0]) {
-                        versionPlaceholder.textContent = 'v: ' + folders[0];
-                    } else {
-                        versionPlaceholder.textContent = 'v: latest';
-                    }
-                } else {
-                    versionPlaceholder.textContent = 'v: latest';
-                }
-            } else {
-                versionPlaceholder.textContent = 'v: latest';
-            }
-        });
-    </script>
 <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);

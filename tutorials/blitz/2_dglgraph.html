@@ -224,11 +224,11 @@ attributes are often called <em>features</em>.</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s2">"a"</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[ 0.1446, -0.8675, -1.0521,  1.2662],
-        [-1.0375, -0.2213, -1.7488, -0.4258],
-        [ 1.0389, -0.1972,  0.3067, -0.1530],
-        [ 0.0777,  0.3681, -2.4598,  1.4901],
-        [-0.2459,  1.0108, -0.1797,  0.6035]])
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[ 1.9536,  0.1854,  0.0914,  1.8699],
+        [ 0.3899, -0.4047, -0.9593,  0.5322],
+        [ 0.2731,  0.0393,  0.4219, -1.5069],
+        [-1.0900,  1.9680,  1.1952, -0.1310],
+        [ 0.1610, -2.6382,  0.4905,  0.2794]])
 </pre></div>
 </div>
 <div class="admonition note">
@@ -307,18 +307,18 @@ to the subgraph:</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">sg2</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s2">"a"</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[ 0.2184,  0.1328,  0.0935],
-        [ 0.1060,  0.4029,  0.6686],
-        [ 0.4890, -0.7812,  0.8360]])
-tensor([[ 0.1446, -0.8675, -1.0521,  1.2662],
-        [ 1.0389, -0.1972,  0.3067, -0.1530]])
-tensor([[ 0.2184,  0.1328,  0.0935],
-        [ 0.1060,  0.4029,  0.6686],
-        [ 0.8594, -0.5365,  1.6791],
-        [-0.5605,  1.7287,  0.1406]])
-tensor([[ 0.1446, -0.8675, -1.0521,  1.2662],
-        [-1.0375, -0.2213, -1.7488, -0.4258],
-        [ 0.0777,  0.3681, -2.4598,  1.4901]])
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[-1.8605, -0.2270,  0.0280],
+        [-0.1693,  1.1287,  2.0127],
+        [ 0.6646,  0.5802, -1.4393]])
+tensor([[ 1.9536,  0.1854,  0.0914,  1.8699],
+        [ 0.2731,  0.0393,  0.4219, -1.5069]])
+tensor([[-1.8605, -0.2270,  0.0280],
+        [-0.1693,  1.1287,  2.0127],
+        [ 1.4013, -0.4476,  1.5255],
+        [ 0.0036,  0.8280, -0.5049]])
+tensor([[ 1.9536,  0.1854,  0.0914,  1.8699],
+        [ 0.3899, -0.4047, -0.9593,  0.5322],
+        [-1.0900,  1.9680,  1.1952, -0.1310]])
 </pre></div>
 </div>
 <p>Another common transformation is to add a reverse edge for each edge in
@@ -434,10 +434,12 @@ and
 <dl>
 <dt>Versions</dt>
 <div id="version-list">
+<!-- 动态插入的版本列表将出现在这里 -->
 </div>
 </dl>
 <dl>
 <dt>Downloads</dt>
+<!-- 下载内容 -->
 </dl>
 <dl>
 <dt>On Read the Docs</dt>
@@ -447,46 +449,46 @@ and
 </div>
 </div>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        fetch('/dgl_docs/branches.json')
-            .then(response => response.json())
-            .then(data => {
-                var versionListDiv = document.getElementById('version-list');
-                data.branches.forEach(function(branch) {
-                    var dd = document.createElement('dd');
-                    var a = document.createElement('a');
-                    a.href = branch.url;
-                    a.textContent = branch.name;
-                    dd.appendChild(a);
-                    versionListDiv.appendChild(dd);
-                });
-            })
-            .catch(error => console.error('Error loading branches:', error));
-    });
-    document.addEventListener("DOMContentLoaded", function() {
-        // 获取当前路径
-        var path = window.location.pathname;
-        var versionPlaceholder = document.getElementById('version-placeholder');
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('/dgl_docs/branches.json')
+                .then(response => response.json())
+                .then(data => {
+                    var versionListDiv = document.getElementById('version-list');
+                    data.branches.forEach(function(branch) {
+                        var dd = document.createElement('dd');
+                        var a = document.createElement('a');
+                        a.href = branch.url;
+                        a.textContent = branch.name;
+                        dd.appendChild(a);
+                        versionListDiv.appendChild(dd);
+                    });
+                })
+                .catch(error => console.error('Error loading branches:', error));
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            // 获取当前路径
+            var path = window.location.pathname;
+            var versionPlaceholder = document.getElementById('version-placeholder');
 
-        
-        if (path.includes('/en/')) {
-            
-            var parts = path.split('/en/');
-            if (parts[1]) {
-                var folders = parts[1].split('/');
-                if (folders.length > 0 && folders[0]) {
-                    versionPlaceholder.textContent = 'v: ' + folders[0];
+            // 检查路径中是否包含 'en'
+            if (path.includes('/en/')) {
+                // 提取 'en' 后的文件夹作为版本号
+                var parts = path.split('/en/');
+                if (parts[1]) {
+                    var folders = parts[1].split('/');
+                    if (folders.length > 0 && folders[0]) {
+                        versionPlaceholder.textContent = 'v: ' + folders[0];
+                    } else {
+                        versionPlaceholder.textContent = 'v: latest';
+                    }
                 } else {
                     versionPlaceholder.textContent = 'v: latest';
                 }
             } else {
                 versionPlaceholder.textContent = 'v: latest';
             }
-        } else {
-            versionPlaceholder.textContent = 'v: latest';
-        }
-    });
-</script>
+        });
+    </script>
 
 <script>
       jQuery(function () {

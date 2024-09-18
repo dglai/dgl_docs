@@ -1443,19 +1443,19 @@ tensor([[0., 0., 0., 0.],
         [0., 0., 1., 2.],
         [0., 0., 0., 3.]])
 X1:
-tensor([[ 0.0703,  1.1687, -0.0595, -0.0746, -1.0298],
-        [ 0.2863,  0.4058, -0.1836,  2.2660,  0.2941],
-        [ 1.9041, -0.8229,  0.2310,  0.1263,  0.0993]])
+tensor([[-0.2875,  0.1048, -1.1861,  0.1007,  0.2220],
+        [-0.1292,  0.8963,  0.4638,  0.2579, -1.2023],
+        [ 0.3415,  0.1874,  0.8118,  0.7520,  1.6637]])
 X2:
-tensor([[ 1.3270,  1.8514,  0.6253,  1.3957],
-        [ 0.3917,  2.7866, -0.4553,  1.1410],
-        [-0.8629,  0.9161, -1.8340,  0.1945],
-        [-0.4650,  1.4741,  0.4845, -0.3422],
-        [-1.1546, -2.6250, -0.2959, -1.0450]])
+tensor([[-0.6301, -0.3908,  3.3642,  0.9972],
+        [-0.0402, -0.1064,  1.1123,  0.8042],
+        [-0.3642,  0.6508, -0.0235, -0.5308],
+        [ 2.2352,  0.0983, -0.6259,  1.8404],
+        [-0.8800,  0.4863,  0.9797,  0.5473]])
 dglsp.sddmm(A, X1, X2):
 tensor([[ 0.0000,  0.0000,  0.0000,  0.0000],
-        [ 0.0000,  0.0000,  1.3418, -0.5118],
-        [ 0.0000,  0.0000,  0.0000,  4.8498]])
+        [ 0.0000,  0.0000, -0.7879,  0.3249],
+        [ 0.0000,  0.0000,  0.0000,  7.0642]])
 </pre></div></div>
 </div>
 <p>This operator also supports batched sampled-dense-dense matrix multiplication. For a <span class="math notranslate nohighlight">\(L \times N\)</span> sparse matrix A with non-zero vector values of length <span class="math notranslate nohighlight">\(𝐾\)</span>, a <span class="math notranslate nohighlight">\(L \times M \times K\)</span> dense matrix X1 and a <span class="math notranslate nohighlight">\(M \times N \times K\)</span> dense matrix X2, <code class="docutils literal notranslate"><span class="pre">sddmm(A,</span> <span class="pre">X1,</span> <span class="pre">X2)</span></code> will be a <span class="math notranslate nohighlight">\(L \times N \times K\)</span> sparse matrix.</p>
@@ -1504,63 +1504,63 @@ tensor([[[0., 0.],
          [0., 0.],
          [3., 3.]]])
 X1:
-tensor([[[ 0.1543, -0.4338],
-         [-1.5454, -1.1677],
-         [ 2.0489,  0.1705],
-         [ 0.1152, -0.2598],
-         [ 0.1455,  0.7518]],
+tensor([[[ 0.4280, -0.0130],
+         [ 2.4122, -0.5685],
+         [ 0.3500,  0.3193],
+         [ 0.8962,  0.6887],
+         [-0.1620,  1.4451]],
 
-        [[-1.1069,  0.8790],
-         [-0.4286, -0.6400],
-         [-0.4913, -0.7056],
-         [-0.5914, -1.5510],
-         [ 2.4782,  0.8709]],
+        [[ 0.0133,  0.4763],
+         [ 0.0977, -0.2138],
+         [ 0.6584, -1.2509],
+         [-0.5631,  1.2733],
+         [ 0.5538,  0.3618]],
 
-        [[ 0.8060,  0.0790],
-         [-0.8230, -0.3249],
-         [ 0.8602,  0.1249],
-         [-0.2004,  0.6937],
-         [ 0.8036, -1.0853]]])
+        [[ 0.1223,  1.7144],
+         [-2.2546,  1.3359],
+         [ 0.6680,  0.7619],
+         [-2.6323,  0.6779],
+         [-0.0495, -2.3120]]])
 X2:
-tensor([[[-0.7153,  0.3340],
-         [-1.0154,  0.4514],
-         [ 2.3960, -0.5968],
-         [-1.5278,  0.0802]],
+tensor([[[-0.0160,  0.1573],
+         [-0.4418, -0.1619],
+         [-1.4862,  0.3661],
+         [ 0.0952, -2.2030]],
 
-        [[ 1.8056,  1.2719],
-         [-0.4014,  0.2237],
-         [ 1.7537, -0.7345],
-         [ 0.0353, -1.0690]],
+        [[ 0.3453, -1.6110],
+         [ 0.4377,  0.1957],
+         [-0.8852, -0.9418],
+         [-0.7636,  0.5369]],
 
-        [[ 3.0735,  2.2427],
-         [ 1.0936,  1.7390],
-         [-0.3581, -0.6818],
-         [ 0.5920, -0.1000]],
+        [[-0.4678,  0.9346],
+         [ 1.0160,  0.3271],
+         [-0.3584, -0.6825],
+         [-0.1194, -0.4939]],
 
-        [[ 0.6134,  0.4192],
-         [ 0.2205, -0.5327],
-         [ 2.7265, -0.2045],
-         [ 0.8111,  1.2187]],
+        [[-0.1435, -0.4209],
+         [ 1.4616,  0.6855],
+         [ 0.3658,  1.0864],
+         [ 0.0466, -0.2063]],
 
-        [[ 0.6777,  0.0290],
-         [-0.2416, -0.9416],
-         [-0.4531,  1.1449],
-         [ 0.8079,  1.2631]]])
+        [[-0.4350, -0.0252],
+         [ 1.3474,  0.3038],
+         [-0.6704, -0.5206],
+         [ 0.3169, -0.1084]]])
 dglsp.sddmm(A, X1, X2):
-tensor([[[ 0.0000,  0.0000],
-         [ 0.0000,  0.0000],
-         [ 0.0000,  0.0000],
-         [ 0.0000,  0.0000]],
+tensor([[[ 0.0000e+00,  0.0000e+00],
+         [ 0.0000e+00,  0.0000e+00],
+         [ 0.0000e+00,  0.0000e+00],
+         [ 0.0000e+00,  0.0000e+00]],
 
-        [[ 0.0000,  0.0000],
-         [ 0.0000,  0.0000],
-         [-5.9630,  1.7409],
-         [ 5.8154,  0.0701]],
+        [[ 0.0000e+00,  0.0000e+00],
+         [ 0.0000e+00,  0.0000e+00],
+         [-9.1957e-01,  2.4245e+00],
+         [-5.3624e-03, -1.6963e+00]],
 
-        [[ 0.0000,  0.0000],
-         [ 0.0000,  0.0000],
-         [ 0.0000,  0.0000],
-         [-0.7935, -0.5529]]])
+        [[ 0.0000e+00,  0.0000e+00],
+         [ 0.0000e+00,  0.0000e+00],
+         [ 0.0000e+00,  0.0000e+00],
+         [ 4.5457e+00, -9.9755e+00]]])
 </pre></div></div>
 </div>
 </section>
@@ -1592,13 +1592,13 @@ tensor([[[ 0.0000,  0.0000],
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-tensor([[ 0.0000,  1.0759,  0.0000],
-        [ 0.1101,  0.0000, -1.6992],
-        [-0.3541,  0.0000,  0.0000]])
+tensor([[ 0.0000, -0.3702,  0.0000],
+        [ 1.8554,  0.0000, -1.4270],
+        [ 0.5339,  0.0000,  0.0000]])
 Apply tanh.
-tensor([[ 0.0000,  0.7917,  0.0000],
-        [ 0.1096,  0.0000, -0.9353],
-        [-0.3400,  0.0000,  0.0000]])
+tensor([[ 0.0000, -0.3541,  0.0000],
+        [ 0.9523,  0.0000, -0.8911],
+        [ 0.4883,  0.0000,  0.0000]])
 </pre></div></div>
 </div>
 <p><strong>Non-sparse-preserving functions</strong> such as <code class="docutils literal notranslate"><span class="pre">exp()</span></code>, <code class="docutils literal notranslate"><span class="pre">cos()</span></code>, etc. You can first convert the sparse matrix to dense before applying the functions.</p>
@@ -1623,13 +1623,13 @@ tensor([[ 0.0000,  0.7917,  0.0000],
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-tensor([[ 0.0000, -0.4914,  0.0000],
-        [ 0.6560,  0.0000, -0.3952],
-        [ 2.6505,  0.0000,  0.0000]])
+tensor([[ 0.0000, -1.4799,  0.0000],
+        [ 0.0152,  0.0000, -1.4522],
+        [-0.2390,  0.0000,  0.0000]])
 Apply exp.
-tensor([[ 1.0000,  0.6118,  1.0000],
-        [ 1.9271,  1.0000,  0.6735],
-        [14.1610,  1.0000,  1.0000]])
+tensor([[1.0000, 0.2277, 1.0000],
+        [1.0153, 1.0000, 0.2341],
+        [0.7874, 1.0000, 1.0000]])
 </pre></div></div>
 </div>
 </section>
@@ -1846,71 +1846,6 @@ tensor([[0.0000, 1.0000, 0.0000],
         });
     </script>
 
-<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
-<span class="rst-current-version" data-toggle="rst-current-version">
-<span class="fa fa-book"> Read the Docs</span>
-<span id="version-placeholder">v: latest</span>
-<span class="fa fa-caret-down"></span>
-</span>
-<div class="rst-other-versions">
-<dl>
-<dt>Versions</dt>
-<div id="version-list">
-<!-- 动态插入的版本列表将出现在这里 -->
-</div>
-</dl>
-<dl>
-<dt>Downloads</dt>
-<!-- 下载内容 -->
-</dl>
-<dl>
-<dt>On Read the Docs</dt>
-<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
-<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
-</dl>
-</div>
-</div>
-<script>
-        document.addEventListener("DOMContentLoaded", function() {
-            fetch('/dgl_docs/branches.json')
-                .then(response => response.json())
-                .then(data => {
-                    var versionListDiv = document.getElementById('version-list');
-                    data.branches.forEach(function(branch) {
-                        var dd = document.createElement('dd');
-                        var a = document.createElement('a');
-                        a.href = branch.url;
-                        a.textContent = branch.name;
-                        dd.appendChild(a);
-                        versionListDiv.appendChild(dd);
-                    });
-                })
-                .catch(error => console.error('Error loading branches:', error));
-        });
-        document.addEventListener("DOMContentLoaded", function() {
-            // 获取当前路径
-            var path = window.location.pathname;
-            var versionPlaceholder = document.getElementById('version-placeholder');
-
-            // 检查路径中是否包含 'en'
-            if (path.includes('/en/')) {
-                // 提取 'en' 后的文件夹作为版本号
-                var parts = path.split('/en/');
-                if (parts[1]) {
-                    var folders = parts[1].split('/');
-                    if (folders.length > 0 && folders[0]) {
-                        versionPlaceholder.textContent = 'v: ' + folders[0];
-                    } else {
-                        versionPlaceholder.textContent = 'v: latest';
-                    }
-                } else {
-                    versionPlaceholder.textContent = 'v: latest';
-                }
-            } else {
-                versionPlaceholder.textContent = 'v: latest';
-            }
-        });
-    </script>
 <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);

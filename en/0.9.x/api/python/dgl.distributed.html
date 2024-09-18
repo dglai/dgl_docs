@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>dgl.distributed — DGL 2.4 documentation</title>
+<title>dgl.distributed — DGL 2.5 documentation</title>
 <link href="../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,7 +19,7 @@
   <![endif]-->
 <script src="../../_static/jquery.js?v=5d32c60e"></script>
 <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../../_static/documentation_options.js?v=9caaf7ed"></script>
+<script src="../../_static/documentation_options.js?v=38d273f4"></script>
 <script src="../../_static/doctools.js?v=9a2dae69"></script>
 <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -43,7 +43,7 @@
             DGL
           </a>
 <div class="version">
-                2.4
+                2.5
               </div>
 <div role="search">
 <form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -149,6 +149,8 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#distributed-sampling">Distributed Sampling</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#distributed-dataloader">Distributed DataLoader</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dgl.distributed.NodeCollator"><code class="docutils literal notranslate"><span class="pre">NodeCollator</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dgl.distributed.EdgeCollator"><code class="docutils literal notranslate"><span class="pre">EdgeCollator</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#dgl.distributed.DistDataLoader"><code class="docutils literal notranslate"><span class="pre">DistDataLoader</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#dgl.distributed.DistNodeDataLoader"><code class="docutils literal notranslate"><span class="pre">DistNodeDataLoader</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#dgl.distributed.DistEdgeDataLoader"><code class="docutils literal notranslate"><span class="pre">DistEdgeDataLoader</span></code></a></li>
@@ -1158,6 +1160,199 @@ of the embeddings involved in a mini-batch to DGL’s servers and update the emb
 <section id="distributed-dataloader">
 <h3>Distributed DataLoader<a class="headerlink" href="#distributed-dataloader" title="Link to this heading"></a></h3>
 <dl class="py class">
+<dt class="sig sig-object py" id="dgl.distributed.NodeCollator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgl.distributed.</span></span><span class="sig-name descname"><span class="pre">NodeCollator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_sampler</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/dist_dataloader.html#NodeCollator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.NodeCollator" title="Link to this definition"></a></dt>
+<dd><p>DGL collator to combine nodes and their computation dependencies within a minibatch for
+training node classification or regression on a single graph with neighborhood sampling.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> (<a class="reference internal" href="dgl.DGLGraph.html#dgl.DGLGraph" title="dgl.DGLGraph"><em>DGLGraph</em></a>) – The graph.</p></li>
+<li><p><strong>nids</strong> (<em>Tensor</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a><em>[</em><em>ntype</em><em>, </em><em>Tensor</em><em>]</em>) – The node set to compute outputs.</p></li>
+<li><p><strong>graph_sampler</strong> (<a class="reference internal" href="../../generated/dgl.dataloading.BlockSampler.html#dgl.dataloading.BlockSampler" title="dgl.dataloading.BlockSampler"><em>dgl.dataloading.BlockSampler</em></a>) – The neighborhood sampler.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>To train a 3-layer GNN for node classification on a set of nodes <code class="docutils literal notranslate"><span class="pre">train_nid</span></code> on
+a homogeneous graph where each node takes messages from all neighbors (assume
+the backend is PyTorch):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sampler</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">dataloading</span><span class="o">.</span><span class="n">MultiLayerNeighborSampler</span><span class="p">([</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collator</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">dataloading</span><span class="o">.</span><span class="n">NodeCollator</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">train_nid</span><span class="p">,</span> <span class="n">sampler</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataloader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">collator</span><span class="o">.</span><span class="n">dataset</span><span class="p">,</span> <span class="n">collate_fn</span><span class="o">=</span><span class="n">collator</span><span class="o">.</span><span class="n">collate</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">drop_last</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">input_nodes</span><span class="p">,</span> <span class="n">output_nodes</span><span class="p">,</span> <span class="n">blocks</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">train_on</span><span class="p">(</span><span class="n">input_nodes</span><span class="p">,</span> <span class="n">output_nodes</span><span class="p">,</span> <span class="n">blocks</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="rubric">Notes</p>
+<p>For the concept of MFGs, please refer to
+<a class="reference internal" href="../../guide/minibatch.html#guide-minibatch"><span class="std std-ref">User Guide Section 6</span></a> and
+<span class="xref std std-doc">Minibatch Training Tutorials</span>.</p>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="dgl.distributed.EdgeCollator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgl.distributed.</span></span><span class="sig-name descname"><span class="pre">EdgeCollator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_sampler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g_sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reverse_eids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reverse_etypes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">negative_sampler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/dist_dataloader.html#EdgeCollator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.EdgeCollator" title="Link to this definition"></a></dt>
+<dd><p>DGL collator to combine edges and their computation dependencies within a minibatch for
+training edge classification, edge regression, or link prediction on a single graph
+with neighborhood sampling.</p>
+<p>Given a set of edges, the collate function will yield</p>
+<ul class="simple">
+<li><p>A tensor of input nodes necessary for computing the representation on edges, or
+a dictionary of node type names and such tensors.</p></li>
+<li><p>A subgraph that contains only the edges in the minibatch and their incident nodes.
+Note that the graph has an identical metagraph with the original graph.</p></li>
+<li><p>If a negative sampler is given, another graph that contains the “negative edges”,
+connecting the source and destination nodes yielded from the given negative sampler.</p></li>
+<li><p>A list of MFGs necessary for computing the representation of the incident nodes
+of the edges in the minibatch.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> (<a class="reference internal" href="dgl.DGLGraph.html#dgl.DGLGraph" title="dgl.DGLGraph"><em>DGLGraph</em></a>) – The graph from which the edges are iterated in minibatches and the subgraphs
+are generated.</p></li>
+<li><p><strong>eids</strong> (<em>Tensor</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a><em>[</em><em>etype</em><em>, </em><em>Tensor</em><em>]</em>) – The edge set in graph <code class="xref py py-attr docutils literal notranslate"><span class="pre">g</span></code> to compute outputs.</p></li>
+<li><p><strong>graph_sampler</strong> (<a class="reference internal" href="../../generated/dgl.dataloading.BlockSampler.html#dgl.dataloading.BlockSampler" title="dgl.dataloading.BlockSampler"><em>dgl.dataloading.BlockSampler</em></a>) – The neighborhood sampler.</p></li>
+<li><p><strong>g_sampling</strong> (<a class="reference internal" href="dgl.DGLGraph.html#dgl.DGLGraph" title="dgl.DGLGraph"><em>DGLGraph</em></a><em>, </em><em>optional</em>) – <p>The graph where neighborhood sampling and message passing is performed.</p>
+<p>Note that this is not necessarily the same as <code class="xref py py-attr docutils literal notranslate"><span class="pre">g</span></code>.</p>
+<p>If None, assume to be the same as <code class="xref py py-attr docutils literal notranslate"><span class="pre">g</span></code>.</p>
+</p></li>
+<li><p><strong>exclude</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – <p>Whether and how to exclude dependencies related to the sampled edges in the
+minibatch.  Possible values are</p>
+<ul>
+<li><p>None, which excludes nothing.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'self'</span></code>, which excludes the sampled edges themselves but nothing else.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'reverse_id'</span></code>, which excludes the reverse edges of the sampled edges.  The said
+reverse edges have the same edge type as the sampled edges.  Only works
+on edge types whose source node type is the same as its destination node type.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'reverse_types'</span></code>, which excludes the reverse edges of the sampled edges.  The
+said reverse edges have different edge types from the sampled edges.</p></li>
+</ul>
+<p>If <code class="docutils literal notranslate"><span class="pre">g_sampling</span></code> is given, <code class="docutils literal notranslate"><span class="pre">exclude</span></code> is ignored and will be always <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</p></li>
+<li><p><strong>reverse_eids</strong> (<em>Tensor</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a><em>[</em><em>etype</em><em>, </em><em>Tensor</em><em>]</em><em>, </em><em>optional</em>) – <p>A tensor of reverse edge ID mapping.  The i-th element indicates the ID of
+the i-th edge’s reverse edge.</p>
+<p>If the graph is heterogeneous, this argument requires a dictionary of edge
+types and the reverse edge ID mapping tensors.</p>
+<p>Required and only used when <code class="docutils literal notranslate"><span class="pre">exclude</span></code> is set to <code class="docutils literal notranslate"><span class="pre">reverse_id</span></code>.</p>
+<p>For heterogeneous graph this will be a dict of edge type and edge IDs.  Note that
+only the edge types whose source node type is the same as destination node type
+are needed.</p>
+</p></li>
+<li><p><strong>reverse_etypes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a><em>[</em><em>etype</em><em>, </em><em>etype</em><em>]</em><em>, </em><em>optional</em>) – <p>The mapping from the edge type to its reverse edge type.</p>
+<p>Required and only used when <code class="docutils literal notranslate"><span class="pre">exclude</span></code> is set to <code class="docutils literal notranslate"><span class="pre">reverse_types</span></code>.</p>
+</p></li>
+<li><p><strong>negative_sampler</strong> (<em>callable</em><em>, </em><em>optional</em>) – <p>The negative sampler.  Can be omitted if no negative sampling is needed.</p>
+<p>The negative sampler must be a callable that takes in the following arguments:</p>
+<ul>
+<li><p>The original (heterogeneous) graph.</p></li>
+<li><p>The ID array of sampled edges in the minibatch, or the dictionary of edge
+types and ID array of sampled edges in the minibatch if the graph is
+heterogeneous.</p></li>
+</ul>
+<p>It should return</p>
+<ul>
+<li><p>A pair of source and destination node ID arrays as negative samples,
+or a dictionary of edge types and such pairs if the graph is heterogenenous.</p></li>
+</ul>
+<p>A set of builtin negative samplers are provided in
+<a class="reference internal" href="dgl.dataloading.html#api-dataloading-negative-sampling"><span class="std std-ref">the negative sampling module</span></a>.</p>
+</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>The following example shows how to train a 3-layer GNN for edge classification on a
+set of edges <code class="docutils literal notranslate"><span class="pre">train_eid</span></code> on a homogeneous undirected graph. Each node takes
+messages from all neighbors.</p>
+<p>Say that you have an array of source node IDs <code class="docutils literal notranslate"><span class="pre">src</span></code> and another array of destination
+node IDs <code class="docutils literal notranslate"><span class="pre">dst</span></code>.  One can make it bidirectional by adding another set of edges
+that connects from <code class="docutils literal notranslate"><span class="pre">dst</span></code> to <code class="docutils literal notranslate"><span class="pre">src</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">graph</span><span class="p">((</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">]),</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">dst</span><span class="p">,</span> <span class="n">src</span><span class="p">])))</span>
+</pre></div>
+</div>
+<p>One can then know that the ID difference of an edge and its reverse edge is <code class="docutils literal notranslate"><span class="pre">|E|</span></code>,
+where <code class="docutils literal notranslate"><span class="pre">|E|</span></code> is the length of your source/destination array.  The reverse edge
+mapping can be obtained by</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">E</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_eids</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">E</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">E</span><span class="p">)])</span>
+</pre></div>
+</div>
+<p>Note that the sampled edges as well as their reverse edges are removed from
+computation dependencies of the incident nodes.  This is a common trick to avoid
+information leakage.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sampler</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">dataloading</span><span class="o">.</span><span class="n">MultiLayerNeighborSampler</span><span class="p">([</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collator</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">dataloading</span><span class="o">.</span><span class="n">EdgeCollator</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">g</span><span class="p">,</span> <span class="n">train_eid</span><span class="p">,</span> <span class="n">sampler</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="s1">'reverse_id'</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">reverse_eids</span><span class="o">=</span><span class="n">reverse_eids</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataloader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">collator</span><span class="o">.</span><span class="n">dataset</span><span class="p">,</span> <span class="n">collate_fn</span><span class="o">=</span><span class="n">collator</span><span class="o">.</span><span class="n">collate</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">drop_last</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">input_nodes</span><span class="p">,</span> <span class="n">pair_graph</span><span class="p">,</span> <span class="n">blocks</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">train_on</span><span class="p">(</span><span class="n">input_nodes</span><span class="p">,</span> <span class="n">pair_graph</span><span class="p">,</span> <span class="n">blocks</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To train a 3-layer GNN for link prediction on a set of edges <code class="docutils literal notranslate"><span class="pre">train_eid</span></code> on a
+homogeneous graph where each node takes messages from all neighbors (assume the
+backend is PyTorch), with 5 uniformly chosen negative samples per edge:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sampler</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">dataloading</span><span class="o">.</span><span class="n">MultiLayerNeighborSampler</span><span class="p">([</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">neg_sampler</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">dataloading</span><span class="o">.</span><span class="n">negative_sampler</span><span class="o">.</span><span class="n">Uniform</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collator</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">dataloading</span><span class="o">.</span><span class="n">EdgeCollator</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">g</span><span class="p">,</span> <span class="n">train_eid</span><span class="p">,</span> <span class="n">sampler</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="s1">'reverse_id'</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">reverse_eids</span><span class="o">=</span><span class="n">reverse_eids</span><span class="p">,</span> <span class="n">negative_sampler</span><span class="o">=</span><span class="n">neg_sampler</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataloader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">collator</span><span class="o">.</span><span class="n">dataset</span><span class="p">,</span> <span class="n">collate_fn</span><span class="o">=</span><span class="n">collator</span><span class="o">.</span><span class="n">collate</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">drop_last</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">input_nodes</span><span class="p">,</span> <span class="n">pos_pair_graph</span><span class="p">,</span> <span class="n">neg_pair_graph</span><span class="p">,</span> <span class="n">blocks</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">train_on</span><span class="p">(</span><span class="n">input_nodse</span><span class="p">,</span> <span class="n">pair_graph</span><span class="p">,</span> <span class="n">neg_pair_graph</span><span class="p">,</span> <span class="n">blocks</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For heterogeneous graphs, the reverse of an edge may have a different edge type
+from the original edge.  For instance, consider that you have an array of
+user-item clicks, representated by a user array <code class="docutils literal notranslate"><span class="pre">user</span></code> and an item array <code class="docutils literal notranslate"><span class="pre">item</span></code>.
+You may want to build a heterogeneous graph with a user-click-item relation and an
+item-clicked-by-user relation.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">heterograph</span><span class="p">({</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="s1">'user'</span><span class="p">,</span> <span class="s1">'click'</span><span class="p">,</span> <span class="s1">'item'</span><span class="p">):</span> <span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">item</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="s1">'item'</span><span class="p">,</span> <span class="s1">'clicked-by'</span><span class="p">,</span> <span class="s1">'user'</span><span class="p">):</span> <span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">user</span><span class="p">)})</span>
+</pre></div>
+</div>
+<p>To train a 3-layer GNN for edge classification on a set of edges <code class="docutils literal notranslate"><span class="pre">train_eid</span></code> with
+type <code class="docutils literal notranslate"><span class="pre">click</span></code>, you can write</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sampler</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">dataloading</span><span class="o">.</span><span class="n">MultiLayerNeighborSampler</span><span class="p">([</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collator</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">dataloading</span><span class="o">.</span><span class="n">EdgeCollator</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">g</span><span class="p">,</span> <span class="p">{</span><span class="s1">'click'</span><span class="p">:</span> <span class="n">train_eid</span><span class="p">},</span> <span class="n">sampler</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="s1">'reverse_types'</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">reverse_etypes</span><span class="o">=</span><span class="p">{</span><span class="s1">'click'</span><span class="p">:</span> <span class="s1">'clicked-by'</span><span class="p">,</span> <span class="s1">'clicked-by'</span><span class="p">:</span> <span class="s1">'click'</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataloader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">collator</span><span class="o">.</span><span class="n">dataset</span><span class="p">,</span> <span class="n">collate_fn</span><span class="o">=</span><span class="n">collator</span><span class="o">.</span><span class="n">collate</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">drop_last</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">input_nodes</span><span class="p">,</span> <span class="n">pair_graph</span><span class="p">,</span> <span class="n">blocks</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">train_on</span><span class="p">(</span><span class="n">input_nodes</span><span class="p">,</span> <span class="n">pair_graph</span><span class="p">,</span> <span class="n">blocks</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To train a 3-layer GNN for link prediction on a set of edges <code class="docutils literal notranslate"><span class="pre">train_eid</span></code> with type
+<code class="docutils literal notranslate"><span class="pre">click</span></code>, you can write</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sampler</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">dataloading</span><span class="o">.</span><span class="n">MultiLayerNeighborSampler</span><span class="p">([</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">neg_sampler</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">dataloading</span><span class="o">.</span><span class="n">negative_sampler</span><span class="o">.</span><span class="n">Uniform</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collator</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">dataloading</span><span class="o">.</span><span class="n">EdgeCollator</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">g</span><span class="p">,</span> <span class="n">train_eid</span><span class="p">,</span> <span class="n">sampler</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="s1">'reverse_types'</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">reverse_etypes</span><span class="o">=</span><span class="p">{</span><span class="s1">'click'</span><span class="p">:</span> <span class="s1">'clicked-by'</span><span class="p">,</span> <span class="s1">'clicked-by'</span><span class="p">:</span> <span class="s1">'click'</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="n">negative_sampler</span><span class="o">=</span><span class="n">neg_sampler</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataloader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">collator</span><span class="o">.</span><span class="n">dataset</span><span class="p">,</span> <span class="n">collate_fn</span><span class="o">=</span><span class="n">collator</span><span class="o">.</span><span class="n">collate</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">drop_last</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">input_nodes</span><span class="p">,</span> <span class="n">pos_pair_graph</span><span class="p">,</span> <span class="n">neg_pair_graph</span><span class="p">,</span> <span class="n">blocks</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">train_on</span><span class="p">(</span><span class="n">input_nodes</span><span class="p">,</span> <span class="n">pair_graph</span><span class="p">,</span> <span class="n">neg_pair_graph</span><span class="p">,</span> <span class="n">blocks</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="rubric">Notes</p>
+<p>For the concept of MFGs, please refer to
+<a class="reference internal" href="../../guide/minibatch.html#guide-minibatch"><span class="std std-ref">User Guide Section 6</span></a> and
+<span class="xref std std-doc">Minibatch Training Tutorials</span>.</p>
+</dd></dl>
+<dl class="py class">
 <dt class="sig sig-object py" id="dgl.distributed.DistDataLoader">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgl.distributed.</span></span><span class="sig-name descname"><span class="pre">DistDataLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collate_fn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queue_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dgl/distributed/dist_dataloader.html#DistDataLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.distributed.DistDataLoader" title="Link to this definition"></a></dt>
 <dd><p>DGL customized multiprocessing dataloader.</p>
@@ -1696,7 +1891,7 @@ policy from a graph partition book, users need to specify the policy name (‘no
 <tr class="row-even"><td><p><a class="reference internal" href="../../generated/dgl.distributed.load_partition_feats.html#dgl.distributed.load_partition_feats" title="dgl.distributed.load_partition_feats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_partition_feats</span></code></a>(part_config, part_id[, ...])</p></td>
 <td><p>Load node/edge feature data from a partition.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../generated/dgl.distributed.load_partition_book.html#dgl.distributed.load_partition_book" title="dgl.distributed.load_partition_book"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_partition_book</span></code></a>(part_config, part_id)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../generated/dgl.distributed.load_partition_book.html#dgl.distributed.load_partition_book" title="dgl.distributed.load_partition_book"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_partition_book</span></code></a>(part_config, part_id[, ...])</p></td>
 <td><p>Load a graph partition book from the partition config file.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="../../generated/dgl.distributed.partition_graph.html#dgl.distributed.partition_graph" title="dgl.distributed.partition_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partition_graph</span></code></a>(g, graph_name, num_parts, ...)</p></td>
@@ -1797,71 +1992,6 @@ policy from a graph partition book, users need to specify the policy name (‘no
         });
     </script>
 
-<div aria-label="Versions" class="rst-versions" data-toggle="rst-versions" role="note">
-<span class="rst-current-version" data-toggle="rst-current-version">
-<span class="fa fa-book"> Read the Docs</span>
-<span id="version-placeholder">v: latest</span>
-<span class="fa fa-caret-down"></span>
-</span>
-<div class="rst-other-versions">
-<dl>
-<dt>Versions</dt>
-<div id="version-list">
-<!-- 动态插入的版本列表将出现在这里 -->
-</div>
-</dl>
-<dl>
-<dt>Downloads</dt>
-<!-- 下载内容 -->
-</dl>
-<dl>
-<dt>On Read the Docs</dt>
-<dd><a href="//doc-build.dgl.ai/projects/dgl/?fromdocs=dgl">Project Home</a></dd>
-<dd><a href="//doc-build.dgl.ai/builds/dgl/?fromdocs=dgl">Builds</a></dd>
-</dl>
-</div>
-</div>
-<script>
-        document.addEventListener("DOMContentLoaded", function() {
-            fetch('/dgl_docs/branches.json')
-                .then(response => response.json())
-                .then(data => {
-                    var versionListDiv = document.getElementById('version-list');
-                    data.branches.forEach(function(branch) {
-                        var dd = document.createElement('dd');
-                        var a = document.createElement('a');
-                        a.href = branch.url;
-                        a.textContent = branch.name;
-                        dd.appendChild(a);
-                        versionListDiv.appendChild(dd);
-                    });
-                })
-                .catch(error => console.error('Error loading branches:', error));
-        });
-        document.addEventListener("DOMContentLoaded", function() {
-            // 获取当前路径
-            var path = window.location.pathname;
-            var versionPlaceholder = document.getElementById('version-placeholder');
-
-            // 检查路径中是否包含 'en'
-            if (path.includes('/en/')) {
-                // 提取 'en' 后的文件夹作为版本号
-                var parts = path.split('/en/');
-                if (parts[1]) {
-                    var folders = parts[1].split('/');
-                    if (folders.length > 0 && folders[0]) {
-                        versionPlaceholder.textContent = 'v: ' + folders[0];
-                    } else {
-                        versionPlaceholder.textContent = 'v: latest';
-                    }
-                } else {
-                    versionPlaceholder.textContent = 'v: latest';
-                }
-            } else {
-                versionPlaceholder.textContent = 'v: latest';
-            }
-        });
-    </script>
 <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
