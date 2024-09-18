@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>FeatureFetcher — DGL 2.5 documentation</title>
+<title>FeatureFetcher — DGL 2.4 documentation</title>
 <link href="../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,7 +19,7 @@
   <![endif]-->
 <script src="../_static/jquery.js?v=5d32c60e"></script>
 <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../_static/documentation_options.js?v=38d273f4"></script>
+<script src="../_static/documentation_options.js?v=9caaf7ed"></script>
 <script src="../_static/doctools.js?v=9a2dae69"></script>
 <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -41,7 +41,7 @@
             DGL
           </a>
 <div class="version">
-                2.5
+                2.4
               </div>
 <div role="search">
 <form action="../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -147,7 +147,7 @@
 <h1>FeatureFetcher<a class="headerlink" href="#featurefetcher" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="dgl.graphbolt.FeatureFetcher">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgl.graphbolt.</span></span><span class="sig-name descname"><span class="pre">FeatureFetcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datapipe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_store</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_feature_keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_feature_keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlap_fetch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cooperative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dgl/graphbolt/feature_fetcher.html#FeatureFetcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.graphbolt.FeatureFetcher" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgl.graphbolt.</span></span><span class="sig-name descname"><span class="pre">FeatureFetcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datapipe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_store</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_feature_keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_feature_keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlap_fetch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dgl/graphbolt/feature_fetcher.html#FeatureFetcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dgl.graphbolt.FeatureFetcher" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="dgl.graphbolt.MiniBatchTransformer.html#dgl.graphbolt.MiniBatchTransformer" title="dgl.graphbolt.minibatch_transformer.MiniBatchTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">MiniBatchTransformer</span></code></a></p>
 <p>A feature fetcher used to fetch features for node/edge in graphbolt.</p>
 <p>Functional name: <code class="xref py py-obj docutils literal notranslate"><span class="pre">fetch_feature</span></code>.</p>
@@ -170,14 +170,6 @@ feature names.</p></li>
 <li><p><strong>overlap_fetch</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, the feature fetcher will overlap the UVA feature fetcher
 operations with the rest of operations by using an alternative CUDA
 stream or utilizing asynchronous operations. Default is True.</p></li>
-<li><p><strong>cooperative</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Boolean indicating whether Cooperative Minibatching, which was initially
-proposed in
-<a href="#id1"><span class="problematic" id="id2">`Deep Graph Library PR#4337&lt;https://github.com/dmlc/dgl/pull/4337&gt;`__</span></a>
-and was later first fully described in
-<a class="reference external" href="https://arxiv.org/abs/2310.12403">Cooperative Minibatching in Graph Neural Networks</a>. Cooperation between the GPUs
-eliminates duplicate work performed across the GPUs due to the
-overlapping sampled k-hop neighborhoods of seed nodes when performing
-GNN minibatching.</p></li>
 </ul>
 </dd>
 </dl>
@@ -214,12 +206,10 @@ GNN minibatching.</p></li>
 <dl>
 <dt>Versions</dt>
 <div id="version-list">
-<!-- 动态插入的版本列表将出现在这里 -->
 </div>
 </dl>
 <dl>
 <dt>Downloads</dt>
-<!-- 下载内容 -->
 </dl>
 <dl>
 <dt>On Read the Docs</dt>
@@ -229,46 +219,46 @@ GNN minibatching.</p></li>
 </div>
 </div>
 <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            fetch('/dgl_docs/branches.json')
-                .then(response => response.json())
-                .then(data => {
-                    var versionListDiv = document.getElementById('version-list');
-                    data.branches.forEach(function(branch) {
-                        var dd = document.createElement('dd');
-                        var a = document.createElement('a');
-                        a.href = branch.url;
-                        a.textContent = branch.name;
-                        dd.appendChild(a);
-                        versionListDiv.appendChild(dd);
-                    });
-                })
-                .catch(error => console.error('Error loading branches:', error));
-        });
-        document.addEventListener("DOMContentLoaded", function() {
-            // 获取当前路径
-            var path = window.location.pathname;
-            var versionPlaceholder = document.getElementById('version-placeholder');
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch('/dgl_docs/branches.json')
+            .then(response => response.json())
+            .then(data => {
+                var versionListDiv = document.getElementById('version-list');
+                data.branches.forEach(function(branch) {
+                    var dd = document.createElement('dd');
+                    var a = document.createElement('a');
+                    a.href = branch.url;
+                    a.textContent = branch.name;
+                    dd.appendChild(a);
+                    versionListDiv.appendChild(dd);
+                });
+            })
+            .catch(error => console.error('Error loading branches:', error));
+    });
+    document.addEventListener("DOMContentLoaded", function() {
+        // 获取当前路径
+        var path = window.location.pathname;
+        var versionPlaceholder = document.getElementById('version-placeholder');
 
-            // 检查路径中是否包含 'en'
-            if (path.includes('/en/')) {
-                // 提取 'en' 后的文件夹作为版本号
-                var parts = path.split('/en/');
-                if (parts[1]) {
-                    var folders = parts[1].split('/');
-                    if (folders.length > 0 && folders[0]) {
-                        versionPlaceholder.textContent = 'v: ' + folders[0];
-                    } else {
-                        versionPlaceholder.textContent = 'v: latest';
-                    }
+        
+        if (path.includes('/en/')) {
+            
+            var parts = path.split('/en/');
+            if (parts[1]) {
+                var folders = parts[1].split('/');
+                if (folders.length > 0 && folders[0]) {
+                    versionPlaceholder.textContent = 'v: ' + folders[0];
                 } else {
                     versionPlaceholder.textContent = 'v: latest';
                 }
             } else {
                 versionPlaceholder.textContent = 'v: latest';
             }
-        });
-    </script>
+        } else {
+            versionPlaceholder.textContent = 'v: latest';
+        }
+    });
+</script>
 
 <script>
       jQuery(function () {

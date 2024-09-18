@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>How Does DGL Represent A Graph? — DGL 2.5 documentation</title>
+<title>How Does DGL Represent A Graph? — DGL 2.4 documentation</title>
 <link href="../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,7 +19,7 @@
   <![endif]-->
 <script src="../../_static/jquery.js?v=5d32c60e"></script>
 <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../../_static/documentation_options.js?v=38d273f4"></script>
+<script src="../../_static/documentation_options.js?v=9caaf7ed"></script>
 <script src="../../_static/doctools.js?v=9a2dae69"></script>
 <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -41,7 +41,7 @@
             DGL
           </a>
 <div class="version">
-                2.5
+                2.4
               </div>
 <div role="search">
 <form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -224,11 +224,11 @@ attributes are often called <em>features</em>.</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s2">"a"</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[ 1.9536,  0.1854,  0.0914,  1.8699],
-        [ 0.3899, -0.4047, -0.9593,  0.5322],
-        [ 0.2731,  0.0393,  0.4219, -1.5069],
-        [-1.0900,  1.9680,  1.1952, -0.1310],
-        [ 0.1610, -2.6382,  0.4905,  0.2794]])
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[-1.5810, -0.2734,  0.3935, -0.8984],
+        [-0.1580, -0.8206,  0.0613, -0.1355],
+        [-0.6778, -0.3773,  1.1691,  0.5012],
+        [-0.5658, -1.4104, -0.2706,  1.2415],
+        [-0.9311, -0.0795,  0.6358,  0.6485]])
 </pre></div>
 </div>
 <div class="admonition note">
@@ -307,18 +307,18 @@ to the subgraph:</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">sg2</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="s2">"a"</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[-1.8605, -0.2270,  0.0280],
-        [-0.1693,  1.1287,  2.0127],
-        [ 0.6646,  0.5802, -1.4393]])
-tensor([[ 1.9536,  0.1854,  0.0914,  1.8699],
-        [ 0.2731,  0.0393,  0.4219, -1.5069]])
-tensor([[-1.8605, -0.2270,  0.0280],
-        [-0.1693,  1.1287,  2.0127],
-        [ 1.4013, -0.4476,  1.5255],
-        [ 0.0036,  0.8280, -0.5049]])
-tensor([[ 1.9536,  0.1854,  0.0914,  1.8699],
-        [ 0.3899, -0.4047, -0.9593,  0.5322],
-        [-1.0900,  1.9680,  1.1952, -0.1310]])
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[-0.9347, -0.4496, -0.9602],
+        [-0.3595,  1.2361,  0.2267],
+        [-1.0575, -2.9403,  0.4120]])
+tensor([[-1.5810, -0.2734,  0.3935, -0.8984],
+        [-0.6778, -0.3773,  1.1691,  0.5012]])
+tensor([[-0.9347, -0.4496, -0.9602],
+        [-0.3595,  1.2361,  0.2267],
+        [-1.1063, -0.9869, -0.3160],
+        [ 1.0668,  0.1466, -1.2066]])
+tensor([[-1.5810, -0.2734,  0.3935, -0.8984],
+        [-0.1580, -0.8206,  0.0613, -0.1355],
+        [-0.5658, -1.4104, -0.2706,  1.2415]])
 </pre></div>
 </div>
 <p>Another common transformation is to add a reverse edge for each edge in
@@ -434,12 +434,10 @@ and
 <dl>
 <dt>Versions</dt>
 <div id="version-list">
-<!-- 动态插入的版本列表将出现在这里 -->
 </div>
 </dl>
 <dl>
 <dt>Downloads</dt>
-<!-- 下载内容 -->
 </dl>
 <dl>
 <dt>On Read the Docs</dt>
@@ -449,46 +447,46 @@ and
 </div>
 </div>
 <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            fetch('/dgl_docs/branches.json')
-                .then(response => response.json())
-                .then(data => {
-                    var versionListDiv = document.getElementById('version-list');
-                    data.branches.forEach(function(branch) {
-                        var dd = document.createElement('dd');
-                        var a = document.createElement('a');
-                        a.href = branch.url;
-                        a.textContent = branch.name;
-                        dd.appendChild(a);
-                        versionListDiv.appendChild(dd);
-                    });
-                })
-                .catch(error => console.error('Error loading branches:', error));
-        });
-        document.addEventListener("DOMContentLoaded", function() {
-            // 获取当前路径
-            var path = window.location.pathname;
-            var versionPlaceholder = document.getElementById('version-placeholder');
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch('/dgl_docs/branches.json')
+            .then(response => response.json())
+            .then(data => {
+                var versionListDiv = document.getElementById('version-list');
+                data.branches.forEach(function(branch) {
+                    var dd = document.createElement('dd');
+                    var a = document.createElement('a');
+                    a.href = branch.url;
+                    a.textContent = branch.name;
+                    dd.appendChild(a);
+                    versionListDiv.appendChild(dd);
+                });
+            })
+            .catch(error => console.error('Error loading branches:', error));
+    });
+    document.addEventListener("DOMContentLoaded", function() {
+        // 获取当前路径
+        var path = window.location.pathname;
+        var versionPlaceholder = document.getElementById('version-placeholder');
 
-            // 检查路径中是否包含 'en'
-            if (path.includes('/en/')) {
-                // 提取 'en' 后的文件夹作为版本号
-                var parts = path.split('/en/');
-                if (parts[1]) {
-                    var folders = parts[1].split('/');
-                    if (folders.length > 0 && folders[0]) {
-                        versionPlaceholder.textContent = 'v: ' + folders[0];
-                    } else {
-                        versionPlaceholder.textContent = 'v: latest';
-                    }
+        
+        if (path.includes('/en/')) {
+            
+            var parts = path.split('/en/');
+            if (parts[1]) {
+                var folders = parts[1].split('/');
+                if (folders.length > 0 && folders[0]) {
+                    versionPlaceholder.textContent = 'v: ' + folders[0];
                 } else {
                     versionPlaceholder.textContent = 'v: latest';
                 }
             } else {
                 versionPlaceholder.textContent = 'v: latest';
             }
-        });
-    </script>
+        } else {
+            versionPlaceholder.textContent = 'v: latest';
+        }
+    });
+</script>
 
 <script>
       jQuery(function () {

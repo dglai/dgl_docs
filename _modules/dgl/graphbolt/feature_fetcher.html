@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>dgl.graphbolt.feature_fetcher — DGL 2.5 documentation</title>
+<title>dgl.graphbolt.feature_fetcher — DGL 2.4 documentation</title>
 <link href="../../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,7 +19,7 @@
   <![endif]-->
 <script src="../../../_static/jquery.js?v=5d32c60e"></script>
 <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../../../_static/documentation_options.js?v=38d273f4"></script>
+<script src="../../../_static/documentation_options.js?v=9caaf7ed"></script>
 <script src="../../../_static/doctools.js?v=9a2dae69"></script>
 <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -39,7 +39,7 @@
             DGL
           </a>
 <div class="version">
-                2.5
+                2.4
               </div>
 <div role="search">
 <form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -131,7 +131,6 @@
 <span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">functional_datapipe</span>
 
 <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">etype_tuple_to_str</span>
-<span class="kn">from</span> <span class="nn">.impl.cooperative_conv</span> <span class="kn">import</span> <span class="n">CooperativeConvFunction</span>
 
 <span class="kn">from</span> <span class="nn">.minibatch_transformer</span> <span class="kn">import</span> <span class="n">MiniBatchTransformer</span>
 
@@ -199,16 +198,6 @@
 <span class="sd">        If True, the feature fetcher will overlap the UVA feature fetcher</span>
 <span class="sd">        operations with the rest of operations by using an alternative CUDA</span>
 <span class="sd">        stream or utilizing asynchronous operations. Default is True.</span>
-<span class="sd">    cooperative: bool, optional</span>
-<span class="sd">        Boolean indicating whether Cooperative Minibatching, which was initially</span>
-<span class="sd">        proposed in</span>
-<span class="sd">        `Deep Graph Library PR#4337&lt;https://github.com/dmlc/dgl/pull/4337&gt;`__</span>
-<span class="sd">        and was later first fully described in</span>
-<span class="sd">        `Cooperative Minibatching in Graph Neural Networks</span>
-<span class="sd">        &lt;https://arxiv.org/abs/2310.12403&gt;`__. Cooperation between the GPUs</span>
-<span class="sd">        eliminates duplicate work performed across the GPUs due to the</span>
-<span class="sd">        overlapping sampled k-hop neighborhoods of seed nodes when performing</span>
-<span class="sd">        GNN minibatching.</span>
 <span class="sd">    """</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -218,7 +207,6 @@
         <span class="n">node_feature_keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">edge_feature_keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">overlap_fetch</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">cooperative</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">mark_feature_fetcher_start</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feature_store</span> <span class="o">=</span> <span class="n">feature_store</span>
@@ -250,12 +238,9 @@
             <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span>
                 <span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_execute_stage</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
             <span class="p">)</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">max_val</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_final_stage</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">cooperative</span><span class="p">:</span>
-            <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cooperative_exchange</span><span class="p">)</span>
-            <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">buffer</span><span class="p">()</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">datapipe</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">datapipe</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_identity</span> <span class="k">if</span> <span class="n">max_val</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_final_stage</span>
+        <span class="p">)</span>
         <span class="c1"># A positive value indicates that the overlap optimization is enabled.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_num_stages</span> <span class="o">=</span> <span class="n">max_val</span>
 
@@ -283,26 +268,6 @@
                 <span class="n">value</span><span class="p">,</span> <span class="n">stage</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
                 <span class="k">assert</span> <span class="n">stage</span> <span class="o">==</span> <span class="mi">0</span>
                 <span class="n">features</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">data</span>
-
-    <span class="k">def</span> <span class="nf">_cooperative_exchange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="n">subgraph</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sampled_subgraphs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">is_heterogeneous</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">node_feature_keys</span><span class="p">,</span> <span class="n">Dict</span>
-        <span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_feature_keys</span><span class="p">,</span> <span class="n">Dict</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">is_heterogeneous</span><span class="p">:</span>
-            <span class="n">node_features</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="p">{}</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">node_features</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
-            <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">ntype</span><span class="p">),</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">node_features</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="n">node_features</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">ntype</span><span class="p">]</span> <span class="o">=</span> <span class="n">feature</span>
-            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">node_features</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="n">new_feature</span> <span class="o">=</span> <span class="n">CooperativeConvFunction</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">subgraph</span><span class="p">,</span> <span class="n">feature</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">ntype</span><span class="p">,</span> <span class="n">tensor</span> <span class="ow">in</span> <span class="n">new_feature</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                    <span class="n">data</span><span class="o">.</span><span class="n">node_features</span><span class="p">[(</span><span class="n">key</span><span class="p">,</span> <span class="n">ntype</span><span class="p">)]</span> <span class="o">=</span> <span class="n">tensor</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">node_features</span><span class="p">:</span>
-                <span class="n">feature</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">node_features</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-                <span class="n">new_feature</span> <span class="o">=</span> <span class="n">CooperativeConvFunction</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">subgraph</span><span class="p">,</span> <span class="n">feature</span><span class="p">)</span>
-                <span class="n">data</span><span class="o">.</span><span class="n">node_features</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_feature</span>
         <span class="k">return</span> <span class="n">data</span>
 
     <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
@@ -435,12 +400,10 @@
 <dl>
 <dt>Versions</dt>
 <div id="version-list">
-<!-- 动态插入的版本列表将出现在这里 -->
 </div>
 </dl>
 <dl>
 <dt>Downloads</dt>
-<!-- 下载内容 -->
 </dl>
 <dl>
 <dt>On Read the Docs</dt>
@@ -450,46 +413,46 @@
 </div>
 </div>
 <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            fetch('/dgl_docs/branches.json')
-                .then(response => response.json())
-                .then(data => {
-                    var versionListDiv = document.getElementById('version-list');
-                    data.branches.forEach(function(branch) {
-                        var dd = document.createElement('dd');
-                        var a = document.createElement('a');
-                        a.href = branch.url;
-                        a.textContent = branch.name;
-                        dd.appendChild(a);
-                        versionListDiv.appendChild(dd);
-                    });
-                })
-                .catch(error => console.error('Error loading branches:', error));
-        });
-        document.addEventListener("DOMContentLoaded", function() {
-            // 获取当前路径
-            var path = window.location.pathname;
-            var versionPlaceholder = document.getElementById('version-placeholder');
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch('/dgl_docs/branches.json')
+            .then(response => response.json())
+            .then(data => {
+                var versionListDiv = document.getElementById('version-list');
+                data.branches.forEach(function(branch) {
+                    var dd = document.createElement('dd');
+                    var a = document.createElement('a');
+                    a.href = branch.url;
+                    a.textContent = branch.name;
+                    dd.appendChild(a);
+                    versionListDiv.appendChild(dd);
+                });
+            })
+            .catch(error => console.error('Error loading branches:', error));
+    });
+    document.addEventListener("DOMContentLoaded", function() {
+        // 获取当前路径
+        var path = window.location.pathname;
+        var versionPlaceholder = document.getElementById('version-placeholder');
 
-            // 检查路径中是否包含 'en'
-            if (path.includes('/en/')) {
-                // 提取 'en' 后的文件夹作为版本号
-                var parts = path.split('/en/');
-                if (parts[1]) {
-                    var folders = parts[1].split('/');
-                    if (folders.length > 0 && folders[0]) {
-                        versionPlaceholder.textContent = 'v: ' + folders[0];
-                    } else {
-                        versionPlaceholder.textContent = 'v: latest';
-                    }
+        
+        if (path.includes('/en/')) {
+            
+            var parts = path.split('/en/');
+            if (parts[1]) {
+                var folders = parts[1].split('/');
+                if (folders.length > 0 && folders[0]) {
+                    versionPlaceholder.textContent = 'v: ' + folders[0];
                 } else {
                     versionPlaceholder.textContent = 'v: latest';
                 }
             } else {
                 versionPlaceholder.textContent = 'v: latest';
             }
-        });
-    </script>
+        } else {
+            versionPlaceholder.textContent = 'v: latest';
+        }
+    });
+</script>
 
 <script>
       jQuery(function () {
