@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>OnDiskDataset for Homogeneous Graph — DGL 2.4 documentation</title>
+<title>OnDiskDataset for Homogeneous Graph — DGL 2.5 documentation</title>
 <link href="../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -20,7 +20,7 @@
   <![endif]-->
 <script src="../_static/jquery.js?v=5d32c60e"></script>
 <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../_static/documentation_options.js?v=9caaf7ed"></script>
+<script src="../_static/documentation_options.js?v=38d273f4"></script>
 <script src="../_static/doctools.js?v=9a2dae69"></script>
 <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -44,7 +44,7 @@
             DGL
           </a>
 <div class="version">
-                2.4
+                2.5
               </div>
 <div role="search">
 <form action="../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -187,30 +187,31 @@
 Looking in links: https://data.dgl.ai/wheels-test/repo.html
 Requirement already satisfied: dgl in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (2.2a240410)
 Requirement already satisfied: numpy&gt;=1.14.0 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from dgl) (1.26.4)
-Requirement already satisfied: scipy&gt;=1.1.0 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from dgl) (1.14.0)
+Requirement already satisfied: scipy&gt;=1.1.0 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from dgl) (1.14.1)
 Requirement already satisfied: networkx&gt;=2.1 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from dgl) (3.3)
 Requirement already satisfied: requests&gt;=2.19.0 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from dgl) (2.32.3)
 Requirement already satisfied: tqdm in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from dgl) (4.66.5)
 Requirement already satisfied: psutil&gt;=5.8.0 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from dgl) (6.0.0)
-Requirement already satisfied: torchdata&gt;=0.5.0 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from dgl) (0.7.1)
+Requirement already satisfied: torchdata&gt;=0.5.0 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from dgl) (0.8.0)
 Requirement already satisfied: pandas in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from dgl) (2.2.2)
 Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from requests&gt;=2.19.0-&gt;dgl) (3.3.2)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from requests&gt;=2.19.0-&gt;dgl) (3.8)
-Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from requests&gt;=2.19.0-&gt;dgl) (2.2.2)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from requests&gt;=2.19.0-&gt;dgl) (2024.7.4)
-Requirement already satisfied: torch&gt;=2 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from torchdata&gt;=0.5.0-&gt;dgl) (2.4.0+cpu)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from requests&gt;=2.19.0-&gt;dgl) (3.10)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from requests&gt;=2.19.0-&gt;dgl) (2.2.3)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from requests&gt;=2.19.0-&gt;dgl) (2024.8.30)
+Requirement already satisfied: torch&gt;=2 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from torchdata&gt;=0.5.0-&gt;dgl) (2.1.0+cpu)
 Requirement already satisfied: python-dateutil&gt;=2.8.2 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from pandas-&gt;dgl) (2.9.0.post0)
-Requirement already satisfied: pytz&gt;=2020.1 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from pandas-&gt;dgl) (2024.1)
+Requirement already satisfied: pytz&gt;=2020.1 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from pandas-&gt;dgl) (2024.2)
 Requirement already satisfied: tzdata&gt;=2022.7 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from pandas-&gt;dgl) (2024.1)
 Requirement already satisfied: six&gt;=1.5 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from python-dateutil&gt;=2.8.2-&gt;pandas-&gt;dgl) (1.16.0)
-Requirement already satisfied: filelock in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from torch&gt;=2-&gt;torchdata&gt;=0.5.0-&gt;dgl) (3.15.4)
-Requirement already satisfied: typing-extensions&gt;=4.8.0 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from torch&gt;=2-&gt;torchdata&gt;=0.5.0-&gt;dgl) (4.12.2)
-Requirement already satisfied: sympy in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from torch&gt;=2-&gt;torchdata&gt;=0.5.0-&gt;dgl) (1.13.2)
+Requirement already satisfied: filelock in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from torch&gt;=2-&gt;torchdata&gt;=0.5.0-&gt;dgl) (3.16.1)
+Requirement already satisfied: typing-extensions in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from torch&gt;=2-&gt;torchdata&gt;=0.5.0-&gt;dgl) (4.12.2)
+Requirement already satisfied: sympy in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from torch&gt;=2-&gt;torchdata&gt;=0.5.0-&gt;dgl) (1.13.3)
 Requirement already satisfied: jinja2 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from torch&gt;=2-&gt;torchdata&gt;=0.5.0-&gt;dgl) (3.1.4)
-Requirement already satisfied: fsspec in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from torch&gt;=2-&gt;torchdata&gt;=0.5.0-&gt;dgl) (2024.6.1)
+Requirement already satisfied: fsspec in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from torch&gt;=2-&gt;torchdata&gt;=0.5.0-&gt;dgl) (2024.9.0)
 Requirement already satisfied: MarkupSafe&gt;=2.0 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from jinja2-&gt;torch&gt;=2-&gt;torchdata&gt;=0.5.0-&gt;dgl) (2.1.5)
 Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /opt/conda/envs/dgl-dev-cpu/lib/python3.10/site-packages (from sympy-&gt;torch&gt;=2-&gt;torchdata&gt;=0.5.0-&gt;dgl) (1.3.0)
-DGL installed!
+<span class="ansi-yellow-fg">WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable.It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.</span><span class="ansi-yellow-fg">
+</span>DGL installed!
 </pre></div></div>
 </div>
 </section>
@@ -264,11 +265,11 @@ Created base directory: ./ondisk_dataset_homograph
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Part of edges: [[180 726]
- [239 963]
- [955 106]
- [665 346]
- [254 932]]
+Part of edges: [[295 553]
+ [905 715]
+ [992 774]
+ [771 150]
+ [772 497]]
 Edges are saved into ./ondisk_dataset_homograph/edges.csv
 </pre></div></div>
 </div>
@@ -315,24 +316,24 @@ Edges are saved into ./ondisk_dataset_homograph/edges.csv
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Part of node feature [feat_0]: [[0.91173444 0.14289499 0.40304074 0.60547612 0.04781312]
- [0.43806185 0.34961098 0.22575532 0.18857794 0.64942545]
- [0.59972874 0.87337514 0.30104849 0.75953191 0.68500468]]
+Part of node feature [feat_0]: [[0.22430056 0.26585174 0.17758389 0.78123326 0.69140868]
+ [0.15139949 0.65470273 0.92447686 0.32353892 0.55895534]
+ [0.41201919 0.46005013 0.67239673 0.819201   0.06699872]]
 Node feature [feat_0] is saved to ./ondisk_dataset_homograph/node-feat-0.npy
 
-Part of node feature [feat_1]: tensor([[0.8673, 0.5584, 0.7387, 0.2207, 0.2020],
-        [0.1544, 0.0849, 0.6193, 0.7595, 0.0019],
-        [0.5462, 0.6054, 0.2020, 0.4789, 0.6376]])
+Part of node feature [feat_1]: tensor([[0.6720, 0.8482, 0.6788, 0.9163, 0.3237],
+        [0.9904, 0.0535, 0.1576, 0.6640, 0.8296],
+        [0.5295, 0.3407, 0.1302, 0.3960, 0.1364]])
 Node feature [feat_1] is saved to ./ondisk_dataset_homograph/node-feat-1.pt
 
-Part of edge feature [feat_0]: [[0.68215723 0.81618407 0.60849116 0.75987194 0.50911709]
- [0.18716985 0.16168914 0.04034482 0.34310793 0.59521408]
- [0.8655428  0.86948626 0.86130959 0.31345158 0.72899602]]
+Part of edge feature [feat_0]: [[0.51489023 0.50821601 0.98040455 0.71304005 0.78852543]
+ [0.27757546 0.72323536 0.5767382  0.48821208 0.7791809 ]
+ [0.30259399 0.31059452 0.26909164 0.74144882 0.13668742]]
 Edge feature [feat_0] is saved to ./ondisk_dataset_homograph/edge-feat-0.npy
 
-Part of edge feature [feat_1]: tensor([[0.6209, 0.6348, 0.8105, 0.9752, 0.4062],
-        [0.4721, 0.4133, 0.7364, 0.2095, 0.6700],
-        [0.0563, 0.0053, 0.3099, 0.5550, 0.3943]])
+Part of edge feature [feat_1]: tensor([[0.7346, 0.9061, 0.8481, 0.0724, 0.0476],
+        [0.9665, 0.1798, 0.3190, 0.6880, 0.2775],
+        [0.6399, 0.0612, 0.3295, 0.9158, 0.3929]])
 Edge feature [feat_1] is saved to ./ondisk_dataset_homograph/edge-feat-1.pt
 
 </pre></div></div>
@@ -398,22 +399,22 @@ Edge feature [feat_1] is saved to ./ondisk_dataset_homograph/edge-feat-1.pt
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Part of train ids for node classification: [785 978 295]
+Part of train ids for node classification: [ 23 242 954]
 NC train ids are saved to ./ondisk_dataset_homograph/nc-train-ids.npy
 
-Part of train labels for node classification: tensor([9, 7, 9])
+Part of train labels for node classification: tensor([0, 4, 9])
 NC train labels are saved to ./ondisk_dataset_homograph/nc-train-labels.pt
 
-Part of val ids for node classification: [283 403 151]
+Part of val ids for node classification: [521 856  90]
 NC val ids are saved to ./ondisk_dataset_homograph/nc-val-ids.npy
 
-Part of val labels for node classification: tensor([7, 0, 3])
+Part of val labels for node classification: tensor([5, 3, 7])
 NC val labels are saved to ./ondisk_dataset_homograph/nc-val-labels.pt
 
-Part of test ids for node classification: [571 560 212]
+Part of test ids for node classification: [919 966 955]
 NC test ids are saved to ./ondisk_dataset_homograph/nc-test-ids.npy
 
-Part of test labels for node classification: tensor([2, 9, 3])
+Part of test labels for node classification: tensor([7, 0, 4])
 NC test labels are saved to ./ondisk_dataset_homograph/nc-test-labels.pt
 
 </pre></div></div>
@@ -495,14 +496,14 @@ NC test labels are saved to ./ondisk_dataset_homograph/nc-test-labels.pt
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Part of train seeds for link prediction: [[180 726]
- [239 963]
- [955 106]]
+Part of train seeds for link prediction: [[295 553]
+ [905 715]
+ [992 774]]
 LP train seeds are saved to ./ondisk_dataset_homograph/lp-train-seeds.npy
 
-Part of val seeds for link prediction: [[667 484]
- [ 65 649]
- [ 28 445]]
+Part of val seeds for link prediction: [[755 907]
+ [740 752]
+ [734 598]]
 LP val seeds are saved to ./ondisk_dataset_homograph/lp-val-seeds.npy
 
 Part of val labels for link prediction: [1. 1. 1.]
@@ -511,9 +512,9 @@ LP val labels are saved to ./ondisk_dataset_homograph/lp-val-labels.npy
 Part of val indexes for link prediction: [0 1 2]
 LP val indexes are saved to ./ondisk_dataset_homograph/lp-val-indexes.npy
 
-Part of test seeds for link prediction: [[788 212]
- [464 416]
- [755 395]]
+Part of test seeds for link prediction: [[396 977]
+ [583 127]
+ [954 198]]
 LP test seeds are saved to ./ondisk_dataset_homograph/lp-test-seeds.npy
 
 Part of val labels for link prediction: [1. 1. 1.]
@@ -656,203 +657,204 @@ LP test indexes are saved to ./ondisk_dataset_homograph/lp-test-indexes.npy
 <div class="highlight"><pre>
 Start to preprocess the on-disk dataset.
 Finish preprocessing the on-disk dataset.
-Loaded graph: FusedCSCSamplingGraph(csc_indptr=tensor([    0,     4,    14,  ...,  9982,  9995, 10000], dtype=torch.int32),
-                      indices=tensor([208, 103, 458,  ..., 735,   8, 743], dtype=torch.int32),
+Loaded graph: FusedCSCSamplingGraph(csc_indptr=tensor([    0,    10,    23,  ...,  9985,  9994, 10000], dtype=torch.int32),
+                      indices=tensor([111, 347, 652,  ...,  43, 225, 621], dtype=torch.int32),
                       total_num_nodes=1000, num_edges=10000,)
 
 Loaded feature store: TorchBasedFeatureStore(
     {(&lt;OnDiskFeatureDataDomain.NODE: 'node'&gt;, None, 'feat_0'): TorchBasedFeature(
-        feature=tensor([[0.9117, 0.1429, 0.4030, 0.6055, 0.0478],
-                        [0.4381, 0.3496, 0.2258, 0.1886, 0.6494],
-                        [0.5997, 0.8734, 0.3010, 0.7595, 0.6850],
+        feature=tensor([[0.2243, 0.2659, 0.1776, 0.7812, 0.6914],
+                        [0.1514, 0.6547, 0.9245, 0.3235, 0.5590],
+                        [0.4120, 0.4601, 0.6724, 0.8192, 0.0670],
                         ...,
-                        [0.2219, 0.6298, 0.1152, 0.3575, 0.1018],
-                        [0.9354, 0.7871, 0.8331, 0.1583, 0.9520],
-                        [0.8698, 0.1561, 0.7435, 0.9730, 0.7359]], dtype=torch.float64),
+                        [0.7043, 0.7997, 0.8269, 0.1496, 0.8163],
+                        [0.0286, 0.0992, 0.8384, 0.3053, 0.2330],
+                        [0.7821, 0.6948, 0.6236, 0.5973, 0.9102]], dtype=torch.float64),
         metadata={},
     ), (&lt;OnDiskFeatureDataDomain.NODE: 'node'&gt;, None, 'feat_1'): TorchBasedFeature(
-        feature=tensor([[0.8673, 0.5584, 0.7387, 0.2207, 0.2020],
-                        [0.1544, 0.0849, 0.6193, 0.7595, 0.0019],
-                        [0.5462, 0.6054, 0.2020, 0.4789, 0.6376],
+        feature=tensor([[0.6720, 0.8482, 0.6788, 0.9163, 0.3237],
+                        [0.9904, 0.0535, 0.1576, 0.6640, 0.8296],
+                        [0.5295, 0.3407, 0.1302, 0.3960, 0.1364],
                         ...,
-                        [0.7659, 0.5843, 0.3688, 0.3750, 0.0629],
-                        [0.4529, 0.6159, 0.3430, 0.3500, 0.7163],
-                        [0.0415, 0.5222, 0.9660, 0.8020, 0.1475]]),
+                        [0.4699, 0.4790, 0.1584, 0.7614, 0.8555],
+                        [0.7319, 0.3091, 0.0777, 0.5098, 0.9188],
+                        [0.5214, 0.2573, 0.3682, 0.9933, 0.3005]]),
         metadata={},
     ), (&lt;OnDiskFeatureDataDomain.EDGE: 'edge'&gt;, None, 'feat_0'): TorchBasedFeature(
-        feature=tensor([[0.6822, 0.8162, 0.6085, 0.7599, 0.5091],
-                        [0.1872, 0.1617, 0.0403, 0.3431, 0.5952],
-                        [0.8655, 0.8695, 0.8613, 0.3135, 0.7290],
+        feature=tensor([[5.1489e-01, 5.0822e-01, 9.8040e-01, 7.1304e-01, 7.8853e-01],
+                        [2.7758e-01, 7.2324e-01, 5.7674e-01, 4.8821e-01, 7.7918e-01],
+                        [3.0259e-01, 3.1059e-01, 2.6909e-01, 7.4145e-01, 1.3669e-01],
                         ...,
-                        [0.9425, 0.3521, 0.5536, 0.6059, 0.1605],
-                        [0.6959, 0.2734, 0.2668, 0.3572, 0.0560],
-                        [0.9125, 0.0307, 0.7809, 0.3291, 0.5156]], dtype=torch.float64),
+                        [8.4324e-01, 5.7636e-01, 5.3522e-01, 5.3783e-01, 8.5647e-01],
+                        [6.2121e-01, 7.1230e-01, 9.8762e-01, 7.5831e-01, 2.8357e-01],
+                        [6.5299e-02, 8.6390e-04, 6.5569e-01, 1.1103e-02, 4.9682e-01]],
+                       dtype=torch.float64),
         metadata={},
     ), (&lt;OnDiskFeatureDataDomain.EDGE: 'edge'&gt;, None, 'feat_1'): TorchBasedFeature(
-        feature=tensor([[0.6209, 0.6348, 0.8105, 0.9752, 0.4062],
-                        [0.4721, 0.4133, 0.7364, 0.2095, 0.6700],
-                        [0.0563, 0.0053, 0.3099, 0.5550, 0.3943],
+        feature=tensor([[0.7346, 0.9061, 0.8481, 0.0724, 0.0476],
+                        [0.9665, 0.1798, 0.3190, 0.6880, 0.2775],
+                        [0.6399, 0.0612, 0.3295, 0.9158, 0.3929],
                         ...,
-                        [0.8499, 0.4669, 0.8753, 0.7137, 0.6546],
-                        [0.0083, 0.2944, 0.2861, 0.2923, 0.6305],
-                        [0.4684, 0.5815, 0.4765, 0.7143, 0.9249]]),
+                        [0.7620, 0.6028, 0.8513, 0.7436, 0.9035],
+                        [0.9879, 0.7380, 0.2575, 0.6963, 0.8504],
+                        [0.0864, 0.3896, 0.1683, 0.6543, 0.3536]]),
         metadata={},
     )}
 )
 
 Loaded node classification task: OnDiskTask(validation_set=ItemSet(
-               items=(tensor([283, 403, 151, 108, 679, 615, 224, 870, 940, 498, 386, 455, 183, 351,
-                   556, 459, 921, 182, 445, 449, 289, 756, 566, 676, 561, 764, 888, 623,
-                   944, 154, 613, 318, 601, 919, 516,  40,  32, 494, 840, 563, 765, 831,
-                   639,  31, 578, 280, 133, 772, 139, 333,  78, 780, 634,  82, 396, 420,
-                   298, 429, 282, 475, 111, 417, 936, 901, 999, 929, 466, 104, 241, 147,
-                   942, 437, 163, 485, 413, 244, 178, 536, 390, 160, 172, 783, 112, 411,
-                   770, 101, 677, 199, 278, 670, 201, 838, 342, 191, 114, 444, 931, 749,
-                   973, 843, 925,  56, 332, 173,  62, 137, 532, 698,  19, 197, 421, 579,
-                   384, 686, 266, 755, 331, 168, 227, 451, 801, 230, 991, 842, 131, 263,
-                   306, 305, 658, 795, 385, 732, 588,  70,  71, 400, 348, 376, 372, 339,
-                   300, 170, 867, 988, 964, 809,  17, 935,  34, 484, 226, 748,  55, 281,
-                    83, 776, 474, 750, 580, 470, 826, 800, 787, 568, 837, 107, 806, 608,
-                   464, 829, 481, 210, 607,  30,  59, 460, 946, 733, 471, 839, 898, 275,
-                   492, 242, 512, 119, 716, 456, 706, 122, 539, 265, 408, 605,  76, 916,
-                   777, 744, 303, 667], dtype=torch.int32), tensor([7, 0, 3, 7, 5, 0, 2, 3, 6, 3, 5, 9, 5, 7, 2, 1, 6, 2, 0, 0, 5, 6, 5, 3,
-                   0, 2, 4, 1, 0, 3, 5, 6, 9, 0, 0, 2, 5, 8, 2, 9, 9, 8, 0, 3, 0, 4, 8, 2,
-                   4, 1, 8, 4, 1, 7, 3, 0, 7, 1, 9, 1, 9, 6, 9, 8, 8, 9, 4, 3, 8, 9, 2, 1,
-                   1, 8, 3, 2, 7, 7, 3, 6, 2, 9, 0, 7, 2, 7, 0, 4, 9, 2, 5, 0, 7, 7, 4, 8,
-                   3, 2, 2, 4, 2, 0, 0, 5, 8, 7, 4, 2, 3, 4, 2, 2, 2, 9, 0, 3, 4, 0, 3, 5,
-                   6, 0, 8, 6, 4, 0, 2, 0, 4, 7, 2, 8, 6, 3, 1, 9, 5, 2, 7, 3, 9, 6, 4, 8,
-                   7, 7, 4, 7, 0, 4, 9, 2, 3, 6, 0, 4, 3, 8, 6, 0, 9, 4, 3, 8, 1, 1, 6, 2,
-                   7, 6, 5, 5, 0, 6, 5, 7, 4, 4, 9, 8, 1, 4, 1, 9, 9, 6, 7, 0, 8, 8, 8, 8,
-                   6, 5, 0, 9, 9, 4, 4, 4])),
+               items=(tensor([521, 856,  90, 898, 975, 563, 965, 629, 638, 590, 238, 840, 477, 236,
+                   885, 255, 602, 627,   3, 475, 565, 727, 972, 801, 514, 601, 580, 613,
+                    54, 110, 562, 338, 933, 239, 120, 902,  59,  33, 920, 211, 931,  25,
+                   676, 291, 734, 881, 822, 596, 790, 520, 956, 424,  46, 415, 297, 773,
+                   257, 197, 695, 531, 219, 241, 649, 377, 989, 453, 843, 967, 620, 207,
+                   736, 440, 333,  31, 390,  50, 913,  76, 393, 348, 126, 354, 513, 688,
+                   884, 786,  68, 392,  39, 626, 169, 128, 363, 614, 308, 939, 511, 138,
+                   703, 944,  58, 145, 865, 104, 482, 276, 168, 240, 542, 503, 611, 770,
+                   645, 823, 360, 101, 414, 560, 483, 853, 228, 670, 739, 277, 810, 381,
+                   129, 918,  26, 555, 367, 899, 755, 403, 192, 389, 838, 538, 455, 870,
+                   692, 117, 995,  97, 404, 621, 650, 441, 698, 516, 254, 953,  87, 763,
+                   401, 724, 371, 116, 977, 133,  61, 271, 711, 536, 474, 394, 194, 265,
+                   639, 742, 748, 426, 466, 154, 452, 859, 607, 445, 713, 820,  71, 319,
+                    42, 746, 340, 745, 244, 439, 252, 846, 656, 379, 261, 837, 157,  49,
+                   582, 568, 608, 897], dtype=torch.int32), tensor([5, 3, 7, 0, 0, 0, 2, 7, 7, 6, 1, 5, 9, 3, 7, 5, 3, 1, 7, 1, 2, 9, 3, 2,
+                   6, 1, 8, 7, 4, 3, 9, 7, 7, 4, 8, 0, 6, 0, 8, 2, 8, 3, 6, 0, 5, 4, 6, 9,
+                   4, 6, 6, 3, 6, 1, 6, 5, 6, 7, 4, 5, 7, 3, 0, 7, 2, 9, 7, 4, 3, 8, 6, 7,
+                   6, 6, 4, 0, 5, 3, 5, 6, 4, 7, 7, 6, 7, 6, 3, 7, 9, 2, 0, 0, 4, 3, 8, 3,
+                   3, 4, 0, 5, 9, 1, 2, 9, 0, 4, 9, 8, 0, 4, 4, 8, 2, 8, 0, 4, 0, 5, 8, 8,
+                   0, 5, 4, 9, 7, 0, 7, 8, 9, 8, 1, 3, 9, 3, 6, 9, 9, 1, 2, 7, 3, 6, 1, 7,
+                   8, 3, 1, 1, 4, 9, 0, 3, 5, 2, 3, 9, 2, 7, 2, 4, 7, 0, 2, 1, 0, 5, 9, 2,
+                   4, 4, 8, 9, 7, 6, 4, 7, 5, 5, 7, 7, 3, 5, 0, 7, 4, 1, 1, 9, 3, 1, 4, 4,
+                   5, 5, 6, 2, 7, 5, 7, 9])),
                names=('seeds', 'labels'),
            ),
            train_set=ItemSet(
-               items=(tensor([785, 978, 295, 587, 913, 301, 802, 869,  91, 430, 143, 194, 832, 960,
-                   648, 480, 956, 599, 508, 116, 453,  23, 585, 932, 428, 825, 664,  98,
-                   970, 254, 169,  54, 668, 195, 257, 745, 678, 627, 958, 722,  41, 317,
-                   235, 179, 718,  52, 358, 240, 685, 654, 955, 393,  36, 858,  16, 728,
-                   815,  97, 796, 910, 368, 166, 742, 106, 392, 696, 814, 968, 507, 652,
-                   903, 680, 943, 136, 436, 769, 741, 388, 341, 330,   0, 926, 407,  37,
-                   542, 590, 893, 469,  13, 486, 457, 612, 600, 211, 525, 979, 930, 236,
-                   702, 603, 545, 856, 851, 347, 643,  74, 861, 980, 124, 249, 161, 233,
-                   591, 665, 669, 208, 335, 895, 310, 523, 949, 905, 583, 986,   4, 659,
-                   518,  45, 320, 548,  80, 522, 425, 939, 617, 868, 510, 193, 349, 569,
-                   427, 638, 824, 517, 951, 261, 219, 710, 549, 909, 661, 650, 113,  61,
-                   997, 647, 438,  47, 504, 691, 876, 904, 473, 596,  18, 619, 153, 159,
-                   782, 395,  22, 402, 204, 565, 781, 140,  28, 830, 798,   5, 505, 526,
-                   897, 662, 881, 754, 855, 724, 564, 410, 222, 559, 836,  24, 937, 379,
-                   216, 308, 609, 302, 737, 360,  69, 144, 215, 238, 812, 326, 369, 142,
-                   127, 441,  65, 983, 315, 530, 854, 994, 740, 751, 554, 792,  67,   9,
-                   725, 419, 279, 687, 340, 294, 784, 822, 666, 730, 435, 827, 747, 845,
-                   641, 849, 345, 321, 899, 882, 713,  14, 171, 488, 500, 941, 719,  64,
-                   922, 239, 158, 292, 715, 886, 828,  26, 841, 509, 817, 521, 527, 948,
-                   414, 476, 424, 336, 606, 584, 880, 577, 223, 635, 452, 575, 221, 176,
-                   773, 533, 759, 954, 132,  12, 630, 253, 823, 196, 115, 558, 708, 649,
-                   375, 721, 572, 736, 247,  49, 297, 175, 259,  94,  95, 251, 287, 712,
-                   887, 260, 592, 503, 401, 312, 433, 205, 848, 589, 938, 450, 947, 126,
-                   192,  89, 256, 186, 902,  21, 334, 912, 152, 786, 990, 156, 439, 489,
-                   434, 714, 850, 181, 705, 767, 258, 288, 381, 790, 717, 394, 866, 626,
-                   857,  60, 138, 365, 996, 412, 971,  42, 270, 477, 934, 752,  39, 458,
-                   462, 367, 924, 763, 570, 551, 423, 598, 629, 729, 377, 366, 135, 957,
-                   128, 165, 461, 255, 123, 914, 636, 672, 593, 683,  50, 760, 329, 908,
-                   547, 633, 663, 811, 188, 976, 642, 768,  57, 689, 871,  51, 274, 875,
-                   993, 611, 206, 682, 805, 446, 389, 656,  11, 761, 883, 463, 262, 711,
-                   788, 511, 502, 995,  33, 493,  58,  66, 998, 655, 873, 214, 496,   8,
-                   614, 382, 813, 928, 202, 209, 624, 431, 120, 673, 557, 537, 167, 799,
-                   535, 422, 562, 906,   3, 758, 220, 872, 467, 105, 553, 198,  35, 695,
-                   350,  38, 524,  86, 237, 821, 797, 920, 529, 874, 325, 896, 374, 277,
-                   162,  63, 117, 933, 877, 213, 404, 468, 362, 884, 625, 146, 276, 371,
-                   180, 359, 651,   1,  73, 846, 309, 953, 284, 889, 447,  43, 984,  92,
-                   555, 818,   7, 479, 229, 129, 322, 228, 918, 844, 852, 644, 774, 200,
-                   337, 738,  93, 514,  68, 290, 808, 778, 134, 992, 190, 177, 338, 622,
-                   671, 862, 688, 540, 405, 819, 231, 387, 515, 102, 130, 987, 959, 977,
-                   727, 789, 380, 576, 268, 271, 299, 586,  27, 962, 148, 543, 141,   2,
-                   550,  84,  90, 398, 794, 307, 618,  79, 495, 319, 145, 361, 746, 232,
-                   454, 693, 157, 184,  72, 109, 304, 833, 541, 981, 397, 118,  20, 810,
-                   969,  10, 218, 911, 174, 779, 753, 640, 692, 328, 448, 432],
-                  dtype=torch.int32), tensor([9, 7, 9, 4, 8, 1, 4, 9, 0, 7, 3, 5, 2, 4, 8, 2, 2, 3, 4, 6, 7, 3, 2, 8,
-                   4, 0, 7, 9, 2, 9, 3, 7, 4, 6, 6, 4, 5, 0, 1, 1, 4, 8, 0, 3, 8, 9, 5, 5,
-                   2, 1, 4, 9, 9, 3, 4, 7, 3, 4, 1, 6, 6, 4, 5, 6, 9, 4, 8, 7, 2, 3, 8, 7,
-                   4, 2, 1, 0, 5, 8, 5, 1, 0, 4, 1, 3, 0, 6, 0, 8, 3, 9, 8, 4, 0, 4, 4, 2,
-                   8, 3, 9, 6, 7, 8, 4, 7, 2, 7, 8, 0, 2, 0, 3, 2, 6, 1, 2, 8, 2, 2, 5, 6,
-                   0, 6, 1, 5, 8, 5, 0, 1, 2, 1, 7, 4, 2, 7, 5, 1, 3, 7, 2, 9, 4, 6, 3, 6,
-                   2, 6, 9, 2, 6, 0, 9, 3, 6, 3, 5, 4, 3, 4, 4, 3, 0, 7, 8, 1, 6, 0, 3, 0,
-                   6, 8, 0, 3, 3, 0, 4, 4, 8, 9, 6, 7, 6, 7, 6, 0, 7, 0, 6, 7, 7, 2, 6, 3,
-                   3, 4, 4, 8, 7, 5, 9, 8, 7, 5, 4, 3, 2, 7, 1, 7, 2, 4, 3, 4, 3, 5, 0, 2,
-                   7, 9, 6, 1, 8, 3, 7, 7, 4, 1, 2, 4, 0, 5, 3, 7, 2, 1, 8, 8, 0, 7, 4, 8,
-                   0, 2, 4, 5, 1, 1, 5, 7, 6, 9, 5, 1, 8, 0, 5, 3, 3, 9, 8, 2, 4, 4, 2, 2,
-                   1, 8, 0, 9, 0, 3, 5, 9, 7, 2, 2, 2, 7, 0, 8, 5, 9, 3, 5, 6, 9, 0, 4, 4,
-                   5, 0, 5, 6, 2, 9, 9, 8, 0, 4, 7, 5, 4, 8, 3, 3, 3, 4, 4, 6, 4, 4, 9, 7,
-                   3, 6, 3, 0, 1, 8, 6, 6, 8, 5, 8, 9, 8, 1, 1, 7, 5, 7, 4, 0, 6, 5, 0, 2,
-                   9, 3, 7, 7, 8, 8, 9, 3, 1, 2, 2, 0, 1, 7, 9, 8, 0, 7, 6, 1, 7, 2, 3, 5,
-                   1, 2, 3, 5, 4, 1, 0, 7, 2, 2, 7, 5, 1, 8, 5, 9, 2, 1, 8, 8, 5, 0, 0, 1,
-                   6, 9, 0, 6, 4, 9, 6, 8, 2, 9, 7, 5, 3, 4, 8, 3, 2, 2, 4, 0, 6, 2, 9, 4,
-                   1, 9, 0, 7, 3, 7, 9, 8, 9, 1, 4, 6, 9, 0, 4, 9, 4, 9, 9, 6, 2, 7, 7, 1,
-                   0, 8, 5, 4, 6, 3, 4, 2, 7, 3, 6, 2, 3, 4, 3, 7, 3, 1, 6, 6, 0, 5, 7, 7,
-                   3, 6, 5, 9, 0, 3, 0, 5, 7, 9, 0, 4, 2, 5, 9, 1, 1, 2, 1, 8, 2, 5, 9, 6,
-                   7, 8, 3, 6, 2, 3, 4, 2, 9, 3, 2, 2, 4, 1, 7, 6, 8, 2, 5, 7, 0, 7, 9, 4,
-                   8, 6, 9, 3, 4, 2, 0, 7, 4, 4, 9, 2, 5, 7, 2, 5, 3, 2, 9, 8, 9, 2, 7, 9,
-                   0, 1, 7, 2, 2, 8, 3, 8, 1, 8, 4, 2, 5, 4, 1, 9, 8, 7, 6, 9, 2, 4, 9, 2,
-                   1, 5, 4, 0, 4, 6, 0, 7, 1, 8, 1, 6, 6, 9, 4, 4, 6, 9, 1, 4, 8, 2, 3, 7,
-                   5, 6, 0, 7, 9, 6, 1, 7, 9, 1, 3, 3, 4, 7, 1, 2, 1, 9, 9, 0, 3, 1, 0, 1])),
+               items=(tensor([ 23, 242, 954, 754, 352, 278, 993, 418, 330, 615, 166, 872, 451,   4,
+                   150, 948, 296, 399,  78, 852,  95, 264,  96, 376, 849, 125, 661, 659,
+                   558, 237, 124, 502, 533, 587, 784, 959, 574, 723, 717, 999, 749, 165,
+                   220, 766, 335,  74,  94, 900, 815, 605, 535, 648, 358, 691, 637, 386,
+                   243, 769, 609, 179, 551,  72, 233, 937, 957,  45,  65, 309, 210, 505,
+                   508,  84, 909, 245, 797, 425, 700, 893, 943, 593, 733, 889, 988, 191,
+                   612, 735, 863, 634, 673, 998,  73, 894, 947,  64, 105, 460, 281, 443,
+                   831, 666, 433, 411,  55, 206, 260, 391, 311, 221, 756, 575, 423, 680,
+                   193, 413, 532, 950, 461, 997, 307, 397, 729, 963, 762,  47, 187,  28,
+                   594, 444, 500, 223, 835, 274,  15, 231, 641, 436, 374, 978, 657, 628,
+                   185,   5, 875, 887, 256, 127, 298, 671, 712, 317, 121, 718, 438, 687,
+                   293, 142, 722, 877, 857, 203, 388, 481, 635, 334, 655, 284, 908,  89,
+                   295,  81, 684, 202, 205, 702, 495, 525, 545, 204, 646, 809, 708, 328,
+                   829, 148, 146, 850, 901, 467, 652, 417, 942, 579, 198, 895, 305, 540,
+                   589, 517, 926, 546, 759, 597,  21, 541, 258, 644,  70, 996, 932, 341,
+                   876, 696, 782, 226, 464, 113, 519, 561, 103, 496, 796, 147, 143, 848,
+                   604, 544, 812, 273, 821, 268, 155, 178, 882,  60, 450, 489, 108,  56,
+                   200, 250, 707,   2, 487, 672, 690, 136, 804, 761, 141, 830, 793, 448,
+                   316, 419,  83, 789, 578, 373, 951, 860, 715, 985, 891,  41, 710, 522,
+                   683, 156, 302, 209, 498, 287, 630, 922, 151,  43, 969, 323, 836, 958,
+                   624, 442, 434, 674, 224, 584,   8, 752, 861, 530, 709, 571,  44, 473,
+                   314, 813, 351, 539, 651, 357, 573, 750, 246, 721, 915,  88, 744, 851,
+                   923, 362, 968, 172, 248, 447, 994, 987, 970, 212, 758, 320, 327, 490,
+                   304, 928,  75, 730, 488, 406, 275,  79, 106, 839, 982, 808, 907, 685,
+                   592, 826, 251, 832, 927, 553, 163, 586, 313, 272,  93, 760, 478, 181,
+                   960, 230, 118, 660, 783,  30, 167, 631, 527,  85, 890, 910, 658, 935,
+                   384, 182, 916, 188, 432, 380, 806, 617, 971, 398, 235, 714, 300, 471,
+                   802,  32, 506, 123, 653, 263, 803,  10, 794, 347, 336, 408, 201, 286,
+                   416, 180, 595, 940, 457, 664, 792, 719, 917, 174, 359, 322, 321, 768,
+                   315, 874, 819, 934, 213, 992, 873, 668, 962, 190, 663, 807,  16, 974,
+                   409, 494, 818, 468,  91, 385, 699, 567, 227,  99, 459, 509, 171, 599,
+                   175, 704,  22,  27, 164, 480, 378, 554, 689, 946, 383, 677, 135, 342,
+                   825, 537, 504, 779, 791, 549,  19, 279, 731, 772,  17,  66,   6, 524,
+                   983, 564, 402, 606, 771,  11, 751, 420, 292, 310, 366, 964, 618, 492,
+                   222, 177,  48, 667, 285, 705, 616, 706, 346, 866, 986, 741, 591, 855,
+                   526, 924, 879, 189, 757,  12, 640,  53, 470, 356, 904, 199, 625, 365,
+                   152, 395, 493, 991,  40, 158, 686, 892, 862, 798, 375, 280, 776, 557,
+                   112, 867, 643,  69, 576, 764,  82, 682, 217, 303, 501, 811, 159, 267,
+                   566, 458, 497, 184, 269, 780, 952, 162, 364, 569, 678, 883, 324,  37,
+                   247, 109, 556, 412, 472, 149, 130, 912, 777,  63, 632, 936, 387, 469,
+                   864, 144, 845, 814, 833, 871, 647, 681, 622, 427, 828, 329, 675, 528,
+                   132, 225, 301, 906, 139, 559, 134, 961,  38, 949, 153, 945, 465, 215,
+                   981, 195, 930, 679, 262, 694, 234, 332, 701,   9,  51,   1],
+                  dtype=torch.int32), tensor([0, 4, 9, 5, 3, 5, 9, 0, 1, 1, 6, 6, 5, 5, 3, 5, 8, 2, 8, 6, 6, 0, 3, 6,
+                   3, 9, 0, 1, 0, 7, 3, 1, 0, 3, 7, 8, 7, 1, 4, 5, 2, 8, 9, 2, 8, 0, 8, 1,
+                   0, 5, 3, 0, 5, 4, 1, 6, 1, 4, 4, 5, 2, 4, 5, 1, 8, 1, 7, 3, 6, 9, 5, 7,
+                   8, 6, 2, 1, 9, 2, 8, 8, 1, 0, 6, 3, 9, 2, 9, 9, 0, 4, 0, 9, 8, 2, 0, 4,
+                   5, 0, 6, 5, 1, 2, 1, 3, 7, 7, 6, 1, 0, 3, 9, 6, 2, 1, 6, 7, 3, 7, 4, 4,
+                   0, 2, 6, 7, 1, 7, 1, 7, 6, 2, 1, 0, 2, 6, 1, 3, 1, 3, 8, 7, 1, 1, 5, 9,
+                   0, 0, 5, 5, 1, 3, 6, 0, 9, 8, 3, 3, 8, 0, 0, 8, 5, 0, 5, 1, 7, 8, 8, 7,
+                   9, 1, 7, 7, 6, 8, 4, 5, 0, 6, 0, 3, 1, 5, 0, 9, 9, 0, 5, 8, 4, 3, 8, 7,
+                   1, 4, 8, 9, 5, 5, 5, 6, 1, 8, 0, 1, 3, 5, 6, 5, 5, 8, 3, 7, 0, 5, 9, 2,
+                   6, 4, 2, 4, 9, 3, 7, 2, 3, 4, 6, 5, 2, 4, 2, 0, 4, 1, 1, 6, 7, 9, 7, 6,
+                   9, 6, 6, 6, 5, 1, 6, 8, 5, 2, 9, 3, 8, 1, 2, 5, 6, 2, 4, 5, 5, 1, 3, 8,
+                   4, 6, 8, 0, 1, 8, 3, 4, 6, 2, 0, 4, 4, 0, 5, 1, 1, 8, 1, 0, 6, 7, 5, 6,
+                   5, 6, 8, 1, 8, 5, 0, 6, 6, 7, 3, 9, 0, 1, 3, 9, 6, 7, 9, 6, 1, 9, 2, 6,
+                   1, 8, 6, 4, 5, 5, 4, 0, 3, 2, 9, 3, 0, 2, 7, 4, 7, 5, 5, 7, 8, 6, 7, 4,
+                   5, 5, 9, 5, 4, 0, 6, 3, 8, 8, 4, 2, 4, 8, 6, 6, 1, 0, 8, 9, 4, 1, 4, 8,
+                   1, 1, 5, 3, 8, 0, 9, 1, 3, 2, 1, 2, 1, 6, 8, 0, 7, 1, 2, 8, 9, 8, 3, 3,
+                   8, 7, 1, 6, 8, 7, 9, 3, 7, 6, 7, 7, 5, 2, 7, 3, 0, 9, 4, 4, 6, 8, 4, 4,
+                   3, 4, 2, 0, 9, 8, 4, 8, 0, 1, 3, 6, 8, 3, 7, 6, 6, 7, 5, 5, 7, 8, 1, 5,
+                   1, 6, 2, 3, 9, 8, 0, 6, 4, 1, 8, 0, 3, 6, 4, 9, 4, 5, 6, 9, 0, 5, 6, 7,
+                   0, 9, 5, 3, 9, 0, 9, 4, 0, 4, 2, 2, 8, 4, 2, 4, 7, 5, 6, 5, 9, 7, 3, 2,
+                   6, 3, 6, 6, 1, 5, 1, 1, 0, 3, 9, 2, 9, 1, 9, 9, 8, 5, 4, 3, 9, 3, 3, 4,
+                   3, 0, 5, 1, 5, 8, 0, 3, 6, 0, 6, 3, 0, 7, 4, 6, 4, 4, 7, 6, 2, 6, 9, 5,
+                   8, 2, 8, 2, 3, 6, 4, 6, 4, 6, 4, 7, 6, 9, 3, 5, 6, 4, 7, 0, 0, 3, 4, 5,
+                   3, 0, 1, 4, 2, 2, 1, 5, 6, 5, 0, 4, 4, 2, 6, 4, 7, 9, 5, 2, 7, 8, 4, 5,
+                   7, 6, 3, 0, 0, 3, 8, 8, 4, 1, 7, 1, 1, 8, 3, 0, 4, 9, 4, 5, 5, 8, 8, 8])),
                names=('seeds', 'labels'),
            ),
            test_set=ItemSet(
-               items=(tensor([571, 560, 212, 865, 894, 482, 103, 243, 269, 597, 709,  87, 972, 707,
-                   694, 573, 352, 892, 582, 726, 791, 346, 252, 620, 631, 853, 406,  81,
-                   604, 975, 628, 519, 820, 354, 100,  46, 443, 465, 248, 343, 472, 574,
-                   775,  96, 771, 697, 720, 632, 267, 985, 923, 344, 704, 807, 860,  88,
-                   327, 684, 927, 273, 203, 250, 353, 567, 602, 363, 391, 478, 966,   6,
-                   418, 701, 616, 125, 961, 121,  77, 150, 506, 491, 291, 834, 149,  44,
-                    15, 409,  85, 675, 293, 296,  99, 723,  29, 989, 878, 766, 285, 272,
-                   324, 974, 963, 907, 185, 286, 793, 731, 207, 967, 546, 155, 440, 681,
-                   735, 110, 531, 513, 581, 442, 246, 743, 762, 637, 534, 952, 859, 311,
-                    75,  25, 544, 863, 356, 621, 245, 499, 900, 965, 982, 187, 594, 416,
-                   357, 653, 313, 370, 803, 520, 501, 323, 595, 426, 610, 189, 891, 699,
-                    48, 700, 538, 355, 915, 835, 373, 660, 497, 885, 264, 383, 645, 364,
-                   234, 864, 217, 415, 164, 490, 703, 917, 690, 945, 483, 552, 757, 734,
-                   528,  53, 225, 378, 674, 487, 847, 804, 646, 657, 879, 739, 950, 816,
-                   890, 314, 316, 399], dtype=torch.int32), tensor([2, 9, 3, 7, 1, 1, 8, 1, 9, 4, 7, 1, 8, 5, 8, 6, 8, 3, 4, 3, 0, 7, 5, 0,
-                   5, 6, 7, 2, 4, 8, 7, 6, 2, 7, 6, 6, 9, 6, 6, 3, 3, 0, 7, 5, 3, 3, 4, 2,
-                   2, 8, 1, 4, 6, 3, 1, 8, 7, 7, 6, 5, 5, 4, 1, 9, 1, 2, 8, 3, 0, 2, 1, 5,
-                   9, 8, 6, 2, 2, 1, 7, 6, 8, 8, 1, 2, 4, 1, 7, 3, 2, 3, 0, 4, 4, 4, 0, 3,
-                   0, 8, 0, 7, 1, 8, 4, 4, 6, 8, 5, 6, 1, 4, 4, 1, 5, 6, 6, 4, 6, 0, 1, 6,
-                   0, 5, 6, 0, 8, 1, 8, 1, 2, 0, 0, 6, 5, 7, 3, 7, 0, 3, 2, 8, 4, 5, 5, 4,
-                   5, 4, 4, 3, 2, 4, 3, 4, 0, 0, 0, 6, 3, 7, 0, 6, 4, 5, 9, 5, 3, 5, 0, 1,
-                   4, 8, 8, 6, 1, 6, 9, 1, 7, 3, 8, 8, 0, 2, 9, 7, 7, 8, 7, 1, 7, 5, 3, 5,
-                   1, 5, 0, 4, 5, 4, 5, 9])),
+               items=(tensor([919, 966, 955, 111, 499, 720, 726, 938, 131, 259,  52, 633, 368, 716,
+                   583,  57, 229, 921, 344, 888, 973, 410, 355, 214, 422, 345, 421, 512,
+                   253,  14, 270, 449, 476, 598, 858, 778, 854, 547, 610, 886, 979,  92,
+                   446, 603, 753, 431, 738, 161, 462, 170, 737, 550, 816, 552, 208, 805,
+                   774, 173, 370, 869, 405, 781, 529, 600, 232,  98, 834, 636, 515, 318,
+                    24, 249, 485, 619, 543, 914, 980, 799, 740, 454, 331, 747, 435, 548,
+                    29, 911, 372, 382, 697, 827, 176, 160, 905, 294, 623,  62, 353, 484,
+                   767, 429, 288, 140, 925, 868, 400, 929, 218, 788,  20, 349, 662, 732,
+                    18, 428, 800, 903, 486, 183, 743,   0, 572, 507, 841,  86, 725, 114,
+                   518, 588,  80, 186, 456, 984, 407, 479, 654, 847, 196,  77, 350, 941,
+                   880, 122,   7, 976, 312, 326, 669, 787, 282, 765, 824, 523, 795, 878,
+                   107, 115, 100, 665,  13,  35, 343, 325,  36, 437, 785, 693, 299, 361,
+                   775, 842,  67, 306, 337, 102,  34, 283, 137, 570, 369, 990, 844, 266,
+                   534, 577, 728, 339, 396, 463, 430, 290, 896, 216, 642, 817, 491, 581,
+                   119, 585, 510, 289], dtype=torch.int32), tensor([7, 0, 4, 5, 6, 4, 4, 7, 3, 9, 9, 7, 4, 5, 8, 7, 7, 0, 7, 0, 0, 9, 2, 6,
+                   1, 7, 8, 9, 1, 6, 0, 9, 8, 1, 9, 8, 0, 6, 3, 0, 9, 0, 0, 3, 9, 7, 9, 8,
+                   3, 0, 0, 1, 8, 2, 6, 0, 2, 8, 9, 2, 6, 4, 1, 8, 6, 3, 7, 1, 8, 4, 4, 2,
+                   0, 3, 4, 4, 8, 4, 1, 2, 0, 1, 6, 1, 6, 6, 0, 6, 3, 5, 0, 5, 2, 5, 7, 0,
+                   6, 2, 5, 5, 9, 5, 9, 1, 2, 2, 6, 4, 2, 4, 8, 1, 8, 4, 8, 3, 6, 1, 5, 1,
+                   8, 6, 3, 5, 5, 0, 1, 0, 8, 0, 0, 8, 9, 9, 1, 8, 5, 2, 8, 8, 6, 3, 5, 2,
+                   2, 6, 6, 0, 7, 7, 5, 9, 2, 7, 0, 8, 0, 0, 4, 3, 4, 2, 6, 3, 3, 7, 5, 5,
+                   8, 4, 1, 3, 4, 4, 3, 2, 1, 1, 8, 6, 3, 1, 9, 1, 6, 7, 1, 1, 0, 5, 1, 3,
+                   6, 6, 5, 1, 0, 8, 0, 0])),
                names=('seeds', 'labels'),
            ),
            metadata={'name': 'node_classification', 'num_classes': 10},)
 
 Loaded link prediction task: OnDiskTask(validation_set=ItemSet(
-               items=(tensor([[667, 484],
-                   [ 65, 649],
-                   [ 28, 445],
+               items=(tensor([[755, 907],
+                   [740, 752],
+                   [734, 598],
                    ...,
-                   [ 80, 748],
-                   [ 80, 838],
-                   [ 80, 174]], dtype=torch.int32), tensor([1., 1., 1.,  ..., 0., 0., 0.], dtype=torch.float64), tensor([   0,    1,    2,  ..., 1999, 1999, 1999])),
+                   [874, 198],
+                   [874,  29],
+                   [874, 689]], dtype=torch.int32), tensor([1., 1., 1.,  ..., 0., 0., 0.], dtype=torch.float64), tensor([   0,    1,    2,  ..., 1999, 1999, 1999])),
                names=('seeds', 'labels', 'indexes'),
            ),
            train_set=ItemSet(
-               items=(tensor([[180, 726],
-                   [239, 963],
-                   [955, 106],
+               items=(tensor([[295, 553],
+                   [905, 715],
+                   [992, 774],
                    ...,
-                   [636, 646],
-                   [372, 831],
-                   [835, 254]], dtype=torch.int32),),
+                   [508,  69],
+                   [617, 629],
+                   [440,   8]], dtype=torch.int32),),
                names=('seeds',),
            ),
            test_set=ItemSet(
-               items=(tensor([[788, 212],
-                   [464, 416],
-                   [755, 395],
+               items=(tensor([[396, 977],
+                   [583, 127],
+                   [954, 198],
                    ...,
-                   [528,  38],
-                   [528, 203],
-                   [528, 637]], dtype=torch.int32), tensor([1., 1., 1.,  ..., 0., 0., 0.], dtype=torch.float64), tensor([   0,    1,    2,  ..., 1999, 1999, 1999])),
+                   [543, 503],
+                   [543, 171],
+                   [543, 442]], dtype=torch.int32), tensor([1., 1., 1.,  ..., 0., 0., 0.], dtype=torch.float64), tensor([   0,    1,    2,  ..., 1999, 1999, 1999])),
                names=('seeds', 'labels', 'indexes'),
            ),
            metadata={'name': 'link_prediction', 'num_classes': 10},)
@@ -864,12 +866,8 @@ Loaded link prediction task: OnDiskTask(validation_set=ItemSet(
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-/home/ubuntu/dgl_test/python/dgl/graphbolt/internal/utils.py:31: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
-  return torch.load(path)
-/home/ubuntu/dgl_test/python/dgl/graphbolt/impl/ondisk_dataset.py:463: GBWarning: Edge feature is stored, but edge IDs are not saved.
+/dgl/python/dgl/graphbolt/impl/ondisk_dataset.py:463: GBWarning: Edge feature is stored, but edge IDs are not saved.
   gb_warning("Edge feature is stored, but edge IDs are not saved.")
-/home/ubuntu/dgl_test/python/dgl/graphbolt/impl/ondisk_dataset.py:855: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
-  return torch.load(graph_topology.path)
 </pre></div></div>
 </div>
 </section>

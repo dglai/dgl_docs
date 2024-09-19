@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Single Machine Multi-GPU Minibatch Node Classification — DGL 2.4 documentation</title>
+<title>Single Machine Multi-GPU Minibatch Node Classification — DGL 2.5 documentation</title>
 <link href="../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,7 +19,7 @@
   <![endif]-->
 <script src="../../_static/jquery.js?v=5d32c60e"></script>
 <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../../_static/documentation_options.js?v=9caaf7ed"></script>
+<script src="../../_static/documentation_options.js?v=38d273f4"></script>
 <script src="../../_static/doctools.js?v=9a2dae69"></script>
 <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -41,7 +41,7 @@
             DGL
           </a>
 <div class="version">
-                2.4
+                2.5
               </div>
 <div role="search">
 <form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -217,7 +217,7 @@ minibatch to avoid the need for padding.</p>
     <span class="n">device</span><span class="p">,</span>
     <span class="n">is_train</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="n">datapipe</span> <span class="o">=</span> <a class="sphx-glr-backref-module-collections-abc sphx-glr-backref-type-py-class" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="collections.abc.Iterable"><span class="n">gb</span><span class="o">.</span><span class="n">DistributedItemSampler</span></a><span class="p">(</span>
+    <span class="n">datapipe</span> <span class="o">=</span> <a class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic"><span class="n">gb</span><span class="o">.</span><span class="n">DistributedItemSampler</span></a><span class="p">(</span>
         <span class="n">item_set</span><span class="o">=</span><span class="n">itemset</span><span class="p">,</span>
         <span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
         <span class="n">drop_last</span><span class="o">=</span><span class="n">is_train</span><span class="p">,</span>
@@ -229,7 +229,7 @@ minibatch to avoid the need for padding.</p>
     <span class="c1"># will be executed on GPUs.</span>
     <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">sample_neighbor</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
     <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">fetch_feature</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">node_feature_keys</span><span class="o">=</span><span class="p">[</span><span class="s2">"feat"</span><span class="p">])</span>
-    <span class="k">return</span> <a class="sphx-glr-backref-module-collections-abc sphx-glr-backref-type-py-class" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="collections.abc.Iterable"><span class="n">gb</span><span class="o">.</span><span class="n">DataLoader</span></a><span class="p">(</span><span class="n">datapipe</span><span class="p">)</span>
+    <span class="k">return</span> <a class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic"><span class="n">gb</span><span class="o">.</span><span class="n">DataLoader</span></a><span class="p">(</span><span class="n">datapipe</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">weighted_reduce</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
@@ -474,7 +474,7 @@ function defined above.</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>No GPU found!
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.082 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.075 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-multi-2-node-classification-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/0c638c5fe1559d5c5412450f6d33520e/2_node_classification.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">2_node_classification.ipynb</span></code></a></p>

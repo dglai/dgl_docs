@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>7.3 Programming APIs — DGL 2.4 documentation</title>
+<title>7.3 Programming APIs — DGL 2.5 documentation</title>
 <link href="../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
 <link href="../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
@@ -19,7 +19,7 @@
   <![endif]-->
 <script src="../_static/jquery.js?v=5d32c60e"></script>
 <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="../_static/documentation_options.js?v=9caaf7ed"></script>
+<script src="../_static/documentation_options.js?v=38d273f4"></script>
 <script src="../_static/doctools.js?v=9a2dae69"></script>
 <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -41,7 +41,7 @@
             DGL
           </a>
 <div class="version">
-                2.4
+                2.5
               </div>
 <div role="search">
 <form action="../search.html" class="wy-form" id="rtd-search-form" method="get">
@@ -384,11 +384,11 @@ difference is that users need to use <a class="reference internal" href="../gene
 </div>
 <p>The high-level sampling APIs (<code class="xref py py-class docutils literal notranslate"><span class="pre">NodeDataLoader</span></code> and
 <code class="xref py py-class docutils literal notranslate"><span class="pre">EdgeDataLoader</span></code> ) has distributed counterparts
-(<a class="reference internal" href="../generated/dgl.dataloading.DistNodeDataLoader.html#dgl.dataloading.DistNodeDataLoader" title="dgl.dataloading.DistNodeDataLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">DistNodeDataLoader</span></code></a> and
-<a class="reference internal" href="../generated/dgl.dataloading.DistEdgeDataLoader.html#dgl.dataloading.DistEdgeDataLoader" title="dgl.dataloading.DistEdgeDataLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">DistEdgeDataLoader</span></code></a>).  The code is exactly the same as
+(<a class="reference internal" href="../api/python/dgl.distributed.html#dgl.distributed.DistNodeDataLoader" title="dgl.distributed.DistNodeDataLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">DistNodeDataLoader</span></code></a> and
+<a class="reference internal" href="../api/python/dgl.distributed.html#dgl.distributed.DistEdgeDataLoader" title="dgl.distributed.DistEdgeDataLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">DistEdgeDataLoader</span></code></a>).  The code is exactly the same as
 single-process sampling otherwise.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sampler</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">sampling</span><span class="o">.</span><span class="n">MultiLayerNeighborSampler</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">25</span><span class="p">])</span>
-<span class="n">dataloader</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">sampling</span><span class="o">.</span><span class="n">DistNodeDataLoader</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">train_nid</span><span class="p">,</span> <span class="n">sampler</span><span class="p">,</span>
+<span class="n">dataloader</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">DistNodeDataLoader</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">train_nid</span><span class="p">,</span> <span class="n">sampler</span><span class="p">,</span>
                                              <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
     <span class="o">...</span>
