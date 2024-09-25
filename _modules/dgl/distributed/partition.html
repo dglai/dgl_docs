@@ -819,7 +819,7 @@
         <span class="n">part_config</span><span class="o">=</span><span class="n">part_config</span><span class="p">,</span> <span class="n">part_id</span><span class="o">=</span><span class="n">part_i</span><span class="p">,</span> <span class="n">part_metadata</span><span class="o">=</span><span class="n">part_metadata</span>
     <span class="p">)</span>
     <span class="n">graph</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="n">part_i</span><span class="p">]</span>
-    <span class="n">csc_graph</span> <span class="o">=</span> <span class="n">gb_convert_single_dgl_partition</span><span class="p">(</span>
+    <span class="n">csc_graph</span> <span class="o">=</span> <span class="n">_convert_dgl_partition_to_gb</span><span class="p">(</span>
         <span class="n">ntypes</span><span class="o">=</span><span class="n">ntypes</span><span class="p">,</span>
         <span class="n">etypes</span><span class="o">=</span><span class="n">etypes</span><span class="p">,</span>
         <span class="n">gpb</span><span class="o">=</span><span class="n">gpb</span><span class="p">,</span>
@@ -1837,7 +1837,7 @@
     <span class="k">return</span> <span class="n">node_attributes</span><span class="p">,</span> <span class="n">edge_attributes</span><span class="p">,</span> <span class="n">type_per_edge</span>
 
 
-<span class="k">def</span> <span class="nf">gb_convert_single_dgl_partition</span><span class="p">(</span>
+<span class="k">def</span> <span class="nf">_convert_dgl_partition_to_gb</span><span class="p">(</span>
     <span class="n">ntypes</span><span class="p">,</span>
     <span class="n">etypes</span><span class="p">,</span>
     <span class="n">gpb</span><span class="p">,</span>
@@ -1955,30 +1955,30 @@
     <span class="k">return</span> <span class="n">csc_graph</span>
 
 
-<span class="k">def</span> <span class="nf">_convert_partition_to_graphbolt</span><span class="p">(</span>
-    <span class="n">part_config</span><span class="p">,</span>
+<span class="k">def</span> <span class="nf">gb_convert_single_dgl_partition</span><span class="p">(</span>
     <span class="n">part_id</span><span class="p">,</span>
-    <span class="n">graph_formats</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">store_eids</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">store_inner_node</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">store_inner_edge</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">graph_formats</span><span class="p">,</span>
+    <span class="n">part_config</span><span class="p">,</span>
+    <span class="n">store_eids</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">store_inner_node</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">store_inner_edge</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    The pipeline converting signle partition to graphbolt.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    part_config : str</span>
-<span class="sd">        The path of the partition config file.</span>
 <span class="sd">    part_id : int</span>
 <span class="sd">        The partition ID.</span>
-<span class="sd">    graph_formats : str or list[str], optional</span>
+<span class="sd">    graph_formats : str or list[str]</span>
 <span class="sd">        Save partitions in specified formats. It could be any combination of</span>
 <span class="sd">        `coo`, `csc`. As `csc` format is mandatory for `FusedCSCSamplingGraph`,</span>
 <span class="sd">        it is not necessary to specify this argument. It's mainly for</span>
 <span class="sd">        specifying `coo` format to save edge ID mapping and destination node</span>
 <span class="sd">        IDs. If not specified, whether to save `coo` format is determined by</span>
 <span class="sd">        the availability of the format in DGL partitions. Default: None.</span>
+<span class="sd">    part_config : str</span>
+<span class="sd">        The path of the partition config file.</span>
 <span class="sd">    store_eids : bool, optional</span>
 <span class="sd">        Whether to store edge IDs in the new graph. Default: True.</span>
 <span class="sd">    store_inner_node : bool, optional</span>
@@ -1996,7 +1996,7 @@
     <span class="p">)</span>
     <span class="n">part</span> <span class="o">=</span> <span class="n">_load_part</span><span class="p">(</span><span class="n">part_config</span><span class="p">,</span> <span class="n">part_id</span><span class="p">)</span>
     <span class="n">part_meta</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">_load_part_config</span><span class="p">(</span><span class="n">part_config</span><span class="p">))</span>
-    <span class="n">csc_graph</span> <span class="o">=</span> <span class="n">gb_convert_single_dgl_partition</span><span class="p">(</span>
+    <span class="n">csc_graph</span> <span class="o">=</span> <span class="n">_convert_dgl_partition_to_gb</span><span class="p">(</span>
         <span class="n">graph</span><span class="o">=</span><span class="n">part</span><span class="p">,</span>
         <span class="n">ntypes</span><span class="o">=</span><span class="n">ntypes</span><span class="p">,</span>
         <span class="n">etypes</span><span class="o">=</span><span class="n">etypes</span><span class="p">,</span>
@@ -2031,7 +2031,7 @@
 
     <span class="c1"># Iterate over partitions.</span>
     <span class="n">convert_with_format</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
-        <span class="n">_convert_partition_to_graphbolt</span><span class="p">,</span>
+        <span class="n">gb_convert_single_dgl_partition</span><span class="p">,</span>
         <span class="n">part_config</span><span class="o">=</span><span class="n">part_config</span><span class="p">,</span>
         <span class="n">graph_formats</span><span class="o">=</span><span class="n">graph_formats</span><span class="p">,</span>
         <span class="n">store_eids</span><span class="o">=</span><span class="n">store_eids</span><span class="p">,</span>
