@@ -1631,6 +1631,16 @@
         <span class="k">return</span> <span class="n">NewEdgeCollator</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 
+<span class="k">def</span> <span class="nf">_remove_kwargs_dist</span><span class="p">(</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Deprecated."""</span>
+    <span class="k">if</span> <span class="s2">"num_workers"</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">"num_workers"</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s2">"pin_memory"</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">"pin_memory"</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Distributed DataLoaders do not support pin_memory."</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">kwargs</span>
+
+
 <span class="k">class</span> <span class="nc">DistDataLoader</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Deprecated. Please use :class:`~dgl.distributed.DistDataLoader` instead."""</span>
 
