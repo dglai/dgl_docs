@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html class="writer-html5" data-content_root="../../" lang="en">
@@ -6,7 +7,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Training a GNN for Graph Classification — DGL 2.5 documentation</title>
 <link href="../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
-<link href="../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../../_static/css/theme.css?v=7ab3649f" rel="stylesheet" type="text/css"/>
 <link href="../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
 <link href="../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
 <link href="../../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
@@ -14,9 +15,6 @@
 <link href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
 <link href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
 <link href="../../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
-<!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
 <script src="../../_static/jquery.js?v=5d32c60e"></script>
 <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
 <script src="../../_static/documentation_options.js?v=38d273f4"></script>
@@ -40,9 +38,6 @@
 <a class="icon icon-home" href="../../index.html">
             DGL
           </a>
-<div class="version">
-                2.5
-              </div>
 <div role="search">
 <form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
 <input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
@@ -184,10 +179,10 @@ Networks</a>.</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Downloading /root/.dgl/GINDataset.zip from https://raw.githubusercontent.com/weihua916/powerful-gnns/master/dataset.zip...
 
 /root/.dgl/GINDataset.zip:   0%|          | 0.00/33.4M [00:00&lt;?, ?B/s]
-/root/.dgl/GINDataset.zip:  21%|██        | 7.01M/33.4M [00:00&lt;00:00, 70.1MB/s]
-/root/.dgl/GINDataset.zip:  50%|████▉     | 16.6M/33.4M [00:00&lt;00:00, 85.4MB/s]
-/root/.dgl/GINDataset.zip:  78%|███████▊  | 26.2M/33.4M [00:00&lt;00:00, 90.3MB/s]
-/root/.dgl/GINDataset.zip: 100%|██████████| 33.4M/33.4M [00:00&lt;00:00, 89.4MB/s]
+/root/.dgl/GINDataset.zip:  20%|█▉        | 6.56M/33.4M [00:00&lt;00:00, 65.6MB/s]
+/root/.dgl/GINDataset.zip:  48%|████▊     | 16.1M/33.4M [00:00&lt;00:00, 83.2MB/s]
+/root/.dgl/GINDataset.zip:  77%|███████▋  | 25.7M/33.4M [00:00&lt;00:00, 89.1MB/s]
+/root/.dgl/GINDataset.zip: 100%|██████████| 33.4M/33.4M [00:00&lt;00:00, 88.1MB/s]
 Extracting file to /root/.dgl/GINDataset
 </pre></div>
 </div>
@@ -243,9 +238,9 @@ gives:</p>
 <span class="nb">print</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">batch</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[Graph(num_nodes=399, num_edges=1801,
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[Graph(num_nodes=198, num_edges=894,
       ndata_schemes={'label': Scheme(shape=(), dtype=torch.int64), 'attr': Scheme(shape=(3,), dtype=torch.float32)}
-      edata_schemes={}), tensor([0, 0, 0, 1, 1])]
+      edata_schemes={}), tensor([0, 0, 0, 0, 0])]
 </pre></div>
 </div>
 <p>As each element in <code class="docutils literal notranslate"><span class="pre">dataset</span></code> has a graph and a label, the
@@ -281,18 +276,18 @@ nodes and edges of each graph element.</p>
 <span class="nb">print</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list"><span class="n">graphs</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Number of nodes for each graph element in the batch: tensor([111,  11, 117,  10, 150])
-Number of edges for each graph element in the batch: tensor([507,  53, 505,  44, 692])
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Number of nodes for each graph element in the batch: tensor([91, 27, 50, 11, 19])
+Number of edges for each graph element in the batch: tensor([395, 141, 224,  49,  85])
 The original graphs in the minibatch:
-[Graph(num_nodes=111, num_edges=507,
+[Graph(num_nodes=91, num_edges=395,
       ndata_schemes={'label': Scheme(shape=(), dtype=torch.int64), 'attr': Scheme(shape=(3,), dtype=torch.float32)}
-      edata_schemes={}), Graph(num_nodes=11, num_edges=53,
+      edata_schemes={}), Graph(num_nodes=27, num_edges=141,
       ndata_schemes={'label': Scheme(shape=(), dtype=torch.int64), 'attr': Scheme(shape=(3,), dtype=torch.float32)}
-      edata_schemes={}), Graph(num_nodes=117, num_edges=505,
+      edata_schemes={}), Graph(num_nodes=50, num_edges=224,
       ndata_schemes={'label': Scheme(shape=(), dtype=torch.int64), 'attr': Scheme(shape=(3,), dtype=torch.float32)}
-      edata_schemes={}), Graph(num_nodes=10, num_edges=44,
+      edata_schemes={}), Graph(num_nodes=11, num_edges=49,
       ndata_schemes={'label': Scheme(shape=(), dtype=torch.int64), 'attr': Scheme(shape=(3,), dtype=torch.float32)}
-      edata_schemes={}), Graph(num_nodes=150, num_edges=692,
+      edata_schemes={}), Graph(num_nodes=19, num_edges=85,
       ndata_schemes={'label': Scheme(shape=(), dtype=torch.int64), 'attr': Scheme(shape=(3,), dtype=torch.float32)}
       edata_schemes={})]
 </pre></div>
@@ -363,7 +358,7 @@ image classification or language modeling.</p>
 <span class="nb">print</span><span class="p">(</span><span class="s2">"Test accuracy:"</span><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_correct</span></a> <span class="o">/</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance" href="https://docs.python.org/3/library/functions.html#int" title="builtins.int"><span class="n">num_tests</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Test accuracy: 0.3094170403587444
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Test accuracy: 0.14349775784753363
 </pre></div>
 </div>
 </section>
@@ -378,7 +373,7 @@ for an end-to-end graph classification model.</p></li>
 <span class="c1"># sphinx_gallery_thumbnail_path = '_static/blitz_5_graph_classification.png'</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 54.532 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 54.857 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-blitz-5-graph-classification-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/4050a45fd5b85070ff144419307a88ac/5_graph_classification.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">5_graph_classification.ipynb</span></code></a></p>

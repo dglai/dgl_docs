@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html class="writer-html5" data-content_root="../../" lang="en">
@@ -6,7 +7,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Graph Transformer in a Nutshell — DGL 2.5 documentation</title>
 <link href="../../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
-<link href="../../_static/css/theme.css?v=19f00094" rel="stylesheet" type="text/css"/>
+<link href="../../_static/css/theme.css?v=7ab3649f" rel="stylesheet" type="text/css"/>
 <link href="../../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
 <link href="../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
 <link href="../../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
@@ -15,9 +16,6 @@
 <link href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
 <link href="../../_static/nbsphinx-code-cells.css?v=2aa19091" rel="stylesheet" type="text/css"/>
 <link href="../../_static/css/custom.css?v=0bf289b5" rel="stylesheet" type="text/css"/>
-<!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
 <script src="../../_static/jquery.js?v=5d32c60e"></script>
 <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
 <script src="../../_static/documentation_options.js?v=38d273f4"></script>
@@ -43,9 +41,6 @@
 <a class="icon icon-home" href="../../index.html">
             DGL
           </a>
-<div class="version">
-                2.5
-              </div>
 <div role="search">
 <form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
 <input aria-label="Search docs" name="q" placeholder="Search docs" type="text"/>
@@ -172,7 +167,7 @@ generalize the transformer neural architecture to graph-structured data. Here, w
 <div class="math notranslate nohighlight">
 \[\text{SparseAttn}(Q, K, V, A) = \text{softmax}(\frac{(QK^T) \circ A}{\sqrt{d}})V,\]</div>
 <p>where <span class="math notranslate nohighlight">\(Q, K, V ∈\mathbb{R}^{N\times d}\)</span> are query feature, key feature, and value feature, respectively. <span class="math notranslate nohighlight">\(A\in[0,1]^{N\times N}\)</span> is the adjacency matrix of the input graph. <span class="math notranslate nohighlight">\((QK^T)\circ A\)</span> means that the multiplication of query matrix and key matrix is followed by a Hadamard product (or element-wise multiplication) with the sparse adjacency matrix as illustrated in the figure below:</p>
-<p><img alt="25b6f3cea42d458db42ea1436c69486a" class="no-scaled-link" src="https://drive.google.com/uc?id=1OgMAewLR3Z1vz5y4J8aPRSeaU3g8iQfX" style="width: 500px;"/></p>
+<p><img alt="a13535bc143a470d953a1b87cad67e11" class="no-scaled-link" src="https://drive.google.com/uc?id=1OgMAewLR3Z1vz5y4J8aPRSeaU3g8iQfX" style="width: 500px;"/></p>
 <p>Essentially, only the attention scores between connected nodes are computed according to the sparsity of <span class="math notranslate nohighlight">\(A\)</span>. This operation is also called <em>Sampled Dense Dense Matrix Multiplication (SDDMM)</em>.</p>
 <p>Enjoying the <a class="reference external" href="https://docs.dgl.ai/en/latest/generated/dgl.sparse.bsddmm.html">batched SDDMM API</a> in DGL, we can parallel the computation on multiple attention heads (different representation subspaces).</p>
 <div class="nbinput nblast docutils container">
@@ -235,7 +230,7 @@ generalize the transformer neural architecture to graph-structured data. Here, w
 <section id="Graph-Transformer-Layer">
 <h2>Graph Transformer Layer<a class="headerlink" href="#Graph-Transformer-Layer" title="Link to this heading"></a></h2>
 <p>The GT layer is composed of Multi-head Attention, Batch Norm, and Feed-forward Network, connected by residual links as in vanilla transformer.</p>
-<p><img alt="bf2bb885d93c4d72ba0a9eee08a17678" class="no-scaled-link" src="https://drive.google.com/uc?id=1cm-Ijw7bUQIOkoTKn5MQ3m4-66JqCsMz" style="width: 300px;"/></p>
+<p><img alt="ae146e6088384c7993dafb8168fef5b8" class="no-scaled-link" src="https://drive.google.com/uc?id=1cm-Ijw7bUQIOkoTKn5MQ3m4-66JqCsMz" style="width: 300px;"/></p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
