@@ -150,42 +150,42 @@ for more details.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>g</strong> (<a class="reference internal" href="../api/python/dgl.DGLGraph.html#dgl.DGLGraph" title="dgl.DGLGraph"><em>DGLGraph</em></a>) – The graph.  Can be either on CPU or GPU.</p></li>
-<li><p><strong>nodes</strong> (<em>tensor</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) – <p>Node IDs to sample neighbors from.</p>
+<li><p><strong>nodes</strong> (<em>tensor</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><em>dict</em></a>) – <p>Node IDs to sample neighbors from.</p>
 <p>This argument can take a single ID tensor or a dictionary of node types and ID tensors.
 If a single tensor is given, the graph must only have one type of nodes.</p>
 </p></li>
-<li><p><strong>fanout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a><em>[</em><em>etype</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>]</em>) – <p>The number of edges to be sampled for each node on each edge type.</p>
+<li><p><strong>fanout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><em>dict</em></a><em>[</em><em>etype</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>]</em>) – <p>The number of edges to be sampled for each node on each edge type.</p>
 <p>This argument can take a single int or a dictionary of edge types and ints.
 If a single int is given, DGL will sample this number of edges for each node for
 every edge type.</p>
 <p>If -1 is given for a single edge type, all the neighboring edges with that edge
 type and non-zero probability will be selected.</p>
 </p></li>
-<li><p><strong>edge_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – <p>Determines whether to sample inbound or outbound edges.</p>
+<li><p><strong>edge_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>, </em><em>optional</em>) – <p>Determines whether to sample inbound or outbound edges.</p>
 <p>Can take either <code class="docutils literal notranslate"><span class="pre">in</span></code> for inbound edges or <code class="docutils literal notranslate"><span class="pre">out</span></code> for outbound edges.</p>
 </p></li>
-<li><p><strong>prob</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – <p>Feature name used as the (unnormalized) probabilities associated with each
+<li><p><strong>prob</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>, </em><em>optional</em>) – <p>Feature name used as the (unnormalized) probabilities associated with each
 neighboring edge of a node.  The feature must have only one element for each
 edge.</p>
 <p>The features must be non-negative floats or boolean.  Otherwise, the result
 will be undefined.</p>
 </p></li>
-<li><p><strong>exclude_edges</strong> (<em>tensor</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) – <p>Edge IDs to exclude during sampling neighbors for the seed nodes.</p>
+<li><p><strong>exclude_edges</strong> (<em>tensor</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><em>dict</em></a>) – <p>Edge IDs to exclude during sampling neighbors for the seed nodes.</p>
 <p>This argument can take a single ID tensor or a dictionary of edge types and ID tensors.
 If a single tensor is given, the graph must only have one type of nodes.</p>
 </p></li>
-<li><p><strong>replace</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, sample with replacement.</p></li>
-<li><p><strong>copy_ndata</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – <p>If True, the node features of the new graph are copied from
+<li><p><strong>replace</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, sample with replacement.</p></li>
+<li><p><strong>copy_ndata</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a><em>, </em><em>optional</em>) – <p>If True, the node features of the new graph are copied from
 the original graph. If False, the new graph will not have any
 node features.</p>
 <p>(Default: True)</p>
 </p></li>
-<li><p><strong>copy_edata</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – <p>If True, the edge features of the new graph are copied from
+<li><p><strong>copy_edata</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a><em>, </em><em>optional</em>) – <p>If True, the edge features of the new graph are copied from
 the original graph.  If False, the new graph will not have any
 edge features.</p>
 <p>(Default: True)</p>
 </p></li>
-<li><p><strong>_dist_training</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – <p>Internal argument.  Do not use.</p>
+<li><p><strong>_dist_training</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a><em>, </em><em>optional</em>) – <p>Internal argument.  Do not use.</p>
 <p>(Default: False)</p>
 </p></li>
 <li><p><strong>output_device</strong> (<em>Framework-specific device context object</em><em>, </em><em>optional</em>) – The output device.  Default is the same as the input graph.</p></li>

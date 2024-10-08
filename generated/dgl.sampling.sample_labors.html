@@ -153,21 +153,21 @@ the sampled edges are stored as the <cite>dgl.EID</cite> feature in the returned
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>g</strong> (<a class="reference internal" href="../api/python/dgl.DGLGraph.html#dgl.DGLGraph" title="dgl.DGLGraph"><em>DGLGraph</em></a>) – The graph, allowed to have multiple node or edge types. Can be either on CPU or GPU.</p></li>
-<li><p><strong>nodes</strong> (<em>tensor</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) – <p>Node IDs to sample neighbors from.</p>
+<li><p><strong>nodes</strong> (<em>tensor</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><em>dict</em></a>) – <p>Node IDs to sample neighbors from.</p>
 <p>This argument can take a single ID tensor or a dictionary of node types and ID tensors.
 If a single tensor is given, the graph must only have one type of nodes.</p>
 </p></li>
-<li><p><strong>fanout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a><em>[</em><em>etype</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>]</em>) – <p>The number of edges to be sampled for each node on each edge type.</p>
+<li><p><strong>fanout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><em>dict</em></a><em>[</em><em>etype</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>]</em>) – <p>The number of edges to be sampled for each node on each edge type.</p>
 <p>This argument can take a single int or a dictionary of edge types and ints.
 If a single int is given, DGL will sample this number of edges for each node for
 every edge type.</p>
 <p>If -1 is given for a single edge type, all the neighboring edges with that edge
 type will be selected.</p>
 </p></li>
-<li><p><strong>edge_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – <p>Determines whether to sample inbound or outbound edges.</p>
+<li><p><strong>edge_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>, </em><em>optional</em>) – <p>Determines whether to sample inbound or outbound edges.</p>
 <p>Can take either <code class="docutils literal notranslate"><span class="pre">in</span></code> for inbound edges or <code class="docutils literal notranslate"><span class="pre">out</span></code> for outbound edges.</p>
 </p></li>
-<li><p><strong>prob</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – <p>Feature name used as the (unnormalized) probabilities associated with each
+<li><p><strong>prob</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>, </em><em>optional</em>) – <p>Feature name used as the (unnormalized) probabilities associated with each
 neighboring edge of a node.  The feature must have only one element for each
 edge.</p>
 <p>The features must be non-negative floats, and the sum of the features of
@@ -175,7 +175,7 @@ inbound/outbound edges for every node must be positive (though they don’t have
 to sum up to one).  Otherwise, the result will be undefined.</p>
 <p>If <code class="xref py py-attr docutils literal notranslate"><span class="pre">prob</span></code> is not None, GPU sampling is not supported.</p>
 </p></li>
-<li><p><strong>importance_sampling</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – Whether to use importance sampling or uniform sampling, use of negative values optimizes
+<li><p><strong>importance_sampling</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>, </em><em>optional</em>) – Whether to use importance sampling or uniform sampling, use of negative values optimizes
 importance sampling probabilities until convergence while use of positive values runs
 optimization steps that many times. If the value is i, then LABOR-i variant is used.</p></li>
 <li><p><strong>random_seed</strong> (<em>tensor</em>) – <p>An int64 tensor with one element.</p>
@@ -191,20 +191,20 @@ locally for each edge type, resulting into a larger number of vertices being sam
 random number from DGL. Use this argument with identical random_seed if multiple calls to
 this function are used to sample as part of a single batch.</p>
 </p></li>
-<li><p><strong>seed2_contribution</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – A float value between [0, 1) that determines the contribution
+<li><p><strong>seed2_contribution</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a><em>, </em><em>optional</em>) – A float value between [0, 1) that determines the contribution
 of the second random seed to generate the random variates for the
 LABOR sampling algorithm.</p></li>
-<li><p><strong>copy_ndata</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – <p>If True, the node features of the new graph are copied from
+<li><p><strong>copy_ndata</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a><em>, </em><em>optional</em>) – <p>If True, the node features of the new graph are copied from
 the original graph. If False, the new graph will not have any
 node features.</p>
 <p>(Default: True)</p>
 </p></li>
-<li><p><strong>copy_edata</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – <p>If True, the edge features of the new graph are copied from
+<li><p><strong>copy_edata</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a><em>, </em><em>optional</em>) – <p>If True, the edge features of the new graph are copied from
 the original graph.  If False, the new graph will not have any
 edge features.</p>
 <p>(Default: True)</p>
 </p></li>
-<li><p><strong>exclude_edges</strong> (<em>tensor</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) – <p>Edge IDs to exclude during sampling neighbors for the seed nodes.</p>
+<li><p><strong>exclude_edges</strong> (<em>tensor</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><em>dict</em></a>) – <p>Edge IDs to exclude during sampling neighbors for the seed nodes.</p>
 <p>This argument can take a single ID tensor or a dictionary of edge types and ID tensors.
 If a single tensor is given, the graph must only have one type of nodes.</p>
 </p></li>
@@ -215,7 +215,7 @@ If a single tensor is given, the graph must only have one type of nodes.</p>
 <dd class="field-even"><p>A sampled subgraph containing only the sampled neighboring edges along with edge weights.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a>(<a class="reference internal" href="../api/python/dgl.DGLGraph.html#dgl.DGLGraph" title="dgl.DGLGraph">DGLGraph</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)">list</a>[Tensor])</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.13)">tuple</a>(<a class="reference internal" href="../api/python/dgl.DGLGraph.html#dgl.DGLGraph" title="dgl.DGLGraph">DGLGraph</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)">list</a>[Tensor])</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>

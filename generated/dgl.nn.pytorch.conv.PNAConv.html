@@ -190,9 +190,9 @@ final output.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>in_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Input feature size; i.e. the size of <span class="math notranslate nohighlight">\(h_i^l\)</span>.</p></li>
-<li><p><strong>out_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Output feature size; i.e. the size of <span class="math notranslate nohighlight">\(h_i^{l+1}\)</span>.</p></li>
-<li><p><strong>aggregators</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – <p>List of aggregation function names(each aggregator specifies a way to aggregate
+<li><p><strong>in_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Input feature size; i.e. the size of <span class="math notranslate nohighlight">\(h_i^l\)</span>.</p></li>
+<li><p><strong>out_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Output feature size; i.e. the size of <span class="math notranslate nohighlight">\(h_i^{l+1}\)</span>.</p></li>
+<li><p><strong>aggregators</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>) – <p>List of aggregation function names(each aggregator specifies a way to aggregate
 messages from neighbours), selected from:</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">mean</span></code>: the mean of neighbour messages</p></li>
@@ -205,7 +205,7 @@ messages from neighbours), selected from:</p>
 </ul>
 <p><span class="math notranslate nohighlight">\((E[(X-E[X])^n])^{1/n}\)</span></p>
 </p></li>
-<li><p><strong>scalers</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – <p>List of scaler function names, selected from:</p>
+<li><p><strong>scalers</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>) – <p>List of scaler function names, selected from:</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">identity</span></code>: no scaling</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">amplification</span></code>: multiply the aggregated message by <span class="math notranslate nohighlight">\(\log(d+1)/\delta\)</span>,</p></li>
@@ -215,14 +215,14 @@ messages from neighbours), selected from:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">attenuation</span></code>: multiply the aggregated message by <span class="math notranslate nohighlight">\(\delta/\log(d+1)\)</span></p></li>
 </ul>
 </p></li>
-<li><p><strong>delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – The degree-related normalization factor computed over the training set, used by scalers
+<li><p><strong>delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>) – The degree-related normalization factor computed over the training set, used by scalers
 for normalization. <span class="math notranslate nohighlight">\(E[\log(d+1)]\)</span>, where <span class="math notranslate nohighlight">\(d\)</span> is the degree for each node
 in the training set.</p></li>
-<li><p><strong>dropout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – The dropout ratio. Default: 0.0.</p></li>
-<li><p><strong>num_towers</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – The number of towers used. Default: 1. Note that in_size and out_size must be divisible
+<li><p><strong>dropout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a><em>, </em><em>optional</em>) – The dropout ratio. Default: 0.0.</p></li>
+<li><p><strong>num_towers</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>, </em><em>optional</em>) – The number of towers used. Default: 1. Note that in_size and out_size must be divisible
 by num_towers.</p></li>
-<li><p><strong>edge_feat_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – The edge feature size. Default: 0.</p></li>
-<li><p><strong>residual</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – The bool flag that determines whether to add a residual connection for the
+<li><p><strong>edge_feat_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>, </em><em>optional</em>) – The edge feature size. Default: 0.</p></li>
+<li><p><strong>residual</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a><em>, </em><em>optional</em>) – The bool flag that determines whether to add a residual connection for the
 output. Default: True. If in_size and out_size of the PNA conv layer are not
 the same, this flag will be set as False forcibly.</p></li>
 </ul>

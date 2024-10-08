@@ -265,35 +265,35 @@ the type of each node. N is the number of nodes in the input graph.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>g</strong> (<a class="reference internal" href="../api/python/dgl.DGLGraph.html#dgl.DGLGraph" title="dgl.DGLGraph"><em>DGLGraph</em></a>) – The input graph to partition</p></li>
-<li><p><strong>graph_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the graph. The name will be used to construct
+<li><p><strong>graph_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>) – The name of the graph. The name will be used to construct
 <a class="reference internal" href="../api/python/dgl.distributed.html#dgl.distributed.DistGraph" title="dgl.distributed.DistGraph"><code class="xref py py-meth docutils literal notranslate"><span class="pre">DistGraph()</span></code></a>.</p></li>
-<li><p><strong>num_parts</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – The number of partitions</p></li>
-<li><p><strong>out_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The path to store the files for all partitioned data.</p></li>
-<li><p><strong>num_hops</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – The number of hops of HALO nodes we construct on a partition graph structure.
+<li><p><strong>num_parts</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – The number of partitions</p></li>
+<li><p><strong>out_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>) – The path to store the files for all partitioned data.</p></li>
+<li><p><strong>num_hops</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>, </em><em>optional</em>) – The number of hops of HALO nodes we construct on a partition graph structure.
 The default value is 1.</p></li>
-<li><p><strong>part_method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – The partition method. It supports “random” and “metis”. The default value is “metis”.</p></li>
+<li><p><strong>part_method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>, </em><em>optional</em>) – The partition method. It supports “random” and “metis”. The default value is “metis”.</p></li>
 <li><p><strong>balance_ntypes</strong> (<em>tensor</em><em>, </em><em>optional</em>) – Node type of each node. This is a 1D-array of integers. Its values indicates the node
 type of each node. This argument is used by Metis partition. When the argument is
 specified, the Metis algorithm will try to partition the input graph into partitions where
 each partition has roughly the same number of nodes for each node type. The default value
 is None, which means Metis partitions the graph to only balance the number of nodes.</p></li>
-<li><p><strong>balance_edges</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Indicate whether to balance the edges in each partition. This argument is used by
+<li><p><strong>balance_edges</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a>) – Indicate whether to balance the edges in each partition. This argument is used by
 the Metis algorithm.</p></li>
-<li><p><strong>return_mapping</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Indicate whether to return the mapping between shuffled node/edge IDs and the original
+<li><p><strong>return_mapping</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a>) – Indicate whether to return the mapping between shuffled node/edge IDs and the original
 node/edge IDs.</p></li>
-<li><p><strong>num_trainers_per_machine</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – The number of trainers per machine. If is not 1, the whole graph will be first partitioned
+<li><p><strong>num_trainers_per_machine</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>, </em><em>optional</em>) – The number of trainers per machine. If is not 1, the whole graph will be first partitioned
 to each trainer, that is num_parts*num_trainers_per_machine parts. And the trainer ids of
 each node will be stored in the node feature ‘trainer_id’. Then the partitions of trainers
 on the same machine will be coalesced into one larger partition. The final number of
 partitions is <cite>num_part</cite>.</p></li>
-<li><p><strong>objtype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>"cut"</em><em> or </em><em>"vol"</em>) – Set the objective as edge-cut minimization or communication volume minimization. This
+<li><p><strong>objtype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>, </em><em>"cut"</em><em> or </em><em>"vol"</em>) – Set the objective as edge-cut minimization or communication volume minimization. This
 argument is used by the Metis algorithm.</p></li>
-<li><p><strong>graph_formats</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em>) – Save partitions in specified formats. It could be any combination of <code class="docutils literal notranslate"><span class="pre">coo</span></code>,
+<li><p><strong>graph_formats</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>]</em>) – Save partitions in specified formats. It could be any combination of <code class="docutils literal notranslate"><span class="pre">coo</span></code>,
 <code class="docutils literal notranslate"><span class="pre">csc</span></code> and <code class="docutils literal notranslate"><span class="pre">csr</span></code>. If not specified, save one format only according to what
 format is available. If multiple formats are available, selection priority
 from high to low is <code class="docutils literal notranslate"><span class="pre">coo</span></code>, <code class="docutils literal notranslate"><span class="pre">csc</span></code>, <code class="docutils literal notranslate"><span class="pre">csr</span></code>.</p></li>
-<li><p><strong>use_graphbolt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to save partitions in GraphBolt format. Default: False.</p></li>
-<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) – Other keyword arguments for converting DGL partitions to GraphBolt.</p></li>
+<li><p><strong>use_graphbolt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to save partitions in GraphBolt format. Default: False.</p></li>
+<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><em>dict</em></a>) – Other keyword arguments for converting DGL partitions to GraphBolt.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

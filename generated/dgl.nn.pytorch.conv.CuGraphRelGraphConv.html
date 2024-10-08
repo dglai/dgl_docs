@@ -159,10 +159,10 @@ installed via <code class="code docutils literal notranslate"><span class="pre">
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>in_feat</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Input feature size.</p></li>
-<li><p><strong>out_feat</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Output feature size.</p></li>
-<li><p><strong>num_rels</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Number of relations.</p></li>
-<li><p><strong>regularizer</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – <dl class="simple">
+<li><p><strong>in_feat</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Input feature size.</p></li>
+<li><p><strong>out_feat</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Output feature size.</p></li>
+<li><p><strong>num_rels</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Number of relations.</p></li>
+<li><p><strong>regularizer</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>, </em><em>optional</em>) – <dl class="simple">
 <dt>Which weight regularizer to use (“basis” or <code class="docutils literal notranslate"><span class="pre">None</span></code>):</dt><dd><ul>
 <li><p>”basis” is for basis-decomposition.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">None</span></code> applies no regularization.</p></li>
@@ -171,12 +171,12 @@ installed via <code class="code docutils literal notranslate"><span class="pre">
 </dl>
 <p>Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 </p></li>
-<li><p><strong>num_bases</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – Number of bases. It comes into effect when a regularizer is applied.
+<li><p><strong>num_bases</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>, </em><em>optional</em>) – Number of bases. It comes into effect when a regularizer is applied.
 Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
-<li><p><strong>bias</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – True if bias is added. Default: <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
-<li><p><strong>self_loop</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – True to include self loop message. Default: <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
-<li><p><strong>dropout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – Dropout rate. Default: <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></li>
-<li><p><strong>apply_norm</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – True to normalize aggregation output by the in-degree of the destination
+<li><p><strong>bias</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a><em>, </em><em>optional</em>) – True if bias is added. Default: <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>self_loop</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a><em>, </em><em>optional</em>) – True to include self loop message. Default: <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>dropout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a><em>, </em><em>optional</em>) – Dropout rate. Default: <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></li>
+<li><p><strong>apply_norm</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a><em>, </em><em>optional</em>) – True to normalize aggregation output by the in-degree of the destination
 node per edge type, i.e. <span class="math notranslate nohighlight">\(|\mathcal{N}^r_i|\)</span>. Default: <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
 </ul>
 </dd>
@@ -216,7 +216,7 @@ Note that cugraph-ops only accepts edge type tensors in int32,
 so any input of other integer types will be casted into int32,
 thus introducing some overhead. Pass in int32 tensors directly
 for best performance.</p></li>
-<li><p><strong>max_in_degree</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – Maximum in-degree of destination nodes. It is only effective when
+<li><p><strong>max_in_degree</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>, </em><em>optional</em>) – Maximum in-degree of destination nodes. It is only effective when
 <code class="xref py py-attr docutils literal notranslate"><span class="pre">g</span></code> is a <code class="xref py py-class docutils literal notranslate"><span class="pre">DGLBlock</span></code>, i.e., bipartite graph. When
 <code class="xref py py-attr docutils literal notranslate"><span class="pre">g</span></code> is generated from a neighbor sampler, the value should be
 set to the corresponding <code class="xref py py-attr docutils literal notranslate"><span class="pre">fanout</span></code>. If not given,

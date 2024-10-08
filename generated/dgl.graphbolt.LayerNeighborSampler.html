@@ -180,40 +180,40 @@ respect to training iterations.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>datapipe</strong> (<em>DataPipe</em>) – The datapipe.</p></li>
 <li><p><strong>graph</strong> (<a class="reference internal" href="dgl.graphbolt.FusedCSCSamplingGraph.html#dgl.graphbolt.FusedCSCSamplingGraph" title="dgl.graphbolt.FusedCSCSamplingGraph"><em>FusedCSCSamplingGraph</em></a>) – The graph on which to perform subgraph sampling.</p></li>
-<li><p><strong>fanouts</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em>[</em><em>torch.Tensor</em><em>]</em>) – The number of edges to be sampled for each node with or without
+<li><p><strong>fanouts</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><em>list</em></a><em>[</em><em>torch.Tensor</em><em>]</em>) – The number of edges to be sampled for each node with or without
 considering edge types. The length of this parameter implicitly
 signifies the layer of sampling being conducted.</p></li>
-<li><p><strong>replace</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Boolean indicating whether the sample is preformed with or
+<li><p><strong>replace</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a>) – Boolean indicating whether the sample is preformed with or
 without replacement. If True, a value can be selected multiple
 times. Otherwise, each value can be selected only once.</p></li>
-<li><p><strong>prob_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – The name of an edge attribute used as the weights of sampling for
+<li><p><strong>prob_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>, </em><em>optional</em>) – The name of an edge attribute used as the weights of sampling for
 each node. This attribute tensor should contain (unnormalized)
 probabilities corresponding to each neighboring edge of a node.
 It must be a 1D floating-point or boolean tensor, with the number
 of elements equalling the total number of edges.</p></li>
-<li><p><strong>deduplicate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Boolean indicating whether seeds between hops will be deduplicated.
+<li><p><strong>deduplicate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a>) – Boolean indicating whether seeds between hops will be deduplicated.
 If True, the same elements in seeds will be deleted to only one.
 Otherwise, the same elements will be remained.</p></li>
-<li><p><strong>layer_dependency</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Boolean indicating whether different layers should use the same random
+<li><p><strong>layer_dependency</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a>) – Boolean indicating whether different layers should use the same random
 variates. Results in a reduction in the number of nodes sampled and
 turns LayerNeighborSampler into a subgraph sampling method. Later layers
 will be guaranteed to sample overlapping neighbors as the previous
 layers.</p></li>
-<li><p><strong>batch_dependency</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Specifies whether consecutive minibatches should use similar random
+<li><p><strong>batch_dependency</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Specifies whether consecutive minibatches should use similar random
 variates. Results in a higher temporal access locality of sampled
 nodes and edges. Setting it to <span class="math notranslate nohighlight">\(\kappa\)</span> slows down the change in
 the random variates proportional to <span class="math notranslate nohighlight">\(\frac{1}{\kappa}\)</span>. Implements
 the dependent minibatching approach in <a class="reference external" href="https://arxiv.org/abs/2310.12403">arXiv:2310.12403</a>.</p></li>
-<li><p><strong>overlap_fetch</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, the data loader will overlap the UVA graph fetching operations
+<li><p><strong>overlap_fetch</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, the data loader will overlap the UVA graph fetching operations
 with the rest of operations by using an alternative CUDA stream. This
 option should be enabled if you have moved your graph to the pinned
 memory for optimal performance. Default is False.</p></li>
-<li><p><strong>num_gpu_cached_edges</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – If positive and overlap_graph_fetch is True, then the GPU will cache
+<li><p><strong>num_gpu_cached_edges</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>, </em><em>optional</em>) – If positive and overlap_graph_fetch is True, then the GPU will cache
 frequently accessed vertex neighborhoods to reduce the PCI-e bandwidth
 demand due to pinned graph accesses.</p></li>
-<li><p><strong>gpu_cache_threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – Determines how many times a vertex needs to be accessed before its
+<li><p><strong>gpu_cache_threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>, </em><em>optional</em>) – Determines how many times a vertex needs to be accessed before its
 neighborhood ends up being cached on the GPU.</p></li>
-<li><p><strong>cooperative</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Boolean indicating whether Cooperative Minibatching, which was initially
+<li><p><strong>cooperative</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a><em>, </em><em>optional</em>) – Boolean indicating whether Cooperative Minibatching, which was initially
 proposed in
 <a href="#id1"><span class="problematic" id="id2">`Deep Graph Library PR#4337&lt;https://github.com/dmlc/dgl/pull/4337&gt;`__</span></a>
 and was later first fully described in
@@ -221,7 +221,7 @@ and was later first fully described in
 eliminates duplicate work performed across the GPUs due to the
 overlapping sampled k-hop neighborhoods of seed nodes when performing
 GNN minibatching.</p></li>
-<li><p><strong>asynchronous</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Boolean indicating whether sampling and compaction stages should run
+<li><p><strong>asynchronous</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a>) – Boolean indicating whether sampling and compaction stages should run
 in background threads to hide the latency of CPU GPU synchronization.
 Should be enabled only when sampling on the GPU.</p></li>
 </ul>
