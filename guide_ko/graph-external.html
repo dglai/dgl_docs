@@ -8,7 +8,7 @@
 <title>1.4 외부 소스를 사용한 그래프 생성하기 — DGL 2.5 documentation</title>
 <link href="../_static/pygments.css?v=80d5e7a1" rel="stylesheet" type="text/css"/>
 <link href="../_static/css/theme.css?v=e59714d7" rel="stylesheet" type="text/css"/>
-<link href="../_static/graphviz.css?v=fd3f3429" rel="stylesheet" type="text/css"/>
+<link href="../_static/graphviz.css?v=4ae1632d" rel="stylesheet" type="text/css"/>
 <link href="../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
 <link href="../_static/sg_gallery.css?v=d2d258e8" rel="stylesheet" type="text/css"/>
 <link href="../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
@@ -18,7 +18,7 @@
 <script src="../_static/jquery.js?v=5d32c60e"></script>
 <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
 <script src="../_static/documentation_options.js?v=38d273f4"></script>
-<script src="../_static/doctools.js?v=9a2dae69"></script>
+<script src="../_static/doctools.js?v=9bcbadda"></script>
 <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../_static/copybutton.js?v=ccdb6887"></script>
@@ -166,7 +166,7 @@
 <span class="go">      edata_schemes={})</span>
 </pre></div>
 </div>
-<p><cite>nx.path_graph(5)</cite> 로부터 만들면 생성된 <a class="reference internal" href="../api/python/dgl.DGLGraph.html#dgl.DGLGraph" title="dgl.DGLGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">DGLGraph</span></code></a> 는 4개가 아니라 8개의 에지를 갖는 점을 유의하자. 이유는 <cite>nx.path_graph(5)</cite> 는 방향이 없는 NetworkX 그래프 <a class="reference external" href="https://networkx.org/documentation/stable/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">networkx.Graph</span></code></a> 를 만드는데, <a class="reference internal" href="../api/python/dgl.DGLGraph.html#dgl.DGLGraph" title="dgl.DGLGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">DGLGraph</span></code></a> 는 항상 방향이 있는 그래프이기 때문이다. 방향이 없는 NetworkX 그래프를 <a class="reference internal" href="../api/python/dgl.DGLGraph.html#dgl.DGLGraph" title="dgl.DGLGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">DGLGraph</span></code></a> 로 변환하면, DGL은 내부적으로 방향이 없는 에지를 두개의 방향이 있는 에지로 변환한다. <a class="reference external" href="https://networkx.org/documentation/stable/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></a> 를 사용하면 이런 현상을 피할 수 있다.</p>
+<p><cite>nx.path_graph(5)</cite> 로부터 만들면 생성된 <a class="reference internal" href="../api/python/dgl.DGLGraph.html#dgl.DGLGraph" title="dgl.DGLGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">DGLGraph</span></code></a> 는 4개가 아니라 8개의 에지를 갖는 점을 유의하자. 이유는 <cite>nx.path_graph(5)</cite> 는 방향이 없는 NetworkX 그래프 <a class="reference external" href="https://networkx.org/documentation/stable/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">networkx.Graph</span></code></a> 를 만드는데, <a class="reference internal" href="../api/python/dgl.DGLGraph.html#dgl.DGLGraph" title="dgl.DGLGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">DGLGraph</span></code></a> 는 항상 방향이 있는 그래프이기 때문이다. 방향이 없는 NetworkX 그래프를 <a class="reference internal" href="../api/python/dgl.DGLGraph.html#dgl.DGLGraph" title="dgl.DGLGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">DGLGraph</span></code></a> 로 변환하면, DGL은 내부적으로 방향이 없는 에지를 두개의 방향이 있는 에지로 변환한다. <a class="reference external" href="https://networkx.org/documentation/stable/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></a> 를 사용하면 이런 현상을 피할 수 있다.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">nxg</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">([(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dgl</span><span class="o">.</span><span class="n">from_networkx</span><span class="p">(</span><span class="n">nxg</span><span class="p">)</span>
 <span class="go">Graph(num_nodes=4, num_edges=4,</span>
