@@ -454,6 +454,27 @@
         <span class="s2">"part-</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">part_id</span><span class="p">)</span> <span class="ow">in</span> <span class="n">part_metadata</span>
     <span class="p">),</span> <span class="s2">"part-</span><span class="si">{}</span><span class="s2"> does not exist"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">part_id</span><span class="p">)</span>
     <span class="n">part_files</span> <span class="o">=</span> <span class="n">part_metadata</span><span class="p">[</span><span class="s2">"part-</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">part_id</span><span class="p">)]</span>
+
+    <span class="n">exist_dgl_graph</span> <span class="o">=</span> <span class="n">exist_graphbolt_graph</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"part</span><span class="si">{</span><span class="n">part_id</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"graph.dgl"</span><span class="p">)):</span>
+        <span class="n">use_graphbolt</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">exist_dgl_graph</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">config_path</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"part</span><span class="si">{</span><span class="n">part_id</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"fused_csc_sampling_graph.pt"</span>
+        <span class="p">)</span>
+    <span class="p">):</span>
+        <span class="n">use_graphbolt</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">exist_graphbolt_graph</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="c1"># Check if both DGL graph and GraphBolt graph exist or not exist. Make sure only one exists.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">exist_dgl_graph</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">exist_graphbolt_graph</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"The graph object doesn't exist."</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">exist_dgl_graph</span> <span class="ow">and</span> <span class="n">exist_graphbolt_graph</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">"Both DGL graph and GraphBolt graph exist. Please remove one."</span>
+        <span class="p">)</span>
+
     <span class="k">if</span> <span class="n">use_graphbolt</span><span class="p">:</span>
         <span class="n">part_graph_field</span> <span class="o">=</span> <span class="s2">"part_graph_graphbolt"</span>
     <span class="k">else</span><span class="p">:</span>
